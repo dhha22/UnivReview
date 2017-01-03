@@ -38,6 +38,7 @@ dependencies {
     compile 'com.android.support:customtabs:25.0.0'
 
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
 
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.google.code.gson:gson:2.4'
@@ -52,3 +53,4 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 }
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "175041667455",
+    "firebase_url": "https://univreview-5a92b.firebaseio.com",
+    "project_id": "univreview-5a92b",
+    "storage_bucket": "univreview-5a92b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175041667455:android:fd44d93cbd560912",
+        "android_client_info": {
+          "package_name": "com.univreview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175041667455-2l55e0tac0k3nq8gbfl3q7va8bu5rh0h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{ "current_key": "AIzaSyBdukmi8rtA8HR1D37k1iK4sun8eyhvDWs" }],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -27,8 +28,10 @@ import butterknife.ButterKnife;
  */
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
+    @BindView(R.id.text) TextView textView;
     private CallbackManager facebookCallbackManager;
     private ProgressDialog progressDialog;
+    private String SALT_KEY = "e7b35739643f6f595e1a3231666138ca";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +42,12 @@ public class LoginActivity extends BaseActivity {
         //facebook
         facebookCallbackManager = CallbackManager.Factory.create();
         facebookLoginBtn.setOnClickListener(v -> facebookLogin());
+        makeAPIToken(SALT_KEY);
+
+    }
+
+    private void makeAPIToken(String saltKey){
+        String apiKey;
 
     }
 
