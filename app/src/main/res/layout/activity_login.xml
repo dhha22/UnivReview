@@ -7,11 +7,23 @@
     <Button
         android:id="@+id/facebook_login_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="facebook"/>
+
+    <Button
+        android:id="@+id/kakao_login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="kakao"/>
 
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <com.roughike.bottombar.BottomBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true" />
 
 </LinearLayout>
