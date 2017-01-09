@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">대학리뷰</string>
+    <string name="app_version">0.0.1</string>
     <string name="facebook_app_id">1843922909222445</string>
+    <string name="kakao_app_id">cec83de256e7cffbba96009caa6d7bb5</string>
 </resources>

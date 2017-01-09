@@ -1,4 +1,4 @@
-package com.univreview;
+package com.univreview.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

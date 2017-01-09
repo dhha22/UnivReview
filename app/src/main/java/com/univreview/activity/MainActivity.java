@@ -1,7 +1,9 @@
-package com.univreview;
+package com.univreview.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.univreview.R;
 
 public class MainActivity extends AppCompatActivity {
 
