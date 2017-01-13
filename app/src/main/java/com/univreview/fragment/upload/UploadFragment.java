@@ -1,4 +1,4 @@
-package com.univreview.fragment;
+package com.univreview.fragment.upload;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,19 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.univreview.R;
+import com.univreview.fragment.BaseFragment;
 
 /**
  * Created by DavidHa on 2017. 1. 8..
  */
-public class MypageFragment extends BaseFragment {
-    public static MypageFragment newInstance(){
-        MypageFragment fragment = new MypageFragment();
+public class UploadFragment extends BaseFragment {
+    public static UploadFragment newInstance(){
+        UploadFragment fragment = new UploadFragment();
         return fragment;
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mypage, container, false);
+        View view = inflater.inflate(R.layout.fragment_upload, container, false);
         return view;
     }
 }
