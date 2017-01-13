@@ -1,4 +1,4 @@
-package com.univreview.fragment;
+package com.univreview.fragment.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,16 +9,20 @@ import android.view.ViewGroup;
 
 import com.univreview.R;
 
-import butterknife.BindView;
-
 /**
- * Created by DavidHa on 2017. 1. 8..
+ * Created by DavidHa on 2017. 1. 11..
  */
-public class HomeFragment extends Fragment {
+public class RegisterUnivInfoFragment extends Fragment {
+
+    public static RegisterUnivInfoFragment newInstance(){
+        RegisterUnivInfoFragment fragment = new RegisterUnivInfoFragment();
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         return view;
     }
 }

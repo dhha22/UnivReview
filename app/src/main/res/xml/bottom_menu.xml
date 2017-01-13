@@ -2,14 +2,14 @@
 <tabs>
     <tab
         id="@+id/tab_home"
-        icon="@drawable/ic_recents"
+        icon="@mipmap/ic_launcher"
         title="Home" />
     <tab
         id="@+id/tab_upload"
-        icon="@drawable/ic_nearby"
+        icon="@mipmap/ic_launcher"
         title="Upload" />
     <tab
         id="@+id/tab_mypage"
-        icon="@drawable/ic_friends"
+        icon="@mipmap/ic_launcher"
         title="MyPage" />
 </tabs>

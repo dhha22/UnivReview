@@ -22,6 +22,7 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.log.Logger;
 import com.univreview.network.Retro;
@@ -38,9 +39,9 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2016. 12. 25..
  */
 public class LoginActivity extends BaseActivity {
+    @BindView(R.id.test_txt) TextView testTxt;
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
-    @BindView(R.id.text) TextView textView;
     private CallbackManager facebookCallbackManager;
     private ProgressDialog progressDialog;
     private SessionCallback kakaoCallback;
@@ -50,7 +51,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
         progressDialog = Util.progressDialog(this);
 
         //facebook
@@ -61,6 +61,9 @@ public class LoginActivity extends BaseActivity {
         kakaoCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(kakaoCallback);
         kakaoLoginBtn.setOnClickListener(v -> kakaoLogin());
+
+        //test code
+        testTxt.setOnClickListener(v -> Navigator.goMain(this));
     }
 
 
