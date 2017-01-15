@@ -7,6 +7,7 @@ import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.upload.UploadFragment;
 
 /**
  * Created by DavidHa on 2017. 1. 11..
@@ -21,6 +22,12 @@ public class Navigator {
     public static void goRegisterUnivInfo(Context context){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUnivInfoFragment.newInstance());
+        context.startActivity(intent);
+    }
+
+    public static void goReview(Context context){
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(UploadFragment.newInstance());
         context.startActivity(intent);
     }
 

@@ -1,6 +1,7 @@
 package com.univreview.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
@@ -22,9 +23,11 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
+import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.log.Logger;
+import com.univreview.model.Login;
 import com.univreview.network.Retro;
 import com.univreview.util.Util;
 
@@ -42,6 +45,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.test_txt) TextView testTxt;
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
+    @BindView(R.id.test_btn) Button testBtn;
     private CallbackManager facebookCallbackManager;
     private ProgressDialog progressDialog;
     private SessionCallback kakaoCallback;
@@ -64,6 +68,9 @@ public class LoginActivity extends BaseActivity {
 
         //test code
         testTxt.setOnClickListener(v -> Navigator.goMain(this));
+
+        //token
+        testBtn.setOnClickListener(v -> callTempTokenApi());
     }
 
 
@@ -177,11 +184,34 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void callLoginApi(String userType, String userId, String userAccessToken){
-        Retro.instance.loginService().login(userType, userId, userAccessToken)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(facebookCallbackManager != null) {
+            facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+    //api
+    private void callLoginApi(String userType, String userId, String userAccessToken) {
+        Logger.v("call login api: " + userType + " " + userId + " " + userAccessToken);
+        Retro.instance.loginService().login(App.setAuthHeader(""), new Login(userType, userId, userAccessToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .finallyDo(() -> progressDialog.dismiss())
+                .subscribe(result -> Logger.v(result), error -> Logger.e(error));
+    }
+
+    private void callTempTokenApi(){
+        Retro.instance.tokenService().tempToken(App.setAuthHeader(""))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> Logger.v(result), error -> Logger.e(error));
     }
 
     private void loginResponse(){

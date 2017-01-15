@@ -3,16 +3,16 @@ package com.univreview.model;
 import com.google.gson.annotations.Expose;
 
 /**
- * Created by DavidHa on 2017. 1. 3..
+ * Created by DavidHa on 2017. 1. 14..
  */
-public class ResponseModel<T> {
+public class Token {
     @Expose
-    public T data;
+    String token;
 
     @Override
     public String toString() {
-        return "ResponseModel{" +
-                "data=" + data +
+        return "Token{" +
+                "token='" + token + '\'' +
                 '}';
     }
 }

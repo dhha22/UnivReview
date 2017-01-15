@@ -12,7 +12,7 @@ public class TimeUtil {
 
     public TimeUtil() {
         now = new Date();
-        timeStamp = new SimpleDateFormat("yyyyMMddhhmmss");
+        timeStamp = new SimpleDateFormat("yyyyMMddHHmmss");
     }
 
     public String getTimeStamp(){

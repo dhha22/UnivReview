@@ -18,6 +18,8 @@ import org.bouncycastle.util.encoders.Base64;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by DavidHa on 2016. 12. 25..
@@ -60,11 +62,18 @@ public class App extends Application {
         return instance;
     }
 
+    public static Map<String, String> setAuthHeader(String token) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Authorization", App.makeApiToken(token, App.makeApiSignature()));
+        return map;
+    }
+
     public static String makeApiSignature(){
         String saltKey = "e7b35739643f6f595e1a3231666138ca";
         String timeStamp = new TimeUtil().getTimeStamp();
         String appVersion = context.getResources().getString(R.string.app_version);
         String apiSignature = SecurityUtil.cryptoSHA3(appVersion + ';' + timeStamp + ';' + saltKey);
+        Logger.v("signamture time stamp: " + timeStamp);
         Logger.v("api signature: " + apiSignature);
         return apiSignature;
     }

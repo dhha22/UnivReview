@@ -2,20 +2,19 @@ package com.univreview.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.univreview.R;
-import com.univreview.log.Logger;
-
-import butterknife.BindView;
 
 /**
  * Created by DavidHa on 2017. 1. 8..
  */
 public class HomeFragment extends BaseFragment {
+    private RecyclerView latestReview;
+    private RecyclerView latestDepartmentReview;
 
     public static HomeFragment newInstance(){
         HomeFragment fragment = new HomeFragment();
@@ -28,4 +27,10 @@ public class HomeFragment extends BaseFragment {
 
         return view;
     }
+
+    /*private class LatestDepartmentReviewAdapter extends CustomAdapter<>{
+
+    }*/
+
+
 }

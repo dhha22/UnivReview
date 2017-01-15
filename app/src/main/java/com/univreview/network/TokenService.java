@@ -1,7 +1,11 @@
 package com.univreview.network;
 
 import com.univreview.model.ResponseModel;
+import com.univreview.model.Token;
 
+import java.util.Map;
+
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import rx.Observable;
@@ -11,8 +15,8 @@ import rx.Observable;
  */
 public interface TokenService {
     @PUT("token")
-    Observable<ResponseModel> refreshToken();
+    Observable<Token> refreshToken(@HeaderMap Map<String, String> headers);
 
     @POST("tempToken")
-    Observable<ResponseModel> tempToken();
+    Observable<Token> tempToken(@HeaderMap Map<String, String> headers);
 }

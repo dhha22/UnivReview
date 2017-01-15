@@ -3,8 +3,10 @@ package com.univreview.activity;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.roughike.bottombar.BottomBar;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.HomeFragment;
 import com.univreview.fragment.MypageFragment;
@@ -32,10 +34,18 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(HomeFragment.newInstance());
                     break;
                 case R.id.tab_upload:
-                    replaceFragment(UploadFragment.newInstance());
+                    Navigator.goReview(this);
                     break;
                 case R.id.tab_mypage:
                     replaceFragment(MypageFragment.newInstance());
+                    break;
+            }
+        });
+
+        bottomBar.setOnTabReselectListener(tabId -> {
+            switch (tabId) {
+                case R.id.tab_upload:
+                    Navigator.goReview(this);
                     break;
             }
         });
