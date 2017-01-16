@@ -25,6 +25,7 @@ public class ErrorUtils {
         if (throwable instanceof HttpException) {
             Response response = ((HttpException) throwable).response();
             try {
+                Logger.e(response.code());
                 Logger.e(response.message());
                 String responseBody = response.errorBody().string();
                 Logger.e(responseBody);

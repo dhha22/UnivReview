@@ -217,8 +217,10 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(result -> Logger.v(result), error -> Logger.e(error));
     }
 
-    private void loginErrorResponse(Throwable error, Register register){
-        if(ErrorUtils.parseError(error) == ErrorUtils.ERROR_404){   //신규회원
+    private void loginErrorResponse(Throwable error, Register register) {
+        if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_404) {   //신규회원
+            Navigator.goRegisterUserInfo(this, register);
+        } else {
             Navigator.goRegisterUserInfo(this, register);
         }
     }
