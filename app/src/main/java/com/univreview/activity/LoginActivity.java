@@ -28,7 +28,9 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.log.Logger;
 import com.univreview.model.Login;
+import com.univreview.model.Register;
 import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 
 import java.util.Arrays;
@@ -98,15 +100,16 @@ public class LoginActivity extends BaseActivity {
                 try {
                     String userId = object.getString("id");   //facebook user id
                     String accessToken = loginResult.getAccessToken().getToken();    //facebookAccessToken
-                    object.getJSONObject("picture").getJSONObject("data").getString("url"); //facebook profile image
-                    callLoginApi("F", userId, accessToken);
+                    String nickName = object.getString("name");
+                    String profileUrl = object.getJSONObject("picture").getJSONObject("data").getString("url"); //facebook profile image
+                    callLoginApi("F", userId, accessToken, nickName, profileUrl);
                 } catch (Exception e) {
                     Logger.e(e.toString());
                 }
 
             });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id, picture.type(large)");
+            parameters.putString("fields", "id, name, picture.type(large)");
             request.setParameters(parameters);
             request.executeAsync();
         }
@@ -170,10 +173,10 @@ public class LoginActivity extends BaseActivity {
                 Logger.v("카카오 로그인 성공");
                 String userId = String.valueOf(userProfile.getId());
                 String accessToken = Session.getCurrentSession().getAccessToken();
+                String nickName = userProfile.getNickname();  //kakao nickname
+                String profileURL = userProfile.getProfileImagePath();  //kakao profile image
 
-                userProfile.getProfileImagePath();  //kakao profile image
-                userProfile.getNickname();  //kakao nickname
-                callLoginApi("K", userId, accessToken);
+                callLoginApi("K", userId, accessToken, nickName, profileURL);
             }
 
             @Override
@@ -196,15 +199,15 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
     //api
-    private void callLoginApi(String userType, String userId, String userAccessToken) {
-        Logger.v("call login api: " + userType + " " + userId + " " + userAccessToken);
-        Retro.instance.loginService().login(App.setAuthHeader(""), new Login(userType, userId, userAccessToken))
+    private void callLoginApi(String userType, String userId, String accessToken, String nickName, String profileURL) {
+        Logger.v("userType: " + userType + ", userId: " + userId + ", accessToken: " + accessToken + ", nickName: " + nickName + ", profileUrl: " + profileURL);
+        Retro.instance.loginService().login(App.setAuthHeader(""), new Login(userType, userId, accessToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> progressDialog.dismiss())
-                .subscribe(result -> Logger.v(result), error -> Logger.e(error));
+                .subscribe(result -> Navigator.goMain(this),
+                        error -> loginErrorResponse(error, new Register(userType, userId, accessToken, nickName, profileURL)));
     }
 
     private void callTempTokenApi(){
@@ -214,7 +217,9 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(result -> Logger.v(result), error -> Logger.e(error));
     }
 
-    private void loginResponse(){
-
+    private void loginErrorResponse(Throwable error, Register register){
+        if(ErrorUtils.parseError(error) == ErrorUtils.ERROR_404){   //신규회원
+            Navigator.goRegisterUserInfo(this, register);
+        }
     }
 }

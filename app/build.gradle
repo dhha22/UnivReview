@@ -44,6 +44,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.roughike:bottom-bar:2.0.2'
 
+    //image
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'

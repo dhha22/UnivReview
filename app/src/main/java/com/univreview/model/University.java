@@ -10,4 +10,12 @@ public class University {
     public int id;
     @Expose
     public String name;
+
+    @Override
+    public String toString() {
+        return "University{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

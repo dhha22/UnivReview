@@ -8,20 +8,22 @@ import com.univreview.activity.NavigationActivity;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.upload.UploadFragment;
+import com.univreview.model.Login;
+import com.univreview.model.Register;
 
 /**
  * Created by DavidHa on 2017. 1. 11..
  */
 public class Navigator {
-    public static void goRegisterUserInfo(Context context){
+    public static void goRegisterUserInfo(Context context, Register register){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance());
+        NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register));
         context.startActivity(intent);
     }
 
-    public static void goRegisterUnivInfo(Context context){
+    public static void goRegisterUnivInfo(Context context, Register register){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(RegisterUnivInfoFragment.newInstance());
+        NavigationActivity.setFragment(RegisterUnivInfoFragment.newInstance(register));
         context.startActivity(intent);
     }
 

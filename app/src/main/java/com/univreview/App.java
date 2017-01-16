@@ -7,12 +7,13 @@ import android.content.Context;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.gson.Gson;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.kakao.auth.KakaoSDK;
+import com.squareup.picasso.Picasso;
 import com.univreview.adapter.KakaoSDKAdapter;
 import com.univreview.log.Logger;
 import com.univreview.util.SecurityUtil;
 import com.univreview.util.TimeUtil;
-import com.univreview.util.Util;
 
 import org.bouncycastle.util.encoders.Base64;
 
@@ -31,6 +32,7 @@ public class App extends Application {
     public static int SCREEN_HEIGHT;
     public static Context context;
     public static final Gson gson = new Gson();
+    public static Picasso picasso;
 
     @Override
     public void onCreate() {
@@ -40,6 +42,12 @@ public class App extends Application {
         KakaoSDK.init(new KakaoSDKAdapter());
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        picasso = new Picasso.Builder(context)
+                .downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE))
+                .build();
+
+        Picasso.setSingletonInstance(picasso);
 
         SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;

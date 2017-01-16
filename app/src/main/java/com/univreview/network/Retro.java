@@ -23,6 +23,7 @@ public enum Retro {
     private final String VERSION = "v1/";
     private LoginService loginService;
     private TokenService tokenService;
+    private SearchService searchService;
 
     Retro() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -51,5 +52,9 @@ public enum Retro {
 
     public TokenService tokenService(){
         return tokenService;
+    }
+
+    public SearchService searchService(){
+        return searchService;
     }
 }
