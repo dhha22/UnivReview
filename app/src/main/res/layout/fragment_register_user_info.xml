@@ -1,27 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@color/colorAccent" />
+    <RelativeLayout
+        android:id="@+id/profile_image_layout"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp">
 
-    <EditText
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:src="@color/colorAccent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@color/colorPrimary" />
+    </RelativeLayout>
+
+    <TextView
         android:id="@+id/input_name"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="wrap_content"
+        android:layout_below="@id/profile_image_layout"
         android:layout_gravity="center"
-        android:text="test" />
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="test"
+        android:textSize="18dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/input_name"
+        android:background="@color/colorPrimary" />
+
 
     <Button
         android:id="@+id/next_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="46dp"
+        android:layout_below="@id/input_name"
+        android:layout_marginTop="58dp"
+        android:text="다음"
+        android:textSize="16dp"
+        android:background="@drawable/rounded_rect"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp" />
 
-</LinearLayout>
+</RelativeLayout>

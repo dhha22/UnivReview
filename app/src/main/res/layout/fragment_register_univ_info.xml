@@ -7,21 +7,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="82dp"
+        android:layout_marginTop="80dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/student_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="학생" />
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rounded_rect"
+            android:text="학생"
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/professor_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="교수님" />
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rounded_rect"
+            android:text="교수님"
+            android:textSize="14dp" />
     </LinearLayout>
+
 
     <TextView
         android:id="@+id/university_txt"
@@ -29,7 +38,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="대학교"
-        android:textSize="20dp" />
+        android:textSize="18dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="38dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/department_txt"
@@ -37,14 +55,48 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="학과군"
-        android:textSize="20dp" />
+        android:textSize="18dp" />
 
-    <TextView
-        android:id="@+id/major_txt"
-        android:layout_width="wrap_content"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="38dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:id="@+id/major_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="학과"
-        android:textSize="20dp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/major_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="학과"
+            android:textSize="18dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@drawable/rounded_rect"
+        android:text="확인"
+        android:textSize="18dp" />
 
 </LinearLayout>
