@@ -44,6 +44,7 @@ public enum Retro {
 
         loginService = retrofit.create(LoginService.class);
         tokenService = retrofit.create(TokenService.class);
+        searchService = retrofit.create(SearchService.class);
     }
 
     public LoginService loginService(){

@@ -1,7 +1,9 @@
 package com.univreview.network;
 
 import com.univreview.model.Department;
+import com.univreview.model.DepartmentModel;
 import com.univreview.model.Major;
+import com.univreview.model.MajorModel;
 import com.univreview.model.University;
 
 import java.util.List;
@@ -18,8 +20,8 @@ public interface SearchService {
     Observable<List<University>> getUniversities();
 
     @GET("department")
-    Observable<List<Department>> getDepartments(@Query("university") int university, @Query("name") String departName);
+    Observable<DepartmentModel> getDepartments(@Query("university") int university, @Query("name") String departName);
 
     @GET("major")
-    Observable<List<Major>> getMajors(@Query("department") int departmentId, @Query("name") String majorName);
+    Observable<MajorModel> getMajors(@Query("department") int departmentId, @Query("name") String majorName);
 }

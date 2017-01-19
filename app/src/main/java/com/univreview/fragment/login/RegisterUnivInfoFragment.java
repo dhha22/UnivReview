@@ -1,5 +1,6 @@
 package com.univreview.fragment.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.model.Register;
 import com.univreview.util.ButtonStateManager;
@@ -34,6 +36,7 @@ public class RegisterUnivInfoFragment extends Fragment {
     @BindView(R.id.major_txt) TextView majorTxt;
     private ButtonStateManager buttonStateManager;
     private Register register;
+    private Context context;
 
     public static RegisterUnivInfoFragment newInstance(Register register){
         RegisterUnivInfoFragment fragment = new RegisterUnivInfoFragment();
@@ -54,7 +57,11 @@ public class RegisterUnivInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         ButterKnife.bind(this, view);
+        this.context = getContext();
         buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn)));
+        departmentTxt.setOnClickListener(v -> Navigator.goSearch(context, "department", 0));
+        majorTxt.setOnClickListener(v -> Navigator.goSearch(context, "major", 0));
+
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
         professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));
         return view;

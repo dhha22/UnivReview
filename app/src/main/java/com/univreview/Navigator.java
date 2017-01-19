@@ -7,6 +7,7 @@ import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.upload.UploadFragment;
 import com.univreview.model.Login;
 import com.univreview.model.Register;
@@ -35,6 +36,12 @@ public class Navigator {
 
     public static void goMain(Context context){
         Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void goSearch(Context context, String type, int id){
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
         context.startActivity(intent);
     }
 }

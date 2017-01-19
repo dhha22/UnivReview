@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onSuccess(final LoginResult loginResult) {
             GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
-                Logger.v("facebook response" + response.toString());
+                Logger.v("facebook responseMajor" + response.toString());
                 try {
                     String userId = object.getString("id");   //facebook user id
                     String accessToken = loginResult.getAccessToken().getToken();    //facebookAccessToken

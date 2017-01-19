@@ -34,9 +34,13 @@
 
     <TextView
         android:id="@+id/university_txt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:gravity="center"
+        android:padding="8dp"
         android:text="대학교"
         android:textSize="18dp" />
 
@@ -46,14 +50,17 @@
         android:layout_marginBottom="38dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/department_txt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:gravity="center"
+        android:padding="8dp"
         android:text="학과군"
         android:textSize="18dp" />
 
@@ -63,7 +70,6 @@
         android:layout_marginBottom="38dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary" />
 
     <LinearLayout
@@ -74,9 +80,13 @@
 
         <TextView
             android:id="@+id/major_txt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:gravity="center"
+            android:padding="8dp"
             android:text="학과"
             android:textSize="18dp" />
 
@@ -86,7 +96,6 @@
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="48dp"
             android:layout_marginRight="48dp"
-            android:layout_marginTop="8dp"
             android:background="@color/colorPrimary" />
     </LinearLayout>
 

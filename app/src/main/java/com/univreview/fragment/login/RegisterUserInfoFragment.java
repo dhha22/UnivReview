@@ -61,11 +61,12 @@ public class RegisterUserInfoFragment extends Fragment {
         return view;
     }
 
-    public void setData(Register register){
-        App.picasso.load(register.profileUrl)
-                .fit()
-                .into(profileImage);
-
+    public void setData(Register register) {
+        if (register.profileUrl.length() > 0) {
+            App.picasso.load(register.profileUrl)
+                    .fit()
+                    .into(profileImage);
+        }
         inputName.setText(register.nickName);
 
         nextBtn.setOnClickListener(v -> Navigator.goRegisterUnivInfo(context, register));
