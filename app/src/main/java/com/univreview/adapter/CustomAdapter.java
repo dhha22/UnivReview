@@ -19,9 +19,11 @@ public abstract class CustomAdapter<T> extends RecyclerView.Adapter {
     public void setItem(int position, T item) {
     }
 
-    public void clear(){
-        this.list.clear();
-        notifyDataSetChanged();
+    public void clear() {
+        if (list.size() > 0) {
+            this.list.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

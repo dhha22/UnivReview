@@ -20,8 +20,8 @@ public interface SearchService {
     Observable<List<University>> getUniversities();
 
     @GET("department")
-    Observable<DepartmentModel> getDepartments(@Query("university") int university, @Query("name") String departName);
+    Observable<DepartmentModel> getDepartments(@Query("universityId") int universityId, @Query("name") String departName, @Query("page") int page);
 
     @GET("major")
-    Observable<MajorModel> getMajors(@Query("department") int departmentId, @Query("name") String majorName);
+    Observable<MajorModel> getMajors(@Query("departmentId") int departmentId, @Query("name") String majorName, @Query("page") int page);
 }

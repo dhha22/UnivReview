@@ -39,13 +39,14 @@
         android:gravity="center"
         android:text="test"
         android:textSize="18dp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/input_name"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginTop="8dp"
-        android:layout_below="@id/input_name"
         android:background="@color/colorPrimary" />
 
 
@@ -54,11 +55,11 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_below="@id/input_name"
-        android:layout_marginTop="58dp"
-        android:text="다음"
-        android:textSize="16dp"
-        android:background="@drawable/rounded_rect"
         android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp" />
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="58dp"
+        android:background="@drawable/rounded_rect"
+        android:text="다음"
+        android:textSize="16dp" />
 
 </RelativeLayout>

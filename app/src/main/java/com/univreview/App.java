@@ -33,6 +33,7 @@ public class App extends Application {
     public static Context context;
     public static final Gson gson = new Gson();
     public static Picasso picasso;
+    public static int UNIVERSITY_ID = 1;
 
     @Override
     public void onCreate() {

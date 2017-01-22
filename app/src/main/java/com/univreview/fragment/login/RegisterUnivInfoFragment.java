@@ -59,8 +59,8 @@ public class RegisterUnivInfoFragment extends Fragment {
         ButterKnife.bind(this, view);
         this.context = getContext();
         buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn)));
-        departmentTxt.setOnClickListener(v -> Navigator.goSearch(context, "department", 0));
-        majorTxt.setOnClickListener(v -> Navigator.goSearch(context, "major", 0));
+        departmentTxt.setOnClickListener(v -> Navigator.goSearch(context, "department", 1));
+        majorTxt.setOnClickListener(v -> Navigator.goSearch(context, "major", 1));
 
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
         professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));

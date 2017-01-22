@@ -3,14 +3,12 @@ package com.univreview.activity;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 
 import com.roughike.bottombar.BottomBar;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.HomeFragment;
 import com.univreview.fragment.MypageFragment;
-import com.univreview.fragment.upload.UploadFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

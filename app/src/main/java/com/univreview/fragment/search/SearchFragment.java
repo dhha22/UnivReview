@@ -14,7 +14,9 @@ import android.widget.EditText;
 
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
+import com.univreview.fragment.AbsListFragment;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Department;
 import com.univreview.model.DepartmentModel;
@@ -23,6 +25,7 @@ import com.univreview.model.MajorModel;
 import com.univreview.network.Retro;
 import com.univreview.util.RevealAnimationSetting;
 import com.univreview.view.SearchListItemView;
+import com.univreview.view.UnivReviewRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +36,10 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2017. 1. 16..
  */
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends AbsListFragment {
     @BindView(R.id.input) EditText input;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view)
+    UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
     private Context context;
@@ -76,8 +80,16 @@ public class SearchFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onScrolled(RecyclerView view, int dx, int dy) {
+                super.onScrolled(view, dx, dy);
+                if (getLastVisibleItemPosition() == getTotalItemCount() - 1) {
+                    lastItemExposed();
+                }
+            }
+        });
         input.addTextChangedListener(textWatcher);
-        callSearchApi(id, type, null);
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -93,18 +105,20 @@ public class SearchFragment extends BaseFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            callSearchApi(id, type, s.toString());
+            Logger.v("search str: " + s.toString());
+            page = DEFAULT_PAGE;
+            callSearchApi(id, type, s.toString(), page);
         }
     };
 
 
-    private void callSearchApi(int id, String type, String name) {
+    private void callSearchApi(int id, String type, String name, int page) {
         switch (type) {
             case "department":
-                callGetDepartmentApi(id, name);
+                callGetDepartmentApi(id, name, page);
                 break;
             case "major":
-                callGetMajorApi(id, name);
+                callGetMajorApi(id, name, page);
                 break;
             default:
         }
@@ -132,7 +146,24 @@ public class SearchFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public UnivReviewRecyclerView getRecyclerView() {
+        return recyclerView;
+    }
 
+    @Override
+    public void refresh() {
+        setStatus(Status.REFRESHING);
+        callSearchApi(id, type, input.getText().toString(), DEFAULT_PAGE);
+    }
+
+    @Override
+    public void loadMore() {
+        Logger.v("load more");
+        Logger.v("page: " + page);
+        setStatus(Status.LOADING_MORE);
+        callSearchApi(id, type, input.getText().toString(), page);
+    }
 
     private class SearchAdapter<T> extends CustomAdapter<T>{
         private Context context;
@@ -165,7 +196,6 @@ public class SearchFragment extends BaseFragment {
             return list.get(position);
         }
 
-
         @Override
         public void addItem(T item) {
             list.add(item);
@@ -181,38 +211,39 @@ public class SearchFragment extends BaseFragment {
         }
     }
 
-    private void callGetDepartmentApi(int id, String name){
-        Retro.instance.searchService().getDepartments(id, name)
+    private void callGetDepartmentApi(int id, String name, int page) {
+        if (page == DEFAULT_PAGE) adapter.clear();
+        Retro.instance.searchService().getDepartments(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> adapter.clear())
                 .subscribe(result -> responseDepartment(result), error -> Logger.e(error));
     }
 
-    private void callGetMajorApi(int id, String name){
-        Retro.instance.searchService().getMajors(id, name)
+    private void callGetMajorApi(int id, String name, int page) {
+        if (page == DEFAULT_PAGE) adapter.clear();
+        Retro.instance.searchService().getMajors(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> adapter.clear())
-                .subscribe(result-> responseMajor(result), error -> Logger.e(error));
+                .subscribe(result -> responseMajor(result), error -> Logger.e(error));
     }
 
-    public void responseDepartment(DepartmentModel result){
+    public void responseDepartment(DepartmentModel result) {
+        setResult(page);
+        setStatus(Status.IDLE);
         Observable.from(result.departments)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
     }
 
-    public void responseMajor(MajorModel result){
+    public void responseMajor(MajorModel result) {
+        setResult(page);
+        setStatus(Status.IDLE);
         Observable.from(result.majors)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
     }
-
-
-
 
 
 }

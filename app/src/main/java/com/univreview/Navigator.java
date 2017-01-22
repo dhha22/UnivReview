@@ -8,8 +8,7 @@ import com.univreview.activity.NavigationActivity;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.search.SearchFragment;
-import com.univreview.fragment.upload.UploadFragment;
-import com.univreview.model.Login;
+import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.Register;
 
 /**
@@ -30,7 +29,7 @@ public class Navigator {
 
     public static void goReview(Context context){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(UploadFragment.newInstance());
+        NavigationActivity.setFragment(UploadReviewFragment.newInstance());
         context.startActivity(intent);
     }
 

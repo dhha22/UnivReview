@@ -5,12 +5,14 @@
     android:orientation="vertical"
     android:padding="14dp">
 
-    <EditText
+    <TextView
+        android:id="@+id/subject_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="과목명" />
 
-    <EditText
+    <TextView
+        android:id="@+id/professor_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="교수님" />
@@ -18,7 +20,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
