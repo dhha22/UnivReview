@@ -13,7 +13,7 @@ import com.univreview.fragment.MypageFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.bottom_bar) BottomBar bottomBar;
 
     @Override

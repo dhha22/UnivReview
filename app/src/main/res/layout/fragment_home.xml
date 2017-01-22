@@ -4,11 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="최신 교양 리뷰" />
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/latest_culture_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="최신 학과 리뷰" />
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/latest_major_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

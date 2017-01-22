@@ -1,5 +1,6 @@
 package com.univreview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -15,6 +16,8 @@ import com.univreview.model.Register;
  * Created by DavidHa on 2017. 1. 11..
  */
 public class Navigator {
+    public static final int SEARCH = 636;
+
     public static void goRegisterUserInfo(Context context, Register register){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register));
@@ -42,5 +45,11 @@ public class Navigator {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
         context.startActivity(intent);
+    }
+
+    public static void goSearch(Activity activity, String type, int id, String name){
+        Intent intent = new Intent(activity, NavigationActivity.class);
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
+        activity.startActivityForResult(intent, SEARCH);
     }
 }

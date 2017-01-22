@@ -1,6 +1,7 @@
 package com.univreview.fragment.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
+import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Department;
 import com.univreview.model.DepartmentModel;
@@ -38,14 +40,22 @@ import rx.schedulers.Schedulers;
  */
 public class SearchFragment extends AbsListFragment {
     @BindView(R.id.input) EditText input;
-    @BindView(R.id.recycler_view)
-    UnivReviewRecyclerView recyclerView;
+    @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
     private Context context;
     private int id;
 
     public static SearchFragment newInstance(String type, int id){
+        SearchFragment fragment = new SearchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", type);
+        bundle.putInt("id", id);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static SearchFragment newInstance(String type, int id, String name){
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -90,6 +100,12 @@ public class SearchFragment extends AbsListFragment {
             }
         });
         input.addTextChangedListener(textWatcher);
+        adapter.setOnItemClickListener((view, position) -> {
+            Intent intent = new Intent();
+            intent.putExtra("test", "tt");
+            getActivity().setResult(getActivity().RESULT_OK, intent);
+            getActivity().onBackPressed();
+        });
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -120,6 +136,10 @@ public class SearchFragment extends AbsListFragment {
             case "major":
                 callGetMajorApi(id, name, page);
                 break;
+            case "subject":
+                break;
+            case "professor":
+                break;
             default:
         }
     }
@@ -130,6 +150,10 @@ public class SearchFragment extends AbsListFragment {
                 return "학과군을 입력해주세요";
             case "major":
                 return "학과를 입력해주세요";
+            case "subject":
+                return "";
+            case "professor":
+                return "";
             default:
                 return "";
         }
@@ -141,6 +165,10 @@ public class SearchFragment extends AbsListFragment {
                 return new SearchAdapter<Department>(context);
             case "major":
                 return new SearchAdapter<Major>(context);
+            case "subject":
+                return null;
+            case "professor":
+                return null;
             default:
                 return null;
         }
@@ -167,6 +195,7 @@ public class SearchFragment extends AbsListFragment {
 
     private class SearchAdapter<T> extends CustomAdapter<T>{
         private Context context;
+
 
         public SearchAdapter(Context context) {
             this.context = context;
@@ -202,11 +231,13 @@ public class SearchFragment extends AbsListFragment {
             notifyDataSetChanged();
         }
 
+
         protected class ViewHolder extends RecyclerView.ViewHolder{
             final SearchListItemView v;
             public ViewHolder(View itemView) {
                 super(itemView);
                 v = (SearchListItemView)itemView;
+                v.setOnClickListener(view -> itemClickListener.onItemClick(v, getAdapterPosition()));
             }
         }
     }

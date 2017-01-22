@@ -12,6 +12,7 @@ import java.util.List;
  */
 public abstract class CustomAdapter<T> extends RecyclerView.Adapter {
     protected List<T> list = new ArrayList<>();
+    protected OnItemClickListener itemClickListener;
     public abstract T getItem(int position);
 
     public abstract void addItem(T item);
@@ -27,6 +28,7 @@ public abstract class CustomAdapter<T> extends RecyclerView.Adapter {
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
+        this.itemClickListener = listener;
     }
 
 }

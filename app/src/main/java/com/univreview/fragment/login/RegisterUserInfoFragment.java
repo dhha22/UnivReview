@@ -8,18 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.model.Login;
+import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
-import com.univreview.util.ButtonStateManager;
-import com.univreview.util.SimpleButtonState;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
