@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.univreview.R;
+import com.univreview.adapter.CustomAdapter;
+import com.univreview.adapter.LatestReviewAdapter;
+import com.univreview.model.Review;
+import com.univreview.view.LatestReviewItemView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +24,8 @@ import butterknife.ButterKnife;
 public class HomeFragment extends BaseFragment {
     @BindView(R.id.latest_culture_recycler_view) RecyclerView latestCultureRecyclerView;
     @BindView(R.id.latest_major_recycler_view) RecyclerView latestMajorRecyclerView;
+    private LatestReviewAdapter cultureAdapter;
+    private LatestReviewAdapter majorAdapter;
     private Context context;
 
     public static HomeFragment newInstance(){
@@ -41,9 +47,15 @@ public class HomeFragment extends BaseFragment {
         cultureLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         LinearLayoutManager majorLayoutManager = new LinearLayoutManager(context);
         majorLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        cultureAdapter = new LatestReviewAdapter(context);
+        majorAdapter = new LatestReviewAdapter(context);
         latestCultureRecyclerView.setLayoutManager(cultureLayoutManager);
         latestMajorRecyclerView.setLayoutManager(majorLayoutManager);
+        latestCultureRecyclerView.setAdapter(cultureAdapter);
+        latestMajorRecyclerView.setAdapter(majorAdapter);
     }
+
+
 
 
 
