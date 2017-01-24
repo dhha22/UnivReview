@@ -5,13 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.Review;
 import com.univreview.view.LatestReviewItemView;
 
 /**
  * Created by DavidHa on 2017. 1. 23..
  */
-public class LatestReviewAdapter extends CustomAdapter<Review>{
+public class LatestReviewAdapter extends CustomAdapter{
     private Context context;
 
     public LatestReviewAdapter(Context context) {
@@ -30,11 +31,11 @@ public class LatestReviewAdapter extends CustomAdapter<Review>{
 
     @Override
     public Review getItem(int position) {
-        return list.get(position);
+        return (Review)list.get(position);
     }
 
     @Override
-    public void addItem(Review item) {
+    public void addItem(AbstractDataProvider item) {
         list.add(item);
         notifyDataSetChanged();
     }

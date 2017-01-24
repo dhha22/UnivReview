@@ -1,7 +1,9 @@
 package com.univreview.network;
 
+import com.univreview.model.Register;
 import com.univreview.model.ResponseModel;
 
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -10,5 +12,5 @@ import rx.Observable;
  */
 public interface UserService {
     @POST("user")
-    Observable<ResponseModel> register();
+    Observable<ResponseModel> register(@Body Register body);
 }

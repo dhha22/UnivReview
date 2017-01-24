@@ -15,6 +15,7 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +46,7 @@ public class RegisterUserInfoFragment extends Fragment {
         register = (Register) getArguments().getSerializable("register");
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,7 +66,20 @@ public class RegisterUserInfoFragment extends Fragment {
         }
         inputName.setText(register.nickName);
 
-        nextBtn.setOnClickListener(v -> Navigator.goRegisterUnivInfo(context, register));
+        nextBtn.setOnClickListener(v -> {
+            if (formVerification()) {
+                Navigator.goRegisterUnivInfo(context, register);
+            }
+        });
+    }
+
+    private boolean formVerification() {
+        if (inputName.getText().length() == 0) {
+            Util.simpleMessageDialog(context, "이름을 입력해주시길 바랍니다.");
+        } else {
+            return true;
+        }
+        return false;
     }
 
 

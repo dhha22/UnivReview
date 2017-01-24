@@ -22,4 +22,5 @@ public class Register implements Serializable {
         this.nickName = nickName;
         this.profileUrl = profileUrl;
     }
+
 }

@@ -20,6 +20,7 @@ import com.univreview.fragment.BaseFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
+import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.Department;
 import com.univreview.model.DepartmentModel;
 import com.univreview.model.Major;
@@ -85,7 +86,7 @@ public class SearchFragment extends AbsListFragment {
         input.setHint(getHintStr(type));
 
         //recycler view
-        adapter = constructAdapter(type);
+        adapter = new SearchAdapter(context);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
@@ -102,7 +103,9 @@ public class SearchFragment extends AbsListFragment {
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent();
-            intent.putExtra("test", "tt");
+            intent.putExtra("id", adapter.getItem(position).getId());
+            intent.putExtra("name", adapter.getItem(position).getName());
+            intent.putExtra("type", type);
             getActivity().setResult(getActivity().RESULT_OK, intent);
             getActivity().onBackPressed();
         });
@@ -159,20 +162,6 @@ public class SearchFragment extends AbsListFragment {
         }
     }
 
-    private SearchAdapter constructAdapter(String type){
-        switch (type){
-            case "department":
-                return new SearchAdapter<Department>(context);
-            case "major":
-                return new SearchAdapter<Major>(context);
-            case "subject":
-                return null;
-            case "professor":
-                return null;
-            default:
-                return null;
-        }
-    }
 
     @Override
     public UnivReviewRecyclerView getRecyclerView() {
@@ -193,7 +182,7 @@ public class SearchFragment extends AbsListFragment {
         callSearchApi(id, type, input.getText().toString(), page);
     }
 
-    private class SearchAdapter<T> extends CustomAdapter<T>{
+    private class SearchAdapter extends CustomAdapter{
         private Context context;
 
 
@@ -208,11 +197,7 @@ public class SearchFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if(list.get(position) instanceof Department) {
-                ((ViewHolder) holder).v.setData(((Department) (list.get(position))).name);
-            }else if(list.get(position) instanceof Major){
-                ((ViewHolder) holder).v.setData(((Major) (list.get(position))).name);
-            }
+            ((ViewHolder) holder).v.setData(list.get(position).getName());
         }
 
         @Override
@@ -221,12 +206,12 @@ public class SearchFragment extends AbsListFragment {
         }
 
         @Override
-        public T getItem(int position) {
+        public AbstractDataProvider getItem(int position) {
             return list.get(position);
         }
 
         @Override
-        public void addItem(T item) {
+        public void addItem(AbstractDataProvider item) {
             list.add(item);
             notifyDataSetChanged();
         }

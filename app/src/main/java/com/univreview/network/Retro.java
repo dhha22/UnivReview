@@ -21,6 +21,7 @@ public enum Retro {
     instance;
     private final String BASE_URL = "http://52.78.219.48/api/";
     private final String VERSION = "v1/";
+    private UserService userService;
     private LoginService loginService;
     private TokenService tokenService;
     private SearchService searchService;
@@ -42,9 +43,14 @@ public enum Retro {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
+        userService = retrofit.create(UserService.class);
         loginService = retrofit.create(LoginService.class);
         tokenService = retrofit.create(TokenService.class);
         searchService = retrofit.create(SearchService.class);
+    }
+
+    public UserService userService(){
+        return userService;
     }
 
     public LoginService loginService(){
