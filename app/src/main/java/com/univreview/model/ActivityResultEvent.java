@@ -11,12 +11,12 @@ public class ActivityResultEvent {
 
     private int requestCode;
     private int resultCode;
-    private Intent data;
+    private Intent intent;
 
     public ActivityResultEvent(int requestCode, int resultCode, Intent data) {
         this.requestCode = requestCode;
         this.resultCode = resultCode;
-        this.data = data;
+        this.intent = data;
         Logger.v("ActivityResultEvent");
     }
 
@@ -36,12 +36,12 @@ public class ActivityResultEvent {
         this.resultCode = resultCode;
     }
 
-    public Intent getData() {
-        return data;
+    public Intent getIntent() {
+        return intent;
     }
 
-    public void setData(Intent data) {
-        this.data = data;
+    public void setIntent(Intent data) {
+        this.intent = data;
     }
 }
 

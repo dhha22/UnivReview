@@ -44,7 +44,6 @@ public class SearchFragment extends AbsListFragment {
     @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
-    private Context context;
     private int id;
 
     public static SearchFragment newInstance(String type, int id){
@@ -76,7 +75,6 @@ public class SearchFragment extends AbsListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        this.context = getContext();
         ButterKnife.bind(this, view);
         init();
         return view;

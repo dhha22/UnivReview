@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
+import com.univreview.fragment.BaseFragment;
 import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
 import com.univreview.util.Util;
@@ -24,12 +25,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by DavidHa on 2017. 1. 11..
  */
-public class RegisterUserInfoFragment extends Fragment {
+public class RegisterUserInfoFragment extends BaseFragment {
     @BindView(R.id.profile_image) CircleImageView profileImage;
     @BindView(R.id.input_name) TextView inputName;
     @BindView(R.id.next_btn) Button nextBtn;
     private Register register;
-    private Context context;
 
 
     public static RegisterUserInfoFragment newInstance(Register register){
@@ -47,16 +47,19 @@ public class RegisterUserInfoFragment extends Fragment {
     }
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_user_info, container, false);
-        this.context = getContext();
         ButterKnife.bind(this, view);
-
+        toolbar.setBackBtnVisibility(true);
         setData(register);
-        return view;
+        rootLayout.addView(view);
+        return rootLayout;
     }
+
 
     public void setData(Register register) {
         if (register.profileUrl.length() > 0) {

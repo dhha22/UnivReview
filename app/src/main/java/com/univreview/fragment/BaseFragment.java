@@ -1,5 +1,6 @@
 package com.univreview.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,14 +8,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.univreview.log.Logger;
 import com.univreview.model.BusProvider;
+import com.univreview.view.Toolbar;
 
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
 public class BaseFragment extends Fragment {
+    protected LinearLayout rootLayout;
+    protected Toolbar toolbar;
+    protected Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,7 +33,12 @@ public class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Logger.v("on create view: " + this.getClass().getName());
-        return super.onCreateView(inflater, container, savedInstanceState);
+        this.context = getContext();
+        rootLayout = new LinearLayout(context);
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        toolbar = new Toolbar(context);
+        rootLayout.addView(toolbar);
+        return rootLayout;
     }
 
     @Override

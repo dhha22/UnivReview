@@ -26,7 +26,6 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.latest_major_recycler_view) RecyclerView latestMajorRecyclerView;
     private LatestReviewAdapter cultureAdapter;
     private LatestReviewAdapter majorAdapter;
-    private Context context;
 
     public static HomeFragment newInstance(){
         HomeFragment fragment = new HomeFragment();
@@ -37,7 +36,6 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        this.context = getContext();
         init();
         return view;
     }

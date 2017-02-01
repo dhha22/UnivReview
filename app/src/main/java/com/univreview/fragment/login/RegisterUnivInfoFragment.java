@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,7 @@ import com.squareup.otto.Subscribe;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
-import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
-import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
@@ -47,7 +44,6 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     @BindView(R.id.next_btn) Button nextBtn;
     private ButtonStateManager buttonStateManager;
     private Register register;
-    private Context context;
 
     public static RegisterUnivInfoFragment newInstance(Register register){
         RegisterUnivInfoFragment fragment = new RegisterUnivInfoFragment();
@@ -66,14 +62,16 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         ButterKnife.bind(this, view);
-        this.context = getContext();
+        toolbar.setBackBtnVisibility(true);
         buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn)));
 
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
         professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));
-        return view;
+        rootLayout.addView(view);
+        return rootLayout;
     }
 
     private void buttonClicked(int state) {
@@ -132,7 +130,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
             if (activityResultEvent.getRequestCode() == Navigator.SEARCH) {
-                Intent data = activityResultEvent.getData();
+                Intent data = activityResultEvent.getIntent();
                 int id = data.getIntExtra("id", 0);
                 String name = data.getStringExtra("name");
                 String type = data.getStringExtra("type");

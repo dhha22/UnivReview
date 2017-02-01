@@ -29,14 +29,17 @@ public class UploadReviewFragment extends BaseFragment {
         UploadReviewFragment fragment = new UploadReviewFragment();
         return fragment;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_upload_review, container, false);
         ButterKnife.bind(this, view);
         this.context = getContext();
 
-        subjectTxt.setOnClickListener(v-> Navigator.goSearch(context, "subject", App.UNIVERSITY_ID));
-        return view;
+        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", App.UNIVERSITY_ID));
+        rootLayout.addView(view);
+        return rootLayout;
     }
 }

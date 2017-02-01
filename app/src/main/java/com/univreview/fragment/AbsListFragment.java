@@ -1,11 +1,14 @@
 package com.univreview.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.univreview.log.Logger;
@@ -23,6 +26,7 @@ public abstract class AbsListFragment extends Fragment implements SwipeRefreshLa
     private static final Map<Class, Boolean> needRefresh = new HashMap<>();
     protected ProgressBar loadMoreProgress;
     public int page = DEFAULT_PAGE;
+    protected Context context;
 
     public static void setNeedRefresh(Class clazz, boolean refresh) {
         needRefresh.put(clazz, refresh);
@@ -108,6 +112,13 @@ public abstract class AbsListFragment extends Fragment implements SwipeRefreshLa
                 refresh();
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.context = getContext();
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
