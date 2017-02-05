@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Register;
 import com.univreview.network.Retro;
@@ -66,12 +67,19 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         ButterKnife.bind(this, view);
         toolbar.setBackBtnVisibility(true);
-        buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn)));
-
-        studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
-        professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));
+        init();
         rootLayout.addView(view);
         return rootLayout;
+    }
+
+    private void init(){
+        buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn),
+                new SimpleButtonState(professorBtn)));
+        //test
+        register.universityId = 1;
+        buttonClicked(STUDENT);
+        studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
+        professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));
     }
 
     private void buttonClicked(int state) {
@@ -108,6 +116,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     private boolean formVerification(int state) {
+        Logger.v("form verification: " + state);
         if (universityTxt.getText().length() == 0) {
             Util.simpleMessageDialog(context, "대학을 선택해주세요.");
         } else if (departmentTxt.getText().length() == 0) {
@@ -136,7 +145,9 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                 String type = data.getStringExtra("type");
                 if ("department".equals(type)) {
                     departmentTxt.setText(name);
+                    majorTxt.setText("");
                     register.departmentId = id;
+                    register.majorId = null;
                 } else if ("major".equals(type)) {
                     majorTxt.setText(name);
                     register.majorId = id;

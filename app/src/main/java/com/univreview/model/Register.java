@@ -11,9 +11,9 @@ public class Register implements Serializable {
     public String accessToken;
     public String nickName;
     public String profileUrl;
-    public int universityId;
-    public int departmentId;
-    public int majorId;
+    public Integer universityId;
+    public Integer departmentId;
+    public Integer majorId;
 
     public Register(String userType, String userId, String accessToken, String nickName, String profileUrl) {
         this.userType = userType;

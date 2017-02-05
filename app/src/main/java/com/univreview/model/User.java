@@ -15,6 +15,10 @@ public class User {
     @Expose
     public String studentId;
     @Expose
+    public String studentImageUrl;
+    @Expose
     public int point;
+    @Expose
+    public boolean authenticated;
 
 }

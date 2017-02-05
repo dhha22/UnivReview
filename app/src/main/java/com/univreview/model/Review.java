@@ -9,15 +9,33 @@ public class Review extends AbstractDataProvider{
     @Expose
     public int id;
     @Expose
-    public int difficultyRate;
+    public float difficultyRate;
     @Expose
-    public int assignmentRate;
+    public float assignmentRate;
     @Expose
-    public int attendanceRate;
+    public float attendanceRate;
     @Expose
-    public int gradeRate;
+    public float gradeRate;
     @Expose
-    public int achievementRate;
+    public float achievementRate;
+    @Expose
+    public String createdDate;
+    @Expose
+    public String updateDate;
+    @Expose
+    public String reviewDetail;
+    @Expose
+    public int subjectId;
+    @Expose
+    public int userId;
+    @Expose
+    public int professorId;
+
+    @Expose
+    public User user = new User();
+
+    @Expose
+    public Professor professor = new Professor();
 
     @Override
     public int getId() {

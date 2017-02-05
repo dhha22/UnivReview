@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.model.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
  */
 public class ReviewItemView extends FrameLayout {
     @BindView(R.id.name_txt) TextView nameTxt;
+    @BindView(R.id.auth_mark) TextView authMarkTxt;
     @BindView(R.id.time_txt) TextView timeTxt;
     @BindView(R.id.review_txt) TextView reviewTxt;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
@@ -38,7 +40,24 @@ public class ReviewItemView extends FrameLayout {
         ButterKnife.bind(this);
     }
 
-    public void setData(){
+    public void setData(Review review) {
+        if (review != null) {
+            if (review.user != null) {
+                nameTxt.setText(review.user.name);
+                if (review.user.authenticated) {
+                    authMarkTxt.setVisibility(VISIBLE);
+                } else {
+                    authMarkTxt.setVisibility(INVISIBLE);
+                }
+            }
+            timeTxt.setText(review.createdDate);
+            reviewTxt.setText(review.reviewDetail);
+            difficultyTxt.setText(String.valueOf(review.difficultyRate));
+            assignmentTxt.setText(String.valueOf(review.assignmentRate));
+            attendanceTxt.setText(String.valueOf(review.attendanceRate));
+            gradeTxt.setText(String.valueOf(review.gradeRate));
+            achievementTxt.setText(String.valueOf(review.achievementRate));
 
+        }
     }
 }

@@ -19,6 +19,7 @@
             android:layout_gravity="center"
             android:src="@color/colorAccent" />
 
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
