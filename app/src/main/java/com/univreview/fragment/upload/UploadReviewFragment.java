@@ -79,11 +79,15 @@ public class UploadReviewFragment extends BaseFragment {
         Retro.instance.reviewService().postSimpleReview(review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.reviews), error -> Logger.v(error));
+                .subscribe(result -> response(result.getReview()), error -> Logger.v(error));
     }
 
-    private void response(List<Review> review){
-
+    private void response(Review review){
+        //dialog
+        //user 가 ok 눌렀을 경우
+        Navigator.goUploadReviewDetail(context, review);
+        //cancel 일 경우
+        //finish();
     }
 
 

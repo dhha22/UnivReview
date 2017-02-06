@@ -1,7 +1,6 @@
 package com.univreview.activity;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.roughike.bottombar.BottomBar;
@@ -32,7 +31,7 @@ public class MainActivity extends BaseActivity {
                     replaceFragment(HomeFragment.newInstance());
                     break;
                 case R.id.tab_upload:
-                    Navigator.goReview(this);
+                    Navigator.goUploadReview(this);
                     break;
                 case R.id.tab_mypage:
                     replaceFragment(MypageFragment.newInstance());
@@ -43,7 +42,7 @@ public class MainActivity extends BaseActivity {
         bottomBar.setOnTabReselectListener(tabId -> {
             switch (tabId) {
                 case R.id.tab_upload:
-                    Navigator.goReview(this);
+                    Navigator.goUploadReview(this);
                     break;
             }
         });

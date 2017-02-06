@@ -2,12 +2,14 @@ package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
-public class User {
+public class User implements Serializable{
     @Expose
-    public int id;
+    public long id;
     @Expose
     public String email;
     @Expose

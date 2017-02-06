@@ -2,12 +2,14 @@ package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
-public class Review extends AbstractDataProvider{
+public class Review extends AbstractDataProvider implements Serializable{
     @Expose
-    public int id;
+    public long id;
     @Expose
     public float difficultyRate;
     @Expose
@@ -38,7 +40,7 @@ public class Review extends AbstractDataProvider{
     public Professor professor = new Professor();
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 

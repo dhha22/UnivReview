@@ -12,8 +12,10 @@ import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.search.SearchFragment;
+import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.Register;
+import com.univreview.model.Review;
 import com.univreview.util.ImageUtil;
 
 /**
@@ -55,9 +57,15 @@ public class Navigator {
         ((Activity) context).startActivityForResult(intent, ALBUM);
     }
 
-    public static void goReview(Context context){
+    public static void goUploadReview(Context context){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(UploadReviewFragment.newInstance());
+        context.startActivity(intent);
+    }
+
+    public static void goUploadReviewDetail(Context context, Review review) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(UploadReviewDetailFragment.newInstance(review));
         context.startActivity(intent);
     }
 

@@ -13,6 +13,13 @@ public class ReviewModel implements Serializable {
     @SerializedName("review")
     public List<Review> reviews = new ArrayList<>();
 
+    public Review getReview() {
+        if (reviews.size() > 0) {
+            return reviews.get(0);
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "ReviewModel{" +
