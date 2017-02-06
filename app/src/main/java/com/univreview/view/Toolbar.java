@@ -38,6 +38,7 @@ public class Toolbar extends FrameLayout {
         this.context = context;
     }
 
+
     public void setBackBtnVisibility(boolean isVisible) {
         if (isVisible) {
             backBtn.setVisibility(VISIBLE);

@@ -25,6 +25,7 @@ public enum Retro {
     private LoginService loginService;
     private TokenService tokenService;
     private SearchService searchService;
+    private ReviewService reviewService;
 
     Retro() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -47,6 +48,7 @@ public enum Retro {
         loginService = retrofit.create(LoginService.class);
         tokenService = retrofit.create(TokenService.class);
         searchService = retrofit.create(SearchService.class);
+        reviewService = retrofit.create(ReviewService.class);
     }
 
     public UserService userService(){
@@ -63,5 +65,9 @@ public enum Retro {
 
     public SearchService searchService(){
         return searchService;
+    }
+
+    public ReviewService reviewService(){
+        return reviewService;
     }
 }

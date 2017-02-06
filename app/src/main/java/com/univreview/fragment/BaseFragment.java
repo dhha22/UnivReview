@@ -1,5 +1,6 @@
 package com.univreview.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class BaseFragment extends Fragment {
     protected LinearLayout rootLayout;
     protected Toolbar toolbar;
     protected Context context;
+    protected Activity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Logger.v("on create view: " + this.getClass().getName());
         this.context = getContext();
+        this.activity = getActivity();
         rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         toolbar = new Toolbar(context);

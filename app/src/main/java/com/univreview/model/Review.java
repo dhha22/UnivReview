@@ -46,4 +46,12 @@ public class Review extends AbstractDataProvider{
     public String getName() {
         return null;
     }
+
+    public boolean checkReviewRating() {
+        if (difficultyRate != 0 && assignmentRate != 0
+                && attendanceRate != 0 && gradeRate != 0 && achievementRate != 0) {
+            return true;
+        }
+        return false;
+    }
 }

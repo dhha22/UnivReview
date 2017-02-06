@@ -4,6 +4,8 @@ import com.univreview.model.Department;
 import com.univreview.model.DepartmentModel;
 import com.univreview.model.Major;
 import com.univreview.model.MajorModel;
+import com.univreview.model.ProfessorModel;
+import com.univreview.model.SubjectModel;
 import com.univreview.model.University;
 
 import java.util.List;
@@ -24,4 +26,10 @@ public interface SearchService {
 
     @GET("major")
     Observable<MajorModel> getMajors(@Query("departmentId") int departmentId, @Query("name") String majorName, @Query("page") int page);
+
+    @GET("subject")
+    Observable<SubjectModel> getSubjects(@Query("majorId") int majorId, @Query("name") String subjectName, @Query("page") int page);
+
+    @GET("professor")
+    Observable<ProfessorModel> getProfessors(@Query("departmentId") int departmentId, @Query("name") String professorName, @Query("page") int page);
 }
