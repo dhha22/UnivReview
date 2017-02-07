@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -18,8 +17,10 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 2. 1..
  */
 public class Toolbar extends FrameLayout {
+    @BindView(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
     @BindView(R.id.back_btn) Button backBtn;
     @BindView(R.id.title_txt) TextView titleTxt;
+    @BindView(R.id.ok_btn) TextView okBtn;
     @BindView(R.id.cancel_btn) Button cancelBtn;
     private Context context;
 
@@ -38,6 +39,17 @@ public class Toolbar extends FrameLayout {
         this.context = context;
     }
 
+    public void setToolbarBackgroundColor(int colorId){
+        toolbar.setBackgroundColor(getResources().getColor(colorId));
+    }
+
+    public void setOnConfirmListener(OnClickListener clickListener){
+        if(clickListener != null){
+            okBtn.setVisibility(VISIBLE);
+        }else{
+            okBtn.setVisibility(GONE);
+        }
+    }
 
     public void setBackBtnVisibility(boolean isVisible) {
         if (isVisible) {

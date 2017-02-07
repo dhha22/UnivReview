@@ -17,8 +17,6 @@ import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
@@ -69,13 +67,13 @@ public class UploadReviewFragment extends BaseFragment {
         review.gradeRate = gradeRate.getRating();
         review.achievementRate = achievementRate.getRating();
         if(review.checkReviewRating()){
-            callRegisterReviewApi(review);
+            callPostSimpleReviewApi(review);
         }else{
             //error msg
         }
     }
 
-    private void callRegisterReviewApi(Review review){
+    private void callPostSimpleReviewApi(Review review){
         Retro.instance.reviewService().postSimpleReview(review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

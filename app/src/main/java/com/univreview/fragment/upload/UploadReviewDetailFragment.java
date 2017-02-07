@@ -2,31 +2,29 @@ package com.univreview.fragment.upload;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.model.Review;
+import com.univreview.model.ReviewDetail;
+import com.univreview.network.Retro;
+import com.univreview.view.ReviewItemView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
 public class UploadReviewDetailFragment extends BaseFragment {
-    @BindView(R.id.name_txt) TextView nameTxt;
-    @BindView(R.id.auth_mark) TextView authMarkTxt;
-    @BindView(R.id.time_txt) TextView timeTxt;
-    @BindView(R.id.difficulty_txt) TextView difficultyTxt;
-    @BindView(R.id.assignment_txt) TextView assignmentTxt;
-    @BindView(R.id.attendance_txt) TextView attendanceTxt;
-    @BindView(R.id.grade_txt) TextView gradeTxt;
-    @BindView(R.id.achievement_txt) TextView achievementTxt;
+    @BindView(R.id.review_item) ReviewItemView reviewItemView;
+    @BindView(R.id.input_review) EditText inputReview;
     private Review review;
 
     public static UploadReviewDetailFragment newInstance(Review review){
@@ -36,14 +34,55 @@ public class UploadReviewDetailFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        review = (Review) getArguments().getSerializable("review");
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_upload_review_detail, container, false);
         ButterKnife.bind(this, view);
-
+        setReviewData(review);
+        toolbar.setToolbarBackgroundColor(R.color.colorPrimary);
+        toolbar.setOnConfirmListener(v -> registerReview(review.id));
         rootLayout.addView(view);
         return rootLayout;
     }
+
+    private void setReviewData(Review review){
+        reviewItemView.setData(review);
+    }
+
+    private void registerReview(long reviewId){
+        ReviewDetail reviewDetail = new ReviewDetail();
+        reviewDetail.reviewId = reviewId;
+        reviewDetail.reviewDetail = inputReview.getText().toString();
+        if(reviewDetail.checkReviewDetail()){
+            callPostReviewDetail(reviewDetail);
+        }else{
+            //error msg
+        }
+    }
+
+    private void callPostReviewDetail(ReviewDetail reviewDetail){
+        Retro.instance.reviewService().postDetailReview(reviewDetail)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> response(),error -> errorResponse());
+    }
+
+    private void response(){
+
+    }
+
+    private void errorResponse(){
+
+    }
+
+
 }
