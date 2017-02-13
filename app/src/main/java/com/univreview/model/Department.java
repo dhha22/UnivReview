@@ -12,7 +12,7 @@ public class Department extends AbstractDataProvider{
     public String name;
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 

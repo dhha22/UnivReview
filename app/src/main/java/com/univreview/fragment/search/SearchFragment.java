@@ -44,13 +44,13 @@ public class SearchFragment extends AbsListFragment {
     @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
-    private int id;
+    private long id;
 
-    public static SearchFragment newInstance(String type, int id){
+    public static SearchFragment newInstance(String type, long id){
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
-        bundle.putInt("id", id);
+        bundle.putLong("id", id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -59,7 +59,7 @@ public class SearchFragment extends AbsListFragment {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
-        bundle.putInt("id", id);
+        bundle.putLong("id", id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -68,7 +68,7 @@ public class SearchFragment extends AbsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = getArguments().getString("type");
-        id = getArguments().getInt("id");
+        id = getArguments().getLong("id");
     }
 
     @Nullable
@@ -102,6 +102,7 @@ public class SearchFragment extends AbsListFragment {
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent();
+            Logger.v("id : " + adapter.getItem(position).getId());
             intent.putExtra("id", adapter.getItem(position).getId());
             intent.putExtra("name", adapter.getItem(position).getName());
             intent.putExtra("type", type);
@@ -130,7 +131,7 @@ public class SearchFragment extends AbsListFragment {
     };
 
 
-    private void callSearchApi(int id, String type, String name, int page) {
+    private void callSearchApi(long id, String type, String name, int page) {
         switch (type) {
             case "department":
                 callGetDepartmentApi(id, name, page);
@@ -226,7 +227,7 @@ public class SearchFragment extends AbsListFragment {
         }
     }
 
-    private void callGetDepartmentApi(int id, String name, int page) {
+    private void callGetDepartmentApi(long id, String name, int page) {
         if (page == DEFAULT_PAGE) adapter.clear();
         Retro.instance.searchService().getDepartments(id, name, page)
                 .subscribeOn(Schedulers.io())
@@ -234,7 +235,7 @@ public class SearchFragment extends AbsListFragment {
                 .subscribe(result -> responseDepartment(result), error -> Logger.e(error));
     }
 
-    private void callGetMajorApi(int id, String name, int page) {
+    private void callGetMajorApi(long id, String name, int page) {
         if (page == DEFAULT_PAGE) adapter.clear();
         Retro.instance.searchService().getMajors(id, name, page)
                 .subscribeOn(Schedulers.io())

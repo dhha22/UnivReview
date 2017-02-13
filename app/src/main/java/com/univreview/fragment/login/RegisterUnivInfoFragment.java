@@ -77,6 +77,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                 new SimpleButtonState(professorBtn)));
         //test
         register.universityId = 1;
+        universityTxt.setText("연세대학교");
         buttonClicked(STUDENT);
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
         professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));
@@ -107,6 +108,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
         majorTxt.setOnClickListener(v -> {
             if (formVerification(state)) {
+                Logger.v("register department id: " + register.departmentId);
                 Navigator.goSearch(getActivity(), "major",
                         register.departmentId, majorTxt.getText().toString());
             }
@@ -140,12 +142,13 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
             if (activityResultEvent.getRequestCode() == Navigator.SEARCH) {
                 Intent data = activityResultEvent.getIntent();
-                int id = data.getIntExtra("id", 0);
+                long id = data.getLongExtra("id", 0);
                 String name = data.getStringExtra("name");
                 String type = data.getStringExtra("type");
                 if ("department".equals(type)) {
                     departmentTxt.setText(name);
-                    majorTxt.setText("");
+                   // majorTxt.setText(null);
+                    Logger.v("department id : " + id);
                     register.departmentId = id;
                     register.majorId = null;
                 } else if ("major".equals(type)) {
@@ -159,10 +162,11 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
     //api
     private void callRegisterApi(Register register){
+        Logger.v("register : " + register);
         Retro.instance.userService().register(register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(result -> Logger.v(result), error -> Logger.e(error));
     }
 
 

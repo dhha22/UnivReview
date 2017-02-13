@@ -12,8 +12,8 @@ public class Register implements Serializable {
     public String nickName;
     public String profileUrl;
     public Integer universityId;
-    public Integer departmentId;
-    public Integer majorId;
+    public Long departmentId;
+    public Long majorId;
 
     public Register(String userType, String userId, String accessToken, String nickName, String profileUrl) {
         this.userType = userType;
@@ -23,4 +23,18 @@ public class Register implements Serializable {
         this.profileUrl = profileUrl;
     }
 
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "userType='" + userType + '\'' +
+                ", userId='" + userId + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", universityId=" + universityId +
+                ", departmentId=" + departmentId +
+                ", majorId=" + majorId +
+                '}';
+    }
 }

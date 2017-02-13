@@ -7,12 +7,12 @@ import com.google.gson.annotations.Expose;
  */
 public class Major extends AbstractDataProvider{
     @Expose
-    public int id;
+    public long id;
     @Expose
     public String name;
 
     @Override
-    public int getId() {
+    public long getId() {
         return id;
     }
 

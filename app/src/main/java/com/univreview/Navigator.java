@@ -80,7 +80,7 @@ public class Navigator {
         context.startActivity(intent);
     }
 
-    public static void goSearch(Activity activity, String type, int id, String name){
+    public static void goSearch(Activity activity, String type, long id, String name){
         Intent intent = new Intent(activity, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
         activity.startActivityForResult(intent, SEARCH);

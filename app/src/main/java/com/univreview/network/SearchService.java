@@ -22,14 +22,14 @@ public interface SearchService {
     Observable<List<University>> getUniversities();
 
     @GET("department")
-    Observable<DepartmentModel> getDepartments(@Query("universityId") int universityId, @Query("name") String departName, @Query("page") int page);
+    Observable<DepartmentModel> getDepartments(@Query("universityId") long universityId, @Query("name") String departName, @Query("page") int page);
 
     @GET("major")
-    Observable<MajorModel> getMajors(@Query("departmentId") int departmentId, @Query("name") String majorName, @Query("page") int page);
+    Observable<MajorModel> getMajors(@Query("departmentId") long departmentId, @Query("name") String majorName, @Query("page") int page);
 
     @GET("subject")
-    Observable<SubjectModel> getSubjects(@Query("majorId") int majorId, @Query("name") String subjectName, @Query("page") int page);
+    Observable<SubjectModel> getSubjects(@Query("majorId") long majorId, @Query("name") String subjectName, @Query("page") int page);
 
     @GET("professor")
-    Observable<ProfessorModel> getProfessors(@Query("departmentId") int departmentId, @Query("name") String professorName, @Query("page") int page);
+    Observable<ProfessorModel> getProfessors(@Query("departmentId") long departmentId, @Query("name") String professorName, @Query("page") int page);
 }
