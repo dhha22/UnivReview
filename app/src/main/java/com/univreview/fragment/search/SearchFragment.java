@@ -25,6 +25,7 @@ import com.univreview.model.Department;
 import com.univreview.model.DepartmentModel;
 import com.univreview.model.Major;
 import com.univreview.model.MajorModel;
+import com.univreview.model.SearchModel;
 import com.univreview.network.Retro;
 import com.univreview.util.RevealAnimationSetting;
 import com.univreview.view.SearchListItemView;
@@ -40,13 +41,16 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 16..
  */
 public class SearchFragment extends AbsListFragment {
-    @BindView(R.id.input) EditText input;
-    @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
+    @BindView(R.id.input)
+    EditText input;
+    @BindView(R.id.recycler_view)
+    UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
     private long id;
 
-    public static SearchFragment newInstance(String type, long id){
+
+    public static SearchFragment newInstance(String type, long id) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -55,7 +59,7 @@ public class SearchFragment extends AbsListFragment {
         return fragment;
     }
 
-    public static SearchFragment newInstance(String type, int id, String name){
+    public static SearchFragment newInstance(String type, int id, String name) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -103,6 +107,7 @@ public class SearchFragment extends AbsListFragment {
         adapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent();
             Logger.v("id : " + adapter.getItem(position).getId());
+            Logger.v("type : " + type);
             intent.putExtra("id", adapter.getItem(position).getId());
             intent.putExtra("name", adapter.getItem(position).getName());
             intent.putExtra("type", type);
@@ -133,6 +138,9 @@ public class SearchFragment extends AbsListFragment {
 
     private void callSearchApi(long id, String type, String name, int page) {
         switch (type) {
+            case "university":
+                callGetUniversityApi(name, page);
+                break;
             case "department":
                 callGetDepartmentApi(id, name, page);
                 break;
@@ -147,8 +155,10 @@ public class SearchFragment extends AbsListFragment {
         }
     }
 
-    private String getHintStr(String type){
-        switch (type){
+    private String getHintStr(String type) {
+        switch (type) {
+            case "university":
+                return "대학교를 입력해주세요";
             case "department":
                 return "학과군을 입력해주세요";
             case "major":
@@ -182,7 +192,7 @@ public class SearchFragment extends AbsListFragment {
         callSearchApi(id, type, input.getText().toString(), page);
     }
 
-    private class SearchAdapter extends CustomAdapter{
+    private class SearchAdapter extends CustomAdapter {
         private Context context;
 
 
@@ -217,14 +227,24 @@ public class SearchFragment extends AbsListFragment {
         }
 
 
-        protected class ViewHolder extends RecyclerView.ViewHolder{
+        protected class ViewHolder extends RecyclerView.ViewHolder {
             final SearchListItemView v;
+
             public ViewHolder(View itemView) {
                 super(itemView);
-                v = (SearchListItemView)itemView;
+                v = (SearchListItemView) itemView;
                 v.setOnClickListener(view -> itemClickListener.onItemClick(v, getAdapterPosition()));
             }
         }
+    }
+
+    //api
+    private void callGetUniversityApi(String name, int page) {
+        if (page == DEFAULT_PAGE) adapter.clear();
+        Retro.instance.searchService().getUniversities(name, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> responseUniversity(result), error -> Logger.e(error));
     }
 
     private void callGetDepartmentApi(long id, String name, int page) {
@@ -243,7 +263,16 @@ public class SearchFragment extends AbsListFragment {
                 .subscribe(result -> responseMajor(result), error -> Logger.e(error));
     }
 
-    public void responseDepartment(DepartmentModel result) {
+    public void responseUniversity(SearchModel result) {
+        setResult(page);
+        setStatus(Status.IDLE);
+        Observable.from(result.universities)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+    }
+
+    public void responseDepartment(SearchModel result) {
         setResult(page);
         setStatus(Status.IDLE);
         Observable.from(result.departments)
@@ -252,7 +281,7 @@ public class SearchFragment extends AbsListFragment {
                 .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
     }
 
-    public void responseMajor(MajorModel result) {
+    public void responseMajor(SearchModel result) {
         setResult(page);
         setStatus(Status.IDLE);
         Observable.from(result.majors)

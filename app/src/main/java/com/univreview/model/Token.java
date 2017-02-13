@@ -7,7 +7,11 @@ import com.google.gson.annotations.Expose;
  */
 public class Token {
     @Expose
-    String token;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
 
     @Override
     public String toString() {

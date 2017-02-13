@@ -41,7 +41,7 @@
         android:layout_marginRight="48dp"
         android:gravity="center"
         android:padding="8dp"
-        android:text="대학교"
+        android:hint="대학교"
         android:textSize="18dp" />
 
     <View
@@ -61,7 +61,7 @@
         android:layout_marginRight="48dp"
         android:gravity="center"
         android:padding="8dp"
-        android:text="학과군"
+        android:hint="학과군"
         android:textSize="18dp" />
 
     <View
@@ -87,7 +87,7 @@
             android:layout_marginRight="48dp"
             android:gravity="center"
             android:padding="8dp"
-            android:text="학과"
+            android:hint="전공"
             android:textSize="18dp" />
 
         <View

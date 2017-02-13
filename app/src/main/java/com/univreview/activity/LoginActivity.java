@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.test_txt) TextView testTxt;
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
-    @BindView(R.id.test_btn) Button testBtn;
+
     private CallbackManager facebookCallbackManager;
     private ProgressDialog progressDialog;
     private SessionCallback kakaoCallback;
@@ -71,8 +71,7 @@ public class LoginActivity extends BaseActivity {
         //test code
         testTxt.setOnClickListener(v -> Navigator.goMain(this));
 
-        //token
-        testBtn.setOnClickListener(v -> callTempTokenApi());
+
     }
 
 
@@ -210,12 +209,7 @@ public class LoginActivity extends BaseActivity {
                         error -> loginErrorResponse(error, new Register(userType, userId, accessToken, nickName, profileURL)));
     }
 
-    private void callTempTokenApi(){
-        Retro.instance.tokenService().tempToken(App.setAuthHeader(""))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Logger.v(result), error -> Logger.e(error));
-    }
+
 
     private void loginErrorResponse(Throwable error, Register register) {
         if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_404) {   //신규회원

@@ -12,12 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Register;
+import com.univreview.model.Token;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
 import com.univreview.util.SimpleButtonState;
@@ -36,6 +38,10 @@ import rx.schedulers.Schedulers;
 public class RegisterUnivInfoFragment extends BaseFragment {
     private static final int STUDENT = 0;
     private static final int PROFESSOR = 1;
+    private static final int UNIVERSITY = 0;
+    private static final int DEPARTMENT = 1;
+    private static final int MAJOR = 2;
+    private static final int NEXT = 3;
     @BindView(R.id.student_btn) Button studentBtn;
     @BindView(R.id.professor_btn) Button professorBtn;
     @BindView(R.id.university_txt) TextView universityTxt;
@@ -76,8 +82,6 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn),
                 new SimpleButtonState(professorBtn)));
         //test
-        register.universityId = 1;
-        universityTxt.setText("연세대학교");
         buttonClicked(STUDENT);
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
         professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));
@@ -88,26 +92,32 @@ public class RegisterUnivInfoFragment extends BaseFragment {
             majorLayout.setVisibility(View.VISIBLE);
             nextBtn.setText("확인");
             nextBtn.setOnClickListener(v -> {
-                if (formVerification(state)) callRegisterApi(register);
+                if (formVerification(NEXT)) callTempTokenApi(register);
             });
 
         } else if (state == PROFESSOR) {
             nextBtn.setText("교수님 인증하기");
             nextBtn.setOnClickListener(v -> {
-                if (formVerification(state)) Navigator.goRegisterUserIdentity(context);
+                if (formVerification(NEXT)) Navigator.goRegisterUserIdentity(context);
             });
             majorLayout.setVisibility(View.GONE);
         }
 
+        universityTxt.setOnClickListener(v -> {
+            if (formVerification(UNIVERSITY)) {
+                Navigator.goSearch(getActivity(), "university", universityTxt.getText().toString());
+            }
+        });
+
         departmentTxt.setOnClickListener(v -> {
-            if (formVerification(state)) {
+            if (formVerification(DEPARTMENT)) {
                 Navigator.goSearch(getActivity(), "department",
                         register.universityId, departmentTxt.getText().toString());
             }
         });
 
         majorTxt.setOnClickListener(v -> {
-            if (formVerification(state)) {
+            if (formVerification(MAJOR)) {
                 Logger.v("register department id: " + register.departmentId);
                 Navigator.goSearch(getActivity(), "major",
                         register.departmentId, majorTxt.getText().toString());
@@ -117,24 +127,32 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         buttonStateManager.clickButton(state);
     }
 
-    private boolean formVerification(int state) {
-        Logger.v("form verification: " + state);
+    private boolean formVerification(int clickPosition) {
         if (universityTxt.getText().length() == 0) {
-            Util.simpleMessageDialog(context, "대학을 선택해주세요.");
+            return showAlertDialog(clickPosition, UNIVERSITY);
         } else if (departmentTxt.getText().length() == 0) {
-            Util.simpleMessageDialog(context, "학과군을 선택해주세요.");
+            return showAlertDialog(clickPosition, DEPARTMENT);
         } else if (majorTxt.getText().length() == 0) {
-            Util.simpleMessageDialog(context, "전공을 선택해주세요.");
-        } else if (universityTxt.getText().length() > 0 && departmentTxt.getText().length() > 0) {
-            if (state == PROFESSOR) {
-                return true;
-            } else if (state == STUDENT && majorTxt.getText().length() > 0) {
-                return true;
-            }
+            return showAlertDialog(clickPosition, MAJOR);
+        }else{
+            return true;
         }
-        return false;
     }
 
+    private boolean showAlertDialog(int clickPosition, int position) {
+        if (clickPosition <= position) {
+            return true;
+        } else {
+            if (position == UNIVERSITY) {
+                Util.simpleMessageDialog(context, "대학을 선택해주세요.");
+            } else if (position == DEPARTMENT) {
+                Util.simpleMessageDialog(context, "학과군을 선택해주세요.");
+            } else if (position == MAJOR) {
+                Util.simpleMessageDialog(context, "전공을 선택해주세요.");
+            }
+            return false;
+        }
+    }
 
 
     @Subscribe
@@ -145,10 +163,17 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                 long id = data.getLongExtra("id", 0);
                 String name = data.getStringExtra("name");
                 String type = data.getStringExtra("type");
-                if ("department".equals(type)) {
+                Logger.v("on activity result: " + type);
+                if ("university".equals(type)) {
+                    universityTxt.setText(name);
+                    departmentTxt.setText(null);
+                    majorTxt.setText(null);
+                    register.universityId = id;
+                    register.departmentId = null;
+                    register.majorId = null;
+                } else if ("department".equals(type)) {
                     departmentTxt.setText(name);
-                   // majorTxt.setText(null);
-                    Logger.v("department id : " + id);
+                    majorTxt.setText(null);
                     register.departmentId = id;
                     register.majorId = null;
                 } else if ("major".equals(type)) {
@@ -161,13 +186,23 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     //api
-    private void callRegisterApi(Register register){
+    private void callTempTokenApi(Register register){
+        Retro.instance.tokenService().tempToken(App.setAuthHeader(""))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> callRegisterApi(register, result), error -> Logger.e(error));
+    }
+
+    private void callRegisterApi(Register register, Token token){
+        Logger.v("token: " + token);
         Logger.v("register : " + register);
-        Retro.instance.userService().register(register)
+        Retro.instance.userService().register(App.setAuthHeader(token.getToken()), register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> Logger.v(result), error -> Logger.e(error));
     }
+
+
 
 
 }

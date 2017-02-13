@@ -74,16 +74,17 @@ public class Navigator {
         context.startActivity(intent);
     }
 
-    public static void goSearch(Context context, String type, int id){
+    public static void goSearch(Context context, String type, String name){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
-        context.startActivity(intent);
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0));
+        ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
-    public static void goSearch(Activity activity, String type, long id, String name){
-        Intent intent = new Intent(activity, NavigationActivity.class);
+
+    public static void goSearch(Context context, String type, long id, String name){
+        Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
-        activity.startActivityForResult(intent, SEARCH);
+        ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
     public static void goCheckUserPhoto(Context context, String type, String path) {

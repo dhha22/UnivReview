@@ -8,15 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.log.Logger;
+import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
+import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by DavidHa on 2017. 1. 11..
  */
 public class RegisterUserInfoFragment extends BaseFragment {
+    @BindView(R.id.profile_image_layout) RelativeLayout profileImageLayout;
     @BindView(R.id.profile_image) CircleImageView profileImage;
     @BindView(R.id.input_name) TextView inputName;
     @BindView(R.id.next_btn) Button nextBtn;
@@ -55,9 +63,20 @@ public class RegisterUserInfoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_register_user_info, container, false);
         ButterKnife.bind(this, view);
         toolbar.setBackBtnVisibility(true);
+        init(register);
         setData(register);
         rootLayout.addView(view);
         return rootLayout;
+    }
+
+    private void init(Register register){
+        profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
+        nextBtn.setOnClickListener(v -> {
+            if (formVerification()) {
+                Navigator.goRegisterUnivInfo(context, register);
+            }
+        });
+
     }
 
 
@@ -68,12 +87,6 @@ public class RegisterUserInfoFragment extends BaseFragment {
                     .into(profileImage);
         }
         inputName.setText(register.nickName);
-
-        nextBtn.setOnClickListener(v -> {
-            if (formVerification()) {
-                Navigator.goRegisterUnivInfo(context, register);
-            }
-        });
     }
 
     private boolean formVerification() {
@@ -83,6 +96,17 @@ public class RegisterUserInfoFragment extends BaseFragment {
             return true;
         }
         return false;
+    }
+
+    @Subscribe
+    public void onActivityResult(ActivityResultEvent activityResultEvent) {
+        if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
+            String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+            Logger.v("album path: " + albumPath);
+            register.profileUrl = "file://" + albumPath;
+            setData(register);
+        }
+
     }
 
 
