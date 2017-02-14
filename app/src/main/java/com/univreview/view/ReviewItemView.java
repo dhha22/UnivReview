@@ -50,13 +50,14 @@ public class ReviewItemView extends FrameLayout {
                     authMarkTxt.setVisibility(INVISIBLE);
                 }
             }
-
-            if(review.reviewDetail.length()>0){
-                reviewTxt.setVisibility(VISIBLE);
-            }else{
-                reviewTxt.setVisibility(GONE);
+            if(review.reviewDetail != null) {
+                if (review.reviewDetail.length() > 0) {
+                    reviewTxt.setVisibility(VISIBLE);
+                } else {
+                    reviewTxt.setVisibility(GONE);
+                }
+                reviewTxt.setText(review.reviewDetail);
             }
-            reviewTxt.setText(review.reviewDetail);
             timeTxt.setText(review.createdDate);
             difficultyTxt.setText(String.valueOf(review.difficultyRate));
             assignmentTxt.setText(String.valueOf(review.assignmentRate));

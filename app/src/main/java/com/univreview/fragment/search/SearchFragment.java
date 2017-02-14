@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
@@ -137,6 +138,7 @@ public class SearchFragment extends AbsListFragment {
 
 
     private void callSearchApi(long id, String type, String name, int page) {
+        if (page == DEFAULT_PAGE) adapter.clear();
         switch (type) {
             case "university":
                 callGetUniversityApi(name, page);
@@ -148,8 +150,10 @@ public class SearchFragment extends AbsListFragment {
                 callGetMajorApi(id, name, page);
                 break;
             case "subject":
+                callGetSubjectApi(id,name, page);
                 break;
             case "professor":
+                callGetProfessorApi(id, name, page);
                 break;
             default:
         }
@@ -164,9 +168,9 @@ public class SearchFragment extends AbsListFragment {
             case "major":
                 return "학과를 입력해주세요";
             case "subject":
-                return "";
+                return "과목을 입력해주세요";
             case "professor":
-                return "";
+                return "교수명을 입력해주세요";
             default:
                 return "";
         }
@@ -240,54 +244,69 @@ public class SearchFragment extends AbsListFragment {
 
     //api
     private void callGetUniversityApi(String name, int page) {
-        if (page == DEFAULT_PAGE) adapter.clear();
         Retro.instance.searchService().getUniversities(name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> responseUniversity(result), error -> Logger.e(error));
+                .subscribe(result -> response(result, "university"), error -> Logger.e(error));
     }
 
     private void callGetDepartmentApi(long id, String name, int page) {
-        if (page == DEFAULT_PAGE) adapter.clear();
         Retro.instance.searchService().getDepartments(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> responseDepartment(result), error -> Logger.e(error));
+                .subscribe(result -> response(result, "department"), error -> Logger.e(error));
     }
 
     private void callGetMajorApi(long id, String name, int page) {
-        if (page == DEFAULT_PAGE) adapter.clear();
         Retro.instance.searchService().getMajors(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> responseMajor(result), error -> Logger.e(error));
+                .subscribe(result -> response(result, "major"), error -> Logger.e(error));
     }
 
-    public void responseUniversity(SearchModel result) {
-        setResult(page);
-        setStatus(Status.IDLE);
-        Observable.from(result.universities)
+    private void callGetProfessorApi(Long departmentId, String name, int page) {
+        Retro.instance.searchService().getProfessors(App.UNIVERSITY_ID, departmentId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                .subscribe(result -> response(result, "professor"), error -> Logger.e(error));
     }
 
-    public void responseDepartment(SearchModel result) {
-        setResult(page);
-        setStatus(Status.IDLE);
-        Observable.from(result.departments)
+    private void callGetSubjectApi(Long majorId, String name, int page) {
+        Retro.instance.searchService().getSubjects(App.UNIVERSITY_ID, majorId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                .subscribe(result -> response(result, "subject"), error -> Logger.e(error));
     }
 
-    public void responseMajor(SearchModel result) {
+    public void response(SearchModel result, String type) {
         setResult(page);
         setStatus(Status.IDLE);
-        Observable.from(result.majors)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+        if (type.equals("university")) {
+            Observable.from(result.universities)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+        } else if (type.equals("department")) {
+            Observable.from(result.departments)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+        } else if (type.equals("major")) {
+            Observable.from(result.majors)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+        } else if (type.equals("professor")) {
+            Observable.from(result.professors)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+        } else if (type.equals("subject")) {
+            Observable.from(result.subjects)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+        }
     }
 
 

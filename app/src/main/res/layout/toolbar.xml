@@ -11,12 +11,14 @@
         android:orientation="horizontal"
         android:paddingRight="16dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/back_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="gone"
+            android:background="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/title_txt"
@@ -37,10 +39,10 @@
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="16dp"/>
-        <Button
+        <ImageButton
             android:id="@+id/cancel_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
             android:visibility="gone"/>
 

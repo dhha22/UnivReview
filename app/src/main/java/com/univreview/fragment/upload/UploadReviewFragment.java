@@ -2,6 +2,7 @@ package com.univreview.fragment.upload;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +58,8 @@ public class UploadReviewFragment extends BaseFragment {
     private void init(){
         backBtn.setOnClickListener(v -> activity.onBackPressed());
         okBtn.setOnClickListener(v ->registerReview());
-        //subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", App.UNIVERSITY_ID));
+        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString()));
+        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString()));
     }
 
     private void registerReview(){
@@ -69,23 +72,30 @@ public class UploadReviewFragment extends BaseFragment {
         if(review.checkReviewRating()){
             callPostSimpleReviewApi(review);
         }else{
-            //error msg
+            Util.simpleMessageDialog(context, "");
         }
     }
 
     private void callPostSimpleReviewApi(Review review){
-        Retro.instance.reviewService().postSimpleReview(review)
+        response(review);
+       /* Retro.instance.reviewService().postSimpleReview(review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.getReview()), error -> Logger.v(error));
+                .subscribe(result -> response(result.getReview()), error -> Logger.v(error));*/
     }
 
-    private void response(Review review){
-        //dialog
-        //user 가 ok 눌렀을 경우
-        Navigator.goUploadReviewDetail(context, review);
-        //cancel 일 경우
-        //finish();
+    private void response(Review review) {
+        new AlertDialog.Builder(context)
+                .setMessage("좀 더 자세한 리뷰를 쓰면\n" +
+                        "많은 학우들에게 도움이 됩니다.\n" +
+                        "리뷰를 써볼까요?")
+                .setPositiveButton("리뷰쓰기", (dialog, which) -> {
+                    Navigator.goUploadReviewDetail(context, review);
+                    activity.finish();
+                })
+                .setNegativeButton("다음에", (dialog, which) -> activity.onBackPressed())
+                .setCancelable(false)
+                .show();
     }
 
 

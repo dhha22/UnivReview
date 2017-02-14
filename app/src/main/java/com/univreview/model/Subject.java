@@ -7,13 +7,23 @@ import java.io.Serializable;
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
-public class Subject implements Serializable{
+public class Subject extends AbstractDataProvider  implements Serializable{
     @Expose
-    public int id;
+    public long id;
     @Expose
     public String name;
     @Expose
     public String year; //학년
     @Expose
     public int point;   //학점
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

@@ -9,15 +9,17 @@ import java.util.List;
 /**
  * Created by DavidHa on 2017. 2. 13..
  */
-public class SearchModel implements Serializable {
+public class SearchModel  implements Serializable {
     @SerializedName("university")
     public List<University> universities = new ArrayList<>();
     @SerializedName("major")
     public List<Major> majors = new ArrayList<>();
     @SerializedName("department")
     public List<Department> departments = new ArrayList<>();
-
-
+    @SerializedName("professor")
+    public List<Professor> professors = new ArrayList<>();
+    @SerializedName("subject")
+    public List<Subject> subjects = new ArrayList<>();
 
 
     @Override
