@@ -42,10 +42,8 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 16..
  */
 public class SearchFragment extends AbsListFragment {
-    @BindView(R.id.input)
-    EditText input;
-    @BindView(R.id.recycler_view)
-    UnivReviewRecyclerView recyclerView;
+    @BindView(R.id.input) EditText input;
+    @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
     private long id;

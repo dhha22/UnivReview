@@ -78,10 +78,11 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         return rootLayout;
     }
 
-    private void init(){
-        buttonStateManager = new ButtonStateManager(Arrays.asList(new SimpleButtonState(studentBtn),
-                new SimpleButtonState(professorBtn)));
-        //test
+    private void init() {
+        buttonStateManager = new ButtonStateManager(context, new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
+        buttonStateManager.setDrawable(R.drawable.rounded_rect, R.drawable.fill_rounded_rect);
+        buttonStateManager.setTxtColor(R.color.colorPrimaryDark, R.color.white);
+
         buttonClicked(STUDENT);
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));
         professorBtn.setOnClickListener(v -> buttonClicked(PROFESSOR));

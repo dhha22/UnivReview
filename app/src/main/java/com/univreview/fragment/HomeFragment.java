@@ -1,27 +1,21 @@
 package com.univreview.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.adapter.CustomAdapter;
 import com.univreview.adapter.LatestReviewAdapter;
 import com.univreview.log.Logger;
-import com.univreview.model.Review;
-import com.univreview.view.LatestReviewItemView;
-import com.univreview.widget.DisableableCoordinatorLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +24,10 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 1. 8..
  */
 public class HomeFragment extends BaseFragment {
-    @BindView(R.id.coordinator_layout) DisableableCoordinatorLayout coordinatorLayout;
+    private static final boolean DEFAULT_EXPAND_STATE = false;
     @BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.collapse_btn) ImageButton collapseBtn;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.major_txt) TextView majorTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
@@ -39,7 +35,8 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.latest_major_recycler_view) RecyclerView latestMajorRecyclerView;
     private LatestReviewAdapter cultureAdapter;
     private LatestReviewAdapter majorAdapter;
-    private boolean isExpand = false;
+    private boolean isExpand = DEFAULT_EXPAND_STATE;
+
     public static HomeFragment newInstance(){
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -54,9 +51,20 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
-    private void init(){
-        coordinatorLayout.setPassScrolling(false);
-        subjectTxt.setOnClickListener(v ->expand(isExpand));
+    private void init() {
+
+        subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
+        collapseBtn.setOnClickListener(v -> setCollapseBtnState());
+
+        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            int height = appBarLayout.getHeight() - appBarLayout.getBottom();
+            Logger.v("height: " + height);
+            if (height == 0) {
+                setSearchFormData(true);
+            } else if (height >= toolbar.getHeight() * 1.4) {
+                setSearchFormData(false);
+            }
+        });
 
         LinearLayoutManager cultureLayoutManager = new LinearLayoutManager(context);
         cultureLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -70,22 +78,36 @@ public class HomeFragment extends BaseFragment {
         latestMajorRecyclerView.setAdapter(majorAdapter);
     }
 
+    private void setSubjectState(boolean isExpand) {
+        if (!isExpand) {
+            isExpand = true;
+            appBarLayout.setExpanded(true, true);
+        } else {
+            Navigator.goSearch(context, "subject", subjectTxt.getText().toString());
+        }
+        setSearchFormData(isExpand);
+    }
 
-    private void expand(boolean isExpand) {
+    private void setCollapseBtnState() {
+        isExpand = false;
+        appBarLayout.setExpanded(false, true);
+        setSearchFormData(isExpand);
+    }
+
+
+
+    private void setSearchFormData(boolean isExpand) {
         Logger.v("isExpand: " + isExpand);
         if (isExpand) {
-            this.isExpand = false;
-            majorTxt.setVisibility(View.INVISIBLE);
-            professorTxt.setVisibility(View.INVISIBLE);
-            appBarLayout.setExpanded(false, true);
-            subjectTxt.setHint("과목명·교수명·학과명");
-
-        } else {
-            this.isExpand = true;
+            collapseBtn.setVisibility(View.VISIBLE);
             majorTxt.setVisibility(View.VISIBLE);
             professorTxt.setVisibility(View.VISIBLE);
-            appBarLayout.setExpanded(true, true);
             subjectTxt.setHint("과목명");
+        } else {
+            collapseBtn.setVisibility(View.GONE);
+            majorTxt.setVisibility(View.INVISIBLE);
+            professorTxt.setVisibility(View.INVISIBLE);
+            subjectTxt.setHint("과목명·교수명·학과명");
         }
     }
 

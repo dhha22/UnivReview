@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.univreview.widget.DisableableCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
@@ -46,4 +46,4 @@
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</com.univreview.widget.DisableableCoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 package com.univreview.util;
 
+import android.content.Context;
 import android.widget.Button;
 
 import com.univreview.log.Logger;
@@ -13,6 +14,12 @@ public class SimpleButtonState extends ButtonState {
     public SimpleButtonState(Button button) {
         this.button = button;
     }
+
+    public SimpleButtonState(Context context, Button button) {
+        super(context);
+        this.button = button;
+    }
+
 
     @Override
     public void setButtonState(boolean isSelected) {

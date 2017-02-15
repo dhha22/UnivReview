@@ -20,7 +20,9 @@ import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
+import com.univreview.util.ButtonState;
 import com.univreview.util.ImageUtil;
+import com.univreview.util.SimpleButtonState;
 import com.univreview.util.Util;
 
 import java.io.File;
@@ -38,6 +40,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
     @BindView(R.id.input_name) TextView inputName;
     @BindView(R.id.next_btn) Button nextBtn;
     private Register register;
+    private SimpleButtonState buttonState;
 
 
     public static RegisterUserInfoFragment newInstance(Register register){
@@ -70,12 +73,17 @@ public class RegisterUserInfoFragment extends BaseFragment {
     }
 
     private void init(Register register){
+        buttonState = new SimpleButtonState(context, nextBtn);
+        buttonState.setDrawable(R.drawable.rounded_rect, R.drawable.fill_rounded_rect);
+        buttonState.setTxtColor(R.color.colorPrimaryDark, R.color.white);
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
+
         nextBtn.setOnClickListener(v -> {
-            if (formVerification()) {
+            if (formVerification() && buttonState.getButtonState()) {
                 Navigator.goRegisterUnivInfo(context, register);
             }
         });
+
 
     }
 
@@ -87,6 +95,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
                     .into(profileImage);
         }
         inputName.setText(register.nickName);
+        buttonState.setButtonState(true);
     }
 
     private boolean formVerification() {

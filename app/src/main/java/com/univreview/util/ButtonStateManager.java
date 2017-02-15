@@ -1,10 +1,12 @@
 package com.univreview.util;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.univreview.log.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,8 +17,11 @@ public class ButtonStateManager {
    private int currentIndex = -1;
    private boolean flag = false;
 
-   public ButtonStateManager(List<ButtonState> btnStates) {
-      this.btnStates = btnStates;
+   public ButtonStateManager(Context context, ButtonState... buttonStates) {
+      for (ButtonState buttonState : buttonStates) {
+         buttonState.setContext(context);
+         btnStates.add(buttonState);
+      }
    }
 
    public void clickButton(Integer index) {
@@ -36,15 +41,15 @@ public class ButtonStateManager {
       }
    }
 
-   public void setTxtColor(int normalColor, int selectedColor) {
+   public void setTxtColor(int normalId, int selectedId) {
       for (ButtonState btnState : btnStates) {
-         btnState.setTxtColor(normalColor, selectedColor);
+         btnState.setTxtColor(normalId, selectedId);
       }
    }
 
-   public void setDrawable(Drawable normalDrawable, Drawable selectedDrawable) {
+   public void setDrawable(int normalId, int selectedId) {
       for (ButtonState btnState : btnStates) {
-         btnState.setDrawable(normalDrawable, selectedDrawable);
+         btnState.setDrawable(normalId, selectedId);
       }
    }
 
