@@ -1,5 +1,6 @@
 package com.univreview.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,12 +22,11 @@ import java.util.Map;
 /**
  * Created by DavidHa on 2017. 1. 19..
  */
-public abstract class AbsListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class AbsListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     protected static final int DEFAULT_PAGE = 1;
     private static final Map<Class, Boolean> needRefresh = new HashMap<>();
     protected ProgressBar loadMoreProgress;
     public int page = DEFAULT_PAGE;
-    protected Context context;
 
     public static void setNeedRefresh(Class clazz, boolean refresh) {
         needRefresh.put(clazz, refresh);
@@ -114,12 +114,6 @@ public abstract class AbsListFragment extends Fragment implements SwipeRefreshLa
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.context = getContext();
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

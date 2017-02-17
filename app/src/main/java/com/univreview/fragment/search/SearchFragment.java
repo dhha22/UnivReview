@@ -81,7 +81,8 @@ public class SearchFragment extends AbsListFragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
         init();
-        return view;
+        rootLayout.addView(view);
+        return rootLayout;
     }
 
     private void init() {

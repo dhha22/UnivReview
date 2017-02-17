@@ -11,6 +11,7 @@ import com.univreview.fragment.login.CheckUserPhotoFragment;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
@@ -57,6 +58,8 @@ public class Navigator {
         ((Activity) context).startActivityForResult(intent, ALBUM);
     }
 
+    //upload
+
     public static void goUploadReview(Context context){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(UploadReviewFragment.newInstance());
@@ -69,10 +72,14 @@ public class Navigator {
         context.startActivity(intent);
     }
 
+    //main
+
     public static void goMain(Context context){
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
     }
+
+    //search
 
     public static void goSearch(Context context, String type, String name){
         Intent intent = new Intent(context, NavigationActivity.class);
@@ -90,6 +97,13 @@ public class Navigator {
     public static void goCheckUserPhoto(Context context, String type, String path) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(CheckUserPhotoFragment.newInstance(type, path));
+        context.startActivity(intent);
+    }
+
+    //mypage
+    public static void goPointList(Context context) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(PointListFragment.newInstance());
         context.startActivity(intent);
     }
 }

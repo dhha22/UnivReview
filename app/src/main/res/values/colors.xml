@@ -10,4 +10,7 @@
     <color name="facebookColor">#225b99</color>
     
     <color name="advice_review_dialog">#ce000000</color>
+
+    <!-- point -->
+    <color name="pointTimeColor">#c3c3c3</color>
 </resources>
