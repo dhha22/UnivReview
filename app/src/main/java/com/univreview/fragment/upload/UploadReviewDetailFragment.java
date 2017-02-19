@@ -50,6 +50,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         setReviewData(review);
         toolbar.setToolbarBackgroundColor(R.color.colorPrimary);
+        toolbar.setBackBtnVisibility(true);
         toolbar.setOnConfirmListener(v -> registerReview(review.id));
         rootLayout.addView(view);
         return rootLayout;
@@ -71,11 +72,11 @@ public class UploadReviewDetailFragment extends BaseFragment {
         }
     }
 
-    private void callPostReviewDetail(ReviewDetail reviewDetail){
+    private void callPostReviewDetail(ReviewDetail reviewDetail) {
         Retro.instance.reviewService().postDetailReview(reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(),error -> errorResponse());
+                .subscribe(result -> response(), error -> errorResponse());
     }
 
     private void response(){

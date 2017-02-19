@@ -90,7 +90,6 @@ public class UploadReviewFragment extends BaseFragment {
     }
 
     private void registerReview(){
-        review = new Review();
         review.difficultyRate = difficultyRate.getRating();
         review.assignmentRate = assignmentRate.getRating();
         review.attendanceRate = attendanceRate.getRating();
@@ -100,7 +99,8 @@ public class UploadReviewFragment extends BaseFragment {
         if (review.getAlertMessage() == null) {
             callPostSimpleReviewApi(review);
         } else {
-            Util.simpleMessageDialog(context, review.getAlertMessage());
+            Navigator.goUploadReviewDetail(context, review);
+            //Util.simpleMessageDialog(context, review.getAlertMessage());
         }
     }
 

@@ -14,4 +14,5 @@
 
     <!-- point -->
     <color name="pointTimeColor">#c3c3c3</color>
+    <color name="rowColor">#c3c3c3</color>
 </resources>

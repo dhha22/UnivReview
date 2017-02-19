@@ -6,6 +6,7 @@ import com.univreview.model.ResponseModel;
 import java.util.Map;
 
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import rx.Observable;
@@ -16,4 +17,7 @@ import rx.Observable;
 public interface UserService {
     @POST("signUp")
     Observable<ResponseModel> register(@HeaderMap Map<String, String> headers, @Body Register body);
+
+   /* @GET("pointHistory")
+    Observable<>*/
 }

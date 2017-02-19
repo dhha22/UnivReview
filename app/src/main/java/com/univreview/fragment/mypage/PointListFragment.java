@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.model.AbstractDataProvider;
+import com.univreview.util.Util;
 import com.univreview.view.AbsRecyclerView;
 import com.univreview.view.PointItemView;
 import com.univreview.view.UnivReviewRecyclerView;
@@ -32,6 +34,7 @@ public class PointListFragment extends AbsListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         recyclerView = new UnivReviewRecyclerView(context);
         recyclerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -58,10 +61,9 @@ public class PointListFragment extends AbsListFragment {
     }
 
     private class PointAdapter extends CustomAdapter{
-        private Context context;
 
         public PointAdapter(Context context) {
-            this.context = context;
+            super(context);
         }
 
         @Override

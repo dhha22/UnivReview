@@ -213,6 +213,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void response(String token){
+        Logger.v("response: " + token);
         App.setUserToken(token);
         Navigator.goMain(this);
     }

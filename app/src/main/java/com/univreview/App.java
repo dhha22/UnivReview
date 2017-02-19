@@ -78,11 +78,13 @@ public class App extends Application {
     }
 
     public static void setUserToken(String token){
+        Logger.v("set user token: " + token);
         pref.savePreferences("userToken", token);
     }
 
     public static void init() {
         userToken = pref.getPreferences("userToken", null);
+        Logger.v("user token: " + userToken);
     }
 
     public static Map<String, String> setAuthHeader(String token) {

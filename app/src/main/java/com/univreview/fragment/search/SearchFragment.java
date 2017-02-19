@@ -201,11 +201,9 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private class SearchAdapter extends CustomAdapter {
-        private Context context;
-
 
         public SearchAdapter(Context context) {
-            this.context = context;
+            super(context);
         }
 
         @Override

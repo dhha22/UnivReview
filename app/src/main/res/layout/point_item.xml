@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:padding="26dp">
+    android:layout_height="100dp">
 
     <TextView
         android:id="@+id/writetime_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="28dp"
         android:text="2017.01.01"
         android:textColor="@color/pointTimeColor"
         android:textSize="12dp" />
@@ -16,8 +17,9 @@
         android:id="@+id/message_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/writetime_txt"
-        android:layout_marginTop="16dp"
+        android:layout_alignLeft="@id/writetime_txt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="28dp"
         android:text="포인트 적립"
         android:textColor="@color/black" />
 
@@ -27,7 +29,13 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/message_txt"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="28dp"
         android:text="+200P"
         android:textSize="18dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/rowColor" />
 </RelativeLayout>
