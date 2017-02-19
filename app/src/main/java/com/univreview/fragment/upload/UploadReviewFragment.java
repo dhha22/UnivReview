@@ -1,5 +1,6 @@
 package com.univreview.fragment.upload;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
+import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.Util;
@@ -37,7 +40,7 @@ public class UploadReviewFragment extends BaseFragment {
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
-
+    private Review review;
 
     public static UploadReviewFragment newInstance(){
         UploadReviewFragment fragment = new UploadReviewFragment();
@@ -55,36 +58,64 @@ public class UploadReviewFragment extends BaseFragment {
         rootLayout.addView(view);
         return rootLayout;
     }
-    private void init(){
+
+    private void init() {
+        review = new Review();
         backBtn.setOnClickListener(v -> activity.onBackPressed());
-        okBtn.setOnClickListener(v ->registerReview());
+        okBtn.setOnClickListener(v -> registerReview());
         subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString()));
         professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString()));
     }
 
+
+    @Subscribe
+    public void onActivityResult(ActivityResultEvent activityResultEvent) {
+        if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
+            if (activityResultEvent.getRequestCode() == Navigator.SEARCH) {
+                Intent data = activityResultEvent.getIntent();
+                long id = data.getLongExtra("id", 0);
+                String name = data.getStringExtra("name");
+                String type = data.getStringExtra("type");
+                Logger.v("on activity result: " + type);
+                if ("subject".equals(type)) {
+                    subjectTxt.setText(name);
+                    review.subjectId = id;
+                } else if ("professor".equals(type)) {
+                    professorTxt.setText(name);
+                    review.professorId = id;
+                }
+
+            }
+        }
+    }
+
     private void registerReview(){
-        Review review = new Review();
+        review = new Review();
         review.difficultyRate = difficultyRate.getRating();
         review.assignmentRate = assignmentRate.getRating();
         review.attendanceRate = attendanceRate.getRating();
         review.gradeRate = gradeRate.getRating();
         review.achievementRate = achievementRate.getRating();
-        if(review.checkReviewRating()){
+
+        if (review.getAlertMessage() == null) {
             callPostSimpleReviewApi(review);
-        }else{
-            Util.simpleMessageDialog(context, "");
+        } else {
+            Util.simpleMessageDialog(context, review.getAlertMessage());
         }
     }
 
+    //api
+
     private void callPostSimpleReviewApi(Review review){
-        response(review);
-       /* Retro.instance.reviewService().postSimpleReview(review)
+        Logger.v("post review: " + review);
+        Retro.instance.reviewService().postSimpleReview(review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.getReview()), error -> Logger.v(error));*/
+                .subscribe(result -> response(result.review), error -> Logger.e(error));
     }
 
     private void response(Review review) {
+        Logger.v("response review: " + review);
         new AlertDialog.Builder(context)
                 .setMessage("좀 더 자세한 리뷰를 쓰면\n" +
                         "많은 학우들에게 도움이 됩니다.\n" +

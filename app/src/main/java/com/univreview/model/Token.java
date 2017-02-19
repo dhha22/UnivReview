@@ -16,7 +16,7 @@ public class Token {
     @Override
     public String toString() {
         return "Token{" +
-                "token='" + token + '\'' +
+                "userToken='" + token + '\'' +
                 '}';
     }
 }

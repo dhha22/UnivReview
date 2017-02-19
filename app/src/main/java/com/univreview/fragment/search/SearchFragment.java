@@ -29,6 +29,7 @@ import com.univreview.model.MajorModel;
 import com.univreview.model.SearchModel;
 import com.univreview.network.Retro;
 import com.univreview.util.RevealAnimationSetting;
+import com.univreview.util.Util;
 import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
 
@@ -46,7 +47,7 @@ public class SearchFragment extends AbsListFragment {
     @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
-    private long id;
+    private Long id;
 
 
     public static SearchFragment newInstance(String type, long id) {
@@ -58,7 +59,7 @@ public class SearchFragment extends AbsListFragment {
         return fragment;
     }
 
-    public static SearchFragment newInstance(String type, int id, String name) {
+    public static SearchFragment newInstance(String type, long id, String name) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -80,12 +81,16 @@ public class SearchFragment extends AbsListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
+        toolbar.setCancelBtnVisibility(true);
         init();
         rootLayout.addView(view);
+        rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         return rootLayout;
     }
 
     private void init() {
+        Logger.v("type: " + type);
+        Logger.v("id: " + id);
         input.setHint(getHintStr(type));
 
         //recycler view
@@ -136,7 +141,7 @@ public class SearchFragment extends AbsListFragment {
     };
 
 
-    private void callSearchApi(long id, String type, String name, int page) {
+    private void callSearchApi(Long id, String type, String name, int page) {
         if (page == DEFAULT_PAGE) adapter.clear();
         switch (type) {
             case "university":
@@ -149,7 +154,7 @@ public class SearchFragment extends AbsListFragment {
                 callGetMajorApi(id, name, page);
                 break;
             case "subject":
-                callGetSubjectApi(id,name, page);
+                callGetSubjectApi(id, name, page);
                 break;
             case "professor":
                 callGetProfessorApi(id, name, page);

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by DavidHa on 2017. 2. 6..
  */
-public class ReviewModel implements Serializable {
+public class ReviewListModel implements Serializable {
     @SerializedName("review")
     public List<Review> reviews = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class ReviewModel implements Serializable {
 
     @Override
     public String toString() {
-        return "ReviewModel{" +
+        return "ReviewListModel{" +
                 "reviews=" + reviews +
                 '}';
     }

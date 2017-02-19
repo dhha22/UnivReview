@@ -14,7 +14,7 @@ import rx.Observable;
  * Created by DavidHa on 2017. 1. 3..
  */
 public interface TokenService {
-    @PUT("token")
+    @PUT("userToken")
     Observable<Token> refreshToken(@HeaderMap Map<String, String> headers);
 
     @POST("tempToken")

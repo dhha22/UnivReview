@@ -2,7 +2,8 @@ package com.univreview.network;
 
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
-import com.univreview.model.ReviewModel;
+import com.univreview.model.ReviewListModel;
+import com.univreview.model.ReviewSingleModel;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -15,11 +16,11 @@ import rx.Observable;
  */
 public interface ReviewService {
     @GET("review")
-    Observable<ReviewModel> getReviews(@Query("subjectId") int subjectId);
+    Observable<ReviewListModel> getReviews(@Query("subjectId") int subjectId);
 
     @POST("review")
-    Observable<ReviewModel> postSimpleReview(@Body Review body);
+    Observable<ReviewSingleModel> postSimpleReview(@Body Review body);
 
-    @POST("reviewdetail")
-    Observable<ReviewModel> postDetailReview(@Body ReviewDetail body);
+    @POST("reviewDetail")
+    Observable<ReviewSingleModel> postDetailReview(@Body ReviewDetail body);
 }

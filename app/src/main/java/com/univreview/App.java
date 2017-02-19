@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import com.univreview.adapter.KakaoSDKAdapter;
 import com.univreview.log.Logger;
 import com.univreview.util.SecurityUtil;
+import com.univreview.util.SharedPreferencesActivity;
 import com.univreview.util.TimeUtil;
 
 import org.bouncycastle.util.encoders.Base64;
@@ -31,9 +32,11 @@ public class App extends Application {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     public static Context context;
+    public static SharedPreferencesActivity pref;
     public static final Gson gson = new Gson();
     public static Picasso picasso;
     public static long UNIVERSITY_ID = 1;
+    public static String userToken;
 
     @Override
     public void onCreate() {
@@ -48,12 +51,15 @@ public class App extends Application {
                 .downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE))
                 .build();
 
+        pref = new SharedPreferencesActivity(this);
         Picasso.setSingletonInstance(picasso);
 
         SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
 
         Logger.v("app_key_hash: " + SecurityUtil.getKeyHash(context));
+
+        init();
     }
 
     public static Activity getCurrentActivity() {
@@ -69,6 +75,14 @@ public class App extends Application {
         if (instance == null)
             throw new IllegalStateException("this application does not inherit com.kakao.GlobalApplication");
         return instance;
+    }
+
+    public static void setUserToken(String token){
+        pref.savePreferences("userToken", token);
+    }
+
+    public static void init() {
+        userToken = pref.getPreferences("userToken", null);
     }
 
     public static Map<String, String> setAuthHeader(String token) {
@@ -94,7 +108,7 @@ public class App extends Application {
         try {
             apiToken = URLEncoder.encode(Base64.toBase64String((token + ";" + appVersion + ";" +
                     timeStamp + ";" + apiSignature).getBytes()), "UTF-8");
-            Logger.v("api token: " + apiToken);
+            Logger.v("api userToken: " + apiToken);
             return apiToken;
         } catch (UnsupportedEncodingException e) {
             return null;

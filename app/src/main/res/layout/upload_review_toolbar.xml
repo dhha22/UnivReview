@@ -14,13 +14,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center">
 
             <ImageButton
                 android:id="@+id/back_btn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_back" />
 
@@ -28,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="14dp"
+                android:gravity="center"
                 android:layout_weight="1"
                 android:text="리뷰 쓰기"
                 android:textColor="@color/white"
@@ -51,13 +50,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
+            android:layout_marginTop="12dp"
+            android:background="@color/colorPrimaryLight"
             android:hint="과목"
+            android:textColorHint="@color/white"
             android:paddingBottom="10dp"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="10dp"
+            android:textColor="@color/white"
             android:textSize="14dp" />
 
         <TextView
@@ -66,8 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_marginTop="12dp"
-            android:background="@color/white"
+            android:background="@color/colorPrimaryLight"
             android:hint="교수"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:paddingBottom="10dp"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"

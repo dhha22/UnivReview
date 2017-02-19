@@ -195,7 +195,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     private void callRegisterApi(Register register, Token token){
-        Logger.v("token: " + token);
+        Logger.v("userToken: " + token);
         Logger.v("register : " + register);
         Retro.instance.userService().register(App.setAuthHeader(token.getToken()), register)
                 .subscribeOn(Schedulers.io())

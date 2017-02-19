@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.network.Retro;
@@ -59,6 +60,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
     }
 
     private void registerReview(long reviewId){
+        Logger.v("review Detail");
         ReviewDetail reviewDetail = new ReviewDetail();
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();

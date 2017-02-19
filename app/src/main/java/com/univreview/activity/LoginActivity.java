@@ -55,6 +55,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(App.userToken != null){
+            Navigator.goMain(this);
+        }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         progressDialog = Util.progressDialog(this);
@@ -205,10 +208,14 @@ public class LoginActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> progressDialog.dismiss())
-                .subscribe(result -> Navigator.goMain(this),
+                .subscribe(result -> response(result.getToken()),
                         error -> loginErrorResponse(error, new Register(userType, userId, accessToken, nickName, profileURL)));
     }
 
+    private void response(String token){
+        App.setUserToken(token);
+        Navigator.goMain(this);
+    }
 
 
     private void loginErrorResponse(Throwable error, Register register) {

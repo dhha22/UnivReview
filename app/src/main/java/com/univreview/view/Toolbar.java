@@ -45,6 +45,7 @@ public class Toolbar extends FrameLayout {
     }
 
     public void setOnConfirmListener(OnClickListener clickListener){
+        okBtn.setOnClickListener(clickListener);
         if(clickListener != null){
             okBtn.setVisibility(VISIBLE);
         }else{

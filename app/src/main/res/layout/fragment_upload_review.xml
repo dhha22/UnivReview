@@ -19,7 +19,7 @@
             android:paddingBottom="16dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:paddingTop="16dp">
+            android:paddingTop="24dp">
 
 
             <TextView

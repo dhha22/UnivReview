@@ -27,11 +27,11 @@ public class Review extends AbstractDataProvider implements Serializable{
     @Expose
     public String reviewDetail;
     @Expose
-    public int subjectId;
+    public long subjectId;
     @Expose
-    public int userId;
+    public long userId;
     @Expose
-    public int professorId;
+    public long professorId;
 
     @Expose
     public User user = new User();
@@ -49,11 +49,44 @@ public class Review extends AbstractDataProvider implements Serializable{
         return null;
     }
 
-    public boolean checkReviewRating() {
-        if (difficultyRate != 0 && assignmentRate != 0
-                && attendanceRate != 0 && gradeRate != 0 && achievementRate != 0) {
-            return true;
+
+    public String getAlertMessage(){
+        if(subjectId == 0){
+            return "과목을 입력해주세요.";
+        }else if(professorId == 0){
+            return "교수명을 입력해주세요.";
+        }else if(difficultyRate == 0){
+            return "난이도를 평가해주세요.";
+        }else if(assignmentRate == 0){
+            return "과제량을 평가해주세요.";
+        }else if(attendanceRate == 0){
+            return "출석체크를 평가해주세요.";
+        }else if(gradeRate == 0){
+            return "학점을 평가해주세요.";
+        }else if(achievementRate == 0){
+            return "성취감을 평가해주세요.";
+        }else{
+            return null;
         }
-        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", difficultyRate=" + difficultyRate +
+                ", assignmentRate=" + assignmentRate +
+                ", attendanceRate=" + attendanceRate +
+                ", gradeRate=" + gradeRate +
+                ", achievementRate=" + achievementRate +
+                ", createdDate='" + createdDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", reviewDetail='" + reviewDetail + '\'' +
+                ", subjectId=" + subjectId +
+                ", userId=" + userId +
+                ", professorId=" + professorId +
+                ", user=" + user +
+                ", professor=" + professor +
+                '}';
     }
 }
