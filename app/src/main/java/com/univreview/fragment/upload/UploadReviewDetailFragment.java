@@ -13,6 +13,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.network.Retro;
+import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
 
 import butterknife.BindView;
@@ -27,6 +28,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
     @BindView(R.id.review_item) ReviewItemView reviewItemView;
     @BindView(R.id.input_review) EditText inputReview;
     private Review review;
+    private ReviewDetail reviewDetail;
 
     public static UploadReviewDetailFragment newInstance(Review review){
         UploadReviewDetailFragment fragment = new UploadReviewDetailFragment();
@@ -60,15 +62,15 @@ public class UploadReviewDetailFragment extends BaseFragment {
         reviewItemView.setData(review);
     }
 
-    private void registerReview(long reviewId){
+    private void registerReview(long reviewId) {
         Logger.v("review Detail");
-        ReviewDetail reviewDetail = new ReviewDetail();
+        reviewDetail = new ReviewDetail();
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();
-        if(reviewDetail.checkReviewDetail()){
+        if (reviewDetail.getAlertMessage() == null) {
             callPostReviewDetail(reviewDetail);
-        }else{
-            //error msg
+        } else {
+            Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
         }
     }
 
@@ -76,12 +78,9 @@ public class UploadReviewDetailFragment extends BaseFragment {
         Retro.instance.reviewService().postDetailReview(reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(), error -> errorResponse());
+                .subscribe(result -> activity.onBackPressed(), error -> errorResponse());
     }
 
-    private void response(){
-
-    }
 
     private void errorResponse(){
 

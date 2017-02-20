@@ -36,6 +36,7 @@ public class PointListFragment extends AbsListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
+        toolbar.setTitleTxt("포인트");
         recyclerView = new UnivReviewRecyclerView(context);
         recyclerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
