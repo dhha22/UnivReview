@@ -1,6 +1,7 @@
 package com.univreview.network;
 
 import com.univreview.App;
+import com.univreview.BuildConfig;
 import com.univreview.model.ResponseModel;
 import com.univreview.model.Token;
 import com.univreview.util.Util;
@@ -19,7 +20,9 @@ import rx.Observable;
  */
 public enum Retro {
     instance;
-    private final String BASE_URL = "http://52.78.219.48/api/";
+    private String BASE_URL;
+    private final String TEST_URL = "http://alpha-api.8hakgoon.com/api/";
+    private final String REAL_URL = "https://api.8hakgoon.com/api/";
     private final String VERSION = "v1/";
     private UserService userService;
     private LoginService loginService;
@@ -29,6 +32,13 @@ public enum Retro {
 
     Retro() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        if (BuildConfig.DEBUG) {
+            BASE_URL = TEST_URL;
+            // BASE_URL = REAL_URL;
+        } else {
+            BASE_URL = REAL_URL;
+        }
 
         builder.addInterceptor(chain -> chain.proceed(chain.request().newBuilder()
                 .header("Content-Type", "application/json")

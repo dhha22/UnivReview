@@ -2,14 +2,14 @@
 <tabs>
     <tab
         id="@+id/tab_home"
-        icon="@mipmap/ic_launcher"
-        title="Home" />
+        icon="@drawable/ic_navi_home"
+        title="홈" />
     <tab
         id="@+id/tab_upload"
-        icon="@mipmap/ic_launcher"
-        title="Upload" />
+        icon="@drawable/ic_navi_write"
+        title="리뷰작성" />
     <tab
         id="@+id/tab_mypage"
-        icon="@mipmap/ic_launcher"
-        title="MyPage" />
+        icon="@drawable/ic_navi_mypage"
+        title="마이페이지" />
 </tabs>

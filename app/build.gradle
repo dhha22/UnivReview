@@ -19,9 +19,14 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
-    dexOptions { jumboMode true }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+
 
     buildTypes {
         release {
@@ -45,6 +50,7 @@ dependencies {
     //util
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.roughike:bottom-bar:2.0.2'
+    compile "me.henrytao:smooth-app-bar-layout:24.1.0.0"
     //image
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'

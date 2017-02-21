@@ -63,8 +63,8 @@ public class UploadReviewFragment extends BaseFragment {
         review = new Review();
         backBtn.setOnClickListener(v -> activity.onBackPressed());
         okBtn.setOnClickListener(v -> registerReview());
-        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString()));
-        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString()));
+        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), false));
+        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), false));
     }
 
 

@@ -54,6 +54,8 @@ public class HomeFragment extends BaseFragment {
     private void init() {
 
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
+        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), true));
+        majorTxt.setOnClickListener(v -> Navigator.goSearch(context, "major", majorTxt.getText().toString(), true));
         collapseBtn.setOnClickListener(v -> setCollapseBtnState());
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
@@ -80,16 +82,17 @@ public class HomeFragment extends BaseFragment {
 
     private void setSubjectState(boolean isExpand) {
         if (!isExpand) {
-            isExpand = true;
+            this.isExpand = true;
             appBarLayout.setExpanded(true, true);
         } else {
-            Navigator.goSearch(context, "subject", subjectTxt.getText().toString());
+            Logger.v("go search");
+            Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), true);
         }
         setSearchFormData(isExpand);
     }
 
     private void setCollapseBtnState() {
-        isExpand = false;
+       this. isExpand = false;
         appBarLayout.setExpanded(false, true);
         setSearchFormData(isExpand);
     }

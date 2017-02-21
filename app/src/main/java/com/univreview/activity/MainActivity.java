@@ -1,19 +1,33 @@
 package com.univreview.activity;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.roughike.bottombar.BottomBar;
+import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.HomeFragment;
 import com.univreview.fragment.MypageFragment;
+import com.univreview.log.Logger;
+import com.univreview.widget.NonSwipeableViewPager;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.bottom_bar) BottomBar bottomBar;
+    @BindView(R.id.viewpager) NonSwipeableViewPager viewPager;
+    private PagerAdapter adapter;
+    private static final int INDEX_HOME = 0;
+    private static final int INDEX_MYPAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +37,43 @@ public class MainActivity extends BaseActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
+        adapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(adapter.getCount());
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Logger.v("main page position: " + position);
+                if (position < 1) {
+                    bottomBar.selectTabAtPosition(position);
+                } else {
+                    bottomBar.selectTabAtPosition(position + 1);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         bottomBar.setOnTabSelectListener(tabId -> {
-            switch (tabId){
+            switch (tabId) {
                 case R.id.tab_home:
-                    replaceFragment(HomeFragment.newInstance());
+                    viewPager.setCurrentItem(INDEX_HOME, false);
                     break;
                 case R.id.tab_upload:
+                    int position = viewPager.getCurrentItem() <1 ? viewPager.getCurrentItem() : viewPager.getCurrentItem() + 1;
+                    new Handler().postDelayed(() -> bottomBar.selectTabAtPosition(position), 200);
                     Navigator.goUploadReview(this);
                     break;
                 case R.id.tab_mypage:
-                    replaceFragment(MypageFragment.newInstance());
+                    viewPager.setCurrentItem(INDEX_MYPAGE, false);
                     break;
             }
         });
@@ -48,8 +87,33 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment){
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame, fragment, fragment.getClass().getName()).commit();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.setCurrentActivity(this);
+    }
+
+    private class PagerAdapter extends FragmentStatePagerAdapter {
+        private List<Fragment> fragmentList = Arrays.asList(HomeFragment.newInstance(), MypageFragment.newInstance(App.userId));
+
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentList.size();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
     }
 }

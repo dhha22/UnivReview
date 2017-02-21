@@ -93,54 +93,54 @@ public class RegisterUnivInfoFragment extends BaseFragment {
             majorLayout.setVisibility(View.VISIBLE);
             nextBtn.setText("확인");
             nextBtn.setOnClickListener(v -> {
-                if (formVerification(NEXT)) callTempTokenApi(register);
+                if (formVerification(STUDENT, NEXT)) callTempTokenApi(register);
             });
 
         } else if (state == PROFESSOR) {
             nextBtn.setText("교수님 인증하기");
             nextBtn.setOnClickListener(v -> {
-                if (formVerification(NEXT)) Navigator.goRegisterUserIdentity(context);
+                if (formVerification(PROFESSOR, NEXT)) Navigator.goRegisterUserIdentity(context);
             });
             majorLayout.setVisibility(View.GONE);
         }
 
         universityTxt.setOnClickListener(v -> {
-            if (formVerification(UNIVERSITY)) {
-                Navigator.goSearch(getActivity(), "university", universityTxt.getText().toString());
+            if (formVerification(STUDENT, UNIVERSITY)) {
+                Navigator.goSearch(getActivity(), "university", universityTxt.getText().toString(), false);
             }
         });
 
         departmentTxt.setOnClickListener(v -> {
-            if (formVerification(DEPARTMENT)) {
+            if (formVerification(STUDENT, DEPARTMENT)) {
                 Navigator.goSearch(getActivity(), "department",
-                        register.universityId, departmentTxt.getText().toString());
+                        register.universityId, departmentTxt.getText().toString(), false);
             }
         });
 
         majorTxt.setOnClickListener(v -> {
-            if (formVerification(MAJOR)) {
+            if (formVerification(STUDENT, MAJOR)) {
                 Logger.v("register department id: " + register.departmentId);
                 Navigator.goSearch(getActivity(), "major",
-                        register.departmentId, majorTxt.getText().toString());
+                        register.departmentId, majorTxt.getText().toString(), false);
             }
         });
 
         buttonStateManager.clickButton(state);
     }
 
-    private boolean formVerification(int clickPosition) {
+    private boolean formVerification(int state, int clickPosition) {
         if (universityTxt.getText().length() == 0) {
-            return showAlertDialog(clickPosition, UNIVERSITY);
+            return showAlertDialog(state, clickPosition, UNIVERSITY);
         } else if (departmentTxt.getText().length() == 0) {
-            return showAlertDialog(clickPosition, DEPARTMENT);
+            return showAlertDialog(state, clickPosition, DEPARTMENT);
         } else if (majorTxt.getText().length() == 0) {
-            return showAlertDialog(clickPosition, MAJOR);
+            return showAlertDialog(state, clickPosition, MAJOR);
         }else{
             return true;
         }
     }
 
-    private boolean showAlertDialog(int clickPosition, int position) {
+    private boolean showAlertDialog(int state, int clickPosition, int position) {
         if (clickPosition <= position) {
             return true;
         } else {
@@ -148,7 +148,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                 Util.simpleMessageDialog(context, "대학을 선택해주세요.");
             } else if (position == DEPARTMENT) {
                 Util.simpleMessageDialog(context, "학과군을 선택해주세요.");
-            } else if (position == MAJOR) {
+            } else if (position == MAJOR && state != PROFESSOR) {
                 Util.simpleMessageDialog(context, "전공을 선택해주세요.");
             }
             return false;

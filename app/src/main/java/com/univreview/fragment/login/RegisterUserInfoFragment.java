@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RegisterUserInfoFragment extends BaseFragment {
     @BindView(R.id.profile_image_layout) RelativeLayout profileImageLayout;
     @BindView(R.id.profile_image) CircleImageView profileImage;
-    @BindView(R.id.input_name) TextView inputName;
+    @BindView(R.id.input_name) EditText inputName;
     @BindView(R.id.next_btn) Button nextBtn;
     private Register register;
     private SimpleButtonState buttonState;
@@ -95,6 +96,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
                     .into(profileImage);
         }
         inputName.setText(register.nickName);
+        inputName.setSelection(register.nickName.length());
         buttonState.setButtonState(true);
     }
 

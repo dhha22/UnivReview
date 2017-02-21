@@ -31,7 +31,7 @@
             android:src="@drawable/ic_profile_camera" />
     </RelativeLayout>
 
-    <TextView
+    <EditText
         android:id="@+id/input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,9 @@
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginTop="60dp"
+        android:background="@color/transparent"
         android:gravity="center"
+        android:padding="8dp"
         android:text="test"
         android:textSize="18dp" />
 
@@ -50,7 +52,6 @@
         android:layout_below="@id/input_name"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary" />
 
 

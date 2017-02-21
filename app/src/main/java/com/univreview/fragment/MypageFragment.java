@@ -14,13 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.log.Logger;
 import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.ActivityResultEvent;
+import com.univreview.model.ProfileModel;
 import com.univreview.model.Setting;
+import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.ImageUtil;
 import com.univreview.view.SettingItemView;
 
@@ -39,13 +43,29 @@ public class MypageFragment extends BaseFragment {
     private static final int MY_REVIEW = 0;
     private static final int POINT = 1;
     @BindView(R.id.profile_image_layout) RelativeLayout profileImageLayout;
+    @BindView(R.id.profile_image) ImageView profileImage;
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.department_txt) TextView departmentTxt;
+    @BindView(R.id.major_txt) TextView majorTxt;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
-    public static MypageFragment newInstance(){
+    private MyPageAdapter adapter;
+    private long userId;
+
+
+    public static MypageFragment newInstance(long userId) {
         MypageFragment fragment = new MypageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong("userId", userId);
+        fragment.setArguments(bundle);
         return fragment;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        userId = getArguments().getLong("userId");
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,7 +80,7 @@ public class MypageFragment extends BaseFragment {
 
     private void init() {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        MyPageAdapter adapter = new MyPageAdapter(context);
+        adapter = new MyPageAdapter(context);
         recyclerView.setAdapter(adapter);
         Observable.from(Arrays.asList(new Setting("My 리뷰"), new Setting("포인트")))
                 .subscribeOn(Schedulers.io())
@@ -77,6 +97,29 @@ public class MypageFragment extends BaseFragment {
             }
         });
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        callProfileApi(userId);
+    }
+
+    public void setUserData(ProfileModel profileModel){
+        nameTxt.setText(profileModel.user.name);
+        departmentTxt.setText(profileModel.department.getName());
+        majorTxt.setText(profileModel.major.getName());
+        App.picasso.load(profileModel.user.studentImageUrl)
+                .fit()
+                .into(profileImage);
+
+        //review count
+        //point count
+        Observable.from(Arrays.asList(new Setting("32개"), new Setting(profileModel.user.point + "point")))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> adapter.addItem(result), Logger::e);
+
     }
 
     private class MyPageAdapter extends CustomAdapter{
@@ -125,5 +168,13 @@ public class MypageFragment extends BaseFragment {
 
         }
 
+    }
+
+    private void callProfileApi(Long userId) {
+        if(userId == 0l) userId = null;
+        Retro.instance.userService().getProfile(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> setUserData(result), ErrorUtils::parseError);
     }
 }

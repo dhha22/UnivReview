@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
@@ -48,22 +49,16 @@ public class SearchFragment extends AbsListFragment {
     private String type;
     private SearchAdapter adapter;
     private Long id;
+    private boolean isReviewSearch;
 
 
-    public static SearchFragment newInstance(String type, long id) {
+
+    public static SearchFragment newInstance(String type, long id, String name, boolean isReviewSearch) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
         bundle.putLong("id", id);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    public static SearchFragment newInstance(String type, long id, String name) {
-        SearchFragment fragment = new SearchFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("type", type);
-        bundle.putLong("id", id);
+        bundle.putBoolean("isReviewSearch", isReviewSearch);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,6 +68,7 @@ public class SearchFragment extends AbsListFragment {
         super.onCreate(savedInstanceState);
         type = getArguments().getString("type");
         id = getArguments().getLong("id");
+        isReviewSearch = getArguments().getBoolean("isReviewSearch");
     }
 
     @Nullable
@@ -110,14 +106,19 @@ public class SearchFragment extends AbsListFragment {
         });
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
-            Intent intent = new Intent();
-            Logger.v("id : " + adapter.getItem(position).getId());
-            Logger.v("type : " + type);
-            intent.putExtra("id", adapter.getItem(position).getId());
-            intent.putExtra("name", adapter.getItem(position).getName());
-            intent.putExtra("type", type);
-            getActivity().setResult(getActivity().RESULT_OK, intent);
-            getActivity().onBackPressed();
+            if (isReviewSearch) {
+                Navigator.goReviewList(context, type, id);
+                activity.finish();
+            } else {
+                Intent intent = new Intent();
+                Logger.v("id : " + adapter.getItem(position).getId());
+                Logger.v("type : " + type);
+                intent.putExtra("id", adapter.getItem(position).getId());
+                intent.putExtra("name", adapter.getItem(position).getName());
+                intent.putExtra("type", type);
+                getActivity().setResult(getActivity().RESULT_OK, intent);
+                getActivity().onBackPressed();
+            }
         });
     }
 
@@ -267,6 +268,7 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void callGetProfessorApi(Long departmentId, String name, int page) {
+        if(departmentId == 0) departmentId = null;
         Retro.instance.searchService().getProfessors(App.UNIVERSITY_ID, departmentId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -274,6 +276,8 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void callGetSubjectApi(Long majorId, String name, int page) {
+        if(majorId ==0) majorId = null;
+        Logger.v("major id: " + majorId);
         Retro.instance.searchService().getSubjects(App.UNIVERSITY_ID, majorId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

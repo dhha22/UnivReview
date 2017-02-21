@@ -12,6 +12,7 @@ import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.mypage.PointListFragment;
+import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
@@ -79,18 +80,27 @@ public class Navigator {
         context.startActivity(intent);
     }
 
+    //review
+    public static void goReviewList(Context context, String type, long id) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(ReviewListFragment.newInstance(type, id));
+        (context).startActivity(intent);
+    }
+
+
+
     //search
 
-    public static void goSearch(Context context, String type, String name){
+    public static void goSearch(Context context, String type, String name, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0));
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0, name, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
 
-    public static void goSearch(Context context, String type, long id, String name){
+    public static void goSearch(Context context, String type, long id, String name, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, id, name, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 

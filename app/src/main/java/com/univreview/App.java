@@ -36,6 +36,7 @@ public class App extends Application {
     public static final Gson gson = new Gson();
     public static Picasso picasso;
     public static long UNIVERSITY_ID = 1;
+    public static Long userId;
     public static String userToken;
 
     @Override
@@ -82,8 +83,14 @@ public class App extends Application {
         pref.savePreferences("userToken", token);
     }
 
+    public static void setUserId(String userId){
+        Logger.v("set user id: " + userId);
+        pref.savePreferences("userId", userId);
+    }
+
     public static void init() {
         userToken = pref.getPreferences("userToken", null);
+        userId = pref.getPreferences("userId", 0l);
         Logger.v("user token: " + userToken);
     }
 
