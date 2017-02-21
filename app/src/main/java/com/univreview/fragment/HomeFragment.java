@@ -78,6 +78,8 @@ public class HomeFragment extends BaseFragment {
         latestMajorRecyclerView.setLayoutManager(majorLayoutManager);
         latestCultureRecyclerView.setAdapter(cultureAdapter);
         latestMajorRecyclerView.setAdapter(majorAdapter);
+        latestCultureRecyclerView.setNestedScrollingEnabled(false);
+        latestMajorRecyclerView.setNestedScrollingEnabled(false);
     }
 
     private void setSubjectState(boolean isExpand) {
