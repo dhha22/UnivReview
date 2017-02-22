@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +65,10 @@ public class Toolbar extends FrameLayout {
 
     public void setTitleTxt(String title){
         titleTxt.setText(title);
+    }
+
+    public void setTitleColor(int id){
+        titleTxt.setTextColor(Util.getColor(context, id));
     }
 
     public void setCancelBtnVisibility(boolean isVisible) {

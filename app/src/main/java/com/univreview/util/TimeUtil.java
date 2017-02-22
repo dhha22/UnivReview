@@ -9,13 +9,23 @@ import java.util.Date;
 public class TimeUtil {
     private Date now;
     private SimpleDateFormat timeStamp;
+    private SimpleDateFormat basicFormat;
 
     public TimeUtil() {
         now = new Date();
         timeStamp = new SimpleDateFormat("yyyyMMddHHmmss");
+        basicFormat = new SimpleDateFormat("yyyy.MM.dd");
     }
 
-    public String getTimeStamp(){
+    public String getTimeStamp() {
         return timeStamp.format(now);
     }
+
+    public String getPointFormat(String dateStr) {
+        if (dateStr != null)
+            return basicFormat.format(dateStr);
+        return dateStr;
+    }
+
+
 }

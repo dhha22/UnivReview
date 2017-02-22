@@ -1,5 +1,6 @@
 package com.univreview.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -14,11 +15,20 @@ import android.widget.TextView;
 
 import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.adapter.LatestReviewAdapter;
+import com.univreview.adapter.CustomAdapter;
 import com.univreview.log.Logger;
+import com.univreview.model.AbstractDataProvider;
+import com.univreview.model.Review;
+import com.univreview.util.ErrorUtils;
+import com.univreview.view.LatestReviewItemView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 8..
@@ -116,6 +126,59 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    public class LatestReviewAdapter extends CustomAdapter {
 
+        public LatestReviewAdapter(Context context) {
+            super(context);
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(new LatestReviewItemView(context));
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ((ViewHolder) holder).v.setData((Review) list.get(position));
+        }
+
+        @Override
+        public Review getItem(int position) {
+            return (Review)list.get(position);
+        }
+
+        @Override
+        public void addItem(AbstractDataProvider item) {
+            list.add(item);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+
+        protected class ViewHolder extends RecyclerView.ViewHolder{
+            final LatestReviewItemView v;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                v = (LatestReviewItemView)itemView;
+            }
+        }
+    }
+
+    private void cultureResponse(List<Review> reviews){
+        Observable.from(reviews)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> cultureAdapter.addItem(result), ErrorUtils::parseError);
+    }
+
+    private void majorResponse(List<Review> reviews){
+        Observable.from(reviews)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> majorAdapter.addItem(result), ErrorUtils::parseError);
+    }
 
 }

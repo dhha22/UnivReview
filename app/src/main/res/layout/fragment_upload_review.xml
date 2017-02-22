@@ -17,8 +17,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="16dp"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
             android:paddingTop="24dp">
 
 
@@ -30,9 +30,9 @@
 
             <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/difficulty_rate"
+                style="@style/reviewRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/reviewRatingBar"
                 android:layout_marginTop="2dp"
                 android:numStars="5"
                 android:stepSize="1" />
@@ -46,9 +46,9 @@
 
             <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/assignment_rate"
+                style="@style/reviewRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/reviewRatingBar"
                 android:layout_marginTop="2dp"
                 android:numStars="5"
                 android:stepSize="1" />
@@ -57,14 +57,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="출석체크"
+                android:text="출석체크 빈도"
                 android:textSize="16dp" />
 
             <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/attendance_rate"
+                style="@style/reviewRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/reviewRatingBar"
                 android:layout_marginTop="2dp"
                 android:numStars="5"
                 android:stepSize="1" />
@@ -78,29 +78,40 @@
 
             <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/grade_rate"
+                style="@style/reviewRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                style="@style/reviewRatingBar"
                 android:numStars="5"
                 android:stepSize="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/rowColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="성취감"
-                android:textSize="16dp" />
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="14dp"
+                    android:text="총점"
+                    android:textSize="26dp" />
 
 
-            <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/achievement_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                style="@style/reviewRatingBar"
-                android:numStars="5"
-                android:stepSize="1" />
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/achievement_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:stepSize="1" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -33,6 +33,7 @@ import com.univreview.util.RevealAnimationSetting;
 import com.univreview.util.Util;
 import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
+import com.univreview.widget.PreCachingLayoutManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,7 +92,7 @@ public class SearchFragment extends AbsListFragment {
 
         //recycler view
         adapter = new SearchAdapter(context);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);

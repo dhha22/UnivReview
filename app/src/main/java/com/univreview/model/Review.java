@@ -39,6 +39,9 @@ public class Review extends AbstractDataProvider implements Serializable{
     @Expose
     public Professor professor = new Professor();
 
+    @Expose
+    public Subject subject = new Subject();
+
     @Override
     public long getId() {
         return id;
@@ -47,6 +50,74 @@ public class Review extends AbstractDataProvider implements Serializable{
     @Override
     public String getName() {
         return null;
+    }
+
+    public String getDifficultyRateMessage() {
+        switch ((int) difficultyRate) {
+            case 1:
+                return "아주 쉬움";
+            case 2:
+                return "쉬움";
+            case 3:
+                return "보통";
+            case 4:
+                return "어려움";
+            case 5:
+                return "매우 어려움";
+            default:
+                return "";
+        }
+    }
+
+    public String getAssignmentRateMessage() {
+        switch ((int) difficultyRate) {
+            case 1:
+                return "아주 적음";
+            case 2:
+                return "적음";
+            case 3:
+                return "보통";
+            case 4:
+                return "많음";
+            case 5:
+                return "매우 많음";
+            default:
+                return "";
+        }
+    }
+
+    public String getAttendanceRateMessage() {
+        switch ((int) difficultyRate) {
+            case 1:
+                return "거의 드묾";
+            case 2:
+                return "드묾";
+            case 3:
+                return "보통";
+            case 4:
+                return "잦음";
+            case 5:
+                return "너무 잦음";
+            default:
+                return "";
+        }
+    }
+
+    public String getGradeRateMessage() {
+        switch ((int) difficultyRate) {
+            case 1:
+                return "아주 쉬움";
+            case 2:
+                return "쉬움";
+            case 3:
+                return "보통";
+            case 4:
+                return "어려움";
+            case 5:
+                return "매우 어려움";
+            default:
+                return "";
+        }
     }
 
 
@@ -69,6 +140,7 @@ public class Review extends AbstractDataProvider implements Serializable{
             return null;
         }
     }
+
 
     @Override
     public String toString() {

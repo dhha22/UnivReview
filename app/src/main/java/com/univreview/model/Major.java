@@ -2,10 +2,12 @@ package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
-public class Major extends AbstractDataProvider{
+public class Major extends AbstractDataProvider implements Serializable {
     @Expose
     public long id;
     @Expose
@@ -19,5 +21,13 @@ public class Major extends AbstractDataProvider{
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Major{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

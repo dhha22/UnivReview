@@ -9,21 +9,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
+import com.univreview.listener.EndlessRecyclerViewScrollListener;
+import com.univreview.log.Logger;
 import com.univreview.model.AbstractDataProvider;
+import com.univreview.model.PointHistory;
 import com.univreview.util.Util;
 import com.univreview.view.AbsRecyclerView;
 import com.univreview.view.PointItemView;
 import com.univreview.view.UnivReviewRecyclerView;
+import com.univreview.widget.PreCachingLayoutManager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by DavidHa on 2017. 2. 17..
  */
 public class PointListFragment extends AbsListFragment {
-    private UnivReviewRecyclerView recyclerView;
+    @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
+    @BindView(R.id.total_point_txt) TextView totalPointTxt;
     private PointAdapter adapter;
 
     public static PointListFragment newInstance(){
@@ -34,26 +44,40 @@ public class PointListFragment extends AbsListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_point_list, container, false);
+        ButterKnife.bind(this, view);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("포인트");
-        recyclerView = new UnivReviewRecyclerView(context);
-        recyclerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        toolbar.setTitleColor(R.color.white);
+
         adapter = new PointAdapter(context);
+        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
-        rootLayout.addView(recyclerView);
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onScrolled(RecyclerView view, int dx, int dy) {
+                super.onScrolled(view, dx, dy);
+                if (getLastVisibleItemPosition() == getTotalItemCount() - 1) {
+                    lastItemExposed();
+                }
+            }
+        });
+        rootLayout.addView(view);
         return rootLayout;
     }
 
     @Override
     public void loadMore() {
-
+        setStatus(Status.REFRESHING);
     }
 
     @Override
     public void refresh() {
-
+        Logger.v("load more");
+        Logger.v("page: " + page);
+        setStatus(Status.LOADING_MORE);
     }
 
     @Override
@@ -61,7 +85,7 @@ public class PointListFragment extends AbsListFragment {
         return recyclerView;
     }
 
-    private class PointAdapter extends CustomAdapter{
+    private class PointAdapter extends CustomAdapter {
 
         public PointAdapter(Context context) {
             super(context);
@@ -74,12 +98,12 @@ public class PointListFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder)holder).v.setData();
+            ((ViewHolder) holder).v.setData((PointHistory) list.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return 5;
+            return list.size();
         }
 
         @Override
@@ -92,12 +116,17 @@ public class PointListFragment extends AbsListFragment {
             return null;
         }
 
-        protected class ViewHolder extends RecyclerView.ViewHolder{
+        protected class ViewHolder extends RecyclerView.ViewHolder {
             final PointItemView v;
+
             public ViewHolder(View itemView) {
                 super(itemView);
-                v = (PointItemView)itemView;
+                v = (PointItemView) itemView;
             }
         }
+    }
+
+    private void callGetPointHistory(){
+
     }
 }

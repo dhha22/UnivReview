@@ -47,9 +47,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
         android:text="review"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,14 +69,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="난이도"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/difficulty_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.5"
-                android:textSize="18dp" />
+                android:layout_margin="4dp"
+                android:textSize="14dp" />
 
         </LinearLayout>
 
@@ -92,14 +92,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="과제량"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/assignment_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.5"
-                android:textSize="18dp" />
+                android:layout_margin="4dp"
+                android:textSize="14dp" />
+
 
         </LinearLayout>
 
@@ -115,14 +116,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="출석체크"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/attendance_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.5"
-                android:textSize="18dp" />
+                android:layout_margin="4dp"
+                android:textSize="14dp" />
+
 
         </LinearLayout>
 
@@ -138,14 +140,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="학점"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/grade_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.5"
-                android:textSize="18dp" />
+                android:layout_margin="4dp"
+                android:textSize="14dp" />
+
 
         </LinearLayout>
 
@@ -161,14 +164,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="성취감"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/achievement_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.5"
-                android:textSize="18dp" />
+                android:layout_margin="4dp"
+                android:textSize="14dp" />
+
 
         </LinearLayout>
 

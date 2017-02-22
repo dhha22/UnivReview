@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.univreview.R;
 import com.univreview.model.Review;
+import com.univreview.util.TimeUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,11 +59,11 @@ public class ReviewItemView extends FrameLayout {
                 }
                 reviewTxt.setText(review.reviewDetail);
             }
-            timeTxt.setText(review.createdDate);
-            difficultyTxt.setText(String.valueOf(review.difficultyRate));
-            assignmentTxt.setText(String.valueOf(review.assignmentRate));
-            attendanceTxt.setText(String.valueOf(review.attendanceRate));
-            gradeTxt.setText(String.valueOf(review.gradeRate));
+            timeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
+            difficultyTxt.setText(review.getDifficultyRateMessage());
+            assignmentTxt.setText(review.getAssignmentRateMessage());
+            attendanceTxt.setText(review.getAttendanceRateMessage());
+            gradeTxt.setText(review.getGradeRateMessage());
             achievementTxt.setText(String.valueOf(review.achievementRate));
 
         }

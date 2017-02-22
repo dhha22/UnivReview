@@ -83,7 +83,7 @@ public class App extends Application {
         pref.savePreferences("userToken", token);
     }
 
-    public static void setUserId(String userId){
+    public static void setUserId(long userId){
         Logger.v("set user id: " + userId);
         pref.savePreferences("userId", userId);
     }

@@ -3,6 +3,7 @@ package com.univreview.network;
 import com.univreview.model.Login;
 import com.univreview.model.ResponseModel;
 import com.univreview.model.Token;
+import com.univreview.model.UserModel;
 
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface LoginService {
     // 인증이 안된 유저 : 401
     // 회원이 아닌 유저 : 404
     @POST("auth")
-    Observable<Token> login(@HeaderMap Map<String, String> headers, @Body Login login);
+    Observable<UserModel> login(@HeaderMap Map<String, String> headers, @Body Login login);
 
     @DELETE("auth")
     Observable<ResponseModel> logout();

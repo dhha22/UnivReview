@@ -29,6 +29,7 @@ import com.univreview.R;
 import com.univreview.log.Logger;
 import com.univreview.model.Login;
 import com.univreview.model.Register;
+import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
@@ -57,6 +58,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if(App.userToken != null){
             Navigator.goMain(this);
+            finish();
         }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -208,13 +210,14 @@ public class LoginActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> progressDialog.dismiss())
-                .subscribe(result -> response(result.getToken()),
+                .subscribe(result -> response(result),
                         error -> loginErrorResponse(error, new Register(userType, userId, accessToken, nickName, profileURL)));
     }
 
-    private void response(String token){
-        Logger.v("response: " + token);
-        App.setUserToken(token);
+    private void response(UserModel userModel){
+        Logger.v("response: " + userModel);
+        App.setUserId(userModel.user.id);
+        App.setUserToken(userModel.auth.getToken());
         Navigator.goMain(this);
     }
 

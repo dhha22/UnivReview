@@ -3,7 +3,6 @@ package com.univreview.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import com.univreview.adapter.CustomAdapter;
 import com.univreview.log.Logger;
 import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.ActivityResultEvent;
-import com.univreview.model.ProfileModel;
+import com.univreview.model.UserModel;
 import com.univreview.model.Setting;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
@@ -29,6 +28,7 @@ import com.univreview.util.ImageUtil;
 import com.univreview.view.SettingItemView;
 
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,17 +105,19 @@ public class MypageFragment extends BaseFragment {
         callProfileApi(userId);
     }
 
-    public void setUserData(ProfileModel profileModel){
-        nameTxt.setText(profileModel.user.name);
-        departmentTxt.setText(profileModel.department.getName());
-        majorTxt.setText(profileModel.major.getName());
-        App.picasso.load(profileModel.user.studentImageUrl)
+    public void setUserData(UserModel userModel){
+        Logger.v(userModel.toString());
+        nameTxt.setText(userModel.user.name);
+        departmentTxt.setText(userModel.user.department.getName());
+        majorTxt.setText(userModel.user.major.getName());
+        App.picasso.load(userModel.user.studentImageUrl)
                 .fit()
                 .into(profileImage);
 
         //review count
         //point count
-        Observable.from(Arrays.asList(new Setting("32개"), new Setting(profileModel.user.point + "point")))
+        adapter.clear();
+        Observable.from(Arrays.asList(new Setting("32개"), new Setting(userModel.user.point + "point")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
@@ -123,6 +125,7 @@ public class MypageFragment extends BaseFragment {
     }
 
     private class MyPageAdapter extends CustomAdapter{
+        private List<String> titles = Arrays.asList("My 리뷰", "포인트");
 
         public MyPageAdapter(Context context) {
             super(context);
@@ -135,7 +138,8 @@ public class MypageFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder)holder).v.setTitle(list.get(position).getName());
+            ((ViewHolder) holder).v.setTitle(titles.get(position));
+            ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
         }
 
         @Override
@@ -171,8 +175,9 @@ public class MypageFragment extends BaseFragment {
     }
 
     private void callProfileApi(Long userId) {
-        if(userId == 0l) userId = null;
-        Retro.instance.userService().getProfile(userId)
+        if (userId == 0l) userId = null;
+        Logger.v("user id: " + userId);
+        Retro.instance.userService().getProfile(App.setAuthHeader(App.userToken), userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> setUserData(result), ErrorUtils::parseError);
