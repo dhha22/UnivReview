@@ -21,11 +21,22 @@ public abstract class CustomAdapter extends RecyclerView.Adapter {
 
     protected List<AbstractDataProvider> list = new ArrayList<>();
     protected OnItemClickListener itemClickListener;
-    public abstract AbstractDataProvider getItem(int position);
 
-    public abstract void addItem(AbstractDataProvider item);
+    public AbstractDataProvider getItem(int position) {
+        if (list.size() > position) {
+            return list.get(position);
+        }
+        return null;
+    }
+
+    public void addItem(AbstractDataProvider item){
+        list.add(item);
+        notifyDataSetChanged();
+    }
 
     public void setItem(int position, AbstractDataProvider item) {
+        list.set(position, item);
+        notifyDataSetChanged();
     }
 
     public void clear() {

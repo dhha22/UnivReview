@@ -1,8 +1,10 @@
 package com.univreview.network;
 
+import com.univreview.model.PointHistory;
 import com.univreview.model.UserModel;
 import com.univreview.model.Register;
 import com.univreview.model.ResponseModel;
+import com.univreview.model.UserTicket;
 
 import java.util.Map;
 
@@ -26,6 +28,12 @@ public interface UserService {
     @GET("profile/{userId}")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers, @Path("userId") Long userId);
 
-   /* @GET("pointHistory")
-    Observable<>*/
+
+    //point
+    @GET("pointHistory")
+    Observable<PointHistory> getPoint();
+
+    @GET("userTicket/{userId}")
+    Observable<UserTicket> getUserTicket();
+
 }

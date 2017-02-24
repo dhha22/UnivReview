@@ -101,15 +101,7 @@ public class PointListFragment extends AbsListFragment {
             ((ViewHolder) holder).v.setData((PointHistory) list.get(position));
         }
 
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
 
-        @Override
-        public void addItem(AbstractDataProvider item) {
-
-        }
 
         @Override
         public AbstractDataProvider getItem(int position) {

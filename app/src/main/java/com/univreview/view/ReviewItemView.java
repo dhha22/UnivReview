@@ -1,8 +1,10 @@
 package com.univreview.view;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -16,7 +18,7 @@ import butterknife.ButterKnife;
 /**
  * Created by DavidHa on 2017. 1. 23..
  */
-public class ReviewItemView extends FrameLayout {
+public class ReviewItemView extends CardView {
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMarkTxt;
     @BindView(R.id.time_txt) TextView timeTxt;
@@ -39,6 +41,7 @@ public class ReviewItemView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true);
         ButterKnife.bind(this);
+        setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     public void setData(Review review) {
