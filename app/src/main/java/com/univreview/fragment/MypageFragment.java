@@ -142,17 +142,6 @@ public class MypageFragment extends BaseFragment {
             ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
         }
 
-        @Override
-        public AbstractDataProvider getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public void addItem(AbstractDataProvider item) {
-            list.add(item);
-            notifyDataSetChanged();
-        }
-
         protected class ViewHolder extends RecyclerView.ViewHolder{
             final SettingItemView v;
             public ViewHolder(View itemView) {

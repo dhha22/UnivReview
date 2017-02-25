@@ -4,12 +4,16 @@ import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Parcelable;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+
+import com.univreview.R;
 
 import java.io.Serializable;
 
@@ -53,6 +57,27 @@ public class AnimationUtils {
         });
         anim.setDuration(duration);
         anim.start();
+    }
+
+    public static void fadeIn(Context context, View view) {
+        if (view.getVisibility() == View.INVISIBLE || view.getVisibility() == View.GONE) {
+            Animation fadeInAnimation = android.view.animation.AnimationUtils.loadAnimation(context, R.anim.fade_in);
+            view.startAnimation(fadeInAnimation);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void fadeOut(Context context, View view){
+        if(view.getVisibility() == View.VISIBLE) {
+            Animation fadeInAnimation = android.view.animation.AnimationUtils.loadAnimation(context, R.anim.fade_out);
+            view.startAnimation(fadeInAnimation);
+            view.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void setScale(View view, float value){
+        view.setScaleX(value);
+        view.setScaleY(value);
     }
 }
 

@@ -153,11 +153,6 @@ public class HomeFragment extends BaseFragment {
             notifyDataSetChanged();
         }
 
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
-
         protected class ViewHolder extends RecyclerView.ViewHolder{
             final LatestReviewItemView v;
             public ViewHolder(View itemView) {

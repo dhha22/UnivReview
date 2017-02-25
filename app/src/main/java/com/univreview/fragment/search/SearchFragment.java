@@ -108,7 +108,8 @@ public class SearchFragment extends AbsListFragment {
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
             if (isReviewSearch) {
-                Navigator.goReviewList(context, type, id);
+                Navigator.goReviewList(context, type,
+                        adapter.getItem(position).getId(), adapter.getItem(position).getName());
                 activity.finish();
             } else {
                 Intent intent = new Intent();
@@ -218,21 +219,6 @@ public class SearchFragment extends AbsListFragment {
             ((ViewHolder) holder).v.setData(list.get(position).getName());
         }
 
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
-
-        @Override
-        public AbstractDataProvider getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public void addItem(AbstractDataProvider item) {
-            list.add(item);
-            notifyDataSetChanged();
-        }
 
 
         protected class ViewHolder extends RecyclerView.ViewHolder {
