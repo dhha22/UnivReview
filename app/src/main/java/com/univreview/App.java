@@ -80,11 +80,13 @@ public class App extends Application {
 
     public static void setUserToken(String token){
         Logger.v("set user token: " + token);
+        App.userToken = token;
         pref.savePreferences("userToken", token);
     }
 
     public static void setUserId(long userId){
         Logger.v("set user id: " + userId);
+        App.userId = userId;
         pref.savePreferences("userId", userId);
     }
 
@@ -96,27 +98,29 @@ public class App extends Application {
 
     public static Map<String, String> setAuthHeader(String token) {
         Map<String, String> map = new HashMap<>();
-        map.put("Authorization", App.makeApiToken(token, App.makeApiSignature()));
+        String timeStamp = new TimeUtil().getTimeStamp();
+        map.put("Authorization", App.makeApiToken(token, timeStamp, App.makeApiSignature(token, timeStamp)));
         return map;
     }
 
-    public static String makeApiSignature(){
+    public static String makeApiSignature(String token, String timeStamp) {
         String saltKey = "e7b35739643f6f595e1a3231666138ca";
-        String timeStamp = new TimeUtil().getTimeStamp();
         String appVersion = context.getResources().getString(R.string.app_version);
-        String apiSignature = SecurityUtil.cryptoSHA3(appVersion + ';' + timeStamp + ';' + saltKey);
-        Logger.v("signamture time stamp: " + timeStamp);
+        String apiSignature = SecurityUtil.cryptoSHA3(appVersion + ';' + timeStamp + ';' + saltKey + token);
+        Logger.v("signature time stamp: " + timeStamp);
         Logger.v("api signature: " + apiSignature);
         return apiSignature;
     }
 
-    public static String makeApiToken(String token, String apiSignature) {
-        String timeStamp = new TimeUtil().getTimeStamp();
+    public static String makeApiToken(String token, String timeStamp, String apiSignature) {
         String appVersion = context.getResources().getString(R.string.app_version);
         String apiToken;
         try {
-            apiToken = URLEncoder.encode(Base64.toBase64String((token + ";" + appVersion + ";" +
-                    timeStamp + ";" + apiSignature).getBytes()), "UTF-8");
+            Logger.v("time stamp: " + timeStamp);
+            Logger.v("token: " + token);
+            String base64Str = (Base64.toBase64String((token + ";" + appVersion + ";" + timeStamp + ";" + apiSignature).getBytes()));
+            Logger.v("base64: " + base64Str);
+            apiToken = URLEncoder.encode(base64Str, "UTF-8");
             Logger.v("api userToken: " + apiToken);
             return apiToken;
         } catch (UnsupportedEncodingException e) {

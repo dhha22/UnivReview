@@ -117,7 +117,7 @@ public class MypageFragment extends BaseFragment {
         //review count
         //point count
         adapter.clear();
-        Observable.from(Arrays.asList(new Setting("32개"), new Setting(userModel.user.point + "point")))
+        Observable.from(Arrays.asList(new Setting(userModel.review + "개"), new Setting(userModel.user.point + " point")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
@@ -177,7 +177,7 @@ public class MypageFragment extends BaseFragment {
     private void callProfileApi(Long userId) {
         if (userId == 0l) userId = null;
         Logger.v("user id: " + userId);
-        Retro.instance.userService().getProfile(App.setAuthHeader(App.userToken), userId)
+        Retro.instance.userService().getProfile(App.setAuthHeader(App.userToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> setUserData(result), ErrorUtils::parseError);

@@ -1,11 +1,7 @@
 package com.univreview.util;
 
-import android.support.v7.app.AlertDialog;
-
 import com.google.gson.JsonSyntaxException;
 import com.univreview.App;
-import com.univreview.Navigator;
-import com.univreview.activity.MainActivity;
 import com.univreview.log.Logger;
 
 import java.io.IOException;
@@ -31,6 +27,8 @@ public class ErrorUtils {
                 Logger.e(responseBody);
                 if (response.code() == 500) {
                     Util.toast("서버 에러");
+                }else if(response.code() == 401){
+                    App.setUserToken(null);
                 }
             } catch (IOException e) {
                 Logger.e(e.toString());

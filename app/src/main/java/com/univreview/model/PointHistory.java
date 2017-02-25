@@ -15,6 +15,9 @@ public class PointHistory extends AbstractDataProvider {
     @Expose
     private String pointType;
 
+    @Expose
+    private String message;
+
     public boolean getPointType() {
         if ("add".equals(pointType)) {
             return true;

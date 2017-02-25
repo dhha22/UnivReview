@@ -14,6 +14,9 @@ public class UserModel implements Serializable {
     @Expose
     public Token auth;
 
+    @Expose
+    public String review;
+
 
     @Override
     public String toString() {

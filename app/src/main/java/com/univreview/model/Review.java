@@ -120,6 +120,23 @@ public class Review extends AbstractDataProvider implements Serializable{
         }
     }
 
+    public String getAchievementRateMessage() {
+        switch ((int) difficultyRate) {
+            case 1:
+                return "매우 불만족";
+            case 2:
+                return "불만족";
+            case 3:
+                return "보통";
+            case 4:
+                return "만족";
+            case 5:
+                return "매우 만족";
+            default:
+                return "";
+        }
+    }
+
 
     public String getAlertMessage(){
         if(subjectId == 0){
@@ -140,6 +157,7 @@ public class Review extends AbstractDataProvider implements Serializable{
             return null;
         }
     }
+
 
 
     @Override

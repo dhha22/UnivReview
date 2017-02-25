@@ -23,8 +23,8 @@ public interface UserService {
     @POST("signUp")
     Observable<UserModel> register(@HeaderMap Map<String, String> headers, @Body Register body);
 
-    @GET("profile/{userId}")
-    Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers, @Path("userId") Long userId);
+    @GET("profile/")
+    Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
 
    /* @GET("pointHistory")
     Observable<>*/

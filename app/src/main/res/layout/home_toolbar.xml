@@ -35,7 +35,7 @@
                 android:paddingRight="12dp"
                 android:paddingTop="10dp"
                 android:textColorHint="@color/white"
-                android:textSize="14dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/major_txt"
@@ -51,13 +51,13 @@
                 android:paddingRight="12dp"
                 android:paddingTop="10dp"
                 android:textColorHint="@color/white"
-                android:textSize="14dp" />
+                android:textSize="18dp" />
         </LinearLayout>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
+            android:layout_height="82dp"
             app:layout_collapseMode="pin">
 
             <LinearLayout
@@ -86,7 +86,7 @@
                     android:paddingRight="12dp"
                     android:paddingTop="10dp"
                     android:textColorHint="@color/white"
-                    android:textSize="14dp" />
+                    android:textSize="18dp" />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
