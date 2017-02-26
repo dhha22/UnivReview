@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
@@ -76,7 +77,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
     }
 
     private void callPostReviewDetail(ReviewDetail reviewDetail) {
-        Retro.instance.reviewService().postDetailReview(reviewDetail)
+        Retro.instance.reviewService().postDetailReview(App.setAuthHeader(App.userToken), reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> activity.onBackPressed(), error -> errorResponse());

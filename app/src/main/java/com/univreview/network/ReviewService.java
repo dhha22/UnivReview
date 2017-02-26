@@ -5,8 +5,11 @@ import com.univreview.model.ReviewDetail;
 import com.univreview.model.ReviewListModel;
 import com.univreview.model.ReviewSingleModel;
 
+import java.util.Map;
+
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -17,11 +20,11 @@ import rx.Observable;
  */
 public interface ReviewService {
     @GET("review")
-    Observable<ReviewListModel> getReviews(@Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("page") int page);
+    Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("page") int page);
 
     @POST("review")
-    Observable<ReviewSingleModel> postSimpleReview(@Body Review body);
+    Observable<ReviewSingleModel> postSimpleReview(@HeaderMap Map<String, String> headers, @Body Review body);
 
     @POST("reviewDetail")
-    Observable<ReviewSingleModel> postDetailReview(@Body ReviewDetail body);
+    Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
 }

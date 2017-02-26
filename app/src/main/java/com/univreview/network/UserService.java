@@ -34,6 +34,8 @@ public interface UserService {
     Observable<PointHistory> getPoint();
 
     @GET("userTicket/{userId}")
-    Observable<UserTicket> getUserTicket();
+    Observable<UserTicket> getUserTicket(@HeaderMap Map<String, String> headers);
+    @POST("userTicket")
+    Observable<UserTicket> postUserTicket(@HeaderMap Map<String, String> headers, @Body UserTicket body);
 
 }

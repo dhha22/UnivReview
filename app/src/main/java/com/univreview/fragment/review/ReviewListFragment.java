@@ -22,6 +22,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.AnimationUtils;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
 import com.univreview.view.UnivReviewRecyclerView;
@@ -84,6 +85,7 @@ public class ReviewListFragment extends AbsListFragment {
         View view = inflater.inflate(R.layout.fragment_review_list, container, false);
         ButterKnife.bind(this, view);
         init();
+        recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
         rootLayout.addView(view);
         return rootLayout;
     }
@@ -144,16 +146,18 @@ public class ReviewListFragment extends AbsListFragment {
     }
 
     @Override
-    public void loadMore() {
-        setStatus(Status.LOADING_MORE);
-        callReviewListApi(id, page);
+    public void refresh() {
+        setStatus(Status.REFRESHING);
+        callReviewListApi(id, DEFAULT_PAGE);
     }
 
     @Override
-    public void refresh() {
-        setStatus(Status.REFRESHING);
+    public void loadMore() {
+        setStatus(Status.LOADING_MORE);
         Logger.v("page: " + page);
+        callReviewListApi(id, page);
     }
+
 
     private class ReviewAdapter extends CustomAdapter {
 
@@ -168,12 +172,12 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if(type.equals(MY_REVIEW) || type.equals(PROFESSOR)){
+            if (type.equals(MY_REVIEW) || type.equals(PROFESSOR)) {
                 ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
-            }else if(type.equals(SUBJECT)){
+            } else if (type.equals(SUBJECT)) {
                 ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
             }
-           // ((ViewHolder) holder).v.setData((Review) list.get(position));
+            ((ViewHolder) holder).v.setData((Review) list.get(position));
         }
 
         @Override
@@ -191,24 +195,35 @@ public class ReviewListFragment extends AbsListFragment {
         }
     }
 
-    private void callReviewListApi(Long id, int page){
-        if(type.equals(SUBJECT)){
-
+    private void callReviewListApi(Long id, int page) {
+        Long subjectId = null;
+        Long professorId = null;
+        if (type.equals(SUBJECT)) {
+            subjectId = id;
+        } else if (type.equals(PROFESSOR)) {
+            professorId = id;
         }
-       /* Retro.instance.reviewService().getReviews(subjectId, professorId, page)
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.reviews), this::errorResponse);*/
+        Logger.v("type: " + type);
+        Logger.v("subject id: " + subjectId);
+        Logger.v("professor id: " + professorId);
+
+        Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> response(result.reviews), this::errorResponse);
     }
 
     private void response(List<Review> reviews){
+        setStatus(Status.IDLE);
+        Logger.v("result: " + reviews);
         Observable.from(reviews)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> adapter.addItem(result), error-> errorResponse(error));
+                .subscribe(result -> adapter.addItem(result), Logger::e);
     }
 
     private void errorResponse(Throwable e){
-
+        setStatus(Status.ERROR);
+        ErrorUtils.parseError(e);
     }
 }

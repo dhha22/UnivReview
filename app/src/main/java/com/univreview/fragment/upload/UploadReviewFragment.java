@@ -116,6 +116,7 @@ public class UploadReviewFragment extends BaseFragment {
     }
 
     private void registerReview(){
+        review.userId = App.userId;
         review.difficultyRate = difficultyRate.getRating();
         review.assignmentRate = assignmentRate.getRating();
         review.attendanceRate = attendanceRate.getRating();
@@ -133,7 +134,7 @@ public class UploadReviewFragment extends BaseFragment {
 
     private void callPostSimpleReviewApi(Review review){
         Logger.v("post review: " + review);
-        Retro.instance.reviewService().postSimpleReview(review)
+        Retro.instance.reviewService().postSimpleReview(App.setAuthHeader(App.userToken), review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> response(result.review), error -> Logger.e(error));
