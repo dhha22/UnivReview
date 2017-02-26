@@ -82,7 +82,7 @@ public class SearchFragment extends AbsListFragment {
         toolbar.setCancelBtnVisibility(true);
         init();
         rootLayout.addView(view);
-        rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
+        rootLayout.setBackgroundColor(Util.getColor(context, R.color.searchBgColor));
         return rootLayout;
     }
 

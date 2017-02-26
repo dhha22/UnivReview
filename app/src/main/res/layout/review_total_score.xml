@@ -24,14 +24,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:text="3.0"
-            android:textSize="24dp" />
+            android:textColor="@color/colorAccent"
+            android:textSize="24dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatRatingBar
+        style="@style/reviewRatingIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/reviewRatingBar"
-        android:layout_marginTop="8dp"
         android:layout_gravity="center"
+        android:layout_marginTop="8dp"
         android:isIndicator="true" />
+
+    <com.univreview.view.ReviewRatingIndicatorView
+        android:id="@+id/review_rating_indicator_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -22,7 +22,7 @@
             android:layout_height="44dp"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
-            android:background="@drawable/rounded_rect"
+            android:background="@drawable/rounded_primary_rect"
             android:text="다시찍기" />
 
         <Button
@@ -31,7 +31,7 @@
             android:layout_height="44dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/rounded_rect"
+            android:background="@drawable/rounded_primary_rect"
             android:text="확인" />
     </LinearLayout>
 </LinearLayout>

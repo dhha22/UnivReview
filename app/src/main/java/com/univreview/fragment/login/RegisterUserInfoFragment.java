@@ -1,16 +1,13 @@
 package com.univreview.fragment.login;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 import com.univreview.App;
@@ -19,14 +16,10 @@ import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
-import com.univreview.model.BusProvider;
 import com.univreview.model.Register;
-import com.univreview.util.ButtonState;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.SimpleButtonState;
 import com.univreview.util.Util;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +69,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
     private void init(Register register){
         buttonState = new SimpleButtonState(context, nextBtn);
-        buttonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_rect);
+        buttonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonState.setTxtColor(R.color.white, R.color.white);
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
 

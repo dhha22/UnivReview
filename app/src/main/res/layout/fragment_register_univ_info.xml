@@ -18,7 +18,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/rounded_rect"
+            android:background="@drawable/rounded_primary_rect"
             android:text="학생"
             android:textSize="14dp" />
 
@@ -27,7 +27,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/rounded_rect"
+            android:background="@drawable/rounded_primary_rect"
             android:text="교수님"
             android:textSize="14dp" />
     </LinearLayout>

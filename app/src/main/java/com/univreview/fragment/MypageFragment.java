@@ -26,6 +26,7 @@ import com.univreview.model.Setting;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.ImageUtil;
+import com.univreview.util.Util;
 import com.univreview.view.SettingItemView;
 
 import java.util.Arrays;
@@ -114,9 +115,8 @@ public class MypageFragment extends BaseFragment {
         nameTxt.setText(userModel.user.name);
         departmentTxt.setText(userModel.user.department.getName());
         majorTxt.setText(userModel.user.major.getName());
-        App.picasso.load(userModel.user.studentImageUrl)
-                .fit()
-                .into(profileImage);
+        Util.setProfileImage(userModel.user.studentImageUrl, profileImage);
+
 
         //review count
         //point count
@@ -162,9 +162,7 @@ public class MypageFragment extends BaseFragment {
             String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
             Logger.v("album path: " + albumPath);
             //"file://" + albumPath;
-
         }
-
     }
 
     private void callProfileApi(Long userId) {

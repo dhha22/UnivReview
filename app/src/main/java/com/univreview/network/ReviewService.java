@@ -8,6 +8,7 @@ import com.univreview.model.ReviewSingleModel;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -16,7 +17,7 @@ import rx.Observable;
  */
 public interface ReviewService {
     @GET("review")
-    Observable<ReviewListModel> getReviews(@Query("subjectId") Integer subjectId, @Query("professorId") Integer professorId);
+    Observable<ReviewListModel> getReviews(@Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("page") int page);
 
     @POST("review")
     Observable<ReviewSingleModel> postSimpleReview(@Body Review body);

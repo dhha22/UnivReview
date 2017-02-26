@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.univreview.App;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
+import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
@@ -46,6 +48,7 @@ public class ReviewListFragment extends AbsListFragment {
     @BindView(R.id.toolbar) Toolbar customToolbar;
     @BindView(R.id.toolbar_title_layout) LinearLayout toolbarTitleLayout;
     @BindView(R.id.filter_layout) LinearLayout filterLayout;
+    @BindView(R.id.toolbar_back_btn) ImageButton toolbarBackBtn;
     @BindView(android.R.id.list) UnivReviewRecyclerView recyclerView;
     @BindView(R.id.toolbar_title_txt) TextView toolbarTitleTxt;
     @BindView(R.id.toolbar_subtitle_txt) TextView toolbarSubtitleTxt;
@@ -104,7 +107,7 @@ public class ReviewListFragment extends AbsListFragment {
                     AnimationUtils.fadeOut(context, toolbarTitleLayout);
                     AnimationUtils.fadeIn(context, titleTxt);
                     AnimationUtils.fadeIn(context, filterLayout);
-                } else if (height >= customToolbar.getHeight() * 1.1) {
+                } else if (height >= customToolbar.getHeight() * 1.02) {
                     AnimationUtils.fadeIn(context, toolbarTitleLayout);
                     AnimationUtils.fadeOut(context, titleTxt);
                 } else {
@@ -114,6 +117,7 @@ public class ReviewListFragment extends AbsListFragment {
                 }
             });
             titleTxt.setText(name);
+            toolbarBackBtn.setOnClickListener(v -> activity.onBackPressed());
             toolbarTitleTxt.setText(name);
             toolbarSubtitleTxt.setText("전체");
         }
@@ -123,6 +127,15 @@ public class ReviewListFragment extends AbsListFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onScrolled(RecyclerView view, int dx, int dy) {
+                super.onScrolled(view, dx, dy);
+                if (getLastVisibleItemPosition() == getTotalItemCount() - 1) {
+                    lastItemExposed();
+                }
+            }
+        });
     }
 
     @Override
@@ -132,12 +145,14 @@ public class ReviewListFragment extends AbsListFragment {
 
     @Override
     public void loadMore() {
-
+        setStatus(Status.LOADING_MORE);
+        callReviewListApi(id, page);
     }
 
     @Override
     public void refresh() {
-
+        setStatus(Status.REFRESHING);
+        Logger.v("page: " + page);
     }
 
     private class ReviewAdapter extends CustomAdapter {
@@ -163,7 +178,7 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public int getItemCount() {
-            return 20;
+            return list.size();
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {
@@ -176,11 +191,14 @@ public class ReviewListFragment extends AbsListFragment {
         }
     }
 
-    private void callReviewListApi(Integer subjectId, Integer professorId){
-        Retro.instance.reviewService().getReviews(subjectId, professorId)
+    private void callReviewListApi(Long id, int page){
+        if(type.equals(SUBJECT)){
+
+        }
+       /* Retro.instance.reviewService().getReviews(subjectId, professorId, page)
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.reviews), this::errorResponse);
+                .subscribe(result -> response(result.reviews), this::errorResponse);*/
     }
 
     private void response(List<Review> reviews){

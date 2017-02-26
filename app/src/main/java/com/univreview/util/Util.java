@@ -9,9 +9,12 @@ import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.univreview.App;
+import com.univreview.R;
 import com.univreview.log.Logger;
 
 import org.bouncycastle.jcajce.provider.digest.Keccak;
@@ -24,6 +27,10 @@ import java.security.MessageDigest;
  * Created by DavidHa on 2017. 1. 4..
  */
 public class Util {
+
+    public static float dpToPx(Context context, float dp){
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
 
     public static void toast(String message) {
         Toast.makeText(App.context, message, Toast.LENGTH_SHORT).show();
@@ -59,6 +66,18 @@ public class Util {
             return context.getDrawable(id);
         } else {
             return context.getResources().getDrawable(id);
+        }
+    }
+
+    public static void setProfileImage(String url, ImageView imageView) {
+        if (url == null || url.length() == 0) {
+            App.picasso.load(R.drawable.ic_login_profile_default)
+                    .fit()
+                    .into(imageView);
+        } else {
+            App.picasso.load(url)
+                    .fit()
+                    .into(imageView);
         }
     }
 

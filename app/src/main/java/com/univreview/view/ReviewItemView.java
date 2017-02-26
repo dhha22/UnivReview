@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.model.Review;
 import com.univreview.util.TimeUtil;
@@ -45,7 +46,9 @@ public class ReviewItemView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true);
         ButterKnife.bind(this);
-        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 0, App.dp5);
+        setLayoutParams(params);
     }
 
     public void setData(Review review) {

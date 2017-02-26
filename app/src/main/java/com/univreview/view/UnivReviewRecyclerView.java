@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 
 import com.univreview.R;
 import com.univreview.fragment.AbsListFragment;
+import com.univreview.util.Util;
 
 /**
  * Created by DavidHa on 2017. 1. 21..

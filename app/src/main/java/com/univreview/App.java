@@ -15,6 +15,7 @@ import com.univreview.log.Logger;
 import com.univreview.util.SecurityUtil;
 import com.univreview.util.SharedPreferencesActivity;
 import com.univreview.util.TimeUtil;
+import com.univreview.util.Util;
 
 import org.bouncycastle.util.encoders.Base64;
 
@@ -31,6 +32,14 @@ public class App extends Application {
     private static volatile Activity currentActivity = null;
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
+    public static int dp1;
+    public static int dp2;
+    public static int dp3;
+    public static int dp4;
+    public static int dp5;
+    public static int dp12;
+    public static int dp15;
+    public static int dp56;
     public static Context context;
     public static SharedPreferencesActivity pref;
     public static final Gson gson = new Gson();
@@ -57,6 +66,14 @@ public class App extends Application {
 
         SCREEN_WIDTH = getResources().getDisplayMetrics().widthPixels;
         SCREEN_HEIGHT = getResources().getDisplayMetrics().heightPixels;
+        dp1 = (int) Util.dpToPx(context, 1);
+        dp2 = (int) Util.dpToPx(context, 2);
+        dp3 = (int) Util.dpToPx(context, 3);
+        dp4 = (int) Util.dpToPx(context, 4);
+        dp5 = (int) Util.dpToPx(context, 5);
+        dp12 = (int) Util.dpToPx(context, 12);
+        dp15 = (int) Util.dpToPx(context, 15);
+        dp56 = (int) Util.dpToPx(context, 56);
 
         Logger.v("app_key_hash: " + SecurityUtil.getKeyHash(context));
 
@@ -94,6 +111,7 @@ public class App extends Application {
         userToken = pref.getPreferences("userToken", null);
         userId = pref.getPreferences("userId", 0l);
         Logger.v("user token: " + userToken);
+        Logger.v("user id: " + userId);
     }
 
     public static Map<String, String> setAuthHeader(String token) {

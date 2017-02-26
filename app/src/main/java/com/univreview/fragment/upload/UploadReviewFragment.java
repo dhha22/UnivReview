@@ -122,12 +122,8 @@ public class UploadReviewFragment extends BaseFragment {
         review.gradeRate = gradeRate.getRating();
         review.achievementRate = achievementRate.getRating();
 
-        //test
-        review.professor.name = professorTxt.getText().toString();
-        review.subject.name = subjectTxt.getText().toString();
         if (review.getAlertMessage() == null) {
-            Navigator.goUploadReviewDetail(context, review);
-           // callPostSimpleReviewApi(review);
+            callPostSimpleReviewApi(review);
         } else {
             Util.simpleMessageDialog(context, review.getAlertMessage());
         }

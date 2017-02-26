@@ -1,6 +1,5 @@
 package com.univreview.fragment.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,8 +23,6 @@ import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
 import com.univreview.util.SimpleButtonState;
 import com.univreview.util.Util;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,7 +78,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
     private void init() {
         buttonStateManager = new ButtonStateManager(context, new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
-        buttonStateManager.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_rect);
+        buttonStateManager.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonStateManager.setTxtColor(R.color.white, R.color.white);
 
         buttonClicked(STUDENT);
