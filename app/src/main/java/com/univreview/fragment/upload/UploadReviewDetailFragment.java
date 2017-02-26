@@ -13,7 +13,6 @@ import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.network.Retro;
-import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
 
 import butterknife.BindView;
@@ -60,6 +59,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
 
     private void setReviewData(Review review){
         reviewItemView.setData(review);
+        reviewItemView.setMode(ReviewItemView.Status.WRITE_REVIEW);
     }
 
     private void registerReview(long reviewId) {
@@ -70,7 +70,8 @@ public class UploadReviewDetailFragment extends BaseFragment {
         if (reviewDetail.getAlertMessage() == null) {
             callPostReviewDetail(reviewDetail);
         } else {
-            Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
+            activity.onBackPressed();
+           // Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
         }
     }
 

@@ -16,7 +16,7 @@ import rx.Observable;
  */
 public interface ReviewService {
     @GET("review")
-    Observable<ReviewListModel> getReviews(@Query("subjectId") int subjectId);
+    Observable<ReviewListModel> getReviews(@Query("subjectId") Integer subjectId, @Query("professorId") Integer professorId);
 
     @POST("review")
     Observable<ReviewSingleModel> postSimpleReview(@Body Review body);

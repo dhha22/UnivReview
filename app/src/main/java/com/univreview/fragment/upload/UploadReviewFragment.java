@@ -33,13 +33,18 @@ import rx.schedulers.Schedulers;
 public class UploadReviewFragment extends BaseFragment {
     @BindView(R.id.back_btn) ImageButton backBtn;
     @BindView(R.id.ok_btn) TextView okBtn;
+    @BindView(R.id.subject_txt) TextView subjectTxt;
+    @BindView(R.id.professor_txt) TextView professorTxt;
     @BindView(R.id.difficulty_rate) AppCompatRatingBar difficultyRate;
     @BindView(R.id.assignment_rate) AppCompatRatingBar assignmentRate;
     @BindView(R.id.attendance_rate) AppCompatRatingBar attendanceRate;
     @BindView(R.id.grade_rate) AppCompatRatingBar gradeRate;
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
-    @BindView(R.id.subject_txt) TextView subjectTxt;
-    @BindView(R.id.professor_txt) TextView professorTxt;
+    @BindView(R.id.difficulty_txt) TextView difficultyTxt;
+    @BindView(R.id.assignment_txt) TextView assignmentTxt;
+    @BindView(R.id.attendance_txt) TextView attendaceTxt;
+    @BindView(R.id.grade_txt) TextView gradeTxt;
+    @BindView(R.id.achievement_txt) TextView achievementTxt;
     private Review review;
 
     public static UploadReviewFragment newInstance(){
@@ -65,7 +70,28 @@ public class UploadReviewFragment extends BaseFragment {
         okBtn.setOnClickListener(v -> registerReview());
         subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), false));
         professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), false));
+        difficultyRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
+            review.difficultyRate = v;
+            difficultyTxt.setText(review.getDifficultyRateMessage());
+        });
+        assignmentRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
+            review.assignmentRate = v;
+            assignmentTxt.setText(review.getAssignmentRateMessage());
+        });
+        attendanceRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
+            review.attendanceRate = v;
+            attendaceTxt.setText(review.getAttendanceRateMessage());
+        });
+        gradeRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
+            review.gradeRate = v;
+            gradeTxt.setText(review.getGradeRateMessage());
+        });
+        achievementRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
+            review.achievementRate = v;
+            achievementTxt.setText(review.getAchievementRateMessage());
+        });
     }
+
 
 
     @Subscribe
@@ -96,11 +122,14 @@ public class UploadReviewFragment extends BaseFragment {
         review.gradeRate = gradeRate.getRating();
         review.achievementRate = achievementRate.getRating();
 
+        //test
+        review.professor.name = professorTxt.getText().toString();
+        review.subject.name = subjectTxt.getText().toString();
         if (review.getAlertMessage() == null) {
-            callPostSimpleReviewApi(review);
-        } else {
             Navigator.goUploadReviewDetail(context, review);
-            //Util.simpleMessageDialog(context, review.getAlertMessage());
+           // callPostSimpleReviewApi(review);
+        } else {
+            Util.simpleMessageDialog(context, review.getAlertMessage());
         }
     }
 

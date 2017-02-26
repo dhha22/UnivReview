@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryLight">#327afd</color>
+    <color name="colorPrimaryLight">#4888fc</color>
     <color name="colorPrimary">#327afd</color>
     <color name="colorPrimaryDark">#2A6DE8</color>
     <color name="colorAccent">#4A90E2</color>
@@ -9,10 +9,18 @@
     <color name="transparent">#00000000</color>
     <color name="kakaoColor">#f6a623</color>
     <color name="facebookColor">#225b99</color>
-    
+    <color name="searchBackgroundColor">#72327afd</color>
     <color name="advice_review_dialog">#ce000000</color>
+    <color name="textColor">#414141</color>
+    <color name="professorTxtColor">#6d6d6d</color>
+    
+    <!-- upload review -->
+    <color name="ratingInfoTxtColor">#a1a1a1</color>
+
+    <!-- review -->
+    <color name="reviewTxtColor">#a5a5a5</color>
 
     <!-- point -->
-    <color name="pointTimeColor">#c3c3c3</color>
+    <color name="timeColor">#c2c2c2</color>
     <color name="rowColor">#c3c3c3</color>
 </resources>

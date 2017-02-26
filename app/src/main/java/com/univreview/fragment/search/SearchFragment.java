@@ -29,6 +29,7 @@ import com.univreview.model.Major;
 import com.univreview.model.MajorModel;
 import com.univreview.model.SearchModel;
 import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.RevealAnimationSetting;
 import com.univreview.util.Util;
 import com.univreview.view.SearchListItemView;
@@ -237,21 +238,21 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getUniversities(name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "university"), error -> Logger.e(error));
+                .subscribe(result -> response(result, "university"), this::errorResponse);
     }
 
     private void callGetDepartmentApi(long id, String name, int page) {
         Retro.instance.searchService().getDepartments(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "department"), error -> Logger.e(error));
+                .subscribe(result -> response(result, "department"), this::errorResponse);
     }
 
     private void callGetMajorApi(long id, String name, int page) {
         Retro.instance.searchService().getMajors(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "major"), error -> Logger.e(error));
+                .subscribe(result -> response(result, "major"), this::errorResponse);
     }
 
     private void callGetProfessorApi(Long departmentId, String name, int page) {
@@ -259,7 +260,7 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getProfessors(App.UNIVERSITY_ID, departmentId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "professor"), error -> Logger.e(error));
+                .subscribe(result -> response(result, "professor"), this::errorResponse);
     }
 
     private void callGetSubjectApi(Long majorId, String name, int page) {
@@ -268,7 +269,7 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getSubjects(App.UNIVERSITY_ID, majorId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "subject"), error -> Logger.e(error));
+                .subscribe(result -> response(result, "subject"), this::errorResponse);
     }
 
     public void response(SearchModel result, String type) {
@@ -278,28 +279,33 @@ public class SearchFragment extends AbsListFragment {
             Observable.from(result.universities)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                    .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if (type.equals("department")) {
             Observable.from(result.departments)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                    .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if (type.equals("major")) {
             Observable.from(result.majors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                    .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if (type.equals("professor")) {
             Observable.from(result.professors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                    .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if (type.equals("subject")) {
             Observable.from(result.subjects)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), error -> Logger.e(error));
+                    .subscribe(data -> adapter.addItem(data), Logger::e);
         }
+    }
+
+    private void errorResponse(Throwable e){
+        setStatus(Status.ERROR);
+        ErrorUtils.parseError(e);
     }
 
 

@@ -72,6 +72,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         ButterKnife.bind(this, view);
+        rootLayout.setBackground(Util.getDrawable(context, R.drawable.cr_login_bg));
         toolbar.setBackBtnVisibility(true);
         init();
         rootLayout.addView(view);
@@ -80,8 +81,8 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
     private void init() {
         buttonStateManager = new ButtonStateManager(context, new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
-        buttonStateManager.setDrawable(R.drawable.rounded_rect, R.drawable.fill_rounded_rect);
-        buttonStateManager.setTxtColor(R.color.colorPrimaryDark, R.color.white);
+        buttonStateManager.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_rect);
+        buttonStateManager.setTxtColor(R.color.white, R.color.white);
 
         buttonClicked(STUDENT);
         studentBtn.setOnClickListener(v -> buttonClicked(STUDENT));

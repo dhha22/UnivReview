@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 
 import com.squareup.otto.Produce;
 import com.univreview.R;
+import com.univreview.fragment.login.RegisterUnivInfoFragment;
+import com.univreview.fragment.login.RegisterUserIdentityFragment;
+import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.search.SearchFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.BusProvider;
@@ -28,19 +32,28 @@ public class NavigationActivity extends BaseActivity {
         return fragment;
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
         Logger.v("navigation activity onCreate");
         if (fragment != null) {
+            if (fragment instanceof SearchFragment) {
+                Logger.v("set translucent");
+                setTranslucent();
+            } else if (fragment instanceof RegisterUserInfoFragment
+                    || fragment instanceof RegisterUnivInfoFragment
+                    || fragment instanceof RegisterUserIdentityFragment) {
+                Logger.v("set full screen");
+                setFullScreen();
+            }
+            setContentView(R.layout.activity_navigation);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commitNow();
             fragment = null;
         }
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         BusProvider.newInstance().register(this);
     }

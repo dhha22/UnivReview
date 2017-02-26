@@ -67,6 +67,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_register_user_info, container, false);
         ButterKnife.bind(this, view);
         toolbar.setBackBtnVisibility(true);
+        rootLayout.setBackground(Util.getDrawable(context, R.drawable.cr_login_bg));
         init(register);
         setData(register);
         rootLayout.addView(view);
@@ -75,8 +76,8 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
     private void init(Register register){
         buttonState = new SimpleButtonState(context, nextBtn);
-        buttonState.setDrawable(R.drawable.rounded_rect, R.drawable.fill_rounded_rect);
-        buttonState.setTxtColor(R.color.colorPrimaryDark, R.color.white);
+        buttonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_rect);
+        buttonState.setTxtColor(R.color.white, R.color.white);
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
 
         nextBtn.setOnClickListener(v -> {

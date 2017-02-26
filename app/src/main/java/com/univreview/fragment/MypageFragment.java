@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class MypageFragment extends BaseFragment {
     @BindView(R.id.department_txt) TextView departmentTxt;
     @BindView(R.id.major_txt) TextView majorTxt;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.setting_btn) ImageButton settingBtn;
     private MyPageAdapter adapter;
     private long userId;
 
@@ -90,6 +92,7 @@ public class MypageFragment extends BaseFragment {
         adapter.setOnItemClickListener((view, position) -> {
             switch (position) {
                 case MY_REVIEW:
+                    Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
                     break;
                 case POINT:
                     Navigator.goPointList(context);
@@ -97,6 +100,7 @@ public class MypageFragment extends BaseFragment {
             }
         });
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
+        settingBtn.setOnClickListener(v -> Navigator.goLogin(context));
     }
 
     @Override

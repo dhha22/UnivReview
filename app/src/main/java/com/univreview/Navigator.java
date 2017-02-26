@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
 
+import com.univreview.activity.LoginActivity;
 import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.fragment.login.CheckUserPhotoFragment;
@@ -27,6 +28,14 @@ public class Navigator {
     public static final int SEARCH = 636;
     public static final int CAMERA = 387;
     public static final int ALBUM = 549;
+
+    public static void goLogin(Context context){
+        App.setUserToken(null);
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+        ((Activity)context).onBackPressed();
+    }
 
     //register
     public static void goRegisterUserInfo(Context context, Register register){

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.univreview.R;
 import com.univreview.log.Logger;
 import com.univreview.model.BusProvider;
 import com.univreview.view.Toolbar;
@@ -62,7 +63,6 @@ public class BaseFragment extends Fragment {
         super.onDestroy();
         Logger.v("on destroy: " + this.getClass().getName());
     }
-
 
 
 }

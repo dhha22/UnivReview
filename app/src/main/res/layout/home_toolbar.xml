@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="18dp"
                 android:background="@color/colorPrimaryLight"
                 android:hint="학과명"
                 android:paddingBottom="10dp"
@@ -70,8 +70,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_marginBottom="4dp"
-                    android:background="@drawable/ic_back"
-                    android:rotation="90"
+                    android:background="@drawable/ic_search_close"
                     android:visibility="gone" />
 
                 <TextView

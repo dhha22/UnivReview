@@ -18,7 +18,9 @@ import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
+import com.univreview.network.Retro;
 import com.univreview.util.AnimationUtils;
+import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
 import com.univreview.view.UnivReviewRecyclerView;
 import com.univreview.widget.PreCachingLayoutManager;
@@ -36,14 +38,17 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 2. 21..
  */
 public class ReviewListFragment extends AbsListFragment {
-    private static final String REVIEW = "review";
+    private static final String SUBJECT = "subject";
+    private static final String MAJOR = "major";
     private static final String PROFESSOR = "professor";
+    private static final String MY_REVIEW = "myReview";
     @BindView(R.id.smooth_app_bar_layout) SmoothAppBarLayout appBarLayout;
     @BindView(R.id.toolbar) Toolbar customToolbar;
     @BindView(R.id.toolbar_title_layout) LinearLayout toolbarTitleLayout;
     @BindView(R.id.filter_layout) LinearLayout filterLayout;
     @BindView(android.R.id.list) UnivReviewRecyclerView recyclerView;
     @BindView(R.id.toolbar_title_txt) TextView toolbarTitleTxt;
+    @BindView(R.id.toolbar_subtitle_txt) TextView toolbarSubtitleTxt;
     @BindView(R.id.title_txt) TextView titleTxt;
     @BindView(R.id.filter_name_txt) TextView filterNameTxt;
     private ReviewAdapter adapter;
@@ -80,39 +85,44 @@ public class ReviewListFragment extends AbsListFragment {
         return rootLayout;
     }
 
-    private void init(){
-        toolbar.setVisibility(View.GONE);
+    private void init() {
+        if (type.equals(MY_REVIEW)) {
+            appBarLayout.setVisibility(View.GONE);
+            toolbar.setBackBtnVisibility(true);
+            toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
+            toolbar.setTitleTxt(name);
+        } else if (type.equals(SUBJECT) || type.equals(PROFESSOR) || type.equals(MAJOR)) {
+            toolbar.setVisibility(View.GONE);
+            appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+                int height = appBarLayout.getHeight() - appBarLayout.getBottom();
+                Logger.v("appbar height: " + appBarLayout.getHeight());
+                Logger.v("appbar bottom: " + appBarLayout.getBottom());
+                float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
+                Logger.v("height: " + height);
+                AnimationUtils.setScale(titleTxt, value);
+                if (height == 0) {
+                    AnimationUtils.fadeOut(context, toolbarTitleLayout);
+                    AnimationUtils.fadeIn(context, titleTxt);
+                    AnimationUtils.fadeIn(context, filterLayout);
+                } else if (height >= customToolbar.getHeight() * 1.1) {
+                    AnimationUtils.fadeIn(context, toolbarTitleLayout);
+                    AnimationUtils.fadeOut(context, titleTxt);
+                } else {
+                    AnimationUtils.fadeOut(context, toolbarTitleLayout);
+                    AnimationUtils.fadeIn(context, titleTxt);
+                    AnimationUtils.fadeOut(context, filterLayout);
+                }
+            });
+            titleTxt.setText(name);
+            toolbarTitleTxt.setText(name);
+            toolbarSubtitleTxt.setText("전체");
+        }
         adapter = new ReviewAdapter(context);
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        titleTxt.setText(name);
-        toolbarTitleTxt.setText(name);
-
-        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            int height = appBarLayout.getHeight() - appBarLayout.getBottom();
-            Logger.v("appbar height: " + appBarLayout.getHeight());
-            Logger.v("appbar bottom: " + appBarLayout.getBottom());
-            float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
-            Logger.v("height: " + height);
-            AnimationUtils.setScale(titleTxt, value);
-            if (height == 0) {
-                AnimationUtils.fadeOut(context, toolbarTitleLayout);
-                AnimationUtils.fadeIn(context, titleTxt);
-                AnimationUtils.fadeIn(context, filterLayout);
-            } else if (height >= customToolbar.getHeight() *1.1) {
-                AnimationUtils.fadeIn(context, toolbarTitleLayout);
-                AnimationUtils.fadeOut(context, titleTxt);
-            } else {
-                AnimationUtils.fadeOut(context, toolbarTitleLayout);
-                AnimationUtils.fadeIn(context, titleTxt);
-                AnimationUtils.fadeOut(context, filterLayout);
-            }
-        });
-
-
     }
 
     @Override
@@ -143,6 +153,11 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if(type.equals(MY_REVIEW) || type.equals(PROFESSOR)){
+                ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
+            }else if(type.equals(SUBJECT)){
+                ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
+            }
            // ((ViewHolder) holder).v.setData((Review) list.get(position));
         }
 
@@ -159,6 +174,13 @@ public class ReviewListFragment extends AbsListFragment {
                 v = (ReviewItemView) itemView;
             }
         }
+    }
+
+    private void callReviewListApi(Integer subjectId, Integer professorId){
+        Retro.instance.reviewService().getReviews(subjectId, professorId)
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> response(result.reviews), this::errorResponse);
     }
 
     private void response(List<Review> reviews){

@@ -23,20 +23,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:gravity="center"
-            android:text=""
             android:textSize="16dp" />
 
         <TextView
             android:id="@+id/ok_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_gravity="center"
-            android:padding="12dp"
+           android:gravity="center"
             android:text="확인"
             android:textColor="@color/white"
             android:textSize="16dp"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/cancel_btn"

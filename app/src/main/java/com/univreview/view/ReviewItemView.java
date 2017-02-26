@@ -1,11 +1,11 @@
 package com.univreview.view;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
@@ -18,9 +18,13 @@ import butterknife.ButterKnife;
 /**
  * Created by DavidHa on 2017. 1. 23..
  */
-public class ReviewItemView extends CardView {
+public class ReviewItemView extends FrameLayout {
+    @BindView(R.id.first_layout) LinearLayout firstLayout;
+    @BindView(R.id.second_layout) LinearLayout secondLayout;
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMarkTxt;
+    @BindView(R.id.subject_txt) TextView subjectTxt;
+    @BindView(R.id.professor_txt) TextView professorTxt;
     @BindView(R.id.time_txt) TextView timeTxt;
     @BindView(R.id.review_txt) TextView reviewTxt;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
@@ -41,7 +45,7 @@ public class ReviewItemView extends CardView {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true);
         ButterKnife.bind(this);
-        setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     public void setData(Review review) {
@@ -62,13 +66,28 @@ public class ReviewItemView extends CardView {
                 }
                 reviewTxt.setText(review.reviewDetail);
             }
+            subjectTxt.setText(review.subject.getName());
+            professorTxt.setText(review.professor.getName() + " 교수님");
             timeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             difficultyTxt.setText(review.getDifficultyRateMessage());
             assignmentTxt.setText(review.getAssignmentRateMessage());
             attendanceTxt.setText(review.getAttendanceRateMessage());
             gradeTxt.setText(review.getGradeRateMessage());
-            achievementTxt.setText(String.valueOf(review.achievementRate));
+            achievementTxt.setText(review.getAchievementRateMessage());
 
         }
+    }
+
+    public void setMode(Status status){
+        if(status == Status.WRITE_REVIEW || status == Status.MY_REVIEW){
+            firstLayout.setVisibility(GONE);
+            secondLayout.setVisibility(VISIBLE);
+        }else if(status == Status.READ_REVIEW){
+            firstLayout.setVisibility(VISIBLE);
+            secondLayout.setVisibility(GONE);
+        }
+    }
+    public enum Status {
+        WRITE_REVIEW, MY_REVIEW, READ_REVIEW
     }
 }

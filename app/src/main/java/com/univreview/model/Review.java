@@ -70,7 +70,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getAssignmentRateMessage() {
-        switch ((int) difficultyRate) {
+        switch ((int) assignmentRate) {
             case 1:
                 return "아주 적음";
             case 2:
@@ -87,7 +87,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getAttendanceRateMessage() {
-        switch ((int) difficultyRate) {
+        switch ((int) attendanceRate) {
             case 1:
                 return "거의 드묾";
             case 2:
@@ -104,7 +104,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getGradeRateMessage() {
-        switch ((int) difficultyRate) {
+        switch ((int) gradeRate) {
             case 1:
                 return "아주 쉬움";
             case 2:
@@ -121,7 +121,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getAchievementRateMessage() {
-        switch ((int) difficultyRate) {
+        switch ((int) achievementRate) {
             case 1:
                 return "매우 불만족";
             case 2:

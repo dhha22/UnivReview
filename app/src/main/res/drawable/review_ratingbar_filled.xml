@@ -4,16 +4,16 @@
 
     <item android:state_pressed="true"
         android:state_window_focused="true"
-        android:drawable="@drawable/ic_review_star_on" />
+        android:drawable="@drawable/ic_review_score_on" />
 
     <item android:state_focused="true"
         android:state_window_focused="true"
-        android:drawable="@drawable/ic_review_star_on" />
+        android:drawable="@drawable/ic_review_score_on" />
 
     <item android:state_selected="true"
         android:state_window_focused="true"
-        android:drawable="@drawable/ic_review_star_on" />
+        android:drawable="@drawable/ic_review_score_on" />
 
-    <item android:drawable="@drawable/ic_review_star_on" />
+    <item android:drawable="@drawable/ic_review_score_on" />
 
 </selector>

@@ -15,4 +15,13 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme_NoActionBar);
     }
+
+    protected void setFullScreen(){
+        setTheme(R.style.AppTheme_NoActionBar_FullScreen);
+    }
+
+    protected void setTranslucent(){
+        setTheme(R.style.AppTheme_Translucent);
+    }
+
 }

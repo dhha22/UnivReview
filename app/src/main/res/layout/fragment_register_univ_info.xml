@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/cr_login_bg">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,8 +41,10 @@
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:gravity="center"
+        android:textColor="@color/white"
         android:padding="8dp"
         android:hint="대학교"
+        android:textColorHint="@color/white"
         android:textSize="18dp" />
 
     <View
@@ -52,7 +53,7 @@
         android:layout_marginBottom="38dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@color/colorPrimary" />
+        android:background="@color/white" />
 
     <TextView
         android:id="@+id/department_txt"
@@ -64,6 +65,8 @@
         android:gravity="center"
         android:padding="8dp"
         android:hint="학과군"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:textSize="18dp" />
 
     <View
@@ -72,7 +75,7 @@
         android:layout_marginBottom="38dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@color/colorPrimary" />
+        android:background="@color/white" />
 
     <LinearLayout
         android:id="@+id/major_layout"
@@ -88,6 +91,7 @@
             android:layout_marginLeft="48dp"
             android:layout_marginRight="48dp"
             android:gravity="center"
+            android:textColorHint="@color/white"
             android:padding="8dp"
             android:hint="전공"
             android:textSize="18dp" />
@@ -98,7 +102,7 @@
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="48dp"
             android:layout_marginRight="48dp"
-            android:background="@color/colorPrimary" />
+            android:background="@color/white" />
     </LinearLayout>
 
     <Button
@@ -107,7 +111,8 @@
         android:layout_height="46dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@drawable/rounded_rect"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_white_rect"
         android:text="확인"
         android:textSize="18dp" />
 

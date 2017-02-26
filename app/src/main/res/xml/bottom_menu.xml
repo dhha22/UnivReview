@@ -2,14 +2,15 @@
 <tabs>
     <tab
         id="@+id/tab_home"
-        icon="@drawable/ic_navi_home"
+        icon="@drawable/navi_home"
+
         title="홈" />
     <tab
         id="@+id/tab_upload"
-        icon="@drawable/ic_navi_write"
+        icon="@drawable/ic_navi_write_off"
         title="리뷰작성" />
     <tab
         id="@+id/tab_mypage"
-        icon="@drawable/ic_navi_mypage"
+        icon="@drawable/ic_navi_mypage_off"
         title="마이페이지" />
 </tabs>

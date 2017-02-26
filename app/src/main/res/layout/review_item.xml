@@ -6,38 +6,78 @@
     android:padding="18dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/name_txt"
+
+        <LinearLayout
+            android:id="@+id/first_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="name"
-            android:textSize="18dp" />
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/auth_mark"
+            <TextView
+                android:id="@+id/name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="name"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/auth_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/rounded_rect"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:text="인증"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/second_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="4dp"
-            android:background="@drawable/rounded_rect"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
-            android:text="인증"
-            android:textSize="10dp" />
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/subject_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="subject name"
+                android:textColor="@color/textColor"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/professor_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:text="professor name"
+                android:textColor="@color/professorTxtColor"
+                android:textSize="12dp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/time_txt"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="4dp"
+            android:layout_weight="1"
+            android:gravity="right"
             android:text="2017-01-01"
+            android:textColor="@color/timeColor"
             android:textSize="12dp" />
     </LinearLayout>
 
@@ -48,6 +88,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="10dp"
         android:text="review"
+        android:textColor="@color/reviewTxtColor"
         android:textSize="14dp"
         android:visibility="gone" />
 
@@ -69,14 +110,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="난이도"
-                android:textSize="16dp" />
+                android:textColor="@color/textColor"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/difficulty_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textSize="14dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -92,14 +136,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="과제량"
-                android:textSize="16dp" />
+                android:textColor="@color/textColor"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/assignment_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textSize="14dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -116,14 +163,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="출석체크"
-                android:textSize="16dp" />
+                android:textColor="@color/textColor"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/attendance_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textSize="14dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -140,14 +190,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="학점"
-                android:textSize="16dp" />
+                android:textColor="@color/textColor"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/grade_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textSize="14dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -164,16 +217,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="성취감"
-                android:textSize="16dp" />
+                android:textColor="@color/textColor"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/achievement_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textSize="14dp" />
-
-
+                android:textColor="@color/colorAccent"
+                android:textSize="14dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

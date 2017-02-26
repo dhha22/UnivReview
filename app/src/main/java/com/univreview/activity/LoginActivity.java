@@ -45,7 +45,6 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2016. 12. 25..
  */
 public class LoginActivity extends BaseActivity {
-    @BindView(R.id.test_txt) TextView testTxt;
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
 
@@ -56,6 +55,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setFullScreen();
         if(App.userToken != null){
             Navigator.goMain(this);
             finish();
@@ -72,11 +72,6 @@ public class LoginActivity extends BaseActivity {
         kakaoCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(kakaoCallback);
         kakaoLoginBtn.setOnClickListener(v -> kakaoLogin());
-
-        //test code
-        testTxt.setOnClickListener(v -> Navigator.goMain(this));
-
-
     }
 
 

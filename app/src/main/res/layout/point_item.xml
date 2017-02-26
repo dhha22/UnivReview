@@ -10,7 +10,7 @@
         android:layout_marginLeft="28dp"
         android:layout_marginTop="28dp"
         android:text="2017.01.01"
-        android:textColor="@color/pointTimeColor"
+        android:textColor="@color/timeColor"
         android:textSize="12dp" />
 
     <TextView

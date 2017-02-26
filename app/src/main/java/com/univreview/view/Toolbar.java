@@ -48,6 +48,7 @@ public class Toolbar extends FrameLayout {
     public void setOnConfirmListener(OnClickListener clickListener){
         okBtn.setOnClickListener(clickListener);
         if(clickListener != null){
+            backBtn.setVisibility(GONE);
             okBtn.setVisibility(VISIBLE);
         }else{
             okBtn.setVisibility(GONE);
@@ -59,7 +60,7 @@ public class Toolbar extends FrameLayout {
             backBtn.setVisibility(VISIBLE);
             backBtn.setOnClickListener(v -> ((Activity) context).onBackPressed());
         } else {
-            backBtn.setVisibility(GONE);
+            backBtn.setVisibility(INVISIBLE);
         }
     }
 
@@ -76,7 +77,7 @@ public class Toolbar extends FrameLayout {
             cancelBtn.setVisibility(VISIBLE);
             cancelBtn.setOnClickListener(v -> ((Activity) context).onBackPressed());
         } else {
-            cancelBtn.setVisibility(GONE);
+            cancelBtn.setVisibility(INVISIBLE);
         }
     }
 

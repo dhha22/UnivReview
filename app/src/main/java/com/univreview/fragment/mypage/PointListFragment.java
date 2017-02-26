@@ -49,7 +49,6 @@ public class PointListFragment extends AbsListFragment {
         toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("포인트");
-        toolbar.setTitleColor(R.color.white);
 
         adapter = new PointAdapter(context);
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
