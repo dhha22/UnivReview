@@ -101,7 +101,7 @@ public class MypageFragment extends BaseFragment {
         nameTxt.setText(userModel.user.name);
         departmentTxt.setText(userModel.user.department.getName());
         majorTxt.setText(userModel.user.major.getName());
-        Util.setProfileImage(userModel.user.studentImageUrl, profileImage);
+        Util.setProfileImage(userModel.user.profileImageUrl, profileImage);
 
         //review count
         //point count

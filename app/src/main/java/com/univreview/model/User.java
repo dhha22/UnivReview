@@ -17,7 +17,9 @@ public class User implements Serializable{
     @Expose
     public String studentId;
     @Expose
-    public String studentImageUrl;
+    public String studentImageUrl;  //학생증
+    @Expose
+    public String profileImageUrl;
     @Expose
     public int point;
     @Expose
@@ -37,9 +39,12 @@ public class User implements Serializable{
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", studentId='" + studentId + '\'' +
-                ", studentImageUrl='" + studentImageUrl + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", point=" + point +
                 ", authenticated=" + authenticated +
+                ", department=" + department +
+                ", university=" + university +
+                ", major=" + major +
                 '}';
     }
 }

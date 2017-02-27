@@ -30,11 +30,13 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/average_indicator"
         style="@style/reviewRatingIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
+        android:stepSize="10"
         android:isIndicator="true" />
 
     <com.univreview.view.ReviewRatingIndicatorView

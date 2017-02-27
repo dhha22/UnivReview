@@ -142,7 +142,7 @@ public class UploadReviewFragment extends BaseFragment {
 
     private void response(Review review) {
         Logger.v("response review: " + review);
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(context, R.style.customDialog)
                 .setMessage("좀 더 자세한 리뷰를 쓰면\n" +
                         "많은 학우들에게 도움이 됩니다.\n" +
                         "리뷰를 써볼까요?")

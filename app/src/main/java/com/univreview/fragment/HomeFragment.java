@@ -139,7 +139,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder) holder).v.setData((Review) list.get(position));
+            //((ViewHolder) holder).v.setData((Review) list.get(position));
         }
 
         @Override
@@ -151,6 +151,11 @@ public class HomeFragment extends BaseFragment {
         public void addItem(AbstractDataProvider item) {
             list.add(item);
             notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemCount() {
+            return 5;
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder{

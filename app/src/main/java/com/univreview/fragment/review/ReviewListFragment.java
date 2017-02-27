@@ -25,6 +25,7 @@ import com.univreview.util.AnimationUtils;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
+import com.univreview.view.ReviewTotalScoreView;
 import com.univreview.view.UnivReviewRecyclerView;
 import com.univreview.widget.PreCachingLayoutManager;
 
@@ -160,6 +161,8 @@ public class ReviewListFragment extends AbsListFragment {
 
 
     private class ReviewAdapter extends CustomAdapter {
+        private static final int HEADER = 0;
+        private static final int CONTENT = 1;
 
         public ReviewAdapter(Context context) {
             super(context);
@@ -167,22 +170,46 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == HEADER) {
+                return new HeaderViewHolder(new ReviewTotalScoreView(context));
+            }
             return new ViewHolder(new ReviewItemView(context));
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (type.equals(MY_REVIEW) || type.equals(PROFESSOR)) {
-                ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
-            } else if (type.equals(SUBJECT)) {
-                ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
+            if (getItemViewType(position) == HEADER) {
+                ((HeaderViewHolder) holder).v.setData();
+            } else if (getItemViewType(position) == CONTENT) {
+                if (type.equals(MY_REVIEW) || type.equals(PROFESSOR)) {
+                    ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
+                } else if (type.equals(SUBJECT)) {
+                    ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
+                }
+                // ((ViewHolder) holder).v.setData((Review) list.get(position));
             }
-            ((ViewHolder) holder).v.setData((Review) list.get(position));
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position == 0) {
+                return HEADER;
+            }
+            return CONTENT;
         }
 
         @Override
         public int getItemCount() {
-            return list.size();
+            return 5;
+        }
+
+        protected class HeaderViewHolder extends RecyclerView.ViewHolder{
+            final ReviewTotalScoreView v;
+
+            public HeaderViewHolder(View itemView) {
+                super(itemView);
+                v = (ReviewTotalScoreView) itemView;
+            }
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {
