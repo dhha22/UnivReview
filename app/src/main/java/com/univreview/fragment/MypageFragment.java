@@ -44,6 +44,7 @@ import rx.schedulers.Schedulers;
 public class MypageFragment extends BaseFragment {
     private static final int MY_REVIEW = 0;
     private static final int POINT = 1;
+    private static final int USER_IDENTIFY = 2;
     @BindView(R.id.profile_image_layout) RelativeLayout profileImageLayout;
     @BindView(R.id.profile_image) ImageView profileImage;
     @BindView(R.id.name_txt) TextView nameTxt;
@@ -85,23 +86,6 @@ public class MypageFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new MyPageAdapter(context);
         recyclerView.setAdapter(adapter);
-        Observable.from(Arrays.asList(new Setting("My 리뷰"), new Setting("포인트")))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> adapter.addItem(result), Logger::e);
-
-        adapter.setOnItemClickListener((view, position) -> {
-            switch (position) {
-                case MY_REVIEW:
-                    Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
-                    break;
-                case POINT:
-                    String name = adapter.getItem(position).getName();
-                    int index = name.indexOf("point") - 1;
-                    Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
-                    break;
-            }
-        });
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
         settingBtn.setOnClickListener(v -> Navigator.goLogin(context));
     }
@@ -119,19 +103,34 @@ public class MypageFragment extends BaseFragment {
         majorTxt.setText(userModel.user.major.getName());
         Util.setProfileImage(userModel.user.studentImageUrl, profileImage);
 
-
         //review count
         //point count
         adapter.clear();
-        Observable.from(Arrays.asList(new Setting(userModel.review + "개"), new Setting(userModel.user.point + " point")))
+        Observable.from(Arrays.asList(new Setting(userModel.review + "개"), new Setting(userModel.user.point + " point"), new Setting("")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
 
+        adapter.setOnItemClickListener((view, position) -> {
+            switch (position) {
+                case MY_REVIEW:
+                    Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
+                    break;
+                case POINT:
+                    String name = adapter.getItem(position).getName();
+                    int index = name.indexOf("point") - 1;
+                    Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
+                    break;
+                case USER_IDENTIFY:
+                    Navigator.goRegisterUserIdentity(context);
+                    break;
+            }
+        });
+
     }
 
     private class MyPageAdapter extends CustomAdapter{
-        private List<String> titles = Arrays.asList("My 리뷰", "포인트");
+        private List<String> titles = Arrays.asList("My 리뷰", "포인트", "학생 인증");
 
         public MyPageAdapter(Context context) {
             super(context);
@@ -147,6 +146,7 @@ public class MypageFragment extends BaseFragment {
             ((ViewHolder) holder).v.setTitle(titles.get(position));
             ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
         }
+
 
         protected class ViewHolder extends RecyclerView.ViewHolder{
             final SettingItemView v;

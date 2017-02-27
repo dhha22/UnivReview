@@ -113,9 +113,9 @@ public class Navigator {
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
-    public static void goCheckUserPhoto(Context context, String type, String path) {
+    public static void goCheckUserPhoto(Context context, String type, String path, String uri) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(CheckUserPhotoFragment.newInstance(type, path));
+        NavigationActivity.setFragment(CheckUserPhotoFragment.newInstance(type, path, uri));
         context.startActivity(intent);
     }
 

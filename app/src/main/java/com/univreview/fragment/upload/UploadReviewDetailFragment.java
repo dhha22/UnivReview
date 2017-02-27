@@ -14,6 +14,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.network.Retro;
+import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
 
 import butterknife.BindView;
@@ -71,8 +72,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
         if (reviewDetail.getAlertMessage() == null) {
             callPostReviewDetail(reviewDetail);
         } else {
-            activity.onBackPressed();
-           // Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
+            Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
         }
     }
 

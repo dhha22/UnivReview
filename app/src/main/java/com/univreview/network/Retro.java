@@ -1,15 +1,25 @@
 package com.univreview.network;
 
+import android.content.Context;
+import android.net.Uri;
+
 import com.univreview.App;
 import com.univreview.BuildConfig;
+import com.univreview.log.Logger;
+import com.univreview.model.FileUploadModel;
 import com.univreview.model.ResponseModel;
 import com.univreview.model.Token;
+import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,6 +39,7 @@ public enum Retro {
     private TokenService tokenService;
     private SearchService searchService;
     private ReviewService reviewService;
+    private FileService fileService;
 
     Retro() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -59,6 +70,7 @@ public enum Retro {
         tokenService = retrofit.create(TokenService.class);
         searchService = retrofit.create(SearchService.class);
         reviewService = retrofit.create(ReviewService.class);
+        fileService = retrofit.create(FileService.class);
     }
 
     public UserService userService(){
@@ -79,5 +91,17 @@ public enum Retro {
 
     public ReviewService reviewService(){
         return reviewService;
+    }
+
+    public Observable<FileUploadModel> fileService(Context context, Uri uploadUri){
+        String path = new ImageUtil(context).getPath(uploadUri);
+        Logger.v("path: " + path);
+        File file = new File(path);
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+        String locationStr = "profile";
+        RequestBody location = RequestBody.create(okhttp3.MultipartBody.FORM, locationStr);
+        return fileService.postFile(App.setAuthHeader(App.userToken), body, location);
     }
 }

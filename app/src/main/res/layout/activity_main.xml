@@ -15,5 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
+        app:bb_inActiveTabColor="@color/iconDisable"
+        app:bb_activeTabColor="@color/iconEnable"
         app:bb_tabXmlResource="@xml/bottom_menu" />
 </RelativeLayout>

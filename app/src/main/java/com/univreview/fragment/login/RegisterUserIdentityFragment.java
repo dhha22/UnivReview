@@ -15,6 +15,7 @@ import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.util.ImageUtil;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +40,7 @@ public class RegisterUserIdentityFragment extends BaseFragment{
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_user_identity, container, false);
         ButterKnife.bind(this, view);
+        rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setCancelBtnVisibility(true);
         cameraBtn.setOnClickListener(v -> Navigator.goCamera(context));
         albumBtn.setOnClickListener(v -> Navigator.goAlbum(context));
@@ -50,10 +52,10 @@ public class RegisterUserIdentityFragment extends BaseFragment{
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
             if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
-                Navigator.goCheckUserPhoto(context, CAMERA, null);
+                Navigator.goCheckUserPhoto(context, CAMERA, null, ImageUtil.TEMP_IMAGE_URI.toString());
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
-                Navigator.goCheckUserPhoto(context, ALBUM, albumPath);
+                Navigator.goCheckUserPhoto(context, ALBUM, albumPath, activityResultEvent.getIntent().getData().toString());
             }
             getActivity().finish();
         }

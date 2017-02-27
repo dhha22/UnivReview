@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="32dp">
+    android:paddingTop="16dp"
+    android:paddingBottom="28dp">
 
     <ImageView
         android:layout_width="70dp"
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="4dp"
+        android:textStyle="bold"
         android:text="0P"
         android:textColor="@color/colorAccent"
         android:textSize="22dp" />
@@ -34,14 +36,15 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/pointRowColor" />
+        android:background="@color/pointRowColor"
+        android:layout_marginTop="16dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginTop="32dp">
+        android:layout_marginTop="28dp">
 
         <Button
             android:id="@+id/buy_ticket_btn"

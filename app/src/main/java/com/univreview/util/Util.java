@@ -2,10 +2,6 @@ package com.univreview.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
@@ -15,13 +11,6 @@ import android.widget.Toast;
 
 import com.univreview.App;
 import com.univreview.R;
-import com.univreview.log.Logger;
-
-import org.bouncycastle.jcajce.provider.digest.Keccak;
-import org.bouncycastle.jcajce.provider.digest.SHA3;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 
 /**
  * Created by DavidHa on 2017. 1. 4..
@@ -71,7 +60,7 @@ public class Util {
 
     public static void setProfileImage(String url, ImageView imageView) {
         if (url == null || url.length() == 0) {
-            App.picasso.load(R.drawable.ic_login_profile_default)
+            App.picasso.load(R.drawable.login_profile_default)
                     .fit()
                     .into(imageView);
         } else {
