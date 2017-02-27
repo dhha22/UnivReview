@@ -16,7 +16,7 @@ public class PointHistory extends AbstractDataProvider {
     private String pointType;
 
     @Expose
-    private String message;
+    public String message;
 
     public boolean getPointType() {
         if ("add".equals(pointType)) {
@@ -34,6 +34,17 @@ public class PointHistory extends AbstractDataProvider {
     @Override
     public String getName() {
         return point;
+    }
+
+    @Override
+    public String toString() {
+        return "PointHistory{" +
+                "id=" + id +
+                ", point='" + point + '\'' +
+                ", historyDate='" + historyDate + '\'' +
+                ", pointType='" + pointType + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }
 

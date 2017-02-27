@@ -120,9 +120,9 @@ public class Navigator {
     }
 
     //mypage
-    public static void goPointList(Context context) {
+    public static void goPointList(Context context, int point) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(PointListFragment.newInstance());
+        NavigationActivity.setFragment(PointListFragment.newInstance(point));
         context.startActivity(intent);
     }
 }

@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.log.Logger;
 import com.univreview.model.PointHistory;
 import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
@@ -36,11 +37,12 @@ public class PointItemView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.point_item, this, true);
         ButterKnife.bind(this);
-        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         this.context = context;
     }
 
     public void setData(PointHistory pointHistory) {
+        Logger.v("point history: " + pointHistory);
         if (pointHistory != null) {
             if (pointHistory.getPointType()) {
                 pointTxt.setText("+" + pointHistory.point + "p");
@@ -49,7 +51,8 @@ public class PointItemView extends FrameLayout {
                 pointTxt.setTextColor(Util.getColor(context, R.color.colorAccent));
                 pointTxt.setText("-" + pointHistory.point + "p");
             }
-            writeTimeTxt.setText(new TimeUtil().getPointFormat(pointHistory.historyDate));
+            messageTxt.setText(pointHistory.message);
+            //writeTimeTxt.setText(new TimeUtil().getPointFormat(pointHistory.historyDate));
         }
     }
 }

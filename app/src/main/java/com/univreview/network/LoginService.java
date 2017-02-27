@@ -25,6 +25,4 @@ public interface LoginService {
     @POST("auth")
     Observable<UserModel> login(@HeaderMap Map<String, String> headers, @Body Login login);
 
-    @DELETE("auth")
-    Observable<ResponseModel> logout();
 }

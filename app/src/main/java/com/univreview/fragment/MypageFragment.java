@@ -96,7 +96,9 @@ public class MypageFragment extends BaseFragment {
                     Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
                     break;
                 case POINT:
-                    Navigator.goPointList(context);
+                    String name = adapter.getItem(position).getName();
+                    int index = name.indexOf("point") - 1;
+                    Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
                     break;
             }
         });

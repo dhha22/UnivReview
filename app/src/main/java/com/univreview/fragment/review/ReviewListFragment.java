@@ -214,6 +214,7 @@ public class ReviewListFragment extends AbsListFragment {
     }
 
     private void response(List<Review> reviews){
+        setResult(page);
         setStatus(Status.IDLE);
         Logger.v("result: " + reviews);
         Observable.from(reviews)

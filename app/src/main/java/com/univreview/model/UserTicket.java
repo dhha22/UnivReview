@@ -9,7 +9,28 @@ import java.io.Serializable;
  */
 public class UserTicket implements Serializable {
     @Expose
+    public long id;
+    @Expose
+    public String ticketType;
+    @Expose
+    public String name;
+    @Expose
+    public String startDate;
+    @Expose
+    public String expiryDate;
+    @Expose
     public long userId;
     @Expose
     public long ticketId = 2;
+
+    @Override
+    public String toString() {
+        return "UserTicket{" +
+                "id=" + id +
+                ", ticketType='" + ticketType + '\'' +
+                ", name='" + name + '\'' +
+                ", userId=" + userId +
+                ", ticketId=" + ticketId +
+                '}';
+    }
 }

@@ -1,10 +1,12 @@
 package com.univreview.network;
 
 import com.univreview.model.PointHistory;
+import com.univreview.model.PointHistoryModel;
 import com.univreview.model.UserModel;
 import com.univreview.model.Register;
 import com.univreview.model.ResponseModel;
 import com.univreview.model.UserTicket;
+import com.univreview.model.UserTicketModel;
 
 import java.util.Map;
 
@@ -25,16 +27,17 @@ public interface UserService {
     @POST("signUp")
     Observable<UserModel> register(@HeaderMap Map<String, String> headers, @Body Register body);
 
-    @GET("profile/")
+    @GET("profile")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
 
 
     //point
-    @GET("pointHistory")
-    Observable<PointHistory> getPoint();
+    @GET("pointHistory/{userId}")
+    Observable<PointHistoryModel> getPoint(@HeaderMap Map<String, String> headers, @Path("userId") long userId, @Query("page") int page);
 
     @GET("userTicket/{userId}")
-    Observable<UserTicket> getUserTicket(@HeaderMap Map<String, String> headers);
+    Observable<UserTicketModel> getUserTicket(@HeaderMap Map<String, String> headers, @Path("userId") long userId);
+
     @POST("userTicket")
     Observable<UserTicket> postUserTicket(@HeaderMap Map<String, String> headers, @Body UserTicket body);
 
