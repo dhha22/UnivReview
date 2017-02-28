@@ -7,8 +7,7 @@
     <com.univreview.view.UnivReviewRecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="38dp" />
+        android:layout_height="match_parent" />
 
     <me.henrytao.smoothappbarlayout.SmoothAppBarLayout
         android:id="@+id/smooth_app_bar_layout"

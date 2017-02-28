@@ -1,6 +1,8 @@
 package com.univreview.fragment.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Register;
 import com.univreview.model.Token;
+import com.univreview.model.User;
 import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
@@ -49,6 +52,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     @BindView(R.id.next_btn) Button nextBtn;
     private ButtonStateManager buttonStateManager;
     private Register register;
+    private ProgressDialog progressDialog;
 
     public static RegisterUnivInfoFragment newInstance(Register register){
         RegisterUnivInfoFragment fragment = new RegisterUnivInfoFragment();
@@ -78,6 +82,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     private void init() {
+        progressDialog = Util.progressDialog(context);
         buttonStateManager = new ButtonStateManager(context, new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
         buttonStateManager.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonStateManager.setTxtColor(R.color.white, R.color.white);
@@ -92,7 +97,10 @@ public class RegisterUnivInfoFragment extends BaseFragment {
             majorLayout.setVisibility(View.VISIBLE);
             nextBtn.setText("확인");
             nextBtn.setOnClickListener(v -> {
-                if (formVerification(STUDENT, NEXT)) callTempTokenApi(register);
+                if (formVerification(STUDENT, NEXT)) {
+                    progressDialog.show();
+                    callTempTokenApi(register);
+                }
             });
 
         } else if (state == PROFESSOR) {
@@ -207,9 +215,31 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         App.setUserId(userModel.user.id);
         App.setUserToken(userModel.auth.getToken());
         Navigator.goMain(context);
+       // callFileUploadApi();
     }
 
+    private void callFileUploadApi(Uri uploadUri) {
+        Retro.instance.fileService(context, uploadUri, "profile")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> callUserUpdateApi(result.fileLocation), error -> goMain());
+    }
 
+    private void callUserUpdateApi(String profileUrl) {
+        Logger.v("file location: " + profileUrl);
+        User user = new User();
+        user.profileImageUrl = profileUrl;
+        Logger.v("post user model: " + user);
+        Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> goMain(), error -> goMain());
+    }
+
+    private void goMain() {
+        progressDialog.dismiss();
+        Navigator.goMain(context);
+    }
 
 
 }

@@ -99,6 +99,7 @@ public class ReviewListFragment extends AbsListFragment {
             toolbar.setTitleTxt(name);
         } else if (type.equals(SUBJECT) || type.equals(PROFESSOR) || type.equals(MAJOR)) {
             toolbar.setVisibility(View.GONE);
+            recyclerView.setPadding(0, (int) Util.dpToPx(context, 38), 0, 0);
             appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
                 int height = appBarLayout.getHeight() - appBarLayout.getBottom();
                 Logger.v("appbar height: " + appBarLayout.getHeight());
@@ -192,7 +193,7 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (position == 0) {
+            if (!type.equals(MY_REVIEW) && position == 0) {
                 return HEADER;
             }
             return CONTENT;
