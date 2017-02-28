@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 2. 17..
  */
 public class PointItemView extends FrameLayout {
-    @BindView(R.id.writetime_txt) TextView writeTimeTxt;
+    @BindView(R.id.time_txt) TextView timeTxt;
     @BindView(R.id.message_txt) TextView messageTxt;
     @BindView(R.id.point_txt) TextView pointTxt;
     private Context context;
@@ -52,7 +52,7 @@ public class PointItemView extends FrameLayout {
                 pointTxt.setText("-" + pointHistory.point + "p");
             }
             messageTxt.setText(pointHistory.message);
-            //writeTimeTxt.setText(new TimeUtil().getPointFormat(pointHistory.historyDate));
+            timeTxt.setText(new TimeUtil().getPointFormat(pointHistory.historyDate));
         }
     }
 }

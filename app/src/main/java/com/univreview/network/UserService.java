@@ -23,7 +23,7 @@ import rx.Observable;
  * Created by DavidHa on 2017. 1. 3..
  */
 public interface UserService {
-    @FormUrlEncoded
+
     @POST("signUp")
     Observable<UserModel> register(@HeaderMap Map<String, String> headers, @Body Register body);
 

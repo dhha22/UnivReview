@@ -10,8 +10,8 @@
         android:layout_marginBottom="82dp"
         android:layout_marginTop="80dp"
         android:gravity="center"
-        android:visibility="invisible"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <Button
             android:id="@+id/student_btn"
@@ -41,9 +41,9 @@
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:padding="8dp"
         android:hint="대학교"
+        android:padding="8dp"
+        android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="18dp" />
 
@@ -63,10 +63,10 @@
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:gravity="center"
-        android:padding="8dp"
         android:hint="학과군"
-        android:textColorHint="@color/white"
+        android:padding="8dp"
         android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:textSize="18dp" />
 
     <View
@@ -91,9 +91,10 @@
             android:layout_marginLeft="48dp"
             android:layout_marginRight="48dp"
             android:gravity="center"
-            android:textColorHint="@color/white"
-            android:padding="8dp"
             android:hint="전공"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="18dp" />
 
         <View
@@ -111,9 +112,9 @@
         android:layout_height="46dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:textColor="@color/white"
         android:background="@drawable/rounded_white_rect"
         android:text="확인"
+        android:textColor="@color/white"
         android:textSize="18dp" />
 
 </LinearLayout>

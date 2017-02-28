@@ -19,6 +19,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Register;
 import com.univreview.model.Token;
+import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
 import com.univreview.util.SimpleButtonState;
@@ -185,20 +186,27 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     //api
-    private void callTempTokenApi(Register register){
+    private void callTempTokenApi(Register register) {
         Retro.instance.tokenService().tempToken(App.setAuthHeader(""))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> callRegisterApi(register, result), error -> Logger.e(error));
     }
 
-    private void callRegisterApi(Register register, Token token){
+    private void callRegisterApi(Register register, Token token) {
         Logger.v("userToken: " + token);
         Logger.v("register : " + register);
         Retro.instance.userService().register(App.setAuthHeader(token.getToken()), register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Logger.v(result), error -> Logger.e(error));
+                .subscribe(this::response, Logger::e);
+    }
+
+    private void response(UserModel userModel) {
+        Logger.v("response: " + userModel);
+        App.setUserId(userModel.user.id);
+        App.setUserToken(userModel.auth.getToken());
+        Navigator.goMain(context);
     }
 
 

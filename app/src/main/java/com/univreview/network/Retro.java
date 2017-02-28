@@ -99,8 +99,8 @@ public enum Retro {
         File file = new File(path);
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
-        String locationStr = "profile";
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        String locationStr = "/profile";
         RequestBody location = RequestBody.create(okhttp3.MultipartBody.FORM, locationStr);
         return fileService.postFile(App.setAuthHeader(App.userToken), body, location);
     }
