@@ -29,6 +29,8 @@ public interface UserService {
 
     @GET("profile")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
+    @POST("profile/{userId}")
+    Observable<UserModel> postProfile(@HeaderMap Map<String, String> headers, @Body UserModel body, @Path("userId") long userId);
 
 
     //point

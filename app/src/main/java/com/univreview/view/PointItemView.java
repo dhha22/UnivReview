@@ -52,7 +52,7 @@ public class PointItemView extends FrameLayout {
                 pointTxt.setText("-" + pointHistory.point + "p");
             }
             messageTxt.setText(pointHistory.message);
-            timeTxt.setText(new TimeUtil().getPointFormat(pointHistory.historyDate));
+           // timeTxt.setText(new TimeUtil().getPointFormat(pointHistory.historyDate));
         }
     }
 }

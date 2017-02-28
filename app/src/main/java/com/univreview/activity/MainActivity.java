@@ -1,5 +1,6 @@
 package com.univreview.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.roughike.bottombar.BottomBar;
+import com.squareup.otto.Produce;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.HomeFragment;
 import com.univreview.fragment.MypageFragment;
 import com.univreview.log.Logger;
+import com.univreview.model.ActivityResultEvent;
+import com.univreview.model.BusProvider;
 import com.univreview.widget.NonSwipeableViewPager;
 
 import java.util.Arrays;
@@ -28,6 +32,9 @@ public class MainActivity extends BaseActivity {
     private PagerAdapter adapter;
     private static final int INDEX_HOME = 0;
     private static final int INDEX_MYPAGE = 1;
+    private int requestCode;
+    private int resultCode;
+    private Intent data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,30 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         App.setCurrentActivity(this);
+        BusProvider.newInstance().register(this);
     }
+
+    @Override protected void onPause() {
+        super.onPause();
+        BusProvider.newInstance().unregister(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.requestCode =requestCode;
+        this.resultCode = resultCode;
+        this.data =data;
+        Logger.v("navigation activity on activity result");
+        BusProvider.newInstance().post(produceActivityResultEvent());
+    }
+
+
+    @Produce
+    public ActivityResultEvent produceActivityResultEvent() {
+        return new ActivityResultEvent(requestCode, resultCode, data);
+    }
+
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
         private List<Fragment> fragmentList = Arrays.asList(HomeFragment.newInstance(), MypageFragment.newInstance(App.userId));

@@ -93,7 +93,7 @@ public enum Retro {
         return reviewService;
     }
 
-    public Observable<FileUploadModel> fileService(Context context, Uri uploadUri){
+    public Observable<FileUploadModel> fileService(Context context, Uri uploadUri, String type){
         String path = new ImageUtil(context).getPath(uploadUri);
         Logger.v("path: " + path);
         File file = new File(path);

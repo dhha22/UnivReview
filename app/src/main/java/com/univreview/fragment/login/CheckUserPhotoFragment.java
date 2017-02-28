@@ -89,7 +89,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
     }
 
     private void upload() {
-        Retro.instance.fileService(context, Uri.parse(uri))
+        Retro.instance.fileService(context, Uri.parse(uri), "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> Logger.v("result: " + result), Logger::e);

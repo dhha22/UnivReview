@@ -1,6 +1,7 @@
 package com.univreview.fragment;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,6 +89,7 @@ public class MypageFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
         settingBtn.setOnClickListener(v -> Navigator.goLogin(context));
+
     }
 
     @Override
@@ -160,12 +162,15 @@ public class MypageFragment extends BaseFragment {
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
+        Logger.v("on activity result");
         if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
             String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
             Logger.v("album path: " + albumPath);
-            //"file://" + albumPath;
+            callFileUploadApi(activityResultEvent.getIntent().getData());
         }
     }
+
+    //api
 
     private void callProfileApi(Long userId) {
         if (userId == 0l) userId = null;
@@ -174,5 +179,23 @@ public class MypageFragment extends BaseFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> setUserData(result), ErrorUtils::parseError);
+    }
+
+    private void callFileUploadApi(Uri uploadUri) {
+        Retro.instance.fileService(context, uploadUri, "profile")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> callUserUpdateApi(result.fileLocation), Logger::e);
+    }
+
+    private void callUserUpdateApi(String profileUrl) {
+        Logger.v("file location: " + profileUrl);
+        UserModel userModel = new UserModel();
+        userModel.user.profileImageUrl = profileUrl;
+        Logger.v("post user model: " + userModel);
+        Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), userModel, App.userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> setUserData(result), Logger::e);
     }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class University extends AbstractDataProvider implements Serializable {
     @Expose
-    public long id;
+    public Long id;
     @Expose
     public String name;
 

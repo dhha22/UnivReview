@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class Department extends AbstractDataProvider implements Serializable{
     @Expose
-    public int id;
+    public Long id;
     @Expose
     public String name;
 

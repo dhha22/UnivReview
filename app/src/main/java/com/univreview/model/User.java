@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable{
     @Expose
-    public long id;
+    public Long id;
     @Expose
     public String email;
     @Expose
@@ -21,9 +21,9 @@ public class User implements Serializable{
     @Expose
     public String profileImageUrl;
     @Expose
-    public int point;
+    public Integer point;
     @Expose
-    public boolean authenticated;
+    public Boolean authenticated;
 
     @Expose
     public University university = new University();

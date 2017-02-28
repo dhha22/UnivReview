@@ -21,6 +21,7 @@ import com.univreview.view.Toolbar;
  * Created by DavidHa on 2017. 1. 13..
  */
 public class BaseFragment extends Fragment {
+    private static final String HOME_FRAGMENT = "com.univreview.fragment.HomeFragment";
     protected LinearLayout rootLayout;
     protected Toolbar toolbar;
     protected Context context;
@@ -48,14 +49,20 @@ public class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        BusProvider.newInstance().register(this);
-        Logger.v("on resume: " + this.getClass().getName());
+        if(!this.getClass().getName().equals(HOME_FRAGMENT)) {
+            Logger.v("on resume: " + this.getClass().getName());
+            BusProvider.newInstance().register(this);
+        }
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        BusProvider.newInstance().unregister(this);
+        if(!this.getClass().getName().equals(HOME_FRAGMENT)) {
+            Logger.v("on pause: " + this.getClass().getName());
+            BusProvider.newInstance().unregister(this);
+        }
     }
 
     @Override
