@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,13 +21,14 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 1. 23..
  */
 public class ReviewItemView extends FrameLayout {
-    @BindView(R.id.first_layout) LinearLayout firstLayout;
-    @BindView(R.id.second_layout) LinearLayout secondLayout;
+    @BindView(R.id.user_layout) LinearLayout userLayout;
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMarkTxt;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
-    @BindView(R.id.time_txt) TextView timeTxt;
+    @BindView(R.id.first_line_time_txt) TextView firstLineTimeTxt;
+    @BindView(R.id.more_btn) ImageButton moreBtn;
+    @BindView(R.id.second_line_time_txt) TextView secondLineTimeTxt;
     @BindView(R.id.review_txt) TextView reviewTxt;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
     @BindView(R.id.assignment_txt) TextView assignmentTxt;
@@ -55,13 +57,15 @@ public class ReviewItemView extends FrameLayout {
         if (review != null) {
             if (review.user != null) {
                 nameTxt.setText(review.user.name);
-                if (review.user.authenticated) {
-                    authMarkTxt.setVisibility(VISIBLE);
-                } else {
-                    authMarkTxt.setVisibility(INVISIBLE);
+                if (review.user.authenticated != null) {
+                    if (review.user.authenticated) {
+                        authMarkTxt.setVisibility(VISIBLE);
+                    } else {
+                        authMarkTxt.setVisibility(INVISIBLE);
+                    }
                 }
             }
-            if(review.reviewDetail != null) {
+            if (review.reviewDetail != null) {
                 if (review.reviewDetail.length() > 0) {
                     reviewTxt.setVisibility(VISIBLE);
                 } else {
@@ -83,11 +87,13 @@ public class ReviewItemView extends FrameLayout {
 
     public void setMode(Status status){
         if(status == Status.WRITE_REVIEW || status == Status.MY_REVIEW){
-            firstLayout.setVisibility(GONE);
-            secondLayout.setVisibility(VISIBLE);
+            userLayout.setVisibility(GONE);
+            firstLineTimeTxt.setVisibility(VISIBLE);
+            moreBtn.setVisibility(GONE);
         }else if(status == Status.READ_REVIEW){
-            firstLayout.setVisibility(VISIBLE);
-            secondLayout.setVisibility(GONE);
+            firstLineTimeTxt.setVisibility(GONE);
+            userLayout.setVisibility(VISIBLE);
+            moreBtn.setVisibility(VISIBLE);
         }
     }
     public enum Status {

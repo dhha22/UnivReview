@@ -42,7 +42,7 @@ public class UploadReviewFragment extends BaseFragment {
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
     @BindView(R.id.assignment_txt) TextView assignmentTxt;
-    @BindView(R.id.attendance_txt) TextView attendaceTxt;
+    @BindView(R.id.attendance_txt) TextView attendanceTxt;
     @BindView(R.id.grade_txt) TextView gradeTxt;
     @BindView(R.id.achievement_txt) TextView achievementTxt;
     private Review review;
@@ -80,7 +80,7 @@ public class UploadReviewFragment extends BaseFragment {
         });
         attendanceRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
             review.attendanceRate = v;
-            attendaceTxt.setText(review.getAttendanceRateMessage());
+            attendanceTxt.setText(review.getAttendanceRateMessage());
         });
         gradeRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
             review.gradeRate = v;
@@ -124,7 +124,9 @@ public class UploadReviewFragment extends BaseFragment {
         review.achievementRate = achievementRate.getRating();
 
         if (review.getAlertMessage() == null) {
-            callPostSimpleReviewApi(review);
+            Navigator.goUploadReviewDetail(context, review);
+            activity.finish();
+            //callPostSimpleReviewApi(review);
         } else {
             Util.simpleMessageDialog(context, review.getAlertMessage());
         }

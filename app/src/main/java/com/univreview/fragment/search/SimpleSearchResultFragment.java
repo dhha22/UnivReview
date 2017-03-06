@@ -77,6 +77,7 @@ public class SimpleSearchResultFragment extends BaseFragment {
         }else if(type.equals(SUBJECT)){
             callGetSubjectProfessor(id);
         }
+        adapter = new SearchAdapter(context);
         adapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent();
             Logger.v("id : " + adapter.getItem(position).getId());

@@ -90,7 +90,21 @@ public class MypageFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
         settingBtn.setOnClickListener(v -> Navigator.goLogin(context));
-
+        adapter.setOnItemClickListener((view, position) -> {
+            switch (position) {
+                case MY_REVIEW:
+                    Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
+                    break;
+                case POINT:
+                    String name = adapter.getItem(position).getName();
+                    int index = name.indexOf("point") - 1;
+                    Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
+                    break;
+                case USER_IDENTIFY:
+                    Navigator.goRegisterUserIdentity(context);
+                    break;
+            }
+        });
     }
 
     @Override
@@ -114,21 +128,7 @@ public class MypageFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
 
-        adapter.setOnItemClickListener((view, position) -> {
-            switch (position) {
-                case MY_REVIEW:
-                    Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
-                    break;
-                case POINT:
-                    String name = adapter.getItem(position).getName();
-                    int index = name.indexOf("point") - 1;
-                    Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
-                    break;
-                case USER_IDENTIFY:
-                    Navigator.goRegisterUserIdentity(context);
-                    break;
-            }
-        });
+
 
     }
 
@@ -147,15 +147,22 @@ public class MypageFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ((ViewHolder) holder).v.setTitle(titles.get(position));
-            ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
+            if(list.size()>0) {
+                ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
+            }
         }
 
+        @Override
+        public int getItemCount() {
+            return titles.size();
+        }
 
-        protected class ViewHolder extends RecyclerView.ViewHolder{
+        protected class ViewHolder extends RecyclerView.ViewHolder {
             final SettingItemView v;
+
             public ViewHolder(View itemView) {
                 super(itemView);
-                v = (SettingItemView)itemView;
+                v = (SettingItemView) itemView;
                 v.setOnClickListener(view -> itemClickListener.onItemClick(v, getAdapterPosition()));
             }
         }

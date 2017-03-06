@@ -188,9 +188,9 @@ public class ReviewListFragment extends AbsListFragment {
             if (getItemViewType(position) == HEADER) {
                 ((HeaderViewHolder) holder).v.setData();
             } else if (getItemViewType(position) == CONTENT) {
-                if (type.equals(MY_REVIEW) || type.equals(PROFESSOR)) {
+                if (type.equals(MY_REVIEW)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
-                } else if (type.equals(SUBJECT)) {
+                } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
                 }
                 // ((ViewHolder) holder).v.setText((Review) list.get(position));
@@ -256,12 +256,12 @@ public class ReviewListFragment extends AbsListFragment {
             subjectId = id;
         } else if (type.equals(PROFESSOR)) {
             professorId = id;
-        }else if(type.equals(MY_REVIEW)){
+        } else if (type.equals(MY_REVIEW)) {
             userId = App.userId;
         }
 
-        if (subjectId == 0) subjectId = null;
-        if(professorId == 0) professorId = null;
+        if (subjectId != null && subjectId == 0) subjectId = null;
+        if (professorId != null && professorId == 0) professorId = null;
 
         Logger.v("type: " + type);
         Logger.v("subject id: " + subjectId);

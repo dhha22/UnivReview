@@ -4,8 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -24,6 +24,7 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.univreview.App;
+import com.univreview.BuildConfig;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.log.Logger;
@@ -47,6 +48,7 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
+    @BindView(R.id.main_btn) Button mainBtn;
 
     private CallbackManager facebookCallbackManager;
     private ProgressDialog progressDialog;
@@ -64,6 +66,11 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         progressDialog = Util.progressDialog(this);
 
+        if(BuildConfig.DEBUG){
+            Logger.v("debug");
+            mainBtn.setVisibility(View.VISIBLE);
+            mainBtn.setOnClickListener(v -> Navigator.goMain(this));
+        }
         //facebook
         facebookCallbackManager = CallbackManager.Factory.create();
         facebookLoginBtn.setOnClickListener(v -> facebookLogin());
@@ -73,8 +80,6 @@ public class LoginActivity extends BaseActivity {
         Session.getCurrentSession().addCallback(kakaoCallback);
         kakaoLoginBtn.setOnClickListener(v -> kakaoLogin());
     }
-
-
 
     private void facebookLogin(){
         progressDialog.show();

@@ -4,79 +4,110 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="18dp">
+    android:padding="14dp">
+
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <LinearLayout
-            android:id="@+id/first_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/name_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="name"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/auth_mark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:background="@drawable/round_rect_auth"
-                android:paddingBottom="2dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="2dp"
-                android:text="인증"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/second_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/subject_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="subject name"
-                android:textColor="@color/textColor"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/professor_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:text="professor name"
-                android:textColor="@color/professorTxtColor"
-                android:textSize="12dp" />
-
-        </LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/time_txt"
-            android:layout_width="0dp"
+            android:id="@+id/subject_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="subject name"
+            android:textColor="@color/colorAccent"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/professor_txt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="4dp"
-            android:layout_weight="1"
+            android:text="professor name"
+            android:textColor="@color/professorTxtColor"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/more_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_back"
+            android:backgroundTint="@color/reviewTxtColor"
+            android:rotation="270"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/first_line_time_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="2017-01-01"
+            android:textColor="@color/timeColor"
+            android:textSize="12dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="14dp"
+        android:background="@color/pointRowColor" />
+
+
+    <LinearLayout
+        android:id="@+id/user_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="name"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/auth_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="4dp"
+            android:background="@drawable/round_rect_auth"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:text="인증"
+            android:textColor="@color/white"
+            android:textSize="10dp" />
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/second_line_time_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
             android:gravity="right"
             android:text="2017-01-01"
             android:textColor="@color/timeColor"
@@ -97,7 +128,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <LinearLayout

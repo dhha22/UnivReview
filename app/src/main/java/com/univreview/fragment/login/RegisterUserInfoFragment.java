@@ -2,6 +2,8 @@ package com.univreview.fragment.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +78,26 @@ public class RegisterUserInfoFragment extends BaseFragment {
         nextBtn.setOnClickListener(v -> {
             if (formVerification() && buttonState.getButtonState()) {
                 Navigator.goRegisterUnivInfo(context, register);
+            }
+        });
+        inputName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.length()==0){
+                    buttonState.setButtonState(false);
+                }else{
+                    buttonState.setButtonState(true);
+                }
             }
         });
 

@@ -51,8 +51,10 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     @BindView(R.id.major_txt) TextView majorTxt;
     @BindView(R.id.next_btn) Button nextBtn;
     private ButtonStateManager buttonStateManager;
+    private SimpleButtonState nextButtonState;
     private Register register;
     private ProgressDialog progressDialog;
+
 
     public static RegisterUnivInfoFragment newInstance(Register register){
         RegisterUnivInfoFragment fragment = new RegisterUnivInfoFragment();
@@ -83,6 +85,9 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
     private void init() {
         progressDialog = Util.progressDialog(context);
+        nextButtonState = new SimpleButtonState(context, nextBtn);
+        nextButtonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
+        nextButtonState.setTxtColor(R.color.white, R.color.white);
         buttonStateManager = new ButtonStateManager(context, new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
         buttonStateManager.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonStateManager.setTxtColor(R.color.white, R.color.white);
@@ -179,14 +184,17 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                     App.UNIVERSITY_ID = register.universityId = id;
                     register.departmentId = null;
                     register.majorId = null;
+                    nextButtonState.setButtonState(false);
                 } else if ("department".equals(type)) {
                     departmentTxt.setText(name);
                     majorTxt.setText(null);
                     register.departmentId = id;
                     register.majorId = null;
+                    nextButtonState.setButtonState(false);
                 } else if ("major".equals(type)) {
                     majorTxt.setText(name);
                     register.majorId = id;
+                    nextButtonState.setButtonState(true);
                 }
 
             }
