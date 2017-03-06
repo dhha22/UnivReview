@@ -15,6 +15,7 @@ import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.search.SearchFragment;
+import com.univreview.fragment.search.SimpleSearchResultFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.Register;
@@ -113,6 +114,15 @@ public class Navigator {
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id, name, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
+
+    public static void goSimpleSearchResult(Context context, String type, long id){
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(SimpleSearchResultFragment.newInstance(type, id));
+        ((Activity)context).startActivityForResult(intent, SEARCH);
+    }
+
+
+    //
 
     public static void goCheckUserPhoto(Context context, String type, String path, String uri) {
         Intent intent = new Intent(context, NavigationActivity.class);

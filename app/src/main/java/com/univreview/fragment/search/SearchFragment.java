@@ -18,19 +18,11 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
-import com.univreview.fragment.BaseFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
-import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
-import com.univreview.model.AbstractDataProvider;
-import com.univreview.model.Department;
-import com.univreview.model.DepartmentModel;
-import com.univreview.model.Major;
-import com.univreview.model.MajorModel;
 import com.univreview.model.SearchModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
-import com.univreview.util.RevealAnimationSetting;
 import com.univreview.util.Util;
 import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
@@ -217,7 +209,7 @@ public class SearchFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder) holder).v.setData(list.get(position).getName());
+            ((ViewHolder) holder).v.setText(list.get(position).getName());
         }
 
 
@@ -249,7 +241,7 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void callGetMajorApi(long id, String name, int page) {
-        Retro.instance.searchService().getMajors(id, name, page)
+        Retro.instance.searchService().getMajors(App.UNIVERSITY_ID, id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> response(result, "major"), this::errorResponse);

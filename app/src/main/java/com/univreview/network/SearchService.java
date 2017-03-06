@@ -17,11 +17,21 @@ public interface SearchService {
     Observable<SearchModel> getDepartments(@Query("universityId") long universityId, @Query("name") String departName, @Query("page") int page);
 
     @GET("major")
-    Observable<SearchModel> getMajors(@Query("departmentId") Long departmentId, @Query("name") String majorName, @Query("page") int page);
+    Observable<SearchModel> getMajors(@Query("universityId") long universityId, @Query("departmentId") Long departmentId, @Query("name") String majorName, @Query("page") int page);
 
     @GET("subject")
     Observable<SearchModel> getSubjects(@Query("universityId") long universityId, @Query("majorId") Long majorId, @Query("name") String subjectName, @Query("page") int page);
 
     @GET("professor")
     Observable<SearchModel> getProfessors(@Query("universityId") long universityId, @Query("departmentId") Long departmentId, @Query("name") String professorName, @Query("page") int page);
+
+    @GET("majorSubject")
+    Observable<SearchModel> getMajorSubject(@Query("universityId") long universityId);
+
+    @GET("professorSubject")
+    Observable<SearchModel> getProfessorSubject(@Query("subjectId") long subjectId);
+
+    @GET("subjectProfessor")
+    Observable<SearchModel> getSubjectProfessor(@Query("professorId") long professorId);
+
 }

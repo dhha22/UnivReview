@@ -1,6 +1,7 @@
 package com.univreview.fragment.review;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +14,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
+import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.AnimationUtils;
@@ -43,7 +47,6 @@ import rx.schedulers.Schedulers;
  */
 public class ReviewListFragment extends AbsListFragment {
     private static final String SUBJECT = "subject";
-    private static final String MAJOR = "major";
     private static final String PROFESSOR = "professor";
     private static final String MY_REVIEW = "myReview";
     @BindView(R.id.smooth_app_bar_layout) SmoothAppBarLayout appBarLayout;
@@ -60,6 +63,8 @@ public class ReviewListFragment extends AbsListFragment {
     private String type;
     private long id;
     private String name;
+    private Long subjectId;
+    private Long professorId;
 
     public static ReviewListFragment newInstance(String type, long id, String name) {
         ReviewListFragment fragment = new ReviewListFragment();
@@ -97,7 +102,7 @@ public class ReviewListFragment extends AbsListFragment {
             toolbar.setBackBtnVisibility(true);
             toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
             toolbar.setTitleTxt(name);
-        } else if (type.equals(SUBJECT) || type.equals(PROFESSOR) || type.equals(MAJOR)) {
+        } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
             toolbar.setVisibility(View.GONE);
             recyclerView.setPadding(0, (int) Util.dpToPx(context, 38), 0, 0);
             appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
@@ -120,6 +125,7 @@ public class ReviewListFragment extends AbsListFragment {
                     AnimationUtils.fadeOut(context, filterLayout);
                 }
             });
+            filterLayout.setOnClickListener(v-> Navigator.goSimpleSearchResult(context, type, id));
             titleTxt.setText(name);
             toolbarBackBtn.setOnClickListener(v -> activity.onBackPressed());
             toolbarTitleTxt.setText(name);
@@ -187,7 +193,7 @@ public class ReviewListFragment extends AbsListFragment {
                 } else if (type.equals(SUBJECT)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
                 }
-                // ((ViewHolder) holder).v.setData((Review) list.get(position));
+                // ((ViewHolder) holder).v.setText((Review) list.get(position));
             }
         }
 
@@ -223,19 +229,46 @@ public class ReviewListFragment extends AbsListFragment {
         }
     }
 
+    @Subscribe
+    public void onActivityResult(ActivityResultEvent activityResultEvent) {
+        if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
+            if (activityResultEvent.getRequestCode() == Navigator.SEARCH) {
+                Intent data = activityResultEvent.getIntent();
+                long id = data.getLongExtra("id", 0);
+                String name = data.getStringExtra("name");
+                String type = data.getStringExtra("type");
+                Logger.v("on activity result: " + type);
+                if (SUBJECT.equals(type)) {
+                    professorId = id;
+                    callReviewListApi(this.id, DEFAULT_PAGE);
+                } else if (PROFESSOR.equals(type)) {
+                    subjectId = id;
+                    callReviewListApi(this.id, DEFAULT_PAGE);
+                }
+                filterNameTxt.setText(name);
+            }
+        }
+    }
+
     private void callReviewListApi(Long id, int page) {
-        Long subjectId = null;
-        Long professorId = null;
+        Long userId = null;
         if (type.equals(SUBJECT)) {
             subjectId = id;
         } else if (type.equals(PROFESSOR)) {
             professorId = id;
+        }else if(type.equals(MY_REVIEW)){
+            userId = App.userId;
         }
+
+        if (subjectId == 0) subjectId = null;
+        if(professorId == 0) professorId = null;
+
         Logger.v("type: " + type);
         Logger.v("subject id: " + subjectId);
         Logger.v("professor id: " + professorId);
+        Logger.v("user id: " + userId);
 
-        Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, page)
+        Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, userId, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> response(result.reviews), this::errorResponse);

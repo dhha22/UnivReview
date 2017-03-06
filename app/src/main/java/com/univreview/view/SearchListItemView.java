@@ -2,12 +2,14 @@ package com.univreview.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,6 +19,8 @@ import butterknife.ButterKnife;
  */
 public class SearchListItemView extends FrameLayout {
     @BindView(R.id.name_txt) TextView nameTxt;
+    private Context context;
+
     public SearchListItemView(Context context) {
         this(context, null);
     }
@@ -33,7 +37,17 @@ public class SearchListItemView extends FrameLayout {
 
     }
 
-    public void setData(String str){
+    public void setTextSize(int size) {
+        nameTxt.setTextSize(Util.dpToPx(context, size));
+    }
+
+    public void setText(String str){
         nameTxt.setText(str);
+    }
+
+    public void setTextCenter(boolean isCenter){
+        if(isCenter) {
+            nameTxt.setGravity(Gravity.CENTER);
+        }
     }
 }

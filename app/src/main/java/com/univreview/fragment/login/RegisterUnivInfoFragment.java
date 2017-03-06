@@ -176,7 +176,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                     universityTxt.setText(name);
                     departmentTxt.setText(null);
                     majorTxt.setText(null);
-                    register.universityId = id;
+                    App.UNIVERSITY_ID = register.universityId = id;
                     register.departmentId = null;
                     register.majorId = null;
                 } else if ("department".equals(type)) {
