@@ -123,10 +123,10 @@ public class PointListFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if(getItemViewType(position) == HEADER){
+            if (getItemViewType(position) == HEADER) {
                 ((HeaderViewHolder) holder).v.setUserTicket(userTicket);
-            }else {
-                ((ViewHolder) holder).v.setData((PointHistory) list.get(position));
+            } else {
+                ((ViewHolder) holder).v.setData((PointHistory) list.get(position - 1));
             }
         }
 
@@ -171,7 +171,7 @@ public class PointListFragment extends AbsListFragment {
         Retro.instance.userService().getUserTicket(App.setAuthHeader(App.userToken), App.userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> ticketResponse(result.userTicket));
+                .subscribe(result -> ticketResponse(result.userTicket), Logger::e);
 
     }
 

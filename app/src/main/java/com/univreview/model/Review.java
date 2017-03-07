@@ -25,9 +25,9 @@ public class Review extends AbstractDataProvider implements Serializable{
     @Expose
     public String updateDate;
     @Expose
-    public String reviewDetail;
+    public ReviewDetail reviewDetail;
     @Expose
-    public long subjectId;
+    public long subjectDetailId;
     @Expose
     public long userId;
     @Expose
@@ -37,10 +37,8 @@ public class Review extends AbstractDataProvider implements Serializable{
     public User user = new User();
 
     @Expose
-    public Professor professor = new Professor();
+    public SubjectDetail subjectDetail = new SubjectDetail();
 
-    @Expose
-    public Subject subject = new Subject();
 
     @Override
     public long getId() {
@@ -139,7 +137,7 @@ public class Review extends AbstractDataProvider implements Serializable{
 
 
     public String getAlertMessage(){
-        if(subjectId == 0){
+        if(subjectDetailId == 0){
             return "과목을 입력해주세요.";
         }else if(professorId == 0){
             return "교수명을 입력해주세요.";
@@ -172,11 +170,9 @@ public class Review extends AbstractDataProvider implements Serializable{
                 ", createdDate='" + createdDate + '\'' +
                 ", updateDate='" + updateDate + '\'' +
                 ", reviewDetail='" + reviewDetail + '\'' +
-                ", subjectId=" + subjectId +
+                ", subjectDetailId=" + subjectDetailId +
                 ", userId=" + userId +
                 ", professorId=" + professorId +
-                ", user=" + user +
-                ", professor=" + professor +
                 '}';
     }
 }

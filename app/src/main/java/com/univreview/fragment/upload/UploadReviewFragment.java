@@ -105,7 +105,7 @@ public class UploadReviewFragment extends BaseFragment {
                 Logger.v("on activity result: " + type);
                 if ("subject".equals(type)) {
                     subjectTxt.setText(name);
-                    review.subjectId = id;
+                    review.subjectDetailId = id;
                 } else if ("professor".equals(type)) {
                     professorTxt.setText(name);
                     review.professorId = id;
@@ -124,9 +124,7 @@ public class UploadReviewFragment extends BaseFragment {
         review.achievementRate = achievementRate.getRating();
 
         if (review.getAlertMessage() == null) {
-            Navigator.goUploadReviewDetail(context, review);
-            activity.finish();
-            //callPostSimpleReviewApi(review);
+            callPostSimpleReviewApi(review);
         } else {
             Util.simpleMessageDialog(context, review.getAlertMessage());
         }

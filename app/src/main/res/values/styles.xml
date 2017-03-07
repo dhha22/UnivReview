@@ -40,8 +40,6 @@
 
         <style name="reviewRatingBar" parent="@android:style/Widget.RatingBar">
             <item name="android:progressDrawable">@drawable/review_rating_bar</item>
-            <item name="android:minHeight">46dp</item>
-            <item name="android:maxHeight">46dp</item>
         </style>
 
     <style name="reviewRatingIndicator" parent="@android:style/Widget.RatingBar">

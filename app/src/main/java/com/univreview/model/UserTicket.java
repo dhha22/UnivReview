@@ -21,7 +21,7 @@ public class UserTicket implements Serializable {
     @Expose
     public long userId;
     @Expose
-    public long ticketId = 2;
+    public long ticketId = 1;
 
     @Override
     public String toString() {

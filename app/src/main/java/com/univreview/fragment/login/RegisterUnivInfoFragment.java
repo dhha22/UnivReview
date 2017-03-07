@@ -215,7 +215,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         Retro.instance.userService().register(App.setAuthHeader(token.getToken()), register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::response, Logger::e);
+                .subscribe(this::response, this::errorResponse);
     }
 
     private void response(UserModel userModel) {
@@ -224,6 +224,11 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         App.setUserToken(userModel.auth.getToken());
         Navigator.goMain(context);
        // callFileUploadApi();
+    }
+
+    private void errorResponse(Throwable e){
+        progressDialog.dismiss();
+        Logger.e(e);
     }
 
     private void callFileUploadApi(Uri uploadUri) {

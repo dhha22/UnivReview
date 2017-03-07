@@ -65,7 +65,7 @@ public class HomeFragment extends BaseFragment {
 
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
         professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), true));
-        majorTxt.setOnClickListener(v -> Navigator.goSearch(context, "major", majorTxt.getText().toString(), true));
+        majorTxt.setOnClickListener(v -> Navigator.goMajorExpandable(context));
         collapseBtn.setOnClickListener(v -> setCollapseBtnState());
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {

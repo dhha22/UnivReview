@@ -77,15 +77,16 @@ public class UploadReviewDetailFragment extends BaseFragment {
     }
 
     private void callPostReviewDetail(ReviewDetail reviewDetail) {
+        Logger.v("review detail: " + reviewDetail);
         Retro.instance.reviewService().postDetailReview(App.setAuthHeader(App.userToken), reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> activity.onBackPressed(), error -> errorResponse());
+                .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));
     }
 
 
-    private void errorResponse(){
-
+    private void errorResponse(Throwable e){
+        Logger.e(e);
     }
 
 

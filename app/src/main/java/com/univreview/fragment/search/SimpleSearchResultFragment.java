@@ -6,18 +6,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.AbstractDataProvider;
+import com.univreview.model.Professor;
 import com.univreview.model.SearchModel;
+import com.univreview.model.Subject;
 import com.univreview.network.Retro;
 import com.univreview.util.Util;
 import com.univreview.view.AbsRecyclerView;
@@ -61,23 +66,27 @@ public class SimpleSearchResultFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         toolbar.setCancelBtnVisibility(true);
         init();
-        rootLayout.addView(recyclerView);
+
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.searchBgColor));
         return rootLayout;
     }
 
     private void init(){
+        adapter = new SearchAdapter(context);
+        LinearLayout subRootLayout = new LinearLayout(context);
+        subRootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        subRootLayout.setGravity(Gravity.CENTER);
         recyclerView = new UnivReviewRecyclerView(context);
-        recyclerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setMode(UnivReviewRecyclerView.Mode.DISABLED);
         recyclerView.setAdapter(adapter);
         if(type.equals(PROFESSOR)){
-            callGetProfessorSubject(id);
-        }else if(type.equals(SUBJECT)){
             callGetSubjectProfessor(id);
+        }else if(type.equals(SUBJECT)){
+            callGetProfessorSubject(id);
         }
-        adapter = new SearchAdapter(context);
+
         adapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent();
             Logger.v("id : " + adapter.getItem(position).getId());
@@ -88,7 +97,8 @@ public class SimpleSearchResultFragment extends BaseFragment {
             getActivity().setResult(getActivity().RESULT_OK, intent);
             getActivity().onBackPressed();
         });
-
+        subRootLayout.addView(recyclerView);
+        rootLayout.addView(subRootLayout);
     }
 
 
@@ -114,7 +124,7 @@ public class SimpleSearchResultFragment extends BaseFragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 v = (SearchListItemView)itemView;
-                v.setTextSize(24);
+                v.setTextSize(5);
                 v.setTextCenter(true);
                 v.setOnClickListener(v -> itemClickListener.onItemClick(v, getAdapterPosition()));
             }
@@ -138,12 +148,22 @@ public class SimpleSearchResultFragment extends BaseFragment {
 
     private void response(SearchModel result, String type) {
         if (type.equals(SUBJECT)) {
-            Observable.from(result.subjects)
+            Professor professor = new Professor();
+            professor.id = 0l;
+            professor.name = "전체";
+            result.professors.add(0, professor);
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * App.dp56));
+            Observable.from(result.professors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if (type.equals(PROFESSOR)) {
-            Observable.from(result.professors)
+            Subject subject = new Subject();
+            subject.id = 0l;
+            subject.name = "전체";
+            result.subjects.add(0, subject);
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.subjects.size() * App.dp56));
+            Observable.from(result.subjects)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(data -> adapter.addItem(data), Logger::e);

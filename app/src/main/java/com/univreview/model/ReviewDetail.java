@@ -18,4 +18,12 @@ public class ReviewDetail {
             return null;
         }
     }
+
+    @Override
+    public String toString() {
+        return "ReviewDetail{" +
+                "reviewId=" + reviewId +
+                ", reviewDetail='" + reviewDetail + '\'' +
+                '}';
+    }
 }

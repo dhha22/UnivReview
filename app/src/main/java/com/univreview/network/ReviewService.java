@@ -20,7 +20,7 @@ import rx.Observable;
  */
 public interface ReviewService {
     @GET("review")
-    Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
+    Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectDetailId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
 
     @POST("review")
     Observable<ReviewSingleModel> postSimpleReview(@HeaderMap Map<String, String> headers, @Body Review body);

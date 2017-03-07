@@ -28,6 +28,9 @@ import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
 import com.univreview.widget.PreCachingLayoutManager;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
@@ -44,7 +47,7 @@ public class SearchFragment extends AbsListFragment {
     private SearchAdapter adapter;
     private Long id;
     private boolean isReviewSearch;
-
+    private Timer timer;
 
 
     public static SearchFragment newInstance(String type, long id, String name, boolean isReviewSearch) {
@@ -125,20 +128,27 @@ public class SearchFragment extends AbsListFragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            if(timer != null){
+                timer.cancel();
+            }
         }
 
         @Override
         public void afterTextChanged(Editable s) {
             Logger.v("search str: " + s.toString());
             page = DEFAULT_PAGE;
-            callSearchApi(id, type, s.toString(), page);
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    activity.runOnUiThread(() -> callSearchApi(id, type, s.toString(), page));
+                }
+            }, 300);
         }
     };
 
 
     private void callSearchApi(Long id, String type, String name, int page) {
-        if (page == DEFAULT_PAGE) adapter.clear();
         switch (type) {
             case "university":
                 callGetUniversityApi(name, page);
@@ -230,6 +240,9 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getUniversities(name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    if (page == DEFAULT_PAGE) adapter.clear();
+                })
                 .subscribe(result -> response(result, "university"), this::errorResponse);
     }
 
@@ -237,6 +250,9 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getDepartments(id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    if (page == DEFAULT_PAGE) adapter.clear();
+                })
                 .subscribe(result -> response(result, "department"), this::errorResponse);
     }
 
@@ -244,6 +260,9 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getMajors(App.UNIVERSITY_ID, id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    if (page == DEFAULT_PAGE) adapter.clear();
+                })
                 .subscribe(result -> response(result, "major"), this::errorResponse);
     }
 
@@ -252,6 +271,9 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getProfessors(App.UNIVERSITY_ID, departmentId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    if (page == DEFAULT_PAGE) adapter.clear();
+                })
                 .subscribe(result -> response(result, "professor"), this::errorResponse);
     }
 
@@ -261,6 +283,9 @@ public class SearchFragment extends AbsListFragment {
         Retro.instance.searchService().getSubjects(App.UNIVERSITY_ID, majorId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    if (page == DEFAULT_PAGE) adapter.clear();
+                })
                 .subscribe(result -> response(result, "subject"), this::errorResponse);
     }
 

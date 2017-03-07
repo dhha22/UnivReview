@@ -1,5 +1,6 @@
 package com.univreview.network;
 
+import com.univreview.model.MajorSubjectModel;
 import com.univreview.model.SearchModel;
 
 import retrofit2.http.GET;
@@ -26,7 +27,7 @@ public interface SearchService {
     Observable<SearchModel> getProfessors(@Query("universityId") long universityId, @Query("departmentId") Long departmentId, @Query("name") String professorName, @Query("page") int page);
 
     @GET("majorSubject")
-    Observable<SearchModel> getMajorSubject(@Query("universityId") long universityId);
+    Observable<MajorSubjectModel> getMajorSubject(@Query("universityId") long universityId);
 
     @GET("professorSubject")
     Observable<SearchModel> getProfessorSubject(@Query("subjectId") long subjectId);

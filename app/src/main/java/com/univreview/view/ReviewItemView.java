@@ -66,16 +66,17 @@ public class ReviewItemView extends FrameLayout {
                 }
             }
             if (review.reviewDetail != null) {
-                if (review.reviewDetail.length() > 0) {
+                if (review.reviewDetail.reviewDetail.length() > 0) {
                     reviewTxt.setVisibility(VISIBLE);
                 } else {
                     reviewTxt.setVisibility(GONE);
                 }
-                reviewTxt.setText(review.reviewDetail);
+                reviewTxt.setText(review.reviewDetail.reviewDetail);
             }
-            subjectTxt.setText(review.subject.getName());
-            professorTxt.setText(review.professor.getName() + " 교수님");
-//            timeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
+            subjectTxt.setText(review.subjectDetail.subject.getName());
+            professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
+            firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
+            secondLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             difficultyTxt.setText(review.getDifficultyRateMessage());
             assignmentTxt.setText(review.getAssignmentRateMessage());
             attendanceTxt.setText(review.getAttendanceRateMessage());

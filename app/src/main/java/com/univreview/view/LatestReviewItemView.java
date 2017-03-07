@@ -39,9 +39,9 @@ public class LatestReviewItemView extends FrameLayout {
 
     public void setData(Review review) {
         if(review != null) {
-            subjectTxt.setText(review.subject.getName());
-            professorTxt.setText(review.professor.getName());
-            reviewTxt.setText(review.reviewDetail);
+            subjectTxt.setText(review.subjectDetail.subject.getName());
+            professorTxt.setText(review.subjectDetail.professor.getName());
+            reviewTxt.setText(review.reviewDetail.reviewDetail);
         }
     }
 }

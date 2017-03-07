@@ -14,6 +14,7 @@ import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.review.ReviewListFragment;
+import com.univreview.fragment.search.MajorExpandableFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.search.SimpleSearchResultFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
@@ -119,6 +120,12 @@ public class Navigator {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SimpleSearchResultFragment.newInstance(type, id));
         ((Activity)context).startActivityForResult(intent, SEARCH);
+    }
+
+    public static void goMajorExpandable(Context context){
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(MajorExpandableFragment.newInstance());
+        context.startActivity(intent);
     }
 
 

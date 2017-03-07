@@ -68,7 +68,7 @@ public class PointListHeaderView extends CardView {
         Retro.instance.userService().postUserTicket(App.setAuthHeader(App.userToken), userTicket)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(userTicket));
+                .subscribe(result -> response(userTicket), Logger::e);
     }
 
     private void response(UserTicket userTicket){

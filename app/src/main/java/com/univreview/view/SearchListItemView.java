@@ -31,6 +31,7 @@ public class SearchListItemView extends FrameLayout {
 
     public SearchListItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         LayoutInflater.from(context).inflate(R.layout.search_list_item, this, true);
         ButterKnife.bind(this);
         setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

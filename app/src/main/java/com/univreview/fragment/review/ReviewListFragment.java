@@ -193,7 +193,7 @@ public class ReviewListFragment extends AbsListFragment {
                 } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
                 }
-                // ((ViewHolder) holder).v.setText((Review) list.get(position));
+                 ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
             }
         }
 
@@ -203,11 +203,6 @@ public class ReviewListFragment extends AbsListFragment {
                 return HEADER;
             }
             return CONTENT;
-        }
-
-        @Override
-        public int getItemCount() {
-            return 5;
         }
 
         protected class HeaderViewHolder extends RecyclerView.ViewHolder{
@@ -271,6 +266,9 @@ public class ReviewListFragment extends AbsListFragment {
         Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, userId, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    if (page == DEFAULT_PAGE) adapter.clear();
+                })
                 .subscribe(result -> response(result.reviews), this::errorResponse);
     }
 
@@ -286,6 +284,7 @@ public class ReviewListFragment extends AbsListFragment {
 
     private void errorResponse(Throwable e){
         setStatus(Status.ERROR);
+        adapter.clear();
         ErrorUtils.parseError(e);
     }
 }
