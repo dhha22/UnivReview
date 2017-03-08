@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.util.Util;
 
@@ -50,5 +51,9 @@ public class SearchListItemView extends FrameLayout {
         if(isCenter) {
             nameTxt.setGravity(Gravity.CENTER);
         }
+    }
+
+    public void setLeftPadding(int size) {
+        nameTxt.setPadding((int) Util.dpToPx(context, size), App.dp12, App.dp12, App.dp12);
     }
 }

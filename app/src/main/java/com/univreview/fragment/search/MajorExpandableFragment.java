@@ -14,6 +14,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.ExpandableAdapter;
 import com.univreview.fragment.AbsListFragment;
@@ -144,11 +145,10 @@ public class MajorExpandableFragment extends AbsListFragment implements Recycler
         recyclerView.getRecyclerView().setHasFixedSize(false);
         mRecyclerViewExpandableItemManager.attachRecyclerView(recyclerView.getRecyclerView());
         adapter.setItemClickListener((view, groupPosition, childPosition) -> {
-            Intent intent = new Intent();
-          /*  intent.putExtra("categoryId", adapter.getChildItemId(groupPosition, childPosition));
-            intent.putExtra("categoryName", adapter.getChildItemName(groupPosition, childPosition));*/
-            getActivity().setResult(getActivity().RESULT_OK, intent);
-            getActivity().finish();
+            Navigator.goReviewList(context, "subject",
+                    adapter.getChildItemId(groupPosition, childPosition),
+                    adapter.getChildItemName(groupPosition, childPosition));
+            activity.finish();
         });
     }
 

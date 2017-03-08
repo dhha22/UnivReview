@@ -27,4 +27,7 @@ public interface ReviewService {
 
     @POST("reviewDetail")
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
+
+
+
 }

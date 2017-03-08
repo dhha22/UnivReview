@@ -193,7 +193,12 @@ public class ReviewListFragment extends AbsListFragment {
                 } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
                 }
-                 ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
+
+                if (!type.equals(MY_REVIEW)) {
+                    ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
+                } else {
+                    ((ViewHolder) holder).v.setData((Review) list.get(position));
+                }
             }
         }
 

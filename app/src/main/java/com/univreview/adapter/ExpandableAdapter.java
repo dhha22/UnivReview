@@ -138,6 +138,7 @@ public class ExpandableAdapter extends AbstractExpandableItemAdapter<ExpandableA
         public SearchItemChild(View itemView) {
             super(itemView);
             v = (SearchListItemView) itemView;
+            v.setLeftPadding(16);
         }
     }
 }

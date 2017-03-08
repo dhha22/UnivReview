@@ -58,8 +58,8 @@ public class MajorExpandableDataProvider extends AbstractExpandableDataProvider{
             final List<ChildData> children = new ArrayList<>();
 
             for (int j = 0; j < parentBrands.get(i).subject.size(); j++) {
-                final long childId = group.generateNewChildId();
-                final String childText = parentBrands.get(i).subject.get(j).name;
+                final long childId =  parentBrands.get(i).subject.get(j).getId();
+                final String childText = parentBrands.get(i).subject.get(j).getName();
                 Logger.v("child txt" + childText);
                 children.add(new ConcreteChildData(childId, childText));
             }
