@@ -70,7 +70,12 @@ public class HomeFragment extends BaseFragment {
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             int height = appBarLayout.getHeight() - appBarLayout.getBottom();
+            float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
             Logger.v("height: " + height);
+            Logger.v("value: " + value);
+            Logger.v("subject y: " + subjectTxt.getY());
+            //subjectTxt.setY(value * 88);
+            majorTxt.setAlpha(value);
             if (height == 0) {
                 setSearchFormData(true);
             } else if (height >= toolbar.getHeight() * 1.4) {

@@ -73,8 +73,8 @@ public class ReviewItemView extends FrameLayout {
                 }
                 reviewTxt.setText(review.reviewDetail.reviewDetail);
             }
-            subjectTxt.setText(review.subjectDetail.subject.getName());
-            professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
+//            subjectTxt.setText(review.subjectDetail.subject.getName()+"");
+//            professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
             firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             secondLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             difficultyTxt.setText(review.getDifficultyRateMessage());

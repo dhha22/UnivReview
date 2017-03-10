@@ -1,6 +1,5 @@
 package com.univreview.fragment.search;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -17,7 +16,6 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.ExpandableAdapter;
-import com.univreview.fragment.AbsListFragment;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Major;
@@ -34,7 +32,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2017. 3. 6..
  */
-public class MajorExpandableFragment extends AbsListFragment implements RecyclerViewExpandableItemManager.OnGroupCollapseListener,
+public class MajorExpandableFragment extends BaseFragment implements RecyclerViewExpandableItemManager.OnGroupCollapseListener,
         RecyclerViewExpandableItemManager.OnGroupExpandListener {
 
     private UnivReviewRecyclerView recyclerView;
@@ -68,8 +66,9 @@ public class MajorExpandableFragment extends AbsListFragment implements Recycler
         mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
         mRecyclerViewExpandableItemManager.setOnGroupExpandListener(this);
         mRecyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
-
+        recyclerView.setMode(UnivReviewRecyclerView.Mode.DISABLED);
         recyclerView.setLayoutManager(layoutManager);
+        callMajorSubjectApi();
     }
 
     @Override
@@ -106,35 +105,15 @@ public class MajorExpandableFragment extends AbsListFragment implements Recycler
         mRecyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
     }
 
-    @Override
-    public UnivReviewRecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
-    @Override
-    public void refresh() {
-        setStatus(Status.REFRESHING);
-        callMajorSubjectApi();
-    }
-
-    @Override
-    public void loadMore() {
-        Logger.v("load more");
-        Logger.v("page: " + page);
-        setStatus(Status.LOADING_MORE);
-        callMajorSubjectApi();
-    }
 
     private void callMajorSubjectApi(){
         Retro.instance.searchService().getMajorSubject(App.UNIVERSITY_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.major), this::errorResponse);
+                .subscribe(result -> response(result.major), Logger::e);
     }
 
     private void response(List<Major> majors){
-        setResult(page);
-        setStatus(Status.IDLE);
         MajorExpandableDataProvider provider = new MajorExpandableDataProvider(majors);
         adapter = new ExpandableAdapter(context, provider);
         mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(adapter);
@@ -152,7 +131,4 @@ public class MajorExpandableFragment extends AbsListFragment implements Recycler
         });
     }
 
-    private void errorResponse(Throwable e){
-
-    }
 }

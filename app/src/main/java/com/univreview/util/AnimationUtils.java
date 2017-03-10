@@ -79,6 +79,7 @@ public class AnimationUtils {
         view.setScaleX(value);
         view.setScaleY(value);
     }
+
 }
 
 
