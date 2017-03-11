@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.log.Logger;
 import com.univreview.model.AbstractDataProvider;
+import com.univreview.model.RecentReview;
 import com.univreview.model.Review;
+import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.view.LatestReviewItemView;
 
@@ -131,6 +134,12 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        callRecentReviewApi();
+    }
+
     public class LatestReviewAdapter extends CustomAdapter {
 
         public LatestReviewAdapter(Context context) {
@@ -144,7 +153,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            //((ViewHolder) holder).v.setText((Review) list.get(position));
+            ((ViewHolder) holder).v.setData((RecentReview) list.get(position));
         }
 
         @Override
@@ -158,10 +167,6 @@ public class HomeFragment extends BaseFragment {
             notifyDataSetChanged();
         }
 
-        @Override
-        public int getItemCount() {
-            return 5;
-        }
 
         protected class ViewHolder extends RecyclerView.ViewHolder{
             final LatestReviewItemView v;
@@ -172,15 +177,23 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private void cultureResponse(List<Review> reviews){
-        Observable.from(reviews)
+    private void callRecentReviewApi() {
+        Retro.instance.reviewService().getRecentReview(App.setAuthHeader(App.userToken))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .finallyDo(() -> {
+                    cultureAdapter.clear();
+                    majorAdapter.clear();
+                })
+                .subscribe(result -> cultureResponse(result.cultures, result.majors), Logger::e);
+    }
+
+    private void cultureResponse(List<RecentReview> cultures, List<RecentReview> majors) {
+        Observable.from(cultures)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> cultureAdapter.addItem(result), ErrorUtils::parseError);
-    }
-
-    private void majorResponse(List<Review> reviews){
-        Observable.from(reviews)
+        Observable.from(majors)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> majorAdapter.addItem(result), ErrorUtils::parseError);

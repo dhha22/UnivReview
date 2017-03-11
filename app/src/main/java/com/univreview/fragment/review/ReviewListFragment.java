@@ -107,10 +107,10 @@ public class ReviewListFragment extends AbsListFragment {
             recyclerView.setPadding(0, (int) Util.dpToPx(context, 38), 0, 0);
             appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
                 int height = appBarLayout.getHeight() - appBarLayout.getBottom();
-                Logger.v("appbar height: " + appBarLayout.getHeight());
-                Logger.v("appbar bottom: " + appBarLayout.getBottom());
+              //  Logger.v("appbar height: " + appBarLayout.getHeight());
+              //  Logger.v("appbar bottom: " + appBarLayout.getBottom());
                 float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
-                Logger.v("height: " + height);
+              //  Logger.v("height: " + height);
                 AnimationUtils.setScale(titleTxt, value);
                 if (height == 0) {
                     AnimationUtils.fadeOut(context, toolbarTitleLayout);
@@ -155,6 +155,7 @@ public class ReviewListFragment extends AbsListFragment {
 
     @Override
     public void refresh() {
+        Logger.v("refresh");
         setStatus(Status.REFRESHING);
         callReviewListApi(id, DEFAULT_PAGE);
     }
@@ -195,11 +196,19 @@ public class ReviewListFragment extends AbsListFragment {
                 }
 
                 if (!type.equals(MY_REVIEW)) {
-                    ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
+                    ((ViewHolder) holder).v.setData((Review) list.get(position-1));
                 } else {
                     ((ViewHolder) holder).v.setData((Review) list.get(position));
                 }
             }
+        }
+
+        @Override
+        public int getItemCount() {
+            if (!type.equals(MY_REVIEW)) {
+                return list.size() + 1;
+            }
+            return list.size();
         }
 
         @Override
@@ -240,11 +249,11 @@ public class ReviewListFragment extends AbsListFragment {
                 Logger.v("on activity result: " + type);
                 if (SUBJECT.equals(type)) {
                     professorId = id;
-                    callReviewListApi(this.id, DEFAULT_PAGE);
                 } else if (PROFESSOR.equals(type)) {
                     subjectId = id;
-                    callReviewListApi(this.id, DEFAULT_PAGE);
                 }
+                page = DEFAULT_PAGE;
+                refresh();
                 filterNameTxt.setText(name);
             }
         }
@@ -289,7 +298,6 @@ public class ReviewListFragment extends AbsListFragment {
 
     private void errorResponse(Throwable e){
         setStatus(Status.ERROR);
-        adapter.clear();
         ErrorUtils.parseError(e);
     }
 }

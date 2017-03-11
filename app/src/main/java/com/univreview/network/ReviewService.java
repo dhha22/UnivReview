@@ -1,5 +1,6 @@
 package com.univreview.network;
 
+import com.univreview.model.RecentReviewModel;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.model.ReviewListModel;
@@ -20,7 +21,7 @@ import rx.Observable;
  */
 public interface ReviewService {
     @GET("review")
-    Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectDetailId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
+    Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
 
     @POST("review")
     Observable<ReviewSingleModel> postSimpleReview(@HeaderMap Map<String, String> headers, @Body Review body);
@@ -28,6 +29,7 @@ public interface ReviewService {
     @POST("reviewDetail")
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
 
-
+    @GET("recent/main")
+    Observable<RecentReviewModel> getRecentReview(@HeaderMap Map<String, String> headers);
 
 }

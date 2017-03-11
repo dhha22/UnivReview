@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 Logger.v("main page position: " + position);
-                if (position < 1) {
+                if (position == 0) {
                     bottomBar.selectTabAtPosition(position);
                 } else {
                     bottomBar.selectTabAtPosition(position + 1);
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
                     viewPager.setCurrentItem(INDEX_HOME, false);
                     break;
                 case R.id.tab_upload:
-                    int position = viewPager.getCurrentItem() <1 ? viewPager.getCurrentItem() : viewPager.getCurrentItem() + 1;
+                    int position = viewPager.getCurrentItem() == 0 ? viewPager.getCurrentItem() : viewPager.getCurrentItem() + 1;
                     new Handler().postDelayed(() -> bottomBar.selectTabAtPosition(position), 200);
                     Navigator.goUploadReview(this);
                     break;

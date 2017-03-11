@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.R;
+import com.univreview.model.RecentReview;
 import com.univreview.model.Review;
 
 import butterknife.BindView;
@@ -37,11 +38,11 @@ public class LatestReviewItemView extends FrameLayout {
         ButterKnife.bind(this);
     }
 
-    public void setData(Review review) {
+    public void setData(RecentReview review) {
         if(review != null) {
-            subjectTxt.setText(review.subjectDetail.subject.getName());
-            professorTxt.setText(review.subjectDetail.professor.getName());
-            reviewTxt.setText(review.reviewDetail.reviewDetail);
+            subjectTxt.setText(review.subjectName);
+            professorTxt.setText(review.professorName);
+            reviewTxt.setText(review.reviewDetail);
         }
     }
 }

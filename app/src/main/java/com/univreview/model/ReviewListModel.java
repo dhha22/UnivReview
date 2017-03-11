@@ -12,8 +12,8 @@ import java.util.List;
 public class ReviewListModel implements Serializable {
     @SerializedName("review")
     public List<Review> reviews = new ArrayList<>();
-    @SerializedName("averageRate")
-    public float averageRate;
+    @SerializedName("reviewAvg")
+    public ReviewAverage reviewAverage = new ReviewAverage();
 
     public Review getReview() {
         if (reviews.size() > 0) {
