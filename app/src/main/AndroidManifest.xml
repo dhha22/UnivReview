@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.NavigationActivity"/>
+        <activity android:name=".activity.PermissionCheckerActivity"
+            android:theme="@style/AppTheme.Translucent"/>
 
         <!-- facebook -->
         <meta-data

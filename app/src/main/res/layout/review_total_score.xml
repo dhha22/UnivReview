@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="22dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -42,5 +43,6 @@
     <com.univreview.view.ReviewRatingIndicatorView
         android:id="@+id/review_rating_indicator_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -42,15 +42,8 @@ public class ReviewTotalScoreView extends CardView {
         setLayoutParams(params);
     }
 
-    public void setData(){
-        averageScoreTxt.setText("3.5");
-        averageIndicator.setRating(3.5f);
-        Review review = new Review();
-        review.difficultyRate =3;
-        review.assignmentRate = 2;
-        review.attendanceRate = 4;
-        review.gradeRate = 1;
-        review.achievementRate = 2;
-        reviewRatingIndicatorView.setData(review);
+    public void setData(float rate){
+        averageScoreTxt.setText(String.valueOf(rate));
+        averageIndicator.setRating(rate);
     }
 }

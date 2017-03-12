@@ -29,6 +29,8 @@ public class Review extends AbstractDataProvider implements Serializable{
     @Expose
     public long subjectDetailId;
     @Expose
+    public Long subjectId;
+    @Expose
     public long userId;
     @Expose
     public long professorId;
@@ -136,22 +138,22 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
 
-    public String getAlertMessage(){
-        if(subjectDetailId == 0){
+    public String getAlertMessage() {
+        if (subjectId == null) {
             return "과목을 입력해주세요.";
-        }else if(professorId == 0){
+        } else if (professorId == 0) {
             return "교수명을 입력해주세요.";
-        }else if(difficultyRate == 0){
+        } else if (difficultyRate == 0) {
             return "난이도를 평가해주세요.";
-        }else if(assignmentRate == 0){
+        } else if (assignmentRate == 0) {
             return "과제량을 평가해주세요.";
-        }else if(attendanceRate == 0){
+        } else if (attendanceRate == 0) {
             return "출석체크를 평가해주세요.";
-        }else if(gradeRate == 0){
+        } else if (gradeRate == 0) {
             return "학점을 평가해주세요.";
-        }else if(achievementRate == 0){
+        } else if (achievementRate == 0) {
             return "성취감을 평가해주세요.";
-        }else{
+        } else {
             return null;
         }
     }

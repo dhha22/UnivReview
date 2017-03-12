@@ -15,9 +15,7 @@ public class UserTicket implements Serializable {
     @Expose
     public String name;
     @Expose
-    public String startDate;
-    @Expose
-    public String expiryDate;
+    public Term term = new Term();
     @Expose
     public long userId;
     @Expose
@@ -29,6 +27,7 @@ public class UserTicket implements Serializable {
                 "id=" + id +
                 ", ticketType='" + ticketType + '\'' +
                 ", name='" + name + '\'' +
+                ", term=" + term +
                 ", userId=" + userId +
                 ", ticketId=" + ticketId +
                 '}';

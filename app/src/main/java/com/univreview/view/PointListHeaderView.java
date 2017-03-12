@@ -15,6 +15,7 @@ import com.univreview.R;
 import com.univreview.log.Logger;
 import com.univreview.model.UserTicket;
 import com.univreview.network.Retro;
+import com.univreview.util.TimeUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,11 +52,14 @@ public class PointListHeaderView extends CardView {
     }
 
     public void setUserTicket(UserTicket userTicket){
+        Logger.v("user ticket: " + userTicket);
         if(userTicket != null){
+            TimeUtil timeUtil = new TimeUtil();
             buyTicketBtn.setVisibility(GONE);
             ticketLayout.setVisibility(VISIBLE);
             ticketNameTxt.setText(userTicket.name);
-            ticketTimeTxt.setText(userTicket.startDate + " ~ " + userTicket.expiryDate);
+            ticketTimeTxt.setText(timeUtil.getPointFormat(userTicket.term.startDate)
+                    + " ~ " + timeUtil.getPointFormat(userTicket.term.endDate));
         } else {
             buyTicketBtn.setVisibility(VISIBLE);
             ticketLayout.setVisibility(GONE);

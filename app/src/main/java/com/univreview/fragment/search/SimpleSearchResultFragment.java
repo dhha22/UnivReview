@@ -39,6 +39,7 @@ import rx.schedulers.Schedulers;
 public class SimpleSearchResultFragment extends BaseFragment {
     private static final String PROFESSOR = "professor";
     private static final String SUBJECT = "subject";
+    private static final String SEARCH_PROFESSOR = "searchProfessor";
     private UnivReviewRecyclerView recyclerView;
     private SearchAdapter adapter;
     private long id;
@@ -83,7 +84,7 @@ public class SimpleSearchResultFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         if(type.equals(PROFESSOR)){
             callGetSubjectProfessor(id);
-        }else if(type.equals(SUBJECT)){
+        }else if(type.equals(SUBJECT) || type.equals(SEARCH_PROFESSOR)){
             callGetProfessorSubject(id);
         }
 
@@ -94,6 +95,9 @@ public class SimpleSearchResultFragment extends BaseFragment {
             intent.putExtra("id", adapter.getItem(position).getId());
             intent.putExtra("name", adapter.getItem(position).getName());
             intent.putExtra("type", type);
+            if (type.equals(SEARCH_PROFESSOR)) {
+                intent.putExtra("detailId", ((Professor) adapter.getItem(position)).subjectDetailId);
+            }
             getActivity().setResult(getActivity().RESULT_OK, intent);
             getActivity().onBackPressed();
         });
@@ -136,17 +140,17 @@ public class SimpleSearchResultFragment extends BaseFragment {
         Retro.instance.searchService().getProfessorSubject(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "subject"), Logger::e);
+                .subscribe(result -> response(result), Logger::e);
     }
 
     private void callGetSubjectProfessor(long id){
         Retro.instance.searchService().getSubjectProfessor(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result, "professor"), Logger::e);
+                .subscribe(result -> response(result), Logger::e);
     }
 
-    private void response(SearchModel result, String type) {
+    private void response(SearchModel result) {
         if (type.equals(SUBJECT)) {
             Professor professor = new Professor();
             professor.id = 0l;
@@ -164,6 +168,12 @@ public class SimpleSearchResultFragment extends BaseFragment {
             result.subjects.add(0, subject);
             recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.subjects.size() * App.dp56));
             Observable.from(result.subjects)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(data -> adapter.addItem(data), Logger::e);
+        } else if(type.equals(SEARCH_PROFESSOR)){
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * App.dp56));
+            Observable.from(result.professors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(data -> adapter.addItem(data), Logger::e);

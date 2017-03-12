@@ -42,8 +42,8 @@ public class RegisterUserIdentityFragment extends BaseFragment{
         ButterKnife.bind(this, view);
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setCancelBtnVisibility(true);
-        cameraBtn.setOnClickListener(v -> Navigator.goCamera(context));
-        albumBtn.setOnClickListener(v -> Navigator.goAlbum(context));
+        cameraBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "camera"));
+        albumBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
         rootLayout.addView(view);
         return rootLayout;
     }
@@ -51,7 +51,14 @@ public class RegisterUserIdentityFragment extends BaseFragment{
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
-            if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
+            if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
+                String type = activityResultEvent.getIntent().getStringExtra("type");
+                if ("camera".equals(type)) {
+                    Navigator.goCamera(context);
+                } else if ("album".equals(type)) {
+                    Navigator.goAlbum(context);
+                }
+            }else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
                 Navigator.goCheckUserPhoto(context, CAMERA, null, ImageUtil.TEMP_IMAGE_URI.toString());
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());

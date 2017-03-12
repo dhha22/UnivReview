@@ -69,7 +69,13 @@ public class UploadReviewFragment extends BaseFragment {
         backBtn.setOnClickListener(v -> activity.onBackPressed());
         okBtn.setOnClickListener(v -> registerReview());
         subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), false));
-        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), false));
+        professorTxt.setOnClickListener(v -> {
+            if (subjectTxt.getText().length() > 0) {
+                Navigator.goSimpleSearchResult(context, "searchProfessor", review.subjectId);
+            } else {
+                Util.simpleMessageDialog(context, "과목을 입력해주세요");
+            }
+        });
         difficultyRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
             review.difficultyRate = v;
             difficultyTxt.setText(review.getDifficultyRateMessage());
@@ -105,30 +111,35 @@ public class UploadReviewFragment extends BaseFragment {
                 Logger.v("on activity result: " + type);
                 if ("subject".equals(type)) {
                     subjectTxt.setText(name);
-                    review.subjectDetailId = id;
-                } else if ("professor".equals(type)) {
+                    review.subjectId = id;
+                    review.subjectDetailId = 0;
+                } else if ("searchProfessor".equals(type)) {
+                    long detailId = data.getLongExtra("detailId", 0);
                     professorTxt.setText(name);
+                    review.subjectDetailId = detailId;
                     review.professorId = id;
                 }
-
             }
         }
     }
 
-    private void registerReview(){
+    private void registerReview() {
         review.userId = App.userId;
         review.difficultyRate = difficultyRate.getRating();
         review.assignmentRate = assignmentRate.getRating();
         review.attendanceRate = attendanceRate.getRating();
         review.gradeRate = gradeRate.getRating();
         review.achievementRate = achievementRate.getRating();
-
+        review.subjectDetail.subject.name = subjectTxt.getText().toString();
+        review.subjectDetail.professor.name = professorTxt.getText().toString();
         if (review.getAlertMessage() == null) {
             callPostSimpleReviewApi(review);
         } else {
             Util.simpleMessageDialog(context, review.getAlertMessage());
         }
     }
+
+
 
     //api
 

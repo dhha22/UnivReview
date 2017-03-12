@@ -14,6 +14,7 @@ public class ReviewListModel implements Serializable {
     public List<Review> reviews = new ArrayList<>();
     @SerializedName("reviewAvg")
     public ReviewAverage reviewAverage = new ReviewAverage();
+    public float totalAverageRates;
 
     public Review getReview() {
         if (reviews.size() > 0) {

@@ -12,6 +12,6 @@ public class SubjectDetail implements Serializable {
     public long id;
     @Expose
     public long subjectId;
-    public Subject subject;
-    public Professor professor;
+    public Subject subject = new Subject();
+    public Professor professor = new Professor();
 }

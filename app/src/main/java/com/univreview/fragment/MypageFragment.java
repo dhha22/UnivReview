@@ -1,6 +1,7 @@
 package com.univreview.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -88,7 +89,7 @@ public class MypageFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new MyPageAdapter(context);
         recyclerView.setAdapter(adapter);
-        profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
+        profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
         settingBtn.setOnClickListener(v -> Navigator.goLogin(context));
         adapter.setOnItemClickListener((view, position) -> {
             switch (position) {
@@ -175,11 +176,14 @@ public class MypageFragment extends BaseFragment {
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         Logger.v("on activity result");
-        if (activityResultEvent.getRequestCode() == Navigator.ALBUM
-                && activityResultEvent.getResultCode() == activity.RESULT_OK) {
-            String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
-            Logger.v("album path: " + albumPath);
-            callFileUploadApi(activityResultEvent.getIntent().getData());
+        if(activityResultEvent.getResultCode() == activity.RESULT_OK) {
+            if(activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER){
+               Navigator.goAlbum(context);
+            }else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
+                String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+                Logger.v("album path: " + albumPath);
+                callFileUploadApi(activityResultEvent.getIntent().getData());
+            }
         }
     }
 

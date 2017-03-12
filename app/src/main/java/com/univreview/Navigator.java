@@ -3,11 +3,13 @@ package com.univreview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.univreview.activity.LoginActivity;
 import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
+import com.univreview.activity.PermissionCheckerActivity;
 import com.univreview.fragment.login.CheckUserPhotoFragment;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
@@ -30,6 +32,7 @@ public class Navigator {
     public static final int SEARCH = 636;
     public static final int CAMERA = 387;
     public static final int ALBUM = 549;
+    public static final int PERMISSION_CHECKER = 405;
 
     public static void goLogin(Context context){
         App.setUserToken(null);
@@ -68,6 +71,12 @@ public class Navigator {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         ((Activity) context).startActivityForResult(intent, ALBUM);
+    }
+
+    public static void goPermissionChecker(Context context, String type){
+        Intent intent = new Intent(context, PermissionCheckerActivity.class);
+        intent.putExtra("type", type);
+        ((Activity) context).startActivityForResult(intent, PERMISSION_CHECKER);
     }
 
     //upload
@@ -142,5 +151,12 @@ public class Navigator {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(PointListFragment.newInstance(point));
         context.startActivity(intent);
+    }
+
+    public static void goAppSetting(Activity activity) {
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + activity.getPackageName()));
+        activity.startActivity(intent);
+       // activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
     }
 }

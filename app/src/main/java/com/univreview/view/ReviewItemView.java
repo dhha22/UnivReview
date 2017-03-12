@@ -79,6 +79,7 @@ public class ReviewItemView extends FrameLayout {
             if(review.subjectDetail.professor!= null) {
                 professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
             }
+
             firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             secondLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             difficultyTxt.setText(review.getDifficultyRateMessage());

@@ -58,7 +58,7 @@
             android:paddingRight="12dp"
             android:paddingTop="10dp"
             android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/professor_txt"
@@ -74,7 +74,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="10dp"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
 
 
     </LinearLayout>

@@ -18,12 +18,7 @@ public class Professor extends AbstractDataProvider implements Serializable{
     @Expose
     private List<SubjectDetail> subjectDetail = new ArrayList<>();
 
-    public Long getSubjectDetailId(){
-        if(subjectDetail.size()>0){
-            return subjectDetail.get(0).id;
-        }
-        return null;
-    }
+    public long subjectDetailId;
 
     @Override
     public long getId() {

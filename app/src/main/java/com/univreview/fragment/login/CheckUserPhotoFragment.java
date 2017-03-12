@@ -68,10 +68,10 @@ public class CheckUserPhotoFragment extends BaseFragment {
         toolbar.setCancelBtnVisibility(true);
         if (CAMERA.equals(type)) {
             reselectBtn.setText("다시 찍기");
-            reselectBtn.setOnClickListener(v -> Navigator.goCamera(context));
+            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "camera"));
         } else if (ALBUM.equals(type)) {
             reselectBtn.setText("앨범 가기");
-            reselectBtn.setOnClickListener(v -> Navigator.goAlbum(context));
+            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
         }
 
         Logger.v("path: " + path);
@@ -98,7 +98,14 @@ public class CheckUserPhotoFragment extends BaseFragment {
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
-            if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
+            if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
+                String type = activityResultEvent.getIntent().getStringExtra("type");
+                if ("camera".equals(type)) {
+                    Navigator.goCamera(context);
+                } else if ("album".equals(type)) {
+                    Navigator.goAlbum(context);
+                }
+            } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
                 uri = ImageUtil.TEMP_IMAGE_URI.toString();
                 App.picasso.load(ImageUtil.TEMP_IMAGE_URI.toString())
                         .into(checkImage);

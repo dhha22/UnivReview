@@ -171,7 +171,7 @@ public class ReviewListFragment extends AbsListFragment {
     private class ReviewAdapter extends CustomAdapter {
         private static final int HEADER = 0;
         private static final int CONTENT = 1;
-
+        private float totalRate;
         public ReviewAdapter(Context context) {
             super(context);
         }
@@ -187,7 +187,7 @@ public class ReviewListFragment extends AbsListFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (getItemViewType(position) == HEADER) {
-                ((HeaderViewHolder) holder).v.setData();
+                ((HeaderViewHolder) holder).v.setData(totalRate);
             } else if (getItemViewType(position) == CONTENT) {
                 if (type.equals(MY_REVIEW)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
@@ -201,6 +201,11 @@ public class ReviewListFragment extends AbsListFragment {
                     ((ViewHolder) holder).v.setData((Review) list.get(position));
                 }
             }
+        }
+
+        public void setTotalRate(float rate){
+            this.totalRate = rate;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -283,13 +288,14 @@ public class ReviewListFragment extends AbsListFragment {
                 .finallyDo(() -> {
                     if (page == DEFAULT_PAGE) adapter.clear();
                 })
-                .subscribe(result -> response(result.reviews), this::errorResponse);
+                .subscribe(result -> response(result.reviews, result.totalAverageRates), this::errorResponse);
     }
 
-    private void response(List<Review> reviews){
+    private void response(List<Review> reviews, float totalRate){
         setResult(page);
         setStatus(Status.IDLE);
         Logger.v("result: " + reviews);
+        adapter.setTotalRate(totalRate);
         Observable.from(reviews)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

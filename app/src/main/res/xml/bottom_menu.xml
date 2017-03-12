@@ -2,20 +2,19 @@
 <tabs>
     <tab
         id="@+id/tab_home"
-        icon="@drawable/ic_navi_home_off"
+        icon="@drawable/ic_navi_home"
         inActiveColor="@color/iconDisable"
         activeColor="@color/iconEnable"
-
         title="홈" />
     <tab
         id="@+id/tab_upload"
-        icon="@drawable/ic_navi_write_off"
+        icon="@drawable/ic_navi_write"
         inActiveColor="@color/iconDisable"
         activeColor="@color/iconEnable"
         title="리뷰작성" />
     <tab
         id="@+id/tab_mypage"
-        icon="@drawable/ic_navi_mypage_off"
+        icon="@drawable/ic_navi_mypage"
         inActiveColor="@color/iconDisable"
         activeColor="@color/iconEnable"
         title="마이페이지" />

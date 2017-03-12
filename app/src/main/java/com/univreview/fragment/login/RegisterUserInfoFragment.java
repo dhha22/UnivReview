@@ -73,7 +73,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
         buttonState = new SimpleButtonState(context, nextBtn);
         buttonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonState.setTxtColor(R.color.white, R.color.white);
-        profileImageLayout.setOnClickListener(v -> Navigator.goAlbum(context));
+        profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
 
         nextBtn.setOnClickListener(v -> {
             if (formVerification() && buttonState.getButtonState()) {
@@ -127,11 +127,15 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
-        if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
-            String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
-            Logger.v("album path: " + albumPath);
-            register.profileUrl = "file://" + albumPath;
-            setData(register);
+        if (activityResultEvent.getResultCode() == activity.RESULT_OK) {
+            if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
+                Navigator.goAlbum(context);
+            } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
+                String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+                Logger.v("album path: " + albumPath);
+                register.profileUrl = "file://" + albumPath;
+                setData(register);
+            }
         }
 
     }
