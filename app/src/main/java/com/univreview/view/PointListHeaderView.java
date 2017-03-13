@@ -57,9 +57,9 @@ public class PointListHeaderView extends CardView {
             TimeUtil timeUtil = new TimeUtil();
             buyTicketBtn.setVisibility(GONE);
             ticketLayout.setVisibility(VISIBLE);
-            ticketNameTxt.setText(userTicket.name);
-            ticketTimeTxt.setText(timeUtil.getPointFormat(userTicket.term.startDate)
-                    + " ~ " + timeUtil.getPointFormat(userTicket.term.endDate));
+            ticketNameTxt.setText(userTicket.ticket.name);
+            ticketTimeTxt.setText(timeUtil.getPointFormat(userTicket.ticket.term.startDate)
+                    + " ~ " + timeUtil.getPointFormat(userTicket.ticket.term.endDate));
         } else {
             buyTicketBtn.setVisibility(VISIBLE);
             ticketLayout.setVisibility(GONE);

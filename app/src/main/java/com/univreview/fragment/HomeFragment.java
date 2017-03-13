@@ -23,7 +23,7 @@ import com.univreview.model.RecentReview;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
-import com.univreview.view.LatestReviewItemView;
+import com.univreview.view.RecentReviewItemView;
 
 import java.util.List;
 
@@ -50,6 +50,7 @@ public class HomeFragment extends BaseFragment {
     private LatestReviewAdapter majorAdapter;
     private boolean isExpand = DEFAULT_EXPAND_STATE;
 
+
     public static HomeFragment newInstance(){
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -65,7 +66,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void init() {
-
+        Logger.v("init");
+        subjectTxt.setOnClickListener(v ->  Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), true));
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
         professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), true));
         majorTxt.setOnClickListener(v -> Navigator.goMajorExpandable(context));
@@ -74,18 +76,14 @@ public class HomeFragment extends BaseFragment {
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             int height = appBarLayout.getHeight() - appBarLayout.getBottom();
             float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
-            Logger.v("height: " + height);
-            Logger.v("value: " + value);
-            Logger.v("subject y: " + subjectTxt.getY());
-            //subjectTxt.setY(value * 88);
             majorTxt.setAlpha(value);
+            professorTxt.setAlpha(value);
             if (height == 0) {
                 setSearchFormData(true);
             } else if (height >= toolbar.getHeight() * 1.4) {
                 setSearchFormData(false);
             }
         });
-
         LinearLayoutManager cultureLayoutManager = new LinearLayoutManager(context);
         cultureLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         LinearLayoutManager majorLayoutManager = new LinearLayoutManager(context);
@@ -148,7 +146,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(new LatestReviewItemView(context));
+            return new ViewHolder(new RecentReviewItemView(context));
         }
 
         @Override
@@ -169,10 +167,10 @@ public class HomeFragment extends BaseFragment {
 
 
         protected class ViewHolder extends RecyclerView.ViewHolder{
-            final LatestReviewItemView v;
+            final RecentReviewItemView v;
             public ViewHolder(View itemView) {
                 super(itemView);
-                v = (LatestReviewItemView)itemView;
+                v = (RecentReviewItemView)itemView;
             }
         }
     }

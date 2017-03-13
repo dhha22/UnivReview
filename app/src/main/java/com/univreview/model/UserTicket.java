@@ -13,23 +13,10 @@ public class UserTicket implements Serializable {
     @Expose
     public String ticketType;
     @Expose
-    public String name;
-    @Expose
-    public Term term = new Term();
+    public Ticket ticket = new Ticket();
     @Expose
     public long userId;
     @Expose
     public long ticketId = 1;
 
-    @Override
-    public String toString() {
-        return "UserTicket{" +
-                "id=" + id +
-                ", ticketType='" + ticketType + '\'' +
-                ", name='" + name + '\'' +
-                ", term=" + term +
-                ", userId=" + userId +
-                ", ticketId=" + ticketId +
-                '}';
-    }
 }

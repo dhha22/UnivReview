@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.univreview.App;
 import com.univreview.R;
 import com.univreview.model.RecentReview;
-import com.univreview.model.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,23 +16,23 @@ import butterknife.ButterKnife;
 /**
  * Created by DavidHa on 2017. 1. 23..
  */
-public class LatestReviewItemView extends FrameLayout {
+public class RecentReviewItemView extends FrameLayout {
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
     @BindView(R.id.review_txt) TextView reviewTxt;
-    public LatestReviewItemView(Context context) {
+    public RecentReviewItemView(Context context) {
         this(context, null);
     }
 
-    public LatestReviewItemView(Context context, AttributeSet attrs) {
+    public RecentReviewItemView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LatestReviewItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RecentReviewItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.latest_review_item, this, true);
-        int width = (int) (App.SCREEN_WIDTH / 2.2);
-        int height = (int) (width * 1.25);
+        LayoutInflater.from(context).inflate(R.layout.recent_review_item, this, true);
+        int width = (int) (App.SCREEN_WIDTH / 1.75);
+        int height = (int) (width * 0.7);
         setLayoutParams(new FrameLayout.LayoutParams(width, height));
         ButterKnife.bind(this);
     }

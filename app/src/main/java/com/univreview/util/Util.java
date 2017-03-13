@@ -6,11 +6,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.univreview.App;
 import com.univreview.R;
+import com.univreview.log.Logger;
 
 /**
  * Created by DavidHa on 2017. 1. 4..
@@ -70,6 +73,10 @@ public class Util {
         }
     }
 
-
+    public static void hideKeyboard(Context context, EditText editText) {
+        Logger.v("hide keyboard");
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
 
 }

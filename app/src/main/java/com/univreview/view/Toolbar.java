@@ -57,7 +57,7 @@ public class Toolbar extends FrameLayout {
     public void setBackBtnVisibility(boolean isVisible) {
         if (isVisible) {
             backBtn.setVisibility(VISIBLE);
-            backBtn.setOnClickListener(v -> ((Activity) context).onBackPressed());
+            backBtn.setOnClickListener(v -> ((Activity) context).finish());
         } else {
             backBtn.setVisibility(INVISIBLE);
         }

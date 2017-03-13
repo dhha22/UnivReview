@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="14dp"
             android:paddingTop="22dp">
 
             <TextView
@@ -24,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 android:text="최신 교양 리뷰"
+                android:layout_marginLeft="16dp"
                 android:textSize="18dp" />
 
             <android.support.v7.widget.RecyclerView
@@ -37,6 +37,7 @@
                 android:layout_marginBottom="14dp"
                 android:layout_marginTop="24dp"
                 android:text="최신 학과 리뷰"
+                android:layout_marginLeft="16dp"
                 android:textSize="18dp" />
 
             <android.support.v7.widget.RecyclerView

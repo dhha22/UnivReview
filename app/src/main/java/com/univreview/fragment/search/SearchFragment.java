@@ -325,5 +325,10 @@ public class SearchFragment extends AbsListFragment {
         ErrorUtils.parseError(e);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Util.hideKeyboard(activity, input);
+    }
 
 }
