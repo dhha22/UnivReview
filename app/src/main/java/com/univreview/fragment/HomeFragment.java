@@ -179,11 +179,8 @@ public class HomeFragment extends BaseFragment {
         Retro.instance.reviewService().getRecentReview(App.setAuthHeader(App.userToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    cultureAdapter.clear();
-                    majorAdapter.clear();
-                })
-                .subscribe(result -> cultureResponse(result.cultures, result.majors), Logger::e);
+                .subscribe(result -> cultureResponse(result.cultures, result.majors), Logger::e,
+                        () -> { cultureAdapter.clear(); majorAdapter.clear();});
     }
 
     private void cultureResponse(List<RecentReview> cultures, List<RecentReview> majors) {

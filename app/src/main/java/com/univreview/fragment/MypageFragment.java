@@ -133,8 +133,6 @@ public class MypageFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
 
-
-
     }
 
     private class MyPageAdapter extends CustomAdapter{
@@ -152,7 +150,7 @@ public class MypageFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ((ViewHolder) holder).v.setTitle(titles.get(position));
-            if(list.size()>0) {
+            if (list.size() > 0) {
                 ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
             }
         }
