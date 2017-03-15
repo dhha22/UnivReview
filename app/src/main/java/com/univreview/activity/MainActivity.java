@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         init();
     }
+    //testestt
 
     private void init() {
         adapter = new PagerAdapter(getSupportFragmentManager());
