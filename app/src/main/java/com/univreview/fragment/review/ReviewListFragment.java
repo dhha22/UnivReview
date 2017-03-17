@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
+import com.univreview.model.RandomImageModel;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.AnimationUtils;
@@ -51,6 +53,7 @@ public class ReviewListFragment extends AbsListFragment {
     private static final String MY_REVIEW = "myReview";
     @BindView(R.id.smooth_app_bar_layout) SmoothAppBarLayout appBarLayout;
     @BindView(R.id.toolbar) Toolbar customToolbar;
+    @BindView(R.id.toolbar_image) ImageView toolbarImage;
     @BindView(R.id.toolbar_title_layout) LinearLayout toolbarTitleLayout;
     @BindView(R.id.filter_layout) LinearLayout filterLayout;
     @BindView(R.id.toolbar_back_btn) ImageButton toolbarBackBtn;
@@ -65,6 +68,7 @@ public class ReviewListFragment extends AbsListFragment {
     private String name;
     private Long subjectId;
     private Long professorId;
+    private RandomImageModel randomImageModel;
 
     public static ReviewListFragment newInstance(String type, long id, String name) {
         ReviewListFragment fragment = new ReviewListFragment();
@@ -82,6 +86,7 @@ public class ReviewListFragment extends AbsListFragment {
         type = getArguments().getString("type");
         id = getArguments().getLong("id");
         name = getArguments().getString("name");
+        randomImageModel = new RandomImageModel();
     }
 
     @Nullable
@@ -97,6 +102,7 @@ public class ReviewListFragment extends AbsListFragment {
     }
 
     private void init() {
+        App.picasso.load(randomImageModel.getImageURL()).fit().centerCrop().into(toolbarImage);
         if (type.equals(MY_REVIEW)) {
             appBarLayout.setVisibility(View.GONE);
             toolbar.setBackBtnVisibility(true);

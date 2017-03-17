@@ -10,6 +10,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,8 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:text="최신 교양 리뷰"
                 android:layout_marginLeft="16dp"
+                android:text="최신 교양 리뷰"
                 android:textSize="18dp" />
 
             <android.support.v7.widget.RecyclerView
@@ -35,9 +36,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="24dp"
                 android:text="최신 학과 리뷰"
-                android:layout_marginLeft="16dp"
                 android:textSize="18dp" />
 
             <android.support.v7.widget.RecyclerView

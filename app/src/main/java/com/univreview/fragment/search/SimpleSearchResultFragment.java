@@ -128,7 +128,7 @@ public class SimpleSearchResultFragment extends BaseFragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 v = (SearchListItemView)itemView;
-                v.setTextSize(8);
+                v.setTextSize(10);
                 v.setTextCenter(true);
                 v.setOnClickListener(v -> itemClickListener.onItemClick(v, getAdapterPosition()));
             }
@@ -166,13 +166,13 @@ public class SimpleSearchResultFragment extends BaseFragment {
             subject.id = 0l;
             subject.name = "전체";
             result.subjects.add(0, subject);
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.subjects.size() * App.dp56));
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.subjects.size() * (int) Util.dpToPx(context, 72)));
             Observable.from(result.subjects)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if(type.equals(SEARCH_PROFESSOR)){
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * App.dp56));
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * (int) Util.dpToPx(context, 72)));
             Observable.from(result.professors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

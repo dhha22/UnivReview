@@ -14,6 +14,10 @@
     <color name="textColor">#414141</color>
     <color name="professorTxtColor">#6d6d6d</color>
     <color name="backgroundColor">#e9f0f8</color>
+
+    <!-- recent review -->
+    <color name="reviewDimColor">#b2080f17</color>
+
     <!-- upload review -->
     <color name="ratingInfoTxtColor">#a1a1a1</color>
 
