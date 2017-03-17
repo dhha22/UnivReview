@@ -128,7 +128,7 @@ public class SimpleSearchResultFragment extends BaseFragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 v = (SearchListItemView)itemView;
-                v.setTextSize(10);
+                v.setTextSize(8);
                 v.setTextCenter(true);
                 v.setOnClickListener(v -> itemClickListener.onItemClick(v, getAdapterPosition()));
             }

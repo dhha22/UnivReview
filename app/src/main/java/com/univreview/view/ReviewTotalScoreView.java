@@ -6,11 +6,11 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.R;
+import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.util.Util;
 
@@ -42,8 +42,15 @@ public class ReviewTotalScoreView extends CardView {
         setLayoutParams(params);
     }
 
-    public void setData(float rate){
-        averageScoreTxt.setText(String.valueOf(rate));
-        averageIndicator.setRating(rate);
+    public void setData(float rate, Review review) {
+        Logger.v("rate: " + rate);
+        if (rate != 0) {
+            setVisibility(VISIBLE);
+            averageScoreTxt.setText(String.valueOf(rate));
+            averageIndicator.setRating(rate);
+            reviewRatingIndicatorView.setData(review);
+        }else{
+            setVisibility(GONE);
+        }
     }
 }

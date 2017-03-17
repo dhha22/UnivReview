@@ -53,7 +53,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getDifficultyRateMessage() {
-        switch ((int) difficultyRate) {
+        switch (Math.round(difficultyRate)) {
             case 1:
                 return "아주 쉬움";
             case 2:
@@ -70,7 +70,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getAssignmentRateMessage() {
-        switch ((int) assignmentRate) {
+        switch (Math.round(assignmentRate)) {
             case 1:
                 return "아주 적음";
             case 2:
@@ -87,7 +87,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getAttendanceRateMessage() {
-        switch ((int) attendanceRate) {
+        switch (Math.round(attendanceRate)) {
             case 1:
                 return "거의 드묾";
             case 2:
@@ -104,7 +104,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getGradeRateMessage() {
-        switch ((int) gradeRate) {
+        switch (Math.round(gradeRate)) {
             case 1:
                 return "아주 쉬움";
             case 2:
@@ -121,7 +121,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
     public String getAchievementRateMessage() {
-        switch ((int) achievementRate) {
+        switch (Math.round(achievementRate)) {
             case 1:
                 return "매우 불만족";
             case 2:
@@ -169,12 +169,8 @@ public class Review extends AbstractDataProvider implements Serializable{
                 ", attendanceRate=" + attendanceRate +
                 ", gradeRate=" + gradeRate +
                 ", achievementRate=" + achievementRate +
-                ", createdDate='" + createdDate + '\'' +
-                ", updateDate='" + updateDate + '\'' +
                 ", reviewDetail='" + reviewDetail + '\'' +
                 ", subjectDetailId=" + subjectDetailId +
-                ", userId=" + userId +
-                ", professorId=" + professorId +
                 '}';
     }
 }

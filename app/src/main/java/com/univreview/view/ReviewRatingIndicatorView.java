@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.log.Logger;
 import com.univreview.model.Review;
 
 import butterknife.BindView;
@@ -43,6 +44,7 @@ public class ReviewRatingIndicatorView extends FrameLayout {
     }
 
     public void setData(Review review){
+        Logger.v("review rating: " + review);
         difficultyRate.setRating(review.difficultyRate);
         assignmentRate.setRating(review.assignmentRate);
         attendanceRate.setRating(review.attendanceRate);

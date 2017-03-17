@@ -12,13 +12,20 @@ import java.util.List;
 public class ReviewListModel implements Serializable {
     @SerializedName("review")
     public List<Review> reviews = new ArrayList<>();
-    @SerializedName("reviewAvg")
-    public ReviewAverage reviewAverage = new ReviewAverage();
+    @SerializedName("rateAvg")
+    private List<Review> reviewAverage = new ArrayList<>();
     public float totalAverageRates;
 
     public Review getReview() {
         if (reviews.size() > 0) {
             return reviews.get(0);
+        }
+        return null;
+    }
+
+    public Review getReviewAverage(){
+        if(reviewAverage.size() > 0){
+            return reviewAverage.get(0);
         }
         return null;
     }

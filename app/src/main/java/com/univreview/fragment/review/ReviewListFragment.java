@@ -26,6 +26,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.RandomImageModel;
 import com.univreview.model.Review;
+import com.univreview.model.ReviewListModel;
 import com.univreview.network.Retro;
 import com.univreview.util.AnimationUtils;
 import com.univreview.util.ErrorUtils;
@@ -34,8 +35,6 @@ import com.univreview.view.ReviewItemView;
 import com.univreview.view.ReviewTotalScoreView;
 import com.univreview.view.UnivReviewRecyclerView;
 import com.univreview.widget.PreCachingLayoutManager;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +68,7 @@ public class ReviewListFragment extends AbsListFragment {
     private Long subjectId;
     private Long professorId;
     private RandomImageModel randomImageModel;
+    private boolean isFirstError = true;
 
     public static ReviewListFragment newInstance(String type, long id, String name) {
         ReviewListFragment fragment = new ReviewListFragment();
@@ -96,6 +96,7 @@ public class ReviewListFragment extends AbsListFragment {
         View view = inflater.inflate(R.layout.fragment_review_list, container, false);
         ButterKnife.bind(this, view);
         init();
+        recyclerView.setMode(UnivReviewRecyclerView.Mode.DISABLED);
         recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
         rootLayout.addView(view);
         return rootLayout;
@@ -178,6 +179,8 @@ public class ReviewListFragment extends AbsListFragment {
         private static final int HEADER = 0;
         private static final int CONTENT = 1;
         private float totalRate;
+        private Review reviewAverage = new Review();
+
         public ReviewAdapter(Context context) {
             super(context);
         }
@@ -193,7 +196,7 @@ public class ReviewListFragment extends AbsListFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (getItemViewType(position) == HEADER) {
-                ((HeaderViewHolder) holder).v.setData(totalRate);
+                ((HeaderViewHolder) holder).v.setData(totalRate, reviewAverage);
             } else if (getItemViewType(position) == CONTENT) {
                 if (type.equals(MY_REVIEW)) {
                     ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
@@ -202,17 +205,19 @@ public class ReviewListFragment extends AbsListFragment {
                 }
 
                 if (!type.equals(MY_REVIEW)) {
-                    ((ViewHolder) holder).v.setData((Review) list.get(position-1));
+                    ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
                 } else {
                     ((ViewHolder) holder).v.setData((Review) list.get(position));
                 }
             }
         }
 
-        public void setTotalRate(float rate){
+        public void setTotalRate(float rate, Review average) {
             this.totalRate = rate;
+            this.reviewAverage = average;
             notifyDataSetChanged();
         }
+
 
         @Override
         public int getItemCount() {
@@ -294,22 +299,26 @@ public class ReviewListFragment extends AbsListFragment {
                 .finallyDo(() -> {
                     if (page == DEFAULT_PAGE) adapter.clear();
                 })
-                .subscribe(result -> response(result.reviews, result.totalAverageRates), this::errorResponse);
+                .subscribe(this::response, this::errorResponse);
     }
 
-    private void response(List<Review> reviews, float totalRate){
+    private void response(ReviewListModel reviewListModel) {
         setResult(page);
         setStatus(Status.IDLE);
-        Logger.v("result: " + reviews);
-        adapter.setTotalRate(totalRate);
-        Observable.from(reviews)
+        Logger.v("result: " + reviewListModel);
+        adapter.setTotalRate(reviewListModel.totalAverageRates, reviewListModel.getReviewAverage());
+        Observable.from(reviewListModel.reviews)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
     }
 
-    private void errorResponse(Throwable e){
+    private void errorResponse(Throwable e) {
         setStatus(Status.ERROR);
+        if (isFirstError) {
+            adapter.addItem(null);
+            isFirstError = false;
+        }
         ErrorUtils.parseError(e);
     }
 }

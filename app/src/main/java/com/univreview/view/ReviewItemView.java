@@ -55,6 +55,7 @@ public class ReviewItemView extends FrameLayout {
 
     public void setData(Review review) {
         if (review != null) {
+            setVisibility(VISIBLE);
             if (review.user != null) {
                 nameTxt.setText(review.user.name);
                 if (review.user.authenticated != null) {
@@ -88,6 +89,8 @@ public class ReviewItemView extends FrameLayout {
             gradeTxt.setText(review.getGradeRateMessage());
             achievementTxt.setText(review.getAchievementRateMessage());
 
+        }else{
+            setVisibility(INVISIBLE);
         }
     }
 

@@ -43,6 +43,5 @@
     <com.univreview.view.ReviewRatingIndicatorView
         android:id="@+id/review_rating_indicator_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>
