@@ -3,4 +3,5 @@
     <string name="app_version">0.0.1</string>
     <string name="facebook_app_id">1843922909222445</string>
     <string name="kakao_app_id">cec83de256e7cffbba96009caa6d7bb5</string>
+    <string name="user_auth_completed_msg">인증이 완료되었습니다!\n승인 심사가 끝날때까지 기다려주세요</string>
 </resources>

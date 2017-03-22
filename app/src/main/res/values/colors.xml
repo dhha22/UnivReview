@@ -15,6 +15,8 @@
     <color name="professorTxtColor">#6d6d6d</color>
     <color name="backgroundColor">#e9f0f8</color>
 
+    <color name="lineDisableColor">#33ffffff</color>
+
     <!-- recent review -->
     <color name="reviewDimColor">#b2080f17</color>
 

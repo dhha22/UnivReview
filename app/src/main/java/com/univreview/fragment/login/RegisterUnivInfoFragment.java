@@ -46,8 +46,11 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     @BindView(R.id.student_btn) Button studentBtn;
     @BindView(R.id.professor_btn) Button professorBtn;
     @BindView(R.id.university_txt) TextView universityTxt;
+    @BindView(R.id.university_line) View universityLine;
     @BindView(R.id.department_txt) TextView departmentTxt;
+    @BindView(R.id.department_line) View departmentLine;
     @BindView(R.id.major_layout) LinearLayout majorLayout;
+    @BindView(R.id.major_line) View majorLine;
     @BindView(R.id.major_txt) TextView majorTxt;
     @BindView(R.id.next_btn) Button nextBtn;
     private ButtonStateManager buttonStateManager;
@@ -185,16 +188,22 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                     register.departmentId = null;
                     register.majorId = null;
                     nextButtonState.setButtonState(false);
+                    universityLine.setBackgroundColor(Util.getColor(context, R.color.white));
+                    departmentLine.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor));
+                    majorLine.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor));
                 } else if ("department".equals(type)) {
                     departmentTxt.setText(name);
                     majorTxt.setText(null);
                     register.departmentId = id;
                     register.majorId = null;
                     nextButtonState.setButtonState(false);
+                    departmentLine.setBackgroundColor(Util.getColor(context, R.color.white));
+                    majorLine.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor));
                 } else if ("major".equals(type)) {
                     majorTxt.setText(name);
                     register.majorId = id;
                     nextButtonState.setButtonState(true);
+                    majorLine.setBackgroundColor(Util.getColor(context, R.color.white));
                 }
 
             }

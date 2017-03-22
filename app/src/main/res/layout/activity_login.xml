@@ -39,7 +39,7 @@
             android:layout_marginBottom="14dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="@color/facebookColor"
+            android:background="@drawable/facebook_login_btn"
             android:text="페이스북으로 계속하기"
             android:textColor="@color/white"
             android:textSize="16dp" />
@@ -50,7 +50,7 @@
             android:layout_height="56dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="@color/kakaoColor"
+            android:background="@drawable/kakao_login_btn"
             android:text="카카오톡으로 계속하기"
             android:textColor="@color/white"
             android:textSize="16dp" />

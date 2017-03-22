@@ -48,12 +48,13 @@
         android:textSize="18dp" />
 
     <View
+        android:id="@+id/university_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="38dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@color/white" />
+        android:background="@color/lineDisableColor" />
 
     <TextView
         android:id="@+id/department_txt"
@@ -70,12 +71,13 @@
         android:textSize="18dp" />
 
     <View
+        android:id="@+id/department_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="38dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@color/white" />
+        android:background="@color/lineDisableColor" />
 
     <LinearLayout
         android:id="@+id/major_layout"
@@ -98,12 +100,13 @@
             android:textSize="18dp" />
 
         <View
+            android:id="@+id/major_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="50dp"
             android:layout_marginLeft="48dp"
             android:layout_marginRight="48dp"
-            android:background="@color/white" />
+            android:background="@color/lineDisableColor" />
     </LinearLayout>
 
     <Button

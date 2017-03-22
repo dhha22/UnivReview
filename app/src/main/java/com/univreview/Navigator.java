@@ -14,6 +14,7 @@ import com.univreview.fragment.login.CheckUserPhotoFragment;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.login.UserAuthCompletedFragment;
 import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.search.MajorExpandableFragment;
@@ -58,6 +59,12 @@ public class Navigator {
     public static void goRegisterUserIdentity(Context context){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUserIdentityFragment.newInstance());
+        context.startActivity(intent);
+    }
+
+    public static void goUserAuthCompleted(Context context){
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(UserAuthCompletedFragment.newInstance());
         context.startActivity(intent);
     }
 

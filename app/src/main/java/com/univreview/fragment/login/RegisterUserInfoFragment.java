@@ -106,11 +106,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
 
     public void setData(Register register) {
-        if (register.profileUrl.length() > 0) {
-            App.picasso.load(register.profileUrl)
-                    .fit()
-                    .into(profileImage);
-        }
+        Util.setProfileImage(register.profileUrl, profileImage);
         inputName.setText(register.nickName);
         inputName.setSelection(register.nickName.length());
         buttonState.setButtonState(true);

@@ -67,7 +67,7 @@ public class PermissionCheckerActivity extends BaseActivity {
     private void showMissingPermissionDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("도움말")
-                .setMessage("상품 사진을 올리려면 저장공간 권한이 필요합니다." +
+                .setMessage("사진을 올리려면 저장공간 권한이 필요합니다." +
                         "\n[설정]->[권한]에서 해당권한(저장공간)을 활성화해주세요.")
                 .setNegativeButton("거부", (dialog, which) -> finish())
                 .setPositiveButton("설정", (dialog, which) -> {

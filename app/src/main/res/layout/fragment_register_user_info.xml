@@ -63,7 +63,7 @@
         android:layout_below="@id/input_name"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="158dp"
         android:textColor="@color/white"
         android:background="@drawable/rounded_white_rect"
         android:text="다음"
