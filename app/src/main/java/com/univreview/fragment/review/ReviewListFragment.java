@@ -268,9 +268,11 @@ public class ReviewListFragment extends AbsListFragment {
                 } else if (PROFESSOR.equals(type)) {
                     subjectId = id;
                 }
+                isFirstError = true;
                 page = DEFAULT_PAGE;
                 refresh();
                 filterNameTxt.setText(name);
+                toolbarSubtitleTxt.setText(name);
             }
         }
     }
@@ -288,6 +290,7 @@ public class ReviewListFragment extends AbsListFragment {
         if (subjectId != null && subjectId == 0) subjectId = null;
         if (professorId != null && professorId == 0) professorId = null;
 
+        Logger.v("page: " + page);
         Logger.v("type: " + type);
         Logger.v("subject id: " + subjectId);
         Logger.v("professor id: " + professorId);
@@ -296,10 +299,9 @@ public class ReviewListFragment extends AbsListFragment {
         Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, userId, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
+                .subscribe(this::response, this::errorResponse, ()->{
                     if (page == DEFAULT_PAGE) adapter.clear();
-                })
-                .subscribe(this::response, this::errorResponse);
+                });
     }
 
     private void response(ReviewListModel reviewListModel) {

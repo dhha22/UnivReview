@@ -30,7 +30,8 @@ public interface UserService {
 
     @GET("profile")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
-    @POST("profile/{userId}")
+    //user id 제외
+    @POST("profile/")
     Observable<UserModel> postProfile(@HeaderMap Map<String, String> headers, @Body User body, @Path("userId") long userId);
 
 
@@ -38,6 +39,7 @@ public interface UserService {
     @GET("pointHistory/{userId}")
     Observable<PointHistoryModel> getPoint(@HeaderMap Map<String, String> headers, @Path("userId") long userId, @Query("page") int page);
 
+    //user id 제외
     @GET("userTicket/{userId}")
     Observable<UserTicketModel> getUserTicket(@HeaderMap Map<String, String> headers, @Path("userId") long userId);
 

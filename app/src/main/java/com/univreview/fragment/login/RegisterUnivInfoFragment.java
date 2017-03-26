@@ -241,7 +241,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     private void callFileUploadApi(Uri uploadUri) {
-        Retro.instance.fileService(context, uploadUri, "profile")
+        Retro.instance.fileService(uploadUri, "profile")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> callUserUpdateApi(result.fileLocation), error -> goMain());

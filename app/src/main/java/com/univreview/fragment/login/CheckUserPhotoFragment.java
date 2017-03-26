@@ -89,7 +89,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
     }
 
     private void upload() {
-        Retro.instance.fileService(context, Uri.parse(uri), "file")
+        Retro.instance.fileService(Uri.parse(uri), "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> Logger.v("result: " + result), Logger::e, () -> {
@@ -115,7 +115,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
                         .into(checkImage);
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 uri = activityResultEvent.getIntent().getData().toString();
-                String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+                String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 App.picasso.load("file://" + albumPath)
                         .into(checkImage);
             }

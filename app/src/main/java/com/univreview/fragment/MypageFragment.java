@@ -178,7 +178,7 @@ public class MypageFragment extends BaseFragment {
             if(activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER){
                Navigator.goAlbum(context);
             }else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
-                String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+                String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Logger.v("album path: " + albumPath);
                 callFileUploadApi(activityResultEvent.getIntent().getData());
             }
@@ -197,7 +197,7 @@ public class MypageFragment extends BaseFragment {
     }
 
     private void callFileUploadApi(Uri uploadUri) {
-        Retro.instance.fileService(context, uploadUri, "profile")
+        Retro.instance.fileService(uploadUri, "profile")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> callUserUpdateApi(result.fileLocation), Logger::e);

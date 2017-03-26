@@ -127,7 +127,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
             if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
                 Navigator.goAlbum(context);
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
-                String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+                String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Logger.v("album path: " + albumPath);
                 register.profileUrl = "file://" + albumPath;
                 setData(register);

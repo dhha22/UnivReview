@@ -75,8 +75,8 @@ public class Navigator {
     }
 
     public static void goAlbum(Context context) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        Intent intent = new Intent(Intent.ACTION_PICK , MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         ((Activity) context).startActivityForResult(intent, ALBUM);
     }
 

@@ -62,7 +62,7 @@ public class RegisterUserIdentityFragment extends BaseFragment{
                 Navigator.goCheckUserPhoto(context, CAMERA, null, ImageUtil.TEMP_IMAGE_URI.toString());
                 activity.finish();
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
-                String albumPath = new ImageUtil(context).getPath(activityResultEvent.getIntent().getData());
+                String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Navigator.goCheckUserPhoto(context, ALBUM, albumPath, activityResultEvent.getIntent().getData().toString());
                 activity.finish();
             }

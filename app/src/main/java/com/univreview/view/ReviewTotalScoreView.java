@@ -43,13 +43,14 @@ public class ReviewTotalScoreView extends CardView {
     }
 
     public void setData(float rate, Review review) {
+        float averageScore = Math.round(rate * 100f) / 100f;
         Logger.v("rate: " + rate);
         if (rate != 0) {
             setVisibility(VISIBLE);
-            averageScoreTxt.setText(String.valueOf(rate));
-            averageIndicator.setRating(rate);
+            averageScoreTxt.setText(String.valueOf(averageScore));
+            averageIndicator.setRating(averageScore);
             reviewRatingIndicatorView.setData(review);
-        }else{
+        } else {
             setVisibility(GONE);
         }
     }
