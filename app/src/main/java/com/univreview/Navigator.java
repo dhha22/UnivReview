@@ -20,6 +20,7 @@ import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.search.MajorExpandableFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.search.SimpleSearchResultFragment;
+import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.Register;
@@ -157,6 +158,12 @@ public class Navigator {
     public static void goPointList(Context context, int point) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(PointListFragment.newInstance(point));
+        context.startActivity(intent);
+    }
+
+    public static void goSetting(Context context) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(SettingFragment.newInstance());
         context.startActivity(intent);
     }
 

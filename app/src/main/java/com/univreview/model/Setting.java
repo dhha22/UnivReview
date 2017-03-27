@@ -6,8 +6,10 @@ package com.univreview.model;
 public class Setting extends AbstractDataProvider {
     public long id;
     public String title;
+    public String previewStr;
 
-    public Setting(String title) {
+    public Setting(long id, String title) {
+        this.id = id;
         this.title = title;
     }
 

@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.univreview.R;
@@ -18,6 +19,7 @@ import butterknife.ButterKnife;
 public class SettingItemView extends FrameLayout {
     @BindView(R.id.title_txt) TextView titleTxt;
     @BindView(R.id.preview_txt) TextView previewTxt;
+    @BindView(R.id.next_img) ImageView nextImg;
 
     public SettingItemView(Context context) {
         this(context, null);
@@ -33,6 +35,14 @@ public class SettingItemView extends FrameLayout {
         setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT ));
         ButterKnife.bind(this);
 
+    }
+
+    public void setNextImgVisibility(boolean isVisibility) {
+        if (isVisibility) {
+            nextImg.setVisibility(VISIBLE);
+        } else {
+            nextImg.setVisibility(INVISIBLE);
+        }
     }
 
     public void setTitle(String title){

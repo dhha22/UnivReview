@@ -2,10 +2,13 @@ package com.univreview;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.kakao.auth.KakaoSDK;
@@ -23,6 +26,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2016. 12. 25..
@@ -47,6 +53,7 @@ public class App extends Application {
     public static long UNIVERSITY_ID = 1;
     public static Long userId;
     public static String userToken;
+    public static String registrationId;
 
     @Override
     public void onCreate() {
@@ -112,6 +119,19 @@ public class App extends Application {
         userId = pref.getPreferences("userId", 0l);
         Logger.v("user token: " + userToken);
         Logger.v("user id: " + userId);
+    }
+
+    private static void setFCMToken(String registrationId){
+        pref.savePreferences("registration_id",registrationId);
+        App.registrationId = pref.getPreferences("registration_id", "");
+    }
+
+    public static void initializeFCMToken() {
+        setFCMToken(FirebaseInstanceId.getInstance().getToken());
+        Logger.v("registration_id: " + registrationId);
+        ClipboardManager clipboardManager = (ClipboardManager)context.getSystemService(context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("label", registrationId);
+        clipboardManager.setPrimaryClip(clipData);
     }
 
     public static Map<String, String> setAuthHeader(String token) {

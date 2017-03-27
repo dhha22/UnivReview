@@ -32,6 +32,7 @@ import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
 import com.univreview.view.SettingItemView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class MypageFragment extends BaseFragment {
     @BindView(R.id.setting_btn) ImageButton settingBtn;
     private MyPageAdapter adapter;
     private long userId;
+    private List<Setting> settings = Arrays.asList(new Setting(0, "My 리뷰"), new Setting(1, "포인트"), new Setting(2, "학생 인증"));
 
 
     public static MypageFragment newInstance(long userId) {
@@ -89,8 +91,13 @@ public class MypageFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new MyPageAdapter(context);
         recyclerView.setAdapter(adapter);
+        Observable.from(settings)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> adapter.addItem(result), Logger::e);
+
         profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
-        settingBtn.setOnClickListener(v -> Navigator.goLogin(context));
+        settingBtn.setOnClickListener(v -> Navigator.goSetting(context));
         adapter.setOnItemClickListener((view, position) -> {
             switch (position) {
                 case MY_REVIEW:
@@ -125,18 +132,25 @@ public class MypageFragment extends BaseFragment {
         majorTxt.setText(userModel.user.major.getName());
         Util.setProfileImage(userModel.user.profileImageUrl, profileImage);
 
-        //review count
-        //point count
         adapter.clear();
-        Observable.from(Arrays.asList(new Setting(userModel.review + "개"), new Setting(userModel.user.point + " point"), new Setting("")))
+        Observable.from(settings)
+                .map(setting -> {
+                    switch ((int) setting.id) {
+                        case 0:
+                            setting.previewStr = userModel.review + "개";
+                            break;
+                        case 1:
+                            setting.previewStr = userModel.user.point + " point";
+                            break;
+                    }
+                    return setting;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
-
     }
 
     private class MyPageAdapter extends CustomAdapter{
-        private List<String> titles = Arrays.asList("My 리뷰", "포인트", "학생 인증");
 
         public MyPageAdapter(Context context) {
             super(context);
@@ -149,15 +163,8 @@ public class MypageFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder) holder).v.setTitle(titles.get(position));
-            if (list.size() > 0) {
-                ((ViewHolder) holder).v.setPreviewTxt(list.get(position).getName());
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return titles.size();
+            ((ViewHolder) holder).v.setTitle(list.get(position).getName());
+            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {

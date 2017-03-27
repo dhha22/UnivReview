@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void init() {
+        App.initializeFCMToken();
         adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());
