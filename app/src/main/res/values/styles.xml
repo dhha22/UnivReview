@@ -54,6 +54,12 @@
         <item name="android:maxHeight">4dp</item>
     </style>
 
+    <style name="reviewRatingLineSmall" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/review_rating_line_s</item>
+        <item name="android:minHeight">2dp</item>
+        <item name="android:maxHeight">2dp</item>
+    </style>
+
 
     <style name="customDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:textColor">@color/black</item>

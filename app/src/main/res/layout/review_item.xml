@@ -40,10 +40,9 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_back"
-            android:backgroundTint="@color/reviewTxtColor"
+            android:background="@drawable/ic_review_more"
             android:rotation="270"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/first_line_time_txt"
@@ -97,33 +96,17 @@
             android:textSize="10dp" />
 
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <TextView
             android:id="@+id/second_line_time_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
-            android:gravity="right"
+            android:layout_marginLeft="12dp"
             android:text="2017-01-01"
             android:textColor="@color/timeColor"
             android:textSize="12dp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/review_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:layout_marginTop="10dp"
-        android:text="review"
-        android:textColor="@color/reviewTxtColor"
-        android:textSize="14dp"
-        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -154,6 +137,17 @@
                 android:textSize="12dp"
                 android:textStyle="bold" />
 
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/difficulty_rate"
+                style="@style/reviewRatingLineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="1" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -180,6 +174,14 @@
                 android:textSize="12dp"
                 android:textStyle="bold" />
 
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/assignment_rate"
+                style="@style/reviewRatingLineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:numStars="5"
+                android:stepSize="1" />
 
         </LinearLayout>
 
@@ -207,6 +209,15 @@
                 android:textSize="12dp"
                 android:textStyle="bold" />
 
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/attendance_rate"
+                style="@style/reviewRatingLineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:numStars="5"
+                android:stepSize="1" />
 
         </LinearLayout>
 
@@ -234,7 +245,15 @@
                 android:textSize="12dp"
                 android:textStyle="bold" />
 
-
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/grade_rate"
+                style="@style/reviewRatingLineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:numStars="5"
+                android:stepSize="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -260,8 +279,28 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="12dp"
                 android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/achievement_rate"
+                style="@style/reviewRatingLineSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:numStars="5"
+                android:stepSize="1" />
         </LinearLayout>
+
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/review_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:layout_marginTop="10dp"
+        android:text="review"
+        android:textColor="@color/reviewTxtColor"
+        android:textSize="14dp"
+        android:visibility="gone" />
 </LinearLayout>

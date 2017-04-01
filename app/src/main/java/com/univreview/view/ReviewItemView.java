@@ -1,6 +1,7 @@
 package com.univreview.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -35,6 +36,11 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.attendance_txt) TextView attendanceTxt;
     @BindView(R.id.grade_txt) TextView gradeTxt;
     @BindView(R.id.achievement_txt) TextView achievementTxt;
+    @BindView(R.id.difficulty_rate) AppCompatRatingBar difficultyRate;
+    @BindView(R.id.assignment_rate) AppCompatRatingBar assignmentRate;
+    @BindView(R.id.attendance_rate) AppCompatRatingBar attendanceRate;
+    @BindView(R.id.grade_rate) AppCompatRatingBar gradeRate;
+    @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
 
     public ReviewItemView(Context context) {
         this(context, null);
@@ -49,7 +55,7 @@ public class ReviewItemView extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true);
         ButterKnife.bind(this);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 0, App.dp5);
+        params.setMargins(0, 0, 0, App.dp12);
         setLayoutParams(params);
     }
 
@@ -88,6 +94,11 @@ public class ReviewItemView extends FrameLayout {
             attendanceTxt.setText(review.getAttendanceRateMessage());
             gradeTxt.setText(review.getGradeRateMessage());
             achievementTxt.setText(review.getAchievementRateMessage());
+            difficultyRate.setRating(review.difficultyRate);
+            assignmentRate.setRating(review.assignmentRate);
+            attendanceRate.setRating(review.attendanceRate);
+            gradeRate.setRating(review.gradeRate);
+            achievementRate.setRating(review.achievementRate);
 
         }else{
             setVisibility(INVISIBLE);
