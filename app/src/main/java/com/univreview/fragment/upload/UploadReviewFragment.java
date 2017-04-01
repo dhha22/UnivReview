@@ -46,6 +46,7 @@ public class UploadReviewFragment extends BaseFragment {
     @BindView(R.id.grade_txt) TextView gradeTxt;
     @BindView(R.id.achievement_txt) TextView achievementTxt;
     private Review review;
+    private boolean isReviewExist = false;
 
     public static UploadReviewFragment newInstance(){
         UploadReviewFragment fragment = new UploadReviewFragment();
@@ -71,7 +72,11 @@ public class UploadReviewFragment extends BaseFragment {
         subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), false));
         professorTxt.setOnClickListener(v -> {
             if (subjectTxt.getText().length() > 0) {
-                Navigator.goSimpleSearchResult(context, "searchProfessor", review.subjectId);
+                if (!isReviewExist) {
+                    Navigator.goSimpleSearchResult(context, "searchProfessor", review.subjectId);
+                } else {
+                    showAlertDialog();
+                }
             } else {
                 Util.simpleMessageDialog(context, "과목을 입력해주세요");
             }
@@ -113,6 +118,9 @@ public class UploadReviewFragment extends BaseFragment {
                     subjectTxt.setText(name);
                     review.subjectId = id;
                     review.subjectDetailId = 0;
+                    review.professorId = 0;
+                    professorTxt.setText(null);
+                    callGetReviewExist(id);
                 } else if ("searchProfessor".equals(type)) {
                     long detailId = data.getLongExtra("detailId", 0);
                     professorTxt.setText(name);
@@ -142,6 +150,26 @@ public class UploadReviewFragment extends BaseFragment {
 
 
     //api
+
+    private void callGetReviewExist(long subjectId){
+        Retro.instance.reviewService().getReviewExist(App.setAuthHeader(App.userToken), subjectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    isReviewExist = result.exist;
+                    if(isReviewExist){
+                        showAlertDialog();
+                    }
+                });
+
+    }
+
+    private void showAlertDialog(){
+        new AlertDialog.Builder(context, R.style.customDialog)
+                .setMessage("이미 해당 과목 리뷰를 쓰셨습니다.\n다른 과목 리뷰를 써주시길 바랍니다.")
+                .setPositiveButton("확인", null)
+                .show();
+    }
 
     private void callPostSimpleReviewApi(Review review){
         Logger.v("post review: " + review);

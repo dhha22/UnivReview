@@ -15,6 +15,7 @@ import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Setting;
+import com.univreview.util.Util;
 import com.univreview.view.SettingItemView;
 
 import java.util.Arrays;
@@ -49,6 +50,7 @@ public class SettingFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, view);
+        toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("설정");
         rootLayout.addView(view);

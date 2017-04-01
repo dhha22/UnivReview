@@ -111,9 +111,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.requestCode =requestCode;
+        this.requestCode = requestCode;
         this.resultCode = resultCode;
-        this.data =data;
+        this.data = data;
         Logger.v("navigation activity on activity result");
         BusProvider.newInstance().post(produceActivityResultEvent());
     }

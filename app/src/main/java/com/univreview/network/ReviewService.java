@@ -3,6 +3,7 @@ package com.univreview.network;
 import com.univreview.model.RecentReviewModel;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
+import com.univreview.model.ReviewExist;
 import com.univreview.model.ReviewListModel;
 import com.univreview.model.ReviewSingleModel;
 
@@ -12,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -29,8 +31,13 @@ public interface ReviewService {
     @POST("reviewDetail")
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
 
+    @PUT("subjectDetail/{subjectDetailId}")
+    Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("subjectDetailId") long subjectDetailId);
+
     @GET("recent/main")
     Observable<RecentReviewModel> getRecentReview(@HeaderMap Map<String, String> headers);
 
+    @GET("review/exist")
+    Observable<ReviewExist> getReviewExist(@HeaderMap Map<String, String> headers, @Query("subjectId") long subjectId);
 
 }

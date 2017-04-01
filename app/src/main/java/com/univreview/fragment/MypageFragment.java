@@ -105,7 +105,7 @@ public class MypageFragment extends BaseFragment {
                     break;
                 case POINT:
                     if (adapter.getItem(position) != null) {
-                        String name = adapter.getItem(position).getName();
+                        String name = ((Setting) adapter.getItem(position)).previewStr;
                         int index = name.indexOf("point") - 1;
                         Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
                     } else {
