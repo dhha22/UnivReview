@@ -9,12 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.univreview.App;
+import com.univreview.BuildConfig;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Setting;
+import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.SettingItemView;
 
@@ -34,9 +38,10 @@ public class SettingFragment extends BaseFragment {
     private static final int VERSION = 0;
     private static final int NOTIFICATION = 1;
     private static final int LOGOUT = 2;
+    private static final int USER_DELETE = 3;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     private SettingAdapter adapter;
-    private List<Setting> settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"));
+    private List<Setting> settings;
 
 
     public static SettingFragment newInstance() {
@@ -59,6 +64,13 @@ public class SettingFragment extends BaseFragment {
     }
 
     private void init(){
+
+        if(BuildConfig.DEBUG){
+            settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"), new Setting(3, "회원탈퇴"));
+        }else{
+            settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"));
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new SettingAdapter(context);
         recyclerView.setAdapter(adapter);
@@ -83,10 +95,17 @@ public class SettingFragment extends BaseFragment {
                 case LOGOUT:
                     Navigator.goLogin(context);
                     break;
+                case USER_DELETE:
+                    callUserDelete();
             }
         });
+    }
 
-
+    private void callUserDelete(){
+        Retro.instance.userService().deleteUser(App.setAuthHeader(App.userToken))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> Navigator.goLogin(context), ErrorUtils::parseError);
     }
 
     public class SettingAdapter extends CustomAdapter {

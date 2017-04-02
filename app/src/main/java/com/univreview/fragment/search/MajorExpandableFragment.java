@@ -107,7 +107,7 @@ public class MajorExpandableFragment extends BaseFragment implements RecyclerVie
 
 
     private void callMajorSubjectApi(){
-        Retro.instance.searchService().getMajorSubject(App.UNIVERSITY_ID)
+        Retro.instance.searchService().getMajorSubject(App.universityId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> response(result.major), Logger::e);

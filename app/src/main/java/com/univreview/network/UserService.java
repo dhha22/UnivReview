@@ -2,6 +2,7 @@ package com.univreview.network;
 
 import com.univreview.model.PointHistory;
 import com.univreview.model.PointHistoryModel;
+import com.univreview.model.ResultMessage;
 import com.univreview.model.User;
 import com.univreview.model.UserModel;
 import com.univreview.model.Register;
@@ -31,11 +32,9 @@ public interface UserService {
     @GET("profile")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
     //user id 제외
-    @POST("profile/")
+    @POST("profile")
     Observable<UserModel> postProfile(@HeaderMap Map<String, String> headers, @Body User body, @Path("userId") long userId);
 
-
-    //point
     @GET("pointHistory/{userId}")
     Observable<PointHistoryModel> getPoint(@HeaderMap Map<String, String> headers, @Path("userId") long userId, @Query("page") int page);
 
@@ -45,5 +44,9 @@ public interface UserService {
 
     @POST("userTicket")
     Observable<UserTicket> postUserTicket(@HeaderMap Map<String, String> headers, @Body UserTicket body);
+
+    //user delete
+    @POST("deleteAccount")
+    Observable<ResultMessage> deleteUser(@HeaderMap Map<String, String> headers);
 
 }

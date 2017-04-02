@@ -184,7 +184,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                     universityTxt.setText(name);
                     departmentTxt.setText(null);
                     majorTxt.setText(null);
-                    App.UNIVERSITY_ID = register.universityId = id;
+                    App.universityId = register.universityId = (int)id;
                     register.departmentId = null;
                     register.majorId = null;
                     nextButtonState.setButtonState(false);
@@ -231,7 +231,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         Logger.v("response: " + userModel);
         App.setUserId(userModel.user.id);
         App.setUserToken(userModel.auth.getToken());
-        Navigator.goMain(context);
+        App.setUniversityId(App.universityId);
        // callFileUploadApi();
     }
 

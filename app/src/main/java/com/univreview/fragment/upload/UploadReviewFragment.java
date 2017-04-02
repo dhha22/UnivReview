@@ -20,6 +20,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 
 import butterknife.BindView;
@@ -176,17 +177,18 @@ public class UploadReviewFragment extends BaseFragment {
         Retro.instance.reviewService().postSimpleReview(App.setAuthHeader(App.userToken), review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result.review), error -> Logger.e(error));
+                .subscribe(result -> response(result.review), ErrorUtils::parseError);
     }
 
     private void response(Review review) {
         Logger.v("response review: " + review);
+        this.review.id = review.id;
         new AlertDialog.Builder(context, R.style.customDialog)
                 .setMessage("좀 더 자세한 리뷰를 쓰면\n" +
                         "많은 학우들에게 도움이 됩니다.\n" +
                         "리뷰를 써볼까요?")
                 .setPositiveButton("리뷰쓰기", (dialog, which) -> {
-                    Navigator.goUploadReviewDetail(context, review);
+                    Navigator.goUploadReviewDetail(context, this.review);
                     activity.finish();
                 })
                 .setNegativeButton("다음에", (dialog, which) -> activity.onBackPressed())

@@ -257,7 +257,7 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void callGetMajorApi(long id, String name, int page) {
-        Retro.instance.searchService().getMajors(App.UNIVERSITY_ID, id, name, page)
+        Retro.instance.searchService().getMajors(App.universityId, id, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> {
@@ -268,7 +268,7 @@ public class SearchFragment extends AbsListFragment {
 
     private void callGetProfessorApi(Long departmentId, String name, int page) {
         if(departmentId == 0) departmentId = null;
-        Retro.instance.searchService().getProfessors(App.UNIVERSITY_ID, departmentId, name, page)
+        Retro.instance.searchService().getProfessors(App.universityId, departmentId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> {
@@ -280,7 +280,7 @@ public class SearchFragment extends AbsListFragment {
     private void callGetSubjectApi(Long majorId, String name, int page) {
         if(majorId ==0) majorId = null;
         Logger.v("major id: " + majorId);
-        Retro.instance.searchService().getSubjects(App.UNIVERSITY_ID, majorId, name, page)
+        Retro.instance.searchService().getSubjects(App.universityId, majorId, name, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> {

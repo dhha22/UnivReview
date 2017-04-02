@@ -15,7 +15,7 @@
         android:layout_height="240dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:background="@drawable/rect"
+        android:background="@drawable/review_detail_box"
         android:gravity="left|top"
         android:padding="16dp"
         android:textSize="14dp" />

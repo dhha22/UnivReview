@@ -41,6 +41,7 @@ public class ErrorUtils {
         } else if (throwable instanceof JsonSyntaxException) {
             Logger.e(throwable);
         }
+        Logger.e(throwable);
         return 0;
     }
 }
