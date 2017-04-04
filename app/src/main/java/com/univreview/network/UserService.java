@@ -1,18 +1,17 @@
 package com.univreview.network;
 
-import com.univreview.model.PointHistory;
 import com.univreview.model.PointHistoryModel;
+import com.univreview.model.PushId;
+import com.univreview.model.Register;
+import com.univreview.model.ResultMessage;
 import com.univreview.model.User;
 import com.univreview.model.UserModel;
-import com.univreview.model.Register;
-import com.univreview.model.ResponseModel;
 import com.univreview.model.UserTicket;
 import com.univreview.model.UserTicketModel;
 
 import java.util.Map;
 
 import retrofit2.http.Body;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
@@ -34,6 +33,9 @@ public interface UserService {
     @POST("profile/")
     Observable<UserModel> postProfile(@HeaderMap Map<String, String> headers, @Body User body, @Path("userId") long userId);
 
+    //push 등록
+    @POST("push/id")
+    Observable<Object> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
 
     //point
     @GET("pointHistory/{userId}")

@@ -1,6 +1,7 @@
 package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Major extends AbstractDataProvider implements Serializable {
     @Expose
     public String name;
 
-    @Expose
+    @SerializedName("subjectDetail")
     public List<Subject> subject = new ArrayList<>();
 
     @Override

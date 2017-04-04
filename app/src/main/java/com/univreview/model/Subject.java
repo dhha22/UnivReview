@@ -17,6 +17,9 @@ public class Subject extends AbstractDataProvider  implements Serializable{
     @Expose
     public int point;   //학점
 
+    @Expose
+    public String subjectName;
+
     @Override
     public long getId() {
         return id;

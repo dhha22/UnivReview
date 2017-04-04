@@ -3,6 +3,7 @@ package com.univreview.fragment.mypage;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
@@ -175,7 +177,7 @@ public class PointListFragment extends AbsListFragment {
         Retro.instance.userService().getUserTicket(App.setAuthHeader(App.userToken), App.userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> ticketResponse(result.userTicket), Logger::e);
+                .subscribe(result -> ticketResponse(result.userTicket),this::errorResponse);
 
     }
 
@@ -187,16 +189,16 @@ public class PointListFragment extends AbsListFragment {
     }
 
     private void ticketResponse(List<UserTicket> userTickets) {
-        if(userTickets.size()>0) {
+        if (userTickets.size() > 0) {
             adapter.setUserTicket(userTickets.get(0));
-        }else{
+        } else {
             adapter.setUserTicket(null);
         }
     }
 
     private void pointResponse(List<PointHistory> pointHistories, int page) {
         Logger.v("result: " + pointHistories);
-        if(page == DEFAULT_PAGE) adapter.clear();
+        if (page == DEFAULT_PAGE) adapter.clear();
         setResult(page);
         setStatus(Status.IDLE);
         Observable.from(pointHistories)
@@ -209,4 +211,6 @@ public class PointListFragment extends AbsListFragment {
         setStatus(Status.ERROR);
         ErrorUtils.parseError(e);
     }
+
+
 }

@@ -15,6 +15,7 @@ import retrofit2.adapter.rxjava.HttpException;
  * Created by DavidHa on 2016. 9. 7..
  */
 public class ErrorUtils {
+    public static final int ERROR_400 = 400;
     public static final int ERROR_404 = 404;
 
     public static int parseError(Throwable throwable) {

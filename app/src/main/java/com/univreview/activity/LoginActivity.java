@@ -218,7 +218,7 @@ public class LoginActivity extends BaseActivity {
         Logger.v("response: " + userModel);
         App.setUserId(userModel.user.id);
         App.setUserToken(userModel.auth.getToken());
-      //  App.setUniversityId(userModel.user.university.id);
+        App.setUniversityId(userModel.user.universityId);
         Navigator.goMain(this);
     }
 

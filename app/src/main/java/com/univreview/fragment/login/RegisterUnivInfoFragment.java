@@ -25,6 +25,7 @@ import com.univreview.model.User;
 import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.SimpleButtonState;
 import com.univreview.util.Util;
 
@@ -224,6 +225,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         Retro.instance.userService().register(App.setAuthHeader(token.getToken()), register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(this::response, this::errorResponse);
     }
 
@@ -232,12 +234,12 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         App.setUserId(userModel.user.id);
         App.setUserToken(userModel.auth.getToken());
         App.setUniversityId(App.universityId);
+        Navigator.goMain(context);
        // callFileUploadApi();
     }
 
     private void errorResponse(Throwable e){
-        progressDialog.dismiss();
-        Logger.e(e);
+        ErrorUtils.parseError(e);
     }
 
     private void callFileUploadApi(Uri uploadUri) {

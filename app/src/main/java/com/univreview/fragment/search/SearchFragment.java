@@ -41,6 +41,7 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 16..
  */
 public class SearchFragment extends AbsListFragment {
+    private static final String MAJOR = "M";
     @BindView(R.id.input) EditText input;
     @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
@@ -48,7 +49,7 @@ public class SearchFragment extends AbsListFragment {
     private Long id;
     private boolean isReviewSearch;
     private Timer timer;
-
+    private String subjectType;
 
     public static SearchFragment newInstance(String type, long id, String name, boolean isReviewSearch) {
         SearchFragment fragment = new SearchFragment();
@@ -101,6 +102,11 @@ public class SearchFragment extends AbsListFragment {
                 }
             }
         });
+        if(isReviewSearch){
+            subjectType = null;
+        }else{
+            subjectType = MAJOR;
+        }
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
             if (isReviewSearch) {
@@ -247,7 +253,7 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void callGetDepartmentApi(long id, String name, int page) {
-        Retro.instance.searchService().getDepartments(id, name, page)
+        Retro.instance.searchService().getDepartments(id, name, subjectType, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> {
@@ -257,7 +263,7 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void callGetMajorApi(long id, String name, int page) {
-        Retro.instance.searchService().getMajors(App.universityId, id, name, page)
+        Retro.instance.searchService().getMajors(App.universityId, id, name, subjectType, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .finallyDo(() -> {
@@ -279,6 +285,7 @@ public class SearchFragment extends AbsListFragment {
 
     private void callGetSubjectApi(Long majorId, String name, int page) {
         if(majorId ==0) majorId = null;
+        Logger.v("university id: " + App.universityId);
         Logger.v("major id: " + majorId);
         Retro.instance.searchService().getSubjects(App.universityId, majorId, name, page)
                 .subscribeOn(Schedulers.io())

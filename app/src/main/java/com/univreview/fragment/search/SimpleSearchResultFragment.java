@@ -156,7 +156,7 @@ public class SimpleSearchResultFragment extends BaseFragment {
             professor.id = 0l;
             professor.name = "전체";
             result.professors.add(0, professor);
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * (int) Util.dpToPx(context, 78)));
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * (int) Util.dpToPx(context, 82)));
             Observable.from(result.professors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -166,13 +166,13 @@ public class SimpleSearchResultFragment extends BaseFragment {
             subject.id = 0l;
             subject.name = "전체";
             result.subjects.add(0, subject);
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.subjects.size() * (int) Util.dpToPx(context, 78)));
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.subjects.size() * (int) Util.dpToPx(context, 82)));
             Observable.from(result.subjects)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(data -> adapter.addItem(data), Logger::e);
         } else if(type.equals(SEARCH_PROFESSOR)){
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * (int) Util.dpToPx(context, 78)));
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, result.professors.size() * (int) Util.dpToPx(context, 82)));
             Observable.from(result.professors)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
