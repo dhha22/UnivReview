@@ -295,13 +295,21 @@ public class ReviewListFragment extends AbsListFragment {
         Logger.v("subject id: " + subjectId);
         Logger.v("professor id: " + professorId);
         Logger.v("user id: " + userId);
-
-        Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, userId, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::response, this::errorResponse, ()->{
-                    if (page == DEFAULT_PAGE) adapter.clear();
-                });
+        if (type.equals(MY_REVIEW)) {
+            Retro.instance.reviewService().getMyReviews(App.setAuthHeader(App.userToken), page)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::response, this::errorResponse, () -> {
+                        if (page == DEFAULT_PAGE) adapter.clear();
+                    });
+        } else {
+            Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, userId, page)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::response, this::errorResponse, () -> {
+                        if (page == DEFAULT_PAGE) adapter.clear();
+                    });
+        }
     }
 
     private void response(ReviewListModel reviewListModel) {

@@ -37,6 +37,9 @@ public interface ReviewService {
     @GET("recent/main")
     Observable<RecentReviewModel> getRecentReview(@HeaderMap Map<String, String> headers);
 
+    @GET("recent/user")
+    Observable<ReviewListModel> getMyReviews(@HeaderMap Map<String, String> headers, @Query("page") int page);
+
     @GET("review/exist")
     Observable<ReviewExist> getReviewExist(@HeaderMap Map<String, String> headers, @Query("subjectId") long subjectId);
 
