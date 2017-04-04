@@ -50,7 +50,7 @@ public class App extends Application {
     public static SharedPreferencesActivity pref;
     public static final Gson gson = new Gson();
     public static Picasso picasso;
-    public static long UNIVERSITY_ID = 1;
+    public static int universityId;
     public static Long userId;
     public static String userToken;
     public static String registrationId;
@@ -114,11 +114,19 @@ public class App extends Application {
         pref.savePreferences("userId", userId);
     }
 
+    public static void setUniversityId(long universityId) {
+        Logger.v("set universityId id: " + universityId);
+        App.universityId = (int) universityId;
+        pref.savePreferences("universityId", App.universityId);
+    }
+
     public static void init() {
         userToken = pref.getPreferences("userToken", null);
         userId = pref.getPreferences("userId", 0l);
+        universityId = pref.getPreferences("universityId", 0);
         Logger.v("user token: " + userToken);
         Logger.v("user id: " + userId);
+        Logger.v("university id: " + universityId);
     }
 
     private static void setFCMToken(String registrationId){

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.R;
+import com.univreview.listener.OnItemClickListener;
 import com.univreview.model.Review;
 import com.univreview.util.TimeUtil;
 
@@ -41,6 +42,7 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.attendance_rate) AppCompatRatingBar attendanceRate;
     @BindView(R.id.grade_rate) AppCompatRatingBar gradeRate;
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
+    private OnClickListener clickListener;
 
     public ReviewItemView(Context context) {
         this(context, null);
@@ -68,18 +70,17 @@ public class ReviewItemView extends FrameLayout {
                     if (review.user.authenticated) {
                         authMarkTxt.setVisibility(VISIBLE);
                     } else {
-                        authMarkTxt.setVisibility(INVISIBLE);
+                        authMarkTxt.setVisibility(GONE);
                     }
                 }
             }
             if (review.reviewDetail != null) {
-                if (review.reviewDetail.reviewDetail.length() > 0) {
-                    reviewTxt.setVisibility(VISIBLE);
-                } else {
-                    reviewTxt.setVisibility(GONE);
-                }
+                reviewTxt.setVisibility(VISIBLE);
                 reviewTxt.setText(review.reviewDetail.reviewDetail);
+            }else{
+                reviewTxt.setVisibility(GONE);
             }
+
             if(review.subjectDetail.subject != null) {
                 subjectTxt.setText(review.subjectDetail.subject.getName() + "");
             }
@@ -105,6 +106,10 @@ public class ReviewItemView extends FrameLayout {
         }
     }
 
+    public void setMoreBtnClickListener(OnClickListener listener){
+        this.clickListener = listener;
+    }
+
     public void setMode(Status status){
         if(status == Status.WRITE_REVIEW || status == Status.MY_REVIEW){
             userLayout.setVisibility(GONE);
@@ -114,6 +119,7 @@ public class ReviewItemView extends FrameLayout {
             firstLineTimeTxt.setVisibility(GONE);
             userLayout.setVisibility(VISIBLE);
             moreBtn.setVisibility(VISIBLE);
+            moreBtn.setOnClickListener(clickListener);
         }
     }
     public enum Status {

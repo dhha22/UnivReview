@@ -46,5 +46,8 @@ public interface UserService {
     @POST("userTicket")
     Observable<UserTicket> postUserTicket(@HeaderMap Map<String, String> headers, @Body UserTicket body);
 
+    //user delete
+    @POST("deleteAccount")
+    Observable<ResultMessage> deleteUser(@HeaderMap Map<String, String> headers);
 
 }

@@ -15,7 +15,7 @@
             android:id="@+id/subject_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom"
             android:text="subject name"
             android:textColor="@color/colorAccent"
             android:textSize="16dp" />
@@ -24,7 +24,7 @@
             android:id="@+id/professor_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom"
             android:layout_marginLeft="4dp"
             android:text="professor name"
             android:textColor="@color/professorTxtColor"
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="12dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="12dp"
         android:background="@color/pointRowColor" />
 
 
@@ -297,7 +297,6 @@
         android:id="@+id/review_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
         android:layout_marginTop="10dp"
         android:text="review"
         android:textColor="@color/reviewTxtColor"

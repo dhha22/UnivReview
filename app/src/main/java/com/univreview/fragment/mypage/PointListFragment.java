@@ -130,6 +130,10 @@ public class PointListFragment extends AbsListFragment {
             }
         }
 
+        @Override
+        public int getItemCount() {
+            return list.size() + 1;
+        }
 
         @Override
         public int getItemViewType(int position) {
@@ -179,7 +183,7 @@ public class PointListFragment extends AbsListFragment {
         Retro.instance.userService().getPoint(App.setAuthHeader(App.userToken), App.userId, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> pointResponse(result.pointHistories), this::errorResponse);
+                .subscribe(result -> pointResponse(result.pointHistories, page), this::errorResponse);
     }
 
     private void ticketResponse(List<UserTicket> userTickets) {
@@ -190,8 +194,9 @@ public class PointListFragment extends AbsListFragment {
         }
     }
 
-    private void pointResponse(List<PointHistory> pointHistories) {
+    private void pointResponse(List<PointHistory> pointHistories, int page) {
         Logger.v("result: " + pointHistories);
+        if(page == DEFAULT_PAGE) adapter.clear();
         setResult(page);
         setStatus(Status.IDLE);
         Observable.from(pointHistories)

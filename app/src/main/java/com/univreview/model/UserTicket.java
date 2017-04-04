@@ -19,4 +19,14 @@ public class UserTicket implements Serializable {
     @Expose
     public long ticketId = 1;
 
+    @Override
+    public String toString() {
+        return "UserTicket{" +
+                "id=" + id +
+                ", ticketType='" + ticketType + '\'' +
+                ", ticket=" + ticket +
+                ", userId=" + userId +
+                ", ticketId=" + ticketId +
+                '}';
+    }
 }

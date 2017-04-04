@@ -11,7 +11,7 @@ public class Register implements Serializable {
     public String accessToken;
     public String nickName;
     public String profileUrl;
-    public Long universityId;
+    public Integer universityId;
     public Long departmentId;
     public Long majorId;
 

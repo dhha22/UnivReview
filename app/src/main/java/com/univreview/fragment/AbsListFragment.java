@@ -104,6 +104,7 @@ public abstract class AbsListFragment extends BaseFragment implements SwipeRefre
         if (isNeedRefresh()) {
             setNeedRefresh(((Object) this).getClass(), false);
             if (status != Status.REFRESHING) {
+                page = DEFAULT_PAGE;
                 refresh();
             }
         }

@@ -31,6 +31,7 @@ public interface ReviewService {
     @POST("reviewDetail")
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
 
+    // 리뷰 수정
     @PUT("subjectDetail/{subjectDetailId}")
     Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("subjectDetailId") long subjectDetailId);
 

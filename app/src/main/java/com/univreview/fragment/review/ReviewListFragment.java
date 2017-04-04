@@ -3,7 +3,9 @@ package com.univreview.fragment.review;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -50,6 +52,7 @@ public class ReviewListFragment extends AbsListFragment {
     private static final String SUBJECT = "subject";
     private static final String PROFESSOR = "professor";
     private static final String MY_REVIEW = "myReview";
+    @BindView(R.id.dim_view) View dimView;
     @BindView(R.id.smooth_app_bar_layout) SmoothAppBarLayout appBarLayout;
     @BindView(R.id.toolbar) Toolbar customToolbar;
     @BindView(R.id.toolbar_image) ImageView toolbarImage;
@@ -61,6 +64,7 @@ public class ReviewListFragment extends AbsListFragment {
     @BindView(R.id.toolbar_subtitle_txt) TextView toolbarSubtitleTxt;
     @BindView(R.id.title_txt) TextView titleTxt;
     @BindView(R.id.filter_name_txt) TextView filterNameTxt;
+    @BindView(R.id.bottom_sheet) LinearLayout bottomSheet;
     private ReviewAdapter adapter;
     private String type;
     private long id;
@@ -69,6 +73,7 @@ public class ReviewListFragment extends AbsListFragment {
     private Long professorId;
     private RandomImageModel randomImageModel;
     private boolean isFirstError = true;
+    private BottomSheetBehavior behavior;
 
     public static ReviewListFragment newInstance(String type, long id, String name) {
         ReviewListFragment fragment = new ReviewListFragment();
@@ -153,6 +158,22 @@ public class ReviewListFragment extends AbsListFragment {
                 }
             }
         });
+        behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState == BottomSheetBehavior.STATE_HIDDEN){
+                    dimView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+        dimView.setOnClickListener(moreBtnClickListener);
     }
 
     @Override
@@ -250,9 +271,20 @@ public class ReviewListFragment extends AbsListFragment {
             public ViewHolder(View itemView) {
                 super(itemView);
                 v = (ReviewItemView) itemView;
+                v.setMoreBtnClickListener(moreBtnClickListener);
             }
         }
     }
+
+    private View.OnClickListener moreBtnClickListener = view -> {
+        if(behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            dimView.setVisibility(View.VISIBLE);
+        }else if(behavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
+            dimView.setVisibility(View.GONE);
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+    };
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {

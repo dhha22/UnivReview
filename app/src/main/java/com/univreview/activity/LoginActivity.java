@@ -209,7 +209,7 @@ public class LoginActivity extends BaseActivity {
         Retro.instance.loginService().login(App.setAuthHeader(""), new Login(userType, userId, accessToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> progressDialog.dismiss())
+                .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> response(result),
                         error -> loginErrorResponse(error, new Register(userType, userId, accessToken, nickName, profileURL)));
     }
@@ -218,6 +218,7 @@ public class LoginActivity extends BaseActivity {
         Logger.v("response: " + userModel);
         App.setUserId(userModel.user.id);
         App.setUserToken(userModel.auth.getToken());
+      //  App.setUniversityId(userModel.user.university.id);
         Navigator.goMain(this);
     }
 
