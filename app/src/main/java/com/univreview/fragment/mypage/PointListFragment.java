@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.univreview.App;
-import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
@@ -158,6 +157,7 @@ public class PointListFragment extends AbsListFragment {
                 super(itemView);
                 v = (PointListHeaderView) itemView;
                 v.setPoint(point);
+                v.setBuyTicketListener(v -> callBuyTicketApi());
             }
         }
 
@@ -177,7 +177,7 @@ public class PointListFragment extends AbsListFragment {
         Retro.instance.userService().getUserTicket(App.setAuthHeader(App.userToken), App.userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> ticketResponse(result.userTicket),this::errorResponse);
+                .subscribe(result -> getUserTicketResponse(result.userTicket),this::errorResponse);
 
     }
 
@@ -188,7 +188,16 @@ public class PointListFragment extends AbsListFragment {
                 .subscribe(result -> pointResponse(result.pointHistories, page), this::errorResponse);
     }
 
-    private void ticketResponse(List<UserTicket> userTickets) {
+    private void callBuyTicketApi(){
+        UserTicket userTicket = new UserTicket();
+        userTicket.userId = App.userId;
+        Retro.instance.userService().postUserTicket(App.setAuthHeader(App.userToken), userTicket)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> refresh(), this::ticketErrorResponse);
+    }
+
+    private void getUserTicketResponse(List<UserTicket> userTickets) {
         if (userTickets.size() > 0) {
             adapter.setUserTicket(userTickets.get(0));
         } else {
@@ -212,5 +221,13 @@ public class PointListFragment extends AbsListFragment {
         ErrorUtils.parseError(e);
     }
 
-
+    private void ticketErrorResponse(Throwable e) {
+        if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_400) {
+            new AlertDialog.Builder(context, R.style.customDialog)
+                    .setMessage("포인트가 부족합니다.")
+                    .setPositiveButton("확인", null)
+                    .show();
+        }
+    }
+    
 }

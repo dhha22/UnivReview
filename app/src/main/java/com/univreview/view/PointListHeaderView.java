@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.R;
+import com.univreview.fragment.AbsListFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.UserTicket;
 import com.univreview.network.Retro;
@@ -33,7 +34,6 @@ public class PointListHeaderView extends CardView {
     @BindView(R.id.ticket_layout) RelativeLayout ticketLayout;
     @BindView(R.id.ticket_name_txt) TextView ticketNameTxt;
     @BindView(R.id.ticket_time_txt) TextView ticketTimeTxt;
-    private Context context;
 
     public PointListHeaderView(Context context) {
         this(context, null);
@@ -48,8 +48,11 @@ public class PointListHeaderView extends CardView {
         LayoutInflater.from(context).inflate(R.layout.point_list_header, this, true);
         setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         ButterKnife.bind(this);
-        this.context = context;
-        buyTicketBtn.setOnClickListener(v -> callBuyTicketApi());
+
+    }
+
+    public void setBuyTicketListener(OnClickListener clickListener){
+        buyTicketBtn.setOnClickListener(clickListener);
     }
 
     public void setPoint(int totalPoint){
@@ -71,25 +74,4 @@ public class PointListHeaderView extends CardView {
         }
     }
 
-    private void callBuyTicketApi(){
-        UserTicket userTicket = new UserTicket();
-        userTicket.userId = App.userId;
-        Retro.instance.userService().postUserTicket(App.setAuthHeader(App.userToken), userTicket)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(userTicket), this::ticketErrorResponse);
-    }
-
-    private void response(UserTicket userTicket){
-        Logger.v("result: " + userTicket);
-    }
-
-    private void ticketErrorResponse(Throwable e) {
-        if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_400) {
-            new AlertDialog.Builder(context, R.style.customDialog)
-                    .setMessage("포인트가 부족합니다.")
-                    .setPositiveButton("확인", null)
-                    .show();
-        }
-    }
 }
