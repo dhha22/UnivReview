@@ -28,6 +28,7 @@ import rx.schedulers.Schedulers;
 public class UploadReviewDetailFragment extends BaseFragment {
     @BindView(R.id.review_item) ReviewItemView reviewItemView;
     @BindView(R.id.input_review) EditText inputReview;
+    private boolean isUpdate = false;
     private Review review;
     private ReviewDetail reviewDetail;
 
@@ -56,10 +57,15 @@ public class UploadReviewDetailFragment extends BaseFragment {
         toolbar.setBackBtnVisibility(true);
         toolbar.setOnConfirmListener(v -> registerReview(review.id));
         rootLayout.addView(view);
+        if (review.reviewDetail != null) {
+            isUpdate = true;
+            inputReview.setText(review.reviewDetail.reviewDetail);
+            inputReview.setSelection(inputReview.getText().toString().length());
+        }
         return rootLayout;
     }
 
-    private void setReviewData(Review review){
+    private void setReviewData(Review review) {
         reviewItemView.setData(review);
         reviewItemView.setMode(ReviewItemView.Status.WRITE_REVIEW);
     }
@@ -70,15 +76,27 @@ public class UploadReviewDetailFragment extends BaseFragment {
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();
         if (reviewDetail.getAlertMessage() == null) {
-            callPostReviewDetail(reviewDetail);
+            Logger.v("review detail: " + reviewDetail);
+            if(isUpdate){
+                callPutReviewDetail(review.reviewDetail.reviewId, reviewDetail);
+            }else {
+                callPostReviewDetail(reviewDetail);
+            }
         } else {
             Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
         }
     }
 
     private void callPostReviewDetail(ReviewDetail reviewDetail) {
-        Logger.v("review detail: " + reviewDetail);
         Retro.instance.reviewService().postDetailReview(App.setAuthHeader(App.userToken), reviewDetail)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));
+    }
+
+    private void callPutReviewDetail(long reviewDetailId, ReviewDetail reviewDetail){
+        Logger.v("review detail id: " + reviewDetailId);
+        Retro.instance.reviewService().putReviewDetail(App.setAuthHeader(App.userToken), reviewDetailId, reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));

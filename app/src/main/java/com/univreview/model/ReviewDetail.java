@@ -1,9 +1,11 @@
 package com.univreview.model;
 
+import java.io.Serializable;
+
 /**
  * Created by DavidHa on 2017. 2. 6..
  */
-public class ReviewDetail {
+public class ReviewDetail implements Serializable{
     public long reviewId;
     public String reviewDetail;
 

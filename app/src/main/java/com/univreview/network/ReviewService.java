@@ -5,11 +5,14 @@ import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.model.ReviewExist;
 import com.univreview.model.ReviewListModel;
+import com.univreview.model.ReviewReport;
 import com.univreview.model.ReviewSingleModel;
 
 import java.util.Map;
 
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
@@ -32,8 +35,12 @@ public interface ReviewService {
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
 
     // 리뷰 수정
-    @PUT("subjectDetail/{subjectDetailId}")
-    Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("subjectDetailId") long subjectDetailId);
+    @PUT("reviewDetail/{reviewDetailId}")
+    Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("reviewDetailId") long reviewDetailId, @Body ReviewDetail body);
+
+    //  리뷰 신고
+    @POST("report")
+    Observable<ReviewReport> postReviewReport(@HeaderMap Map<String, String> headers, @Body ReviewReport body);
 
     @GET("recent/main")
     Observable<RecentReviewModel> getRecentReview(@HeaderMap Map<String, String> headers);

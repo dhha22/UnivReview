@@ -8,9 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.model.RandomImageModel;
 import com.univreview.model.RecentReview;
+import com.univreview.model.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +26,8 @@ public class RecentReviewItemView extends FrameLayout {
     @BindView(R.id.review_txt) TextView reviewTxt;
     @BindView(R.id.image) ImageView image;
     private RandomImageModel randomImageModel;
+    private Context context;
+
     public RecentReviewItemView(Context context) {
         this(context, null);
     }
@@ -38,6 +42,7 @@ public class RecentReviewItemView extends FrameLayout {
         int width = (int) (App.SCREEN_WIDTH / 2.2);
         int height = (int) (width * 1.25);
         setLayoutParams(new FrameLayout.LayoutParams(width, height));
+        this.context = context;
         ButterKnife.bind(this);
         randomImageModel = new RandomImageModel();
         App.picasso.load(randomImageModel.getImageURL())
@@ -48,10 +53,13 @@ public class RecentReviewItemView extends FrameLayout {
     }
 
     public void setData(RecentReview review) {
-        if(review != null) {
+        if (review != null) {
             subjectTxt.setText(review.subjectName);
             professorTxt.setText(review.professorName);
             reviewTxt.setText(review.reviewDetail);
+            Review data = new Review();
+            data.id = review.id;
+            setOnClickListener(v -> Navigator.goReviewDetail(context, data));
         }
     }
 }

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.model.Review;
@@ -43,6 +44,7 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.grade_rate) AppCompatRatingBar gradeRate;
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
     private OnClickListener clickListener;
+    private Context context;
 
     public ReviewItemView(Context context) {
         this(context, null);
@@ -55,6 +57,7 @@ public class ReviewItemView extends FrameLayout {
     public ReviewItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true);
+        this.context = context;
         ButterKnife.bind(this);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, App.dp12);
@@ -100,7 +103,7 @@ public class ReviewItemView extends FrameLayout {
             attendanceRate.setRating(review.attendanceRate);
             gradeRate.setRating(review.gradeRate);
             achievementRate.setRating(review.achievementRate);
-
+            setOnClickListener(v -> Navigator.goReviewDetail(context, review));
         }else{
             setVisibility(INVISIBLE);
         }
@@ -110,18 +113,20 @@ public class ReviewItemView extends FrameLayout {
         this.clickListener = listener;
     }
 
-    public void setMode(Status status){
-        if(status == Status.WRITE_REVIEW || status == Status.MY_REVIEW){
+    public void setMode(Status status) {
+        if (status == Status.WRITE_REVIEW || status == Status.MY_REVIEW) {
+            if (status == Status.WRITE_REVIEW) reviewTxt.setVisibility(GONE);
             userLayout.setVisibility(GONE);
             firstLineTimeTxt.setVisibility(VISIBLE);
             moreBtn.setVisibility(GONE);
-        }else if(status == Status.READ_REVIEW){
+        } else if (status == Status.READ_REVIEW) {
             firstLineTimeTxt.setVisibility(GONE);
             userLayout.setVisibility(VISIBLE);
             moreBtn.setVisibility(VISIBLE);
             moreBtn.setOnClickListener(clickListener);
         }
     }
+
     public enum Status {
         WRITE_REVIEW, MY_REVIEW, READ_REVIEW
     }
