@@ -5,6 +5,7 @@ import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
 import com.univreview.model.ReviewExist;
 import com.univreview.model.ReviewListModel;
+import com.univreview.model.ReviewModel;
 import com.univreview.model.ReviewReport;
 import com.univreview.model.ReviewSingleModel;
 
@@ -28,6 +29,9 @@ public interface ReviewService {
     @GET("review")
     Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
 
+    @GET("review/{id}")
+    Observable<ReviewModel> getReview(@HeaderMap Map<String, String> headers, @Path("id") long reviewId);
+
     @POST("review")
     Observable<ReviewSingleModel> postSimpleReview(@HeaderMap Map<String, String> headers, @Body Review body);
 
@@ -35,8 +39,8 @@ public interface ReviewService {
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
 
     // 리뷰 수정
-    @PUT("reviewDetail/{reviewDetailId}")
-    Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("reviewDetailId") long reviewDetailId, @Body ReviewDetail body);
+    @PUT("reviewDetail/{id}")
+    Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("id") long reviewDetailId, @Body ReviewDetail body);
 
     //  리뷰 신고
     @POST("report")

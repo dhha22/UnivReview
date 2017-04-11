@@ -24,6 +24,7 @@ import com.univreview.model.Professor;
 import com.univreview.model.SearchModel;
 import com.univreview.model.Subject;
 import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.AbsRecyclerView;
 import com.univreview.view.SearchListItemView;
@@ -140,14 +141,14 @@ public class SimpleSearchResultFragment extends BaseFragment {
         Retro.instance.searchService().getProfessorSubject(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result), Logger::e);
+                .subscribe(this::response,  ErrorUtils::parseError);
     }
 
     private void callGetSubjectProfessor(long id){
         Retro.instance.searchService().getSubjectProfessor(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> response(result), Logger::e);
+                .subscribe(this::response,  ErrorUtils::parseError);
     }
 
     private void response(SearchModel result) {

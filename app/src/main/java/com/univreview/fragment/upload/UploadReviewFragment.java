@@ -1,5 +1,6 @@
 package com.univreview.fragment.upload;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,6 +47,7 @@ public class UploadReviewFragment extends BaseFragment {
     @BindView(R.id.attendance_txt) TextView attendanceTxt;
     @BindView(R.id.grade_txt) TextView gradeTxt;
     @BindView(R.id.achievement_txt) TextView achievementTxt;
+    private ProgressDialog progressDialog;
     private Review review;
     private boolean isReviewExist = false;
 
@@ -67,6 +69,7 @@ public class UploadReviewFragment extends BaseFragment {
     }
 
     private void init() {
+        progressDialog = Util.progressDialog(context);
         review = new Review();
         backBtn.setOnClickListener(v -> activity.onBackPressed());
         okBtn.setOnClickListener(v -> registerReview());
@@ -133,6 +136,7 @@ public class UploadReviewFragment extends BaseFragment {
     }
 
     private void registerReview() {
+        progressDialog.show();
         review.userId = App.userId;
         review.difficultyRate = difficultyRate.getRating();
         review.assignmentRate = assignmentRate.getRating();
@@ -161,7 +165,7 @@ public class UploadReviewFragment extends BaseFragment {
                     if(isReviewExist){
                         showAlertDialog();
                     }
-                });
+                }, ErrorUtils::parseError);
 
     }
 
@@ -177,6 +181,7 @@ public class UploadReviewFragment extends BaseFragment {
         Retro.instance.reviewService().postSimpleReview(App.setAuthHeader(App.userToken), review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> response(result.review), ErrorUtils::parseError);
     }
 

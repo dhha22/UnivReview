@@ -9,6 +9,7 @@ import com.univreview.model.FileUploadModel;
 import com.univreview.util.ImageUtil;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -45,6 +46,8 @@ public enum Retro {
             BASE_URL = REAL_URL;
         }
 
+        builder.readTimeout(20, TimeUnit.SECONDS);
+        builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.addInterceptor(chain -> chain.proceed(chain.request().newBuilder()
                 .header("Content-Type", "application/json")
                 .build()));

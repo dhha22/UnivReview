@@ -14,15 +14,21 @@ import android.widget.TextView;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
+import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.listener.BaseBackPressedListener;
+import com.univreview.listener.OnBackPressedListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
+import com.univreview.network.Retro;
 import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
 import com.univreview.view.ReviewRatingIndicatorView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 24..
@@ -61,6 +67,7 @@ public class ReviewDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        ((BaseActivity)activity).setOnBackPressedListener(backPressedListener);
         View view = inflater.inflate(R.layout.fragment_review_detail, container, false);
         ButterKnife.bind(this, view);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
@@ -72,41 +79,6 @@ public class ReviewDetailFragment extends BaseFragment {
     }
 
     private void init() {
-        if (data != null && data.user.name != null) {
-            nameTxt.setText(data.user.name);
-            if (data.user.authenticated != null) {
-                if (data.user.authenticated) {
-                    authMark.setVisibility(View.VISIBLE);
-                } else {
-                    authMark.setVisibility(View.GONE);
-                }
-            }
-
-            if (data.subjectDetail.subject != null) {
-                subjectTxt.setText(data.subjectDetail.subject.getName() + "");
-            }
-            if (data.subjectDetail.professor != null) {
-                professorTxt.setText(data.subjectDetail.professor.getName() + " 교수님");
-            }
-            if (data.reviewDetail != null) {
-                reviewDetailTxt.setText(data.reviewDetail.reviewDetail);
-                reviewDetailTxt.setVisibility(View.VISIBLE);
-            }
-
-            timeTxt.setText(new TimeUtil().getPointFormat(data.createdDate));
-            reviewRatingIndicatorView.setData(data);
-
-
-            if (App.userId == data.userId) {
-                update.setOnClickListener(v -> Navigator.goUploadReviewDetail(context, data));
-                update.setVisibility(View.VISIBLE);
-            } else {
-                update.setVisibility(View.GONE);
-            }
-        } else {
-          callReviewSingleApi(data.id);
-        }
-
         behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -122,22 +94,88 @@ public class ReviewDetailFragment extends BaseFragment {
 
             }
         });
+
+        if(data != null && data.user.name != null) {
+            setData(data);
+        }else{
+            callReviewSingleApi(data.id);
+        }
+
         dimView.setOnClickListener(moreBtnClickListener);
         moreBtn.setOnClickListener(moreBtnClickListener);
     }
 
+    private void setData(Review data) {
+        nameTxt.setText(data.user.name);
+        if (data.user.authenticated != null) {
+            if (data.user.authenticated) {
+                authMark.setVisibility(View.VISIBLE);
+            } else {
+                authMark.setVisibility(View.GONE);
+            }
+        }
+
+        if (data.subjectDetail.subject != null) {
+            subjectTxt.setText(data.subjectDetail.subject.getName() + "");
+        }
+        if (data.subjectDetail.professor != null) {
+            professorTxt.setText(data.subjectDetail.professor.getName() + " 교수님");
+        }
+        if (data.reviewDetail != null) {
+            reviewDetailTxt.setText(data.reviewDetail.reviewDetail);
+            reviewDetailTxt.setVisibility(View.VISIBLE);
+        }
+
+        timeTxt.setText(new TimeUtil().getPointFormat(data.createdDate));
+        reviewRatingIndicatorView.setData(data);
+
+
+        if (App.userId == data.userId) {
+            update.setOnClickListener(v -> {
+                hiddenBottomSheet();
+                Navigator.goUploadReviewDetail(context, data);
+            });
+            update.setVisibility(View.VISIBLE);
+        } else {
+            update.setVisibility(View.GONE);
+        }
+    }
+
     private View.OnClickListener moreBtnClickListener = view -> {
         if(behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            dimView.setVisibility(View.VISIBLE);
+            expandBottomSheet();
         }else if(behavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
-            dimView.setVisibility(View.GONE);
-            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+           hiddenBottomSheet();
         }
     };
 
+    private OnBackPressedListener backPressedListener = () -> {
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            hiddenBottomSheet();
+        } else {
+            ((BaseActivity) activity).setOnBackPressedListener(null);
+            activity.onBackPressed();
+        }
+    };
+
+
+    private void expandBottomSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        dimView.setVisibility(View.VISIBLE);
+    }
+
+    private void hiddenBottomSheet() {
+        dimView.setVisibility(View.GONE);
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+
     private void callReviewSingleApi(long reviewId){
         Logger.v("review id: " + reviewId);
+        Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), reviewId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> setData(result.review), Logger::e);
     }
 
 }

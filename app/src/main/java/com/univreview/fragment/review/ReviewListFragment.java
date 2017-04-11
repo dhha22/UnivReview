@@ -21,9 +21,11 @@ import com.squareup.otto.Subscribe;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
+import com.univreview.activity.BaseActivity;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
+import com.univreview.listener.OnBackPressedListener;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.RandomImageModel;
@@ -98,6 +100,7 @@ public class ReviewListFragment extends AbsListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        ((BaseActivity)activity).setOnBackPressedListener(backPressedListener);
         View view = inflater.inflate(R.layout.fragment_review_list, container, false);
         ButterKnife.bind(this, view);
         init();
@@ -175,6 +178,7 @@ public class ReviewListFragment extends AbsListFragment {
         });
         dimView.setOnClickListener(moreBtnClickListener);
     }
+
 
     @Override
     public UnivReviewRecyclerView getRecyclerView() {
@@ -278,13 +282,31 @@ public class ReviewListFragment extends AbsListFragment {
 
     private View.OnClickListener moreBtnClickListener = view -> {
         if(behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            dimView.setVisibility(View.VISIBLE);
+            expandBottomSheet();
         }else if(behavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
-            dimView.setVisibility(View.GONE);
-            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+           hiddenBottomSheet();
         }
     };
+
+    private OnBackPressedListener backPressedListener = () -> {
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            hiddenBottomSheet();
+        } else {
+            ((BaseActivity) activity).setOnBackPressedListener(null);
+            activity.onBackPressed();
+        }
+    };
+
+
+    private void expandBottomSheet() {
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        dimView.setVisibility(View.VISIBLE);
+    }
+
+    private void hiddenBottomSheet() {
+        dimView.setVisibility(View.GONE);
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {

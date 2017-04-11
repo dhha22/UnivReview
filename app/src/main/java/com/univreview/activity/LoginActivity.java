@@ -82,12 +82,14 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void facebookLogin(){
+        Logger.v("facebook login");
         progressDialog.show();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         LoginManager.getInstance().registerCallback(facebookCallbackManager, facebookCallback);
     }
 
     private void kakaoLogin(){
+        Logger.v("kakao login");
         progressDialog.show();
         boolean isOpen = Session.getCurrentSession().checkAndImplicitOpen();
         if(!isOpen){
@@ -229,5 +231,13 @@ public class LoginActivity extends BaseActivity {
         } else {
             Navigator.goRegisterUserInfo(this, register);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (Session.getCurrentSession() != null) {
+            Session.getCurrentSession().addCallback(null);
+        }
+        super.onDestroy();
     }
 }

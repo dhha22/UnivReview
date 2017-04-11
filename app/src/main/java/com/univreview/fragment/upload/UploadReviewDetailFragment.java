@@ -1,5 +1,6 @@
 package com.univreview.fragment.upload;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
     private boolean isUpdate = false;
     private Review review;
     private ReviewDetail reviewDetail;
+    private ProgressDialog progressDialog;
 
     public static UploadReviewDetailFragment newInstance(Review review){
         UploadReviewDetailFragment fragment = new UploadReviewDetailFragment();
@@ -53,6 +55,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_upload_review_detail, container, false);
         ButterKnife.bind(this, view);
         setReviewData(review);
+        progressDialog = Util.progressDialog(context);
         toolbar.setToolbarBackgroundColor(R.color.colorPrimary);
         toolbar.setBackBtnVisibility(true);
         toolbar.setOnConfirmListener(v -> registerReview(review.id));
@@ -72,6 +75,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
 
     private void registerReview(long reviewId) {
         Logger.v("review Detail");
+        progressDialog.show();
         reviewDetail = new ReviewDetail();
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();
@@ -91,6 +95,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
         Retro.instance.reviewService().postDetailReview(App.setAuthHeader(App.userToken), reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));
     }
 
@@ -99,6 +104,7 @@ public class UploadReviewDetailFragment extends BaseFragment {
         Retro.instance.reviewService().putReviewDetail(App.setAuthHeader(App.userToken), reviewDetailId, reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));
     }
 
