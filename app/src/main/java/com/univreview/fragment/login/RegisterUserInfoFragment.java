@@ -42,7 +42,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
     public static RegisterUserInfoFragment newInstance(Register register){
         RegisterUserInfoFragment fragment = new RegisterUserInfoFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("register", register);
+        bundle.putParcelable("register", register);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,7 +50,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        register = (Register) getArguments().getSerializable("register");
+        register = getArguments().getParcelable("register");
     }
 
 
@@ -61,6 +61,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_user_info, container, false);
         ButterKnife.bind(this, view);
+        setToolbarTransparent();
         toolbar.setBackBtnVisibility(true);
         rootLayout.setBackground(Util.getDrawable(context, R.drawable.cr_login_bg));
         init(register);
@@ -130,6 +131,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Logger.v("album path: " + albumPath);
                 register.profileUrl = "file://" + albumPath;
+                register.profileUri = activityResultEvent.getIntent().getData();
                 setData(register);
             }
         }

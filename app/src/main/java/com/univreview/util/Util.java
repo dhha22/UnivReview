@@ -65,10 +65,12 @@ public class Util {
         if (url == null || url.length() == 0) {
             App.picasso.load(R.drawable.login_profile_default)
                     .fit()
+                    .centerCrop()
                     .into(imageView);
         } else {
             App.picasso.load(url)
                     .fit()
+                    .centerCrop()
                     .into(imageView);
         }
     }

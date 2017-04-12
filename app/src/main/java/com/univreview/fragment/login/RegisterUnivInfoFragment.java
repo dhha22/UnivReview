@@ -58,12 +58,13 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     private SimpleButtonState nextButtonState;
     private Register register;
     private ProgressDialog progressDialog;
+    private Uri profileUri;
 
 
     public static RegisterUnivInfoFragment newInstance(Register register){
         RegisterUnivInfoFragment fragment = new RegisterUnivInfoFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("register", register);
+        bundle.putParcelable("register", register);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -71,7 +72,8 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        register = (Register) getArguments().getSerializable("register");
+        register = getArguments().getParcelable("register");
+        profileUri = register.profileUri;
     }
 
     @Nullable
@@ -81,6 +83,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         ButterKnife.bind(this, view);
         rootLayout.setBackground(Util.getDrawable(context, R.drawable.cr_login_bg));
+        setToolbarTransparent();
         toolbar.setBackBtnVisibility(true);
         init();
         rootLayout.addView(view);
@@ -234,8 +237,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         App.setUserId(userModel.user.id);
         App.setUserToken(userModel.auth.getToken());
         App.setUniversityId(App.universityId);
-        Navigator.goMain(context);
-       // callFileUploadApi();
+        callFileUploadApi(profileUri);
     }
 
     private void errorResponse(Throwable e){
@@ -243,25 +245,35 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     private void callFileUploadApi(Uri uploadUri) {
-        Retro.instance.fileService(uploadUri, "profile")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> callUserUpdateApi(result.fileLocation), error -> goMain());
+        if (uploadUri != null) {
+            Retro.instance.fileService(uploadUri, "profile")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result -> callUserUpdateApi(result.fileLocation), error -> goMain());
+        } else if (register.profileUrl != null && register.profileUrl.length() > 0 && !register.profileUrl.contains("file://")) {
+            callUserUpdateApi(register.profileUrl);
+        } else {
+            progressDialog.dismiss();
+            Navigator.goMain(context);
+        }
     }
 
     private void callUserUpdateApi(String profileUrl) {
         Logger.v("file location: " + profileUrl);
         User user = new User();
         user.profileImageUrl = profileUrl;
-        Logger.v("post user model: " + user);
+        Logger.v("put user model: " + user);
         Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> goMain(), error -> goMain());
+                .doAfterTerminate(this::goMain)
+                .subscribe(result -> Logger.v("profile update: "+ result), Logger::e);
     }
 
     private void goMain() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
         Navigator.goMain(context);
     }
 

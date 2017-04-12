@@ -70,7 +70,6 @@ public class ReviewDetailFragment extends BaseFragment {
         ((BaseActivity)activity).setOnBackPressedListener(backPressedListener);
         View view = inflater.inflate(R.layout.fragment_review_detail, container, false);
         ButterKnife.bind(this, view);
-        toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
         rootLayout.addView(view);

@@ -55,7 +55,6 @@ public class SettingFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, view);
-        toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("설정");
         rootLayout.addView(view);

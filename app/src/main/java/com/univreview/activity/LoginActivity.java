@@ -48,7 +48,6 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
-    @BindView(R.id.main_btn) Button mainBtn;
 
     private CallbackManager facebookCallbackManager;
     private ProgressDialog progressDialog;
@@ -66,11 +65,6 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         progressDialog = Util.progressDialog(this);
 
-        if(BuildConfig.DEBUG){
-            Logger.v("debug");
-            mainBtn.setVisibility(View.VISIBLE);
-            mainBtn.setOnClickListener(v -> Navigator.goMain(this));
-        }
         //facebook
         facebookCallbackManager = CallbackManager.Factory.create();
         facebookLoginBtn.setOnClickListener(v -> facebookLogin());
@@ -235,9 +229,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (Session.getCurrentSession() != null) {
-            Session.getCurrentSession().addCallback(null);
-        }
         super.onDestroy();
+        Session.getCurrentSession().removeCallback(kakaoCallback);
     }
 }

@@ -64,7 +64,6 @@ public class CheckUserPhotoFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_check_user_photo, container, false);
         ButterKnife.bind(this, view);
-        rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setCancelBtnVisibility(true);
         if (CAMERA.equals(type)) {
             reselectBtn.setText("다시 찍기");

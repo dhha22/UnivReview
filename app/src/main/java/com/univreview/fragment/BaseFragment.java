@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.univreview.R;
 import com.univreview.log.Logger;
 import com.univreview.model.BusProvider;
+import com.univreview.util.Util;
 import com.univreview.view.Toolbar;
 
 /**
@@ -42,8 +43,15 @@ public class BaseFragment extends Fragment {
         rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         toolbar = new Toolbar(context);
+        toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         rootLayout.addView(toolbar);
         return rootLayout;
+    }
+
+    protected void setToolbarTransparent(){
+        if(toolbar != null){
+            toolbar.setBackgroundColor(Util.getColor(context, R.color.transparent));
+        }
     }
 
     @Override

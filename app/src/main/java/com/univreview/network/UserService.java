@@ -29,8 +29,8 @@ public interface UserService {
 
     @GET("profile")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
-    //user id 제외
-    @POST("profile/")
+
+    @POST("profile/{userId}")
     Observable<UserModel> postProfile(@HeaderMap Map<String, String> headers, @Body User body, @Path("userId") long userId);
 
     //push 등록

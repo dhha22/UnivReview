@@ -57,17 +57,5 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/main_btn"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:background="@color/colorPrimary"
-        android:layout_alignParentBottom="true"
-        android:text="메인으로 이동(디버그용)"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:textSize="16dp" />
 
 </RelativeLayout>

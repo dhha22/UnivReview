@@ -115,7 +115,6 @@ public class ReviewListFragment extends AbsListFragment {
         if (type.equals(MY_REVIEW)) {
             appBarLayout.setVisibility(View.GONE);
             toolbar.setBackBtnVisibility(true);
-            toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
             toolbar.setTitleTxt(name);
         } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
             toolbar.setVisibility(View.GONE);
