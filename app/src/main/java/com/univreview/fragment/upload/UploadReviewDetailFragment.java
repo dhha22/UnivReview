@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.univreview.App;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
@@ -26,7 +27,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
-public class UploadReviewDetailFragment extends BaseFragment {
+public class UploadReviewDetailFragment extends BaseWriteFragment {
     @BindView(R.id.review_item) ReviewItemView reviewItemView;
     @BindView(R.id.input_review) EditText inputReview;
     private boolean isUpdate = false;
@@ -74,15 +75,14 @@ public class UploadReviewDetailFragment extends BaseFragment {
     }
 
     private void registerReview(long reviewId) {
-        Logger.v("review Detail");
-        progressDialog.show();
         reviewDetail = new ReviewDetail();
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();
         if (reviewDetail.getAlertMessage() == null) {
             Logger.v("review detail: " + reviewDetail);
+            progressDialog.show();
             if(isUpdate){
-                callPutReviewDetail(review.reviewDetail.reviewId, reviewDetail);
+                callPutReviewDetail(review.reviewDetail.id, reviewDetail);
             }else {
                 callPostReviewDetail(reviewDetail);
             }

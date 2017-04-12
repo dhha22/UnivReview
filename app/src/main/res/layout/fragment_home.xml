@@ -48,4 +48,50 @@
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#da000000"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="현재 더 정확한 평가를 제공하기위해\n많은 정보를 모으는 중입니다,\n더 좋은 학교를 만들기 위해 여러분이 도와주세요"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <ImageButton
+            android:id="@+id/write_review_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ic_review_empty_btn" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="28dp"
+            android:background="#5d5d5d" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/main_user_auth"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <ImageButton
+            android:id="@+id/user_auth_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ic_main_empty_studentid_btn" />
+
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="218dp"
+    app:elevation="0dp"
     app:expanded="false">
 
     <android.support.design.widget.CollapsingToolbarLayout
@@ -13,7 +14,8 @@
         app:contentScrim="?attr/colorPrimary"
         app:expandedTitleMarginEnd="86dp"
         app:expandedTitleMarginStart="58dp"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        app:elevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +60,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="82dp"
-            app:layout_collapseMode="pin">
+            app:layout_collapseMode="pin"
+            app:elevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by DavidHa on 2017. 2. 6..
  */
 public class ReviewDetail implements Serializable{
+    public long id;
     public long reviewId;
     public String reviewDetail;
 

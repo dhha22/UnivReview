@@ -17,6 +17,7 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
+import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Review;
@@ -32,7 +33,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2017. 1. 8..
  */
-public class UploadReviewFragment extends BaseFragment {
+public class UploadReviewFragment extends BaseWriteFragment {
     @BindView(R.id.back_btn) ImageButton backBtn;
     @BindView(R.id.ok_btn) TextView okBtn;
     @BindView(R.id.subject_txt) TextView subjectTxt;
@@ -136,7 +137,6 @@ public class UploadReviewFragment extends BaseFragment {
     }
 
     private void registerReview() {
-        progressDialog.show();
         review.userId = App.userId;
         review.difficultyRate = difficultyRate.getRating();
         review.assignmentRate = assignmentRate.getRating();
@@ -147,6 +147,7 @@ public class UploadReviewFragment extends BaseFragment {
         review.subjectDetail.professor.name = professorTxt.getText().toString();
         if (review.getAlertMessage() == null) {
             callPostSimpleReviewApi(review);
+            progressDialog.show();
         } else {
             Util.simpleMessageDialog(context, review.getAlertMessage());
         }

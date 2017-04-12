@@ -50,6 +50,9 @@ public class HomeFragment extends BaseFragment {
     private LatestReviewAdapter majorAdapter;
     private boolean isExpand = DEFAULT_EXPAND_STATE;
 
+    // beta
+    @BindView(R.id.write_review_btn) ImageButton writeReviewBtn;
+    @BindView(R.id.user_auth_btn) ImageButton userAuthBtn;
 
     public static HomeFragment newInstance(){
         HomeFragment fragment = new HomeFragment();
@@ -96,6 +99,10 @@ public class HomeFragment extends BaseFragment {
         latestMajorRecyclerView.setAdapter(majorAdapter);
         latestCultureRecyclerView.setNestedScrollingEnabled(false);
         latestMajorRecyclerView.setNestedScrollingEnabled(false);
+
+        // beta test
+        writeReviewBtn.setOnClickListener(v -> Navigator.goUploadReview(context));
+        userAuthBtn.setOnClickListener(v -> Navigator.goRegisterUserIdentity(context));
     }
 
     private void setSubjectState(boolean isExpand) {
