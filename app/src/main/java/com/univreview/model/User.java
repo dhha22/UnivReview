@@ -26,7 +26,7 @@ public class User implements Serializable{
     public Boolean authenticated;
 
     @Expose
-    public long universityId;
+    public Long universityId;
 
     @Expose
     public University university = new University();

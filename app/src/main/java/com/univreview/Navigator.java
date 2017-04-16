@@ -18,6 +18,7 @@ import com.univreview.fragment.login.UserAuthCompletedFragment;
 import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.fragment.review.ReviewListFragment;
+import com.univreview.fragment.review.ReviewReportFragment;
 import com.univreview.fragment.search.MajorExpandableFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.search.SimpleSearchResultFragment;
@@ -117,12 +118,18 @@ public class Navigator {
         (context).startActivity(intent);
     }
 
-    public static void goReviewDetail(Context context, Review data){
+    public static void goReviewDetail(Context context, Review data) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(ReviewDetailFragment.newInstance(data));
         (context).startActivity(intent);
     }
 
+    //review report
+    public static void goReviewReport(Context context, long reviewDetailId) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(ReviewReportFragment.newInstance(reviewDetailId));
+        (context).startActivity(intent);
+    }
 
 
     //search

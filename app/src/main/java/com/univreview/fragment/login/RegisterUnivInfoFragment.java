@@ -267,7 +267,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(this::goMain)
-                .subscribe(result -> Logger.v("profile update: "+ result), Logger::e);
+                .subscribe(result -> Logger.v("profile update: " + result), Logger::e);
     }
 
     private void goMain() {

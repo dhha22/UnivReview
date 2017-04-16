@@ -15,6 +15,8 @@ import com.kakao.auth.KakaoSDK;
 import com.squareup.picasso.Picasso;
 import com.univreview.adapter.KakaoSDKAdapter;
 import com.univreview.log.Logger;
+import com.univreview.model.PushId;
+import com.univreview.network.Retro;
 import com.univreview.util.SecurityUtil;
 import com.univreview.util.SharedPreferencesActivity;
 import com.univreview.util.TimeUtil;
@@ -129,17 +131,20 @@ public class App extends Application {
         Logger.v("university id: " + universityId);
     }
 
-    private static void setFCMToken(String registrationId){
-        pref.savePreferences("registration_id",registrationId);
-        App.registrationId = pref.getPreferences("registration_id", "");
-    }
 
     public static void initializeFCMToken() {
         setFCMToken(FirebaseInstanceId.getInstance().getToken());
         Logger.v("registration_id: " + registrationId);
-        ClipboardManager clipboardManager = (ClipboardManager)context.getSystemService(context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("label", registrationId);
-        clipboardManager.setPrimaryClip(clipData);
+    }
+
+    private static void setFCMToken(String registrationId) {
+        pref.savePreferences("registration_id", registrationId);
+        App.registrationId = pref.getPreferences("registration_id", "");
+        Retro.instance.userService().postPushId(App.setAuthHeader(App.userToken), new PushId(App.registrationId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                }, Logger::e);
     }
 
     public static Map<String, String> setAuthHeader(String token) {

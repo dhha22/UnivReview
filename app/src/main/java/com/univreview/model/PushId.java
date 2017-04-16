@@ -5,4 +5,8 @@ package com.univreview.model;
  */
 public class PushId {
     public String pushId;
+
+    public PushId(String pushId) {
+        this.pushId = pushId;
+    }
 }

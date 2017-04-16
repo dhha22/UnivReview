@@ -11,6 +11,7 @@ import com.univreview.model.UserTicketModel;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
@@ -35,7 +36,7 @@ public interface UserService {
 
     //push 등록
     @POST("push/id")
-    Observable<Object> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
+    Observable<ResponseBody> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
 
     //point
     @GET("pointHistory/{userId}")

@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:paddingRight="16dp">
 
@@ -14,15 +15,15 @@
             android:id="@+id/back_btn"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_back"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/title_txt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:gravity="center"
             android:textSize="16dp" />
@@ -31,20 +32,22 @@
             android:id="@+id/ok_btn"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:layout_gravity="center"
-           android:gravity="center"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:text="확인"
             android:textColor="@color/white"
             android:textSize="16dp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/cancel_btn"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/ic_close"
             android:visibility="gone" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

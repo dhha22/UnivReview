@@ -138,6 +138,11 @@ public class ReviewDetailFragment extends BaseFragment {
         } else {
             update.setVisibility(View.GONE);
         }
+
+        report.setOnClickListener(v -> {
+            hiddenBottomSheet();
+            Navigator.goReviewReport(context, data.reviewDetail.id);
+        });
     }
 
     private View.OnClickListener moreBtnClickListener = view -> {

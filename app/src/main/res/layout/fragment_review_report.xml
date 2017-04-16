@@ -1,7 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-</LinearLayout>
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radio_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="40dp"
+            android:paddingLeft="18dp"
+            android:text="음란성 및 욕설 또는 허위사실 내용"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radio_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="18dp"
+            android:text="부적합한 스팸 및 도배 내용"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radio_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="18dp"
+            android:text="기타"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/input"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@id/radio_group"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/review_detail_box"
+        android:gravity="left"
+        android:hint="허위 사실 및 이유 없는 신고를 할 시 패널티를 받을 수 있습니다."
+        android:padding="16dp"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/rounded_primary_rect"
+        android:text="신고하기"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16dp" />
+
+</RelativeLayout>

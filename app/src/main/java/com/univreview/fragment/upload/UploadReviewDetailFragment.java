@@ -1,6 +1,5 @@
 package com.univreview.fragment.upload;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.widget.EditText;
 
 import com.univreview.App;
 import com.univreview.R;
-import com.univreview.fragment.BaseFragment;
+import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
@@ -33,7 +32,6 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
     private boolean isUpdate = false;
     private Review review;
     private ReviewDetail reviewDetail;
-    private ProgressDialog progressDialog;
 
     public static UploadReviewDetailFragment newInstance(Review review){
         UploadReviewDetailFragment fragment = new UploadReviewDetailFragment();
@@ -56,15 +54,17 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
         View view = inflater.inflate(R.layout.fragment_upload_review_detail, container, false);
         ButterKnife.bind(this, view);
         setReviewData(review);
-        progressDialog = Util.progressDialog(context);
         toolbar.setToolbarBackgroundColor(R.color.colorPrimary);
         toolbar.setBackBtnVisibility(true);
         toolbar.setOnConfirmListener(v -> registerReview(review.id));
         rootLayout.addView(view);
         if (review.reviewDetail != null) {
             isUpdate = true;
+            toolbar.setTitleTxt("리뷰 수정");
             inputReview.setText(review.reviewDetail.reviewDetail);
             inputReview.setSelection(inputReview.getText().toString().length());
+        }else{
+            toolbar.setTitleTxt("상세리뷰 쓰기");
         }
         return rootLayout;
     }
@@ -75,6 +75,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
     }
 
     private void registerReview(long reviewId) {
+        Util.hideKeyboard(context, inputReview);
         reviewDetail = new ReviewDetail();
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();
@@ -96,20 +97,26 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> progressDialog.dismiss())
-                .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));
+                .subscribe(result -> {
+                    ((BaseActivity) activity).setOnBackPressedListener(null);
+                    activity.onBackPressed();
+                }, this::errorResponse);
     }
 
-    private void callPutReviewDetail(long reviewDetailId, ReviewDetail reviewDetail){
+    private void callPutReviewDetail(long reviewDetailId, ReviewDetail reviewDetail) {
         Logger.v("review detail id: " + reviewDetailId);
         Retro.instance.reviewService().putReviewDetail(App.setAuthHeader(App.userToken), reviewDetailId, reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> progressDialog.dismiss())
-                .subscribe(result -> activity.onBackPressed(), error -> errorResponse(error));
+                .subscribe(result -> {
+                    ((BaseActivity) activity).setOnBackPressedListener(null);
+                    activity.onBackPressed();
+                }, this::errorResponse);
     }
 
 
-    private void errorResponse(Throwable e){
+    private void errorResponse(Throwable e) {
         Logger.e(e);
     }
 
