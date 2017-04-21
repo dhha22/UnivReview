@@ -1,9 +1,12 @@
 package com.univreview.fragment.review;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +37,7 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 24..
  */
 public class ReviewDetailFragment extends BaseFragment {
-    @BindView(R.id.subject_txt) TextView subjectTxt;
-    @BindView(R.id.professor_txt) TextView professorTxt;
+    @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMark;
     @BindView(R.id.time_txt) TextView timeTxt;
@@ -114,12 +116,22 @@ public class ReviewDetailFragment extends BaseFragment {
             }
         }
 
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        int index = 0;
         if (data.subjectDetail.subject != null) {
-            subjectTxt.setText(data.subjectDetail.subject.getName() + "");
+            builder.append(data.subjectDetail.subject.getName() + " ");
         }
+        Util.addColorSpan(context, builder, index, R.color.colorPrimary);
+        index = builder.length();
+
         if (data.subjectDetail.professor != null) {
-            professorTxt.setText(data.subjectDetail.professor.getName() + " 교수님");
+            builder.append(data.subjectDetail.professor.getName() + " 교수님");
         }
+        Util.addSizeSpan(builder, index, App.dp12);
+        Util.addColorSpan(context, builder, index, R.color.professorTxtColor);
+
+        subjectProfessorTxt.setText(builder);
+
         if (data.reviewDetail != null) {
             reviewDetailTxt.setText(data.reviewDetail.reviewDetail);
             reviewDetailTxt.setVisibility(View.VISIBLE);

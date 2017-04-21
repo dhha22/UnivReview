@@ -29,9 +29,9 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.auth_mark) TextView authMarkTxt;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
-    @BindView(R.id.first_line_time_txt) TextView firstLineTimeTxt;
+    //@BindView(R.id.first_line_time_txt) TextView firstLineTimeTxt;
     @BindView(R.id.more_btn) ImageButton moreBtn;
-    @BindView(R.id.second_line_time_txt) TextView secondLineTimeTxt;
+    //@BindView(R.id.second_line_time_txt) TextView secondLineTimeTxt;
     @BindView(R.id.review_txt) TextView reviewTxt;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
     @BindView(R.id.assignment_txt) TextView assignmentTxt;
@@ -91,8 +91,8 @@ public class ReviewItemView extends FrameLayout {
                 professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
             }
 
-            firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
-            secondLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
+            //firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
+            //secondLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             difficultyTxt.setText(review.getDifficultyRateMessage());
             assignmentTxt.setText(review.getAssignmentRateMessage());
             attendanceTxt.setText(review.getAttendanceRateMessage());
@@ -114,16 +114,24 @@ public class ReviewItemView extends FrameLayout {
     }
 
     public void setMode(Status status) {
-        if (status == Status.WRITE_REVIEW || status == Status.MY_REVIEW) {
-            if (status == Status.WRITE_REVIEW) reviewTxt.setVisibility(GONE);
-            userLayout.setVisibility(GONE);
-            firstLineTimeTxt.setVisibility(VISIBLE);
-            moreBtn.setVisibility(GONE);
-        } else if (status == Status.READ_REVIEW) {
-            firstLineTimeTxt.setVisibility(GONE);
-            userLayout.setVisibility(VISIBLE);
-            moreBtn.setVisibility(VISIBLE);
-            moreBtn.setOnClickListener(clickListener);
+        switch (status){
+            case WRITE_REVIEW:
+                userLayout.setVisibility(GONE);
+                reviewTxt.setVisibility(GONE);
+                moreBtn.setVisibility(GONE);
+                break;
+            case MY_REVIEW:
+                userLayout.setVisibility(GONE);
+                reviewTxt.setVisibility(VISIBLE);
+                moreBtn.setVisibility(VISIBLE);
+                moreBtn.setOnClickListener(clickListener);
+                break;
+            case READ_REVIEW:
+                userLayout.setVisibility(VISIBLE);
+                reviewTxt.setVisibility(VISIBLE);
+                moreBtn.setVisibility(VISIBLE);
+                moreBtn.setOnClickListener(clickListener);
+                break;
         }
     }
 

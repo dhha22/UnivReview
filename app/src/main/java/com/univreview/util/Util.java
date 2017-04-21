@@ -4,7 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -80,5 +85,14 @@ public class Util {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
+
+    public static void addColorSpan(Context context, SpannableStringBuilder builder, int index, int color) {
+        builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, color)), index, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public static void addSizeSpan(SpannableStringBuilder builder, int index, int size) {
+        builder.setSpan(new AbsoluteSizeSpan(size), index, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
 
 }
