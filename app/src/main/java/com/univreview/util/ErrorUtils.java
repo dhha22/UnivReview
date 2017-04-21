@@ -30,6 +30,8 @@ public class ErrorUtils {
                     Util.toast("서버 에러");
                 }else if(response.code() == 401){
                     App.setUserToken(null);
+                }else if(response.code() == 412){   // 강제 업데이트
+
                 }
             } catch (IOException e) {
                 Logger.e(e.toString());

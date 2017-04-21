@@ -42,6 +42,7 @@ public class RegisterUserIdentityFragment extends BaseFragment{
         ButterKnife.bind(this, view);
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setCancelBtnVisibility(true);
+        toolbar.setTitleTxt("학교인증하기");
         cameraBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "camera"));
         albumBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
         rootLayout.addView(view);

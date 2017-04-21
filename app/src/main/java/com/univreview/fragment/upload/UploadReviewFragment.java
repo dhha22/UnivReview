@@ -16,6 +16,7 @@ import com.squareup.otto.Subscribe;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
+import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.log.Logger;
@@ -197,7 +198,10 @@ public class UploadReviewFragment extends BaseWriteFragment {
                     Navigator.goUploadReviewDetail(context, this.review);
                     activity.finish();
                 })
-                .setNegativeButton("다음에", (dialog, which) -> activity.onBackPressed())
+                .setNegativeButton("다음에", (dialog, which) -> {
+                    ((BaseActivity) activity).setOnBackPressedListener(null);
+                    activity.onBackPressed();
+                })
                 .setCancelable(false)
                 .show();
     }

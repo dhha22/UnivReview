@@ -7,7 +7,7 @@
     android:padding="14dp">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -16,6 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="subject name"
             android:textColor="@color/colorAccent"
             android:textSize="16dp" />
@@ -24,37 +26,35 @@
             android:id="@+id/professor_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_toRightOf="@id/subject_txt"
+            android:layout_alignBottom="@id/subject_txt"
             android:layout_marginLeft="4dp"
             android:text="professor name"
             android:textColor="@color/professorTxtColor"
             android:textSize="12dp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/more_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
+            android:layout_alignParentRight="true"
             android:background="@drawable/ic_review_more"
-            android:rotation="270"
             android:visibility="visible" />
 
         <TextView
             android:id="@+id/first_line_time_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/subject_txt"
             android:text="2017-01-01"
             android:textColor="@color/timeColor"
             android:textSize="12dp"
             android:visibility="gone" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <View

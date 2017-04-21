@@ -16,6 +16,7 @@ import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
+import com.univreview.model.User;
 import com.univreview.network.Retro;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
@@ -91,10 +92,19 @@ public class CheckUserPhotoFragment extends BaseFragment {
         Retro.instance.fileService(Uri.parse(uri), "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Logger.v("result: " + result), Logger::e, () -> {
-                    Navigator.goUserAuthCompleted(context);
-                    activity.finish();
-                });
+                .subscribe(result -> {
+                    Logger.v("result: " + result);
+                    User user = new User();
+                    user.studentImageUrl = result.fileLocation;
+                    Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doAfterTerminate(() -> {
+                                Navigator.goUserAuthCompleted(context);
+                                activity.finish();
+                            })
+                            .subscribe(data -> Logger.v("result: " + data), Logger::e);
+                }, Logger::e);
     }
 
 

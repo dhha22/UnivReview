@@ -38,19 +38,19 @@ public class ReviewReportFragment extends BaseWriteFragment {
     @BindView(R.id.input) EditText input;
     @BindView(R.id.button) Button button;
     private SimpleButtonState nextButtonState;
-    private long reviewDetailId;
+    private long reviewId;
 
-    public static ReviewReportFragment newInstance(long reviewDetailId){
+    public static ReviewReportFragment newInstance(long reviewId){
         ReviewReportFragment fragment = new ReviewReportFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong("reviewDetailId", reviewDetailId);
+        bundle.putLong("reviewId", reviewId);
         fragment.setArguments(bundle);
         return fragment;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        reviewDetailId = getArguments().getLong("reviewDetailId");
+        reviewId = getArguments().getLong("reviewId");
     }
 
     @Nullable
@@ -119,11 +119,11 @@ public class ReviewReportFragment extends BaseWriteFragment {
         progressDialog.show();
         Util.hideKeyboard(context, input);
         String message = null;
-        if (radio1.isSelected()) {
+        if (radio1.isChecked()) {
             message = "음란성 및 욕설 또는 허위사실 내용";
-        } else if (radio2.isSelected()) {
+        } else if (radio2.isChecked()) {
             message = "부적합한 스팸 및 도배 내용";
-        } else if (radio3.isSelected()) {
+        } else if (radio3.isChecked()) {
             message = input.getText().toString();
         }
 
@@ -131,7 +131,8 @@ public class ReviewReportFragment extends BaseWriteFragment {
     }
 
     private void callReviewReportApi(String message){
-        ReviewReport reviewReport = new ReviewReport(reviewDetailId, message);
+        ReviewReport reviewReport = new ReviewReport(reviewId, message);
+        Logger.v("post review report: " + reviewReport);
         Retro.instance.reviewService().postReviewReport(App.setAuthHeader(App.userToken), reviewReport)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

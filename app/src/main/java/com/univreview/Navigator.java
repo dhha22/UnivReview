@@ -125,9 +125,9 @@ public class Navigator {
     }
 
     //review report
-    public static void goReviewReport(Context context, long reviewDetailId) {
+    public static void goReviewReport(Context context, long reviewId) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewReportFragment.newInstance(reviewDetailId));
+        NavigationActivity.setFragment(ReviewReportFragment.newInstance(reviewId));
         (context).startActivity(intent);
     }
 

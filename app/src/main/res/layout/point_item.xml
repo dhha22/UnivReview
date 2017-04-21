@@ -20,7 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/time_txt"
         android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/point_txt"
+        android:layout_marginRight="24dp"
         android:layout_marginBottom="28dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="포인트 적립"
         android:textColor="@color/black" />
 

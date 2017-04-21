@@ -49,6 +49,7 @@ public enum Retro {
         builder.readTimeout(20, TimeUnit.SECONDS);
         builder.writeTimeout(20, TimeUnit.SECONDS);
         builder.addInterceptor(chain -> chain.proceed(chain.request().newBuilder()
+                .header("User-Agent", "Android")
                 .header("Content-Type", "application/json")
                 .build()));
 
@@ -97,8 +98,7 @@ public enum Retro {
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-        String locationStr = "/profile";
-        RequestBody location = RequestBody.create(okhttp3.MultipartBody.FORM, locationStr);
+        RequestBody location = RequestBody.create(okhttp3.MultipartBody.FORM, "/" + type);
         return fileService.postFile(App.setAuthHeader(App.userToken), body, location);
     }
 }

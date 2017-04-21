@@ -141,7 +141,7 @@ public class ReviewDetailFragment extends BaseFragment {
 
         report.setOnClickListener(v -> {
             hiddenBottomSheet();
-            Navigator.goReviewReport(context, data.reviewDetail.id);
+            Navigator.goReviewReport(context, data.id);
         });
     }
 
