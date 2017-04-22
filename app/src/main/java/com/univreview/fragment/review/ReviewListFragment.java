@@ -26,7 +26,9 @@ import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.listener.OnBackPressedListener;
+import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
+import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.RandomImageModel;
 import com.univreview.model.Review;
@@ -67,6 +69,8 @@ public class ReviewListFragment extends AbsListFragment {
     @BindView(R.id.title_txt) TextView titleTxt;
     @BindView(R.id.filter_name_txt) TextView filterNameTxt;
     @BindView(R.id.bottom_sheet) LinearLayout bottomSheet;
+    @BindView(R.id.update) TextView update;
+    @BindView(R.id.report) TextView report;
     private ReviewAdapter adapter;
     private String type;
     private long id;
@@ -175,7 +179,13 @@ public class ReviewListFragment extends AbsListFragment {
 
             }
         });
-        dimView.setOnClickListener(moreBtnClickListener);
+        dimView.setOnClickListener(view -> {
+            if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                expandBottomSheet();
+            } else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                hiddenBottomSheet();
+            }
+        });
     }
 
 
@@ -232,6 +242,7 @@ public class ReviewListFragment extends AbsListFragment {
                     ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
                 } else {
                     ((ViewHolder) holder).v.setData((Review) list.get(position));
+                    ((ViewHolder) holder).v.setPosition(position);
                 }
             }
         }
@@ -259,6 +270,11 @@ public class ReviewListFragment extends AbsListFragment {
             return CONTENT;
         }
 
+        @Override
+        public Review getItem(int position) {
+            return (Review) list.get(position);
+        }
+
         protected class HeaderViewHolder extends RecyclerView.ViewHolder{
             final ReviewTotalScoreView v;
 
@@ -279,11 +295,35 @@ public class ReviewListFragment extends AbsListFragment {
         }
     }
 
-    private View.OnClickListener moreBtnClickListener = view -> {
-        if(behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+    private OnItemClickListener moreBtnClickListener = (view, position) -> {
+        Review review = adapter.getItem(position);
+        Logger.v("review data: " + review);
+        if (App.userId == review.userId) {
+            update.setOnClickListener(v -> {
+                hiddenBottomSheet();
+                Navigator.goUploadReviewDetail(context, review);
+            });
+            report.setVisibility(View.GONE);
+            update.setVisibility(View.VISIBLE);
+            if (review.reviewDetail != null) {
+                update.setText("리뷰수정");
+            } else {
+                update.setText("상세리뷰 쓰기");
+            }
+
+        } else {
+            report.setVisibility(View.VISIBLE);
+            update.setVisibility(View.GONE);
+            report.setOnClickListener(v -> {
+                hiddenBottomSheet();
+                Navigator.goReviewReport(context, review.id);
+            });
+        }
+
+        if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             expandBottomSheet();
-        }else if(behavior.getState() == BottomSheetBehavior.STATE_EXPANDED){
-           hiddenBottomSheet();
+        } else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            hiddenBottomSheet();
         }
     };
 

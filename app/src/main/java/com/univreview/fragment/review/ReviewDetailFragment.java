@@ -146,15 +146,21 @@ public class ReviewDetailFragment extends BaseFragment {
                 hiddenBottomSheet();
                 Navigator.goUploadReviewDetail(context, data);
             });
+            report.setVisibility(View.GONE);
             update.setVisibility(View.VISIBLE);
+            if (data.reviewDetail != null) {
+                update.setText("리뷰수정");
+            } else {
+                update.setText("상세리뷰 쓰기");
+            }
         } else {
+            report.setVisibility(View.VISIBLE);
             update.setVisibility(View.GONE);
+            report.setOnClickListener(v -> {
+                hiddenBottomSheet();
+                Navigator.goReviewReport(context, data.id);
+            });
         }
-
-        report.setOnClickListener(v -> {
-            hiddenBottomSheet();
-            Navigator.goReviewReport(context, data.id);
-        });
     }
 
     private View.OnClickListener moreBtnClickListener = view -> {

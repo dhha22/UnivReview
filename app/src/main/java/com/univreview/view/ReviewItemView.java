@@ -2,6 +2,7 @@ package com.univreview.view;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatRatingBar;
+import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.univreview.R;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.model.Review;
 import com.univreview.util.TimeUtil;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +31,7 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.auth_mark) TextView authMarkTxt;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
+    @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
     //@BindView(R.id.first_line_time_txt) TextView firstLineTimeTxt;
     @BindView(R.id.more_btn) ImageButton moreBtn;
     //@BindView(R.id.second_line_time_txt) TextView secondLineTimeTxt;
@@ -43,8 +46,8 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.attendance_rate) AppCompatRatingBar attendanceRate;
     @BindView(R.id.grade_rate) AppCompatRatingBar gradeRate;
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
-    private OnClickListener clickListener;
     private Context context;
+    private int position;
 
     public ReviewItemView(Context context) {
         this(context, null);
@@ -84,11 +87,29 @@ public class ReviewItemView extends FrameLayout {
                 reviewTxt.setVisibility(GONE);
             }
 
-            if(review.subjectDetail.subject != null) {
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            int index = 0;
+            if (review.subjectDetail.subject != null) {
+                builder.append(review.subjectDetail.subject.getName() + " ");
+            }
+            Util.addColorSpan(context, builder, index, R.color.colorPrimary);
+            index = builder.length();
+
+            if (review.subjectDetail.professor != null) {
+                builder.append(review.subjectDetail.professor.getName() + " 교수님");
+            }
+            Util.addSizeSpan(builder, index, App.dp12);
+            Util.addColorSpan(context, builder, index, R.color.professorTxtColor);
+
+            subjectProfessorTxt.setText(builder);
+
+            if (review.subjectDetail.subject != null) {
                 subjectTxt.setText(review.subjectDetail.subject.getName() + "");
             }
-            if(review.subjectDetail.professor!= null) {
+            if (review.subjectDetail.professor != null) {
                 professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
+
             }
 
             //firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
@@ -104,33 +125,45 @@ public class ReviewItemView extends FrameLayout {
             gradeRate.setRating(review.gradeRate);
             achievementRate.setRating(review.achievementRate);
             setOnClickListener(v -> Navigator.goReviewDetail(context, review));
+
         }else{
             setVisibility(INVISIBLE);
         }
     }
 
-    public void setMoreBtnClickListener(OnClickListener listener){
-        this.clickListener = listener;
+    public void setPosition(int position){
+        this.position = position;
+    }
+
+    public void setMoreBtnClickListener(OnItemClickListener itemClickListener){
+        moreBtn.setOnClickListener(view -> itemClickListener.onItemClick(view, position));
     }
 
     public void setMode(Status status) {
         switch (status){
             case WRITE_REVIEW:
+                subjectTxt.setVisibility(GONE);
+                professorTxt.setVisibility(GONE);
+                subjectProfessorTxt.setVisibility(VISIBLE);
                 userLayout.setVisibility(GONE);
                 reviewTxt.setVisibility(GONE);
                 moreBtn.setVisibility(GONE);
                 break;
             case MY_REVIEW:
+                subjectTxt.setVisibility(VISIBLE);
+                professorTxt.setVisibility(VISIBLE);
+                subjectProfessorTxt.setVisibility(GONE);
                 userLayout.setVisibility(GONE);
                 reviewTxt.setVisibility(VISIBLE);
                 moreBtn.setVisibility(VISIBLE);
-                moreBtn.setOnClickListener(clickListener);
                 break;
             case READ_REVIEW:
+                subjectTxt.setVisibility(VISIBLE);
+                professorTxt.setVisibility(VISIBLE);
+                subjectProfessorTxt.setVisibility(GONE);
                 userLayout.setVisibility(VISIBLE);
                 reviewTxt.setVisibility(VISIBLE);
                 moreBtn.setVisibility(VISIBLE);
-                moreBtn.setOnClickListener(clickListener);
                 break;
         }
     }
