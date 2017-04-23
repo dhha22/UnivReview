@@ -36,9 +36,9 @@ import rx.schedulers.Schedulers;
  */
 public class SettingFragment extends BaseFragment {
     private static final int VERSION = 0;
-    private static final int NOTIFICATION = 1;
-    private static final int LOGOUT = 2;
-    private static final int USER_DELETE = 3;
+    //private static final int NOTIFICATION = 1;
+    private static final int LOGOUT = 1;
+    private static final int USER_DELETE = 2;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     private SettingAdapter adapter;
     private List<Setting> settings;
@@ -65,9 +65,10 @@ public class SettingFragment extends BaseFragment {
     private void init(){
 
         if(BuildConfig.DEBUG){
-            settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"), new Setting(3, "회원탈퇴"));
+            settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "로그아웃"), new Setting(2, "회원탈퇴"));
         }else{
-            settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"));
+            settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "로그아웃"));
+            //settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"));
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -79,8 +80,8 @@ public class SettingFragment extends BaseFragment {
                         case VERSION:
                             setting.previewStr = context.getResources().getString(R.string.app_version);
                             break;
-                        case NOTIFICATION:
-                            break;
+                        /*case NOTIFICATION:
+                            break;*/
                     }
                     return setting;
                 })
@@ -89,8 +90,8 @@ public class SettingFragment extends BaseFragment {
                 .subscribe(result -> adapter.addItem(result), Logger::e);
         adapter.setOnItemClickListener((view, position) -> {
             switch (position){
-                case NOTIFICATION:
-                    break;
+               /* case NOTIFICATION:
+                    break;*/
                 case LOGOUT:
                     Navigator.goLogin(context);
                     break;

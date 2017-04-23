@@ -17,6 +17,7 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
+import com.univreview.dialog.RecommendRvDialog;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.log.Logger;
@@ -50,6 +51,7 @@ public class UploadReviewFragment extends BaseWriteFragment {
     @BindView(R.id.grade_txt) TextView gradeTxt;
     @BindView(R.id.achievement_txt) TextView achievementTxt;
     private ProgressDialog progressDialog;
+    private RecommendRvDialog recommendRvDialog;
     private Review review;
     private boolean isReviewExist = false;
 
@@ -190,21 +192,13 @@ public class UploadReviewFragment extends BaseWriteFragment {
     private void response(Review review) {
         Logger.v("response review: " + review);
         this.review.id = review.id;
-        new AlertDialog.Builder(context, R.style.customDialog)
-                .setMessage("좀 더 자세한 리뷰를 쓰면\n" +
-                        "많은 학우들에게 도움이 됩니다.\n" +
-                        "리뷰를 써볼까요?")
-                .setPositiveButton("리뷰쓰기", (dialog, which) -> {
-                    Navigator.goUploadReviewDetail(context, this.review);
-                    activity.finish();
-                })
-                .setNegativeButton("다음에", (dialog, which) -> {
-                    ((BaseActivity) activity).setOnBackPressedListener(null);
-                    activity.onBackPressed();
-                })
-                .setCancelable(false)
-                .show();
+        recommendRvDialog =new RecommendRvDialog(context, this.review);
+        recommendRvDialog.show();
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (recommendRvDialog != null) recommendRvDialog.dismiss();
+    }
 }

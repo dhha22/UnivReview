@@ -30,7 +30,7 @@ public interface ReviewService {
     Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
 
     @GET("review/{id}")
-    Observable<ReviewModel> getReview(@HeaderMap Map<String, String> headers, @Path("id") long reviewId);
+    Observable<ReviewListModel> getReview(@HeaderMap Map<String, String> headers, @Path("id") long reviewId);
 
     @POST("review")
     Observable<ReviewSingleModel> postSimpleReview(@HeaderMap Map<String, String> headers, @Body Review body);

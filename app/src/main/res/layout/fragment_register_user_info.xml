@@ -18,8 +18,8 @@
             android:layout_width="124dp"
             android:layout_height="124dp"
             android:layout_gravity="center"
-            android:src="@color/white"
             android:scaleType="centerCrop"
+            android:src="@color/white"
             app:civ_border_color="@color/black"
             app:civ_border_width="1px" />
 
@@ -64,10 +64,10 @@
         android:layout_below="@id/input_name"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="158dp"
-        android:textColor="@color/white"
+        android:layout_marginTop="149dp"
         android:background="@drawable/rounded_white_rect"
         android:text="다음"
+        android:textColor="@color/white"
         android:textSize="16dp" />
 
 </RelativeLayout>

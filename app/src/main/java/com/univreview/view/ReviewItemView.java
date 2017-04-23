@@ -63,7 +63,7 @@ public class ReviewItemView extends FrameLayout {
         this.context = context;
         ButterKnife.bind(this);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 0, App.dp12);
+        params.setMargins(0, 0, 0, Util.dpToPx(context, 8));
         setLayoutParams(params);
     }
 

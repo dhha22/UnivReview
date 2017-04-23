@@ -197,7 +197,7 @@ public class ReviewDetailFragment extends BaseFragment {
         Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), reviewId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> setData(result.review), Logger::e);
+                .subscribe(result -> setData(result.getReview()), Logger::e);
     }
 
 }

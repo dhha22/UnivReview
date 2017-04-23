@@ -47,4 +47,16 @@ public class ErrorUtils {
         Logger.e(throwable);
         return 0;
     }
+
+    public static String getErrorBody(Throwable throwable){
+        if (throwable instanceof HttpException) {
+            Response response = ((HttpException) throwable).response();
+            try {
+                return response.errorBody().string();
+            }catch (IOException e){
+                Logger.e(e);
+            }
+        }
+        return null;
+    }
 }

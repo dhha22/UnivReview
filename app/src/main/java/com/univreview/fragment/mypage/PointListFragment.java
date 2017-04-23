@@ -224,7 +224,7 @@ public class PointListFragment extends AbsListFragment {
     private void ticketErrorResponse(Throwable e) {
         if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_400) {
             new AlertDialog.Builder(context, R.style.customDialog)
-                    .setMessage("포인트가 부족합니다.")
+                    .setMessage(ErrorUtils.getErrorBody(e))
                     .setPositiveButton("확인", null)
                     .show();
         }
