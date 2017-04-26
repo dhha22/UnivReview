@@ -11,6 +11,7 @@ import com.univreview.model.ReviewSingleModel;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -40,7 +41,7 @@ public interface ReviewService {
 
     // 리뷰 수정
     @PUT("reviewDetail/{id}")
-    Observable<ReviewDetail> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("id") long reviewDetailId, @Body ReviewDetail body);
+    Observable<ResponseBody> putReviewDetail(@HeaderMap Map<String, String> headers, @Path("id") long reviewDetailId, @Body ReviewDetail body);
 
     //  리뷰 신고
     @POST("report")

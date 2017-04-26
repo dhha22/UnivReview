@@ -11,6 +11,7 @@ import com.univreview.App;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseWriteFragment;
+import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
@@ -27,6 +28,7 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 13..
  */
 public class UploadReviewDetailFragment extends BaseWriteFragment {
+    private static final int POSITION_NONE = -1;
     @BindView(R.id.review_item) ReviewItemView reviewItemView;
     @BindView(R.id.input_review) EditText inputReview;
     private boolean isUpdate = false;
@@ -70,7 +72,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
     }
 
     private void setReviewData(Review review) {
-        reviewItemView.setData(review);
+        reviewItemView.setData(review, POSITION_NONE);
         reviewItemView.setMode(ReviewItemView.Status.WRITE_REVIEW);
     }
 
@@ -98,6 +100,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
+                    ReviewDetailFragment.isRefresh = true;
                     ((BaseActivity) activity).setOnBackPressedListener(null);
                     activity.onBackPressed();
                 }, this::errorResponse);
@@ -110,6 +113,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
+                    ReviewDetailFragment.isRefresh = true;
                     ((BaseActivity) activity).setOnBackPressedListener(null);
                     activity.onBackPressed();
                 }, this::errorResponse);

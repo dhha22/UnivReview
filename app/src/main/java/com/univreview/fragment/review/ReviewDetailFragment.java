@@ -1,12 +1,10 @@
 package com.univreview.fragment.review;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseFragment;
-import com.univreview.listener.BaseBackPressedListener;
 import com.univreview.listener.OnBackPressedListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
@@ -43,6 +40,7 @@ public class ReviewDetailFragment extends BaseFragment {
     @BindView(R.id.time_txt) TextView timeTxt;
     @BindView(R.id.more_btn) ImageButton moreBtn;
     @BindView(R.id.review_rating_indicator_view) ReviewRatingIndicatorView reviewRatingIndicatorView;
+    @BindView(R.id.review_detail_layout) LinearLayout reviewDetailLayout;
     @BindView(R.id.review_detail_txt) TextView reviewDetailTxt;
     @BindView(R.id.dim_view) View dimView;
     @BindView(R.id.bottom_sheet) LinearLayout bottomSheet;
@@ -50,6 +48,7 @@ public class ReviewDetailFragment extends BaseFragment {
     @BindView(R.id.report) TextView report;
     private BottomSheetBehavior behavior;
     private Review data;
+    public static boolean isRefresh = false;
 
     public static ReviewDetailFragment newInstance(Review data){
         ReviewDetailFragment fragment = new ReviewDetailFragment();
@@ -63,6 +62,14 @@ public class ReviewDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         data = (Review)getArguments().getSerializable("review");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isRefresh){
+            callReviewSingleApi(data.id);
+        }
     }
 
     @Nullable
@@ -121,20 +128,21 @@ public class ReviewDetailFragment extends BaseFragment {
         if (data.subjectDetail.subject != null) {
             builder.append(data.subjectDetail.subject.getName() + " ");
         }
+        Util.addSizeSpan(builder, index, Util.dpToPx(context, 16));
         Util.addColorSpan(context, builder, index, R.color.colorPrimary);
         index = builder.length();
 
         if (data.subjectDetail.professor != null) {
             builder.append(data.subjectDetail.professor.getName() + " 교수님");
         }
-        Util.addSizeSpan(builder, index, App.dp12);
+        Util.addSizeSpan(builder, index, Util.dpToPx(context, 14));
         Util.addColorSpan(context, builder, index, R.color.professorTxtColor);
 
         subjectProfessorTxt.setText(builder);
 
         if (data.reviewDetail != null) {
             reviewDetailTxt.setText(data.reviewDetail.reviewDetail);
-            reviewDetailTxt.setVisibility(View.VISIBLE);
+            reviewDetailLayout.setVisibility(View.VISIBLE);
         }
 
         timeTxt.setText(new TimeUtil().getPointFormat(data.createdDate));
@@ -161,6 +169,7 @@ public class ReviewDetailFragment extends BaseFragment {
                 Navigator.goReviewReport(context, data.id);
             });
         }
+        isRefresh = false;
     }
 
     private View.OnClickListener moreBtnClickListener = view -> {

@@ -78,7 +78,7 @@ public class Util {
                     .into(imageView);
         } else {
             App.picasso.load(url)
-                    .fit()
+                    .resize(imageView.getWidth(), imageView.getHeight())
                     .centerCrop()
                     .into(imageView);
         }

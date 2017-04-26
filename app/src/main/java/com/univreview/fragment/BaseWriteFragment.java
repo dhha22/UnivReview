@@ -15,15 +15,15 @@ import com.univreview.util.Util;
 /**
  * Created by DavidHa on 2017. 4. 1..
  */
-public class BaseWriteFragment extends BaseFragment{
+public class BaseWriteFragment extends BaseFragment {
     protected ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((BaseActivity)activity).setOnBackPressedListener(onBackPressedListener);
-        progressDialog = Util.progressDialog(context);
+        ((BaseActivity) activity).setOnBackPressedListener(onBackPressedListener);
+
         return rootLayout;
     }
 
@@ -38,4 +38,6 @@ public class BaseWriteFragment extends BaseFragment{
                 .setCancelable(false)
                 .show();
     };
+
+
 }

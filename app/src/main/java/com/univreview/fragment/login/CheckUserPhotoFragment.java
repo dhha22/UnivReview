@@ -18,6 +18,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.User;
 import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
 
@@ -92,6 +93,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
         Retro.instance.fileService(Uri.parse(uri), "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(() -> progressDialog.show())
                 .subscribe(result -> {
                     Logger.v("result: " + result);
                     User user = new User();
@@ -100,11 +102,15 @@ public class CheckUserPhotoFragment extends BaseFragment {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate(() -> {
+                                progressDialog.dismiss();
                                 Navigator.goUserAuthCompleted(context);
                                 activity.finish();
                             })
-                            .subscribe(data -> Logger.v("result: " + data), Logger::e);
-                }, Logger::e);
+                            .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);
+                }, error -> {
+                    progressDialog.dismiss();
+                    ErrorUtils.parseError(error);
+                });
     }
 
 

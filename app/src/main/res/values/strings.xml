@@ -3,7 +3,7 @@
     <string name="app_version">0.0.1</string>
     <string name="facebook_app_id">1843922909222445</string>
     <string name="kakao_app_id">cec83de256e7cffbba96009caa6d7bb5</string>
-    <string name="recommend_review_msg">좀 더 자세한 리뷰를 쓰면\n많은 학우들에게 도음이 되요\n리뷰를 써볼까요?</string>
+    <string name="recommend_review_msg">좀 더 자세한 리뷰를 쓰면\n많은 학우들에게 도움이 되요\n리뷰를 써볼까요?</string>
     <string name="user_auth_completed_msg">인증이 완료되었습니다!\n승인 심사가 끝날때까지 기다려주세요</string>
     <string name="main_user_auth">지금 학생증을 찍어 학생을 인증하면\n피곤한 과제!시험!에 찌든 여러분들을 위한\n스타벅스 기프티콘을 드려요:)</string>
 </resources>

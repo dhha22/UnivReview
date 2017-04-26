@@ -21,7 +21,7 @@ import com.univreview.util.Util;
  * Created by DavidHa on 2016. 7. 13..
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
+    private static final String PROFILE_AUTHORIZED = "profileAuthorized";
 
     @Override
     public void onCreate() {
@@ -34,10 +34,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Logger.d("From: " + remoteMessage.getFrom());
         Logger.d("Notification: " + remoteMessage.getData().toString());
-        sendNotification(0, null, null, null, remoteMessage.getData().toString());
-       /* final long id = Long.parseLong(remoteMessage.getData().get("object_id"));
+        final String type = remoteMessage.getData().get("type");
+        sendNotification(0, null, type, null, remoteMessage.getData().toString());
+        /*final long id = Long.parseLong(remoteMessage.getData().get("object_id"));
         final String action = remoteMessage.getData().get("action");
-        final String type = remoteMessage.getData().get("object_type");
         final String profileURL = remoteMessage.getData().get("image_url");
         final String messageBody = remoteMessage.getData().get("body");*/
 
@@ -69,6 +69,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("type", type);
         intent.putExtra("action", action);
 
+        if(PROFILE_AUTHORIZED.equals(type)){
+            messageBody = "학생증 인증 성공하셨습니다.";
+        }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -77,7 +80,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("대학리뷰")
                 .setContentText(messageBody)
                 .setAutoCancel(true)

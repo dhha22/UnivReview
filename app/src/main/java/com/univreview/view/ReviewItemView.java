@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
+import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.model.Review;
 import com.univreview.util.TimeUtil;
@@ -48,6 +49,7 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
     private Context context;
     private int position;
+    private Status status;
 
     public ReviewItemView(Context context) {
         this(context, null);
@@ -67,7 +69,7 @@ public class ReviewItemView extends FrameLayout {
         setLayoutParams(params);
     }
 
-    public void setData(Review review) {
+    public void setData(Review review, int position) {
         if (review != null) {
             setVisibility(VISIBLE);
             if (review.user != null) {
@@ -124,9 +126,15 @@ public class ReviewItemView extends FrameLayout {
             attendanceRate.setRating(review.attendanceRate);
             gradeRate.setRating(review.gradeRate);
             achievementRate.setRating(review.achievementRate);
-            setOnClickListener(v -> Navigator.goReviewDetail(context, review));
+            setOnClickListener(v -> {
+                if (Status.MY_REVIEW.equals(status) || Status.READ_REVIEW.equals(status)) {
+                    ReviewListFragment.reviewSingleId = review.id;
+                    ReviewListFragment.reviewItemRefreshPosition = position;
+                    Navigator.goReviewDetail(context, review);
+                }
+            });
 
-        }else{
+        } else {
             setVisibility(INVISIBLE);
         }
     }
@@ -140,6 +148,7 @@ public class ReviewItemView extends FrameLayout {
     }
 
     public void setMode(Status status) {
+        this.status = status;
         switch (status){
             case WRITE_REVIEW:
                 subjectTxt.setVisibility(GONE);

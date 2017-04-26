@@ -56,6 +56,9 @@ public class ReviewListFragment extends AbsListFragment {
     private static final String SUBJECT = "subject";
     private static final String PROFESSOR = "professor";
     private static final String MY_REVIEW = "myReview";
+    private static final int POSITION_NONE = -1;
+    public static long reviewSingleId = POSITION_NONE;
+    public static int reviewItemRefreshPosition = POSITION_NONE;
     @BindView(R.id.dim_view) View dimView;
     @BindView(R.id.smooth_app_bar_layout) SmoothAppBarLayout appBarLayout;
     @BindView(R.id.toolbar) Toolbar customToolbar;
@@ -112,6 +115,14 @@ public class ReviewListFragment extends AbsListFragment {
         recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
         rootLayout.addView(view);
         return rootLayout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (reviewSingleId != -1 && reviewItemRefreshPosition != -1) {
+            callReviewSingleApi(reviewSingleId, reviewItemRefreshPosition);
+        }
     }
 
     private void init() {
@@ -232,16 +243,10 @@ public class ReviewListFragment extends AbsListFragment {
             if (getItemViewType(position) == HEADER) {
                 ((HeaderViewHolder) holder).v.setData(totalRate, reviewAverage);
             } else if (getItemViewType(position) == CONTENT) {
-                if (type.equals(MY_REVIEW)) {
-                    ((ViewHolder) holder).v.setMode(ReviewItemView.Status.MY_REVIEW);
-                } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
-                    ((ViewHolder) holder).v.setMode(ReviewItemView.Status.READ_REVIEW);
-                }
-
                 if (!type.equals(MY_REVIEW)) {
-                    ((ViewHolder) holder).v.setData((Review) list.get(position - 1));
+                    ((ViewHolder) holder).v.setData((Review) list.get(position - 1), position - 1);
                 } else {
-                    ((ViewHolder) holder).v.setData((Review) list.get(position));
+                    ((ViewHolder) holder).v.setData((Review) list.get(position), position);
                     ((ViewHolder) holder).v.setPosition(position);
                 }
             }
@@ -291,6 +296,11 @@ public class ReviewListFragment extends AbsListFragment {
                 super(itemView);
                 v = (ReviewItemView) itemView;
                 v.setMoreBtnClickListener(moreBtnClickListener);
+                if (type.equals(MY_REVIEW)) {
+                    v.setMode(ReviewItemView.Status.MY_REVIEW);
+                } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
+                    v.setMode(ReviewItemView.Status.READ_REVIEW);
+                }
             }
         }
     }
@@ -403,6 +413,17 @@ public class ReviewListFragment extends AbsListFragment {
                         if (page == DEFAULT_PAGE) adapter.clear();
                     });
         }
+    }
+
+    private void callReviewSingleApi(long id, int position) {
+        Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate(() -> {
+                    reviewSingleId = POSITION_NONE;
+                    reviewItemRefreshPosition = POSITION_NONE;
+                })
+                .subscribe(result -> adapter.setItem(position, result.getReview()), this::errorResponse);
     }
 
     private void response(ReviewListModel reviewListModel) {

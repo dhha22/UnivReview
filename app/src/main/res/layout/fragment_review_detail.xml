@@ -105,18 +105,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/review_detail_txt"
+        <LinearLayout
+            android:id="@+id/review_detail_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:background="@color/white"
-            android:paddingBottom="14dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="14dp"
-            android:textSize="14dp"
-            android:visibility="gone" />
+            android:padding="14dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="수강 리뷰"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/review_detail_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/reviewTxtColor"
+                android:textSize="14dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View

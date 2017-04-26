@@ -191,6 +191,7 @@ public class PointListFragment extends AbsListFragment {
     private void callBuyTicketApi(){
         UserTicket userTicket = new UserTicket();
         userTicket.userId = App.userId;
+        Logger.v("user ticket: " + userTicket);
         Retro.instance.userService().postUserTicket(App.setAuthHeader(App.userToken), userTicket)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

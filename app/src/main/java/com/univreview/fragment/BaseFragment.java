@@ -1,6 +1,7 @@
 package com.univreview.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class BaseFragment extends Fragment {
     protected Toolbar toolbar;
     protected Context context;
     protected Activity activity;
+    protected ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class BaseFragment extends Fragment {
         Logger.v("on create view: " + this.getClass().getName());
         this.context = getContext();
         this.activity = getActivity();
+        progressDialog = Util.progressDialog(context);
         rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         toolbar = new Toolbar(context);
@@ -76,8 +79,10 @@ public class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
         Logger.v("on destroy: " + this.getClass().getName());
     }
-
 
 }
