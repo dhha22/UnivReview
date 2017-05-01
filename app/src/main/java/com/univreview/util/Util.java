@@ -1,7 +1,10 @@
 package com.univreview.util;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +14,7 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -78,7 +82,7 @@ public class Util {
                     .into(imageView);
         } else {
             App.picasso.load(url)
-                    .resize(imageView.getWidth(), imageView.getHeight())
+                    .fit()
                     .centerCrop()
                     .into(imageView);
         }
@@ -96,6 +100,16 @@ public class Util {
 
     public static void addSizeSpan(SpannableStringBuilder builder, int index, int size) {
         builder.setSpan(new AbsoluteSizeSpan(size), index, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public static boolean sharedElement(Context context, Intent intent, View sharedView, String transitionName) {
+        final int version = Build.VERSION.SDK_INT;
+        if (version >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) context, sharedView, transitionName);
+            (context).startActivity(intent, transitionActivityOptions.toBundle());
+            return true;
+        }
+        return false;
     }
 
 

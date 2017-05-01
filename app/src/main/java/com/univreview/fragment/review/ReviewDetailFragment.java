@@ -21,6 +21,7 @@ import com.univreview.listener.OnBackPressedListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
 import com.univreview.view.ReviewRatingIndicatorView;
@@ -206,7 +207,14 @@ public class ReviewDetailFragment extends BaseFragment {
         Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), reviewId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> setData(result.getReview()), Logger::e);
+                .subscribe(result -> {
+                    Review review = result.review;
+                    review.subjectDetail.subject.name = review.subjectName;
+                    review.subjectDetail.professor.name = review.professorName;
+                    review.user.name = review.userName;
+                    review.user.authenticated = review.authenticated;
+                    setData(review);
+                }, ErrorUtils::parseError);
     }
 
 }

@@ -423,7 +423,14 @@ public class ReviewListFragment extends AbsListFragment {
                     reviewSingleId = POSITION_NONE;
                     reviewItemRefreshPosition = POSITION_NONE;
                 })
-                .subscribe(result -> adapter.setItem(position, result.getReview()), this::errorResponse);
+                .subscribe(result -> {
+                    Review review = result.review;
+                    review.subjectDetail.subject.name = review.subjectName;
+                    review.subjectDetail.professor.name = review.professorName;
+                    review.user.name = review.userName;
+                    review.user.authenticated = review.authenticated;
+                    adapter.setItem(position, review);
+                }, this::errorResponse);
     }
 
     private void response(ReviewListModel reviewListModel) {

@@ -223,9 +223,10 @@ public class PointListFragment extends AbsListFragment {
     }
 
     private void ticketErrorResponse(Throwable e) {
+        String message = ErrorUtils.getErrorBody(e);
         if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_400) {
             new AlertDialog.Builder(context, R.style.customDialog)
-                    .setMessage(ErrorUtils.getErrorBody(e))
+                    .setMessage(message)
                     .setPositiveButton("확인", null)
                     .show();
         }

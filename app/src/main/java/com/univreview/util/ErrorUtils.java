@@ -1,7 +1,11 @@
 package com.univreview.util;
 
+import android.support.v7.app.AlertDialog;
+
 import com.google.gson.JsonSyntaxException;
 import com.univreview.App;
+import com.univreview.Navigator;
+import com.univreview.activity.LoginActivity;
 import com.univreview.log.Logger;
 
 import java.io.IOException;
@@ -31,6 +35,16 @@ public class ErrorUtils {
                 }else if(response.code() == 401){
                     App.setUserToken(null);
                 }else if(response.code() == 412){   // 강제 업데이트
+                    if(App.getCurrentActivity() instanceof LoginActivity){
+                        new AlertDialog.Builder(App.getCurrentActivity())
+                                .setMessage("대학리뷰 최신 버전이 출시 되었습니다\n업데이트 후 이용해 주세요")
+                                .setPositiveButton("확인", (dialogInterface, i) -> Navigator.goGooglePlayStore())
+                                .setNegativeButton("취소", null)
+                                .setCancelable(false)
+                                .show();
+                    }else{
+                       Navigator.goLogin(App.getCurrentActivity());
+                    }
 
                 }
             } catch (IOException e) {
@@ -52,7 +66,11 @@ public class ErrorUtils {
         if (throwable instanceof HttpException) {
             Response response = ((HttpException) throwable).response();
             try {
-                return response.errorBody().string();
+                Logger.e(response.code());
+                Logger.e(response.message());
+                String responseBody = response.errorBody().string();
+                Logger.e(responseBody);
+                return responseBody;
             }catch (IOException e){
                 Logger.e(e);
             }

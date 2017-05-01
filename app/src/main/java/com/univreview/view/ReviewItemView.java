@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.univreview.App;
@@ -27,15 +28,14 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 1. 23..
  */
 public class ReviewItemView extends FrameLayout {
+    @BindView(R.id.layout) LinearLayout layout;
     @BindView(R.id.user_layout) LinearLayout userLayout;
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMarkTxt;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
     @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
-    //@BindView(R.id.first_line_time_txt) TextView firstLineTimeTxt;
     @BindView(R.id.more_btn) ImageButton moreBtn;
-    //@BindView(R.id.second_line_time_txt) TextView secondLineTimeTxt;
     @BindView(R.id.review_txt) TextView reviewTxt;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
     @BindView(R.id.assignment_txt) TextView assignmentTxt;
@@ -114,8 +114,6 @@ public class ReviewItemView extends FrameLayout {
 
             }
 
-            //firstLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
-            //secondLineTimeTxt.setText(new TimeUtil().getPointFormat(review.createdDate));
             difficultyTxt.setText(review.getDifficultyRateMessage());
             assignmentTxt.setText(review.getAssignmentRateMessage());
             attendanceTxt.setText(review.getAttendanceRateMessage());
@@ -130,7 +128,7 @@ public class ReviewItemView extends FrameLayout {
                 if (Status.MY_REVIEW.equals(status) || Status.READ_REVIEW.equals(status)) {
                     ReviewListFragment.reviewSingleId = review.id;
                     ReviewListFragment.reviewItemRefreshPosition = position;
-                    Navigator.goReviewDetail(context, review);
+                    Navigator.goReviewDetail(context, review, layout);
                 }
             });
 

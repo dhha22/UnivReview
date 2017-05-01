@@ -1,6 +1,5 @@
 package com.univreview.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -10,20 +9,17 @@ import android.view.ViewGroup;
 
 import com.univreview.activity.BaseActivity;
 import com.univreview.listener.OnBackPressedListener;
-import com.univreview.util.Util;
 
 /**
  * Created by DavidHa on 2017. 4. 1..
  */
 public class BaseWriteFragment extends BaseFragment {
-    protected ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         ((BaseActivity) activity).setOnBackPressedListener(onBackPressedListener);
-
         return rootLayout;
     }
 

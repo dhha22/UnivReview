@@ -131,6 +131,13 @@ public class App extends Application {
         Logger.v("university id: " + universityId);
     }
 
+    public static void userLogout() {
+        setUserId(0);
+        setFCMToken(null);
+        setUserToken(null);
+        setUniversityId(0);
+    }
+
 
     public static void initializeFCMToken() {
         setFCMToken(FirebaseInstanceId.getInstance().getToken());

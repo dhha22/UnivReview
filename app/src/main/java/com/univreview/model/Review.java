@@ -34,9 +34,17 @@ public class Review extends AbstractDataProvider implements Serializable{
     public long userId;
     @Expose
     public long professorId;
+    @Expose
+    public String professorName;
+    @Expose
+    public String subjectName;
 
     @Expose
     public User user = new User();
+    @Expose
+    public String userName;
+    @Expose
+    public Boolean authenticated;
 
     @Expose
     public SubjectDetail subjectDetail = new SubjectDetail();

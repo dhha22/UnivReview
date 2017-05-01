@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 
@@ -56,8 +57,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.setCurrentActivity(this);
         setFullScreen();
-        if(App.userToken != null){
+        if (App.userToken != null) {
             Navigator.goMain(this);
             finish();
         }
@@ -75,7 +77,7 @@ public class LoginActivity extends BaseActivity {
         kakaoLoginBtn.setOnClickListener(v -> kakaoLogin());
     }
 
-    private void facebookLogin(){
+    private void facebookLogin() {
         Logger.v("facebook login");
         progressDialog.show();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));

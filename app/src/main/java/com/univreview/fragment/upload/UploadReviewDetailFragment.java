@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.univreview.App;
+import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseWriteFragment;
@@ -101,6 +102,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
                     ReviewDetailFragment.isRefresh = true;
+                    Navigator.goReviewDetail(context, review);
                     ((BaseActivity) activity).setOnBackPressedListener(null);
                     activity.onBackPressed();
                 }, this::errorResponse);

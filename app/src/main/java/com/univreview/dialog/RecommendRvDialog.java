@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
+import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.model.Review;
 
 import butterknife.BindView;
@@ -51,6 +52,8 @@ public class RecommendRvDialog extends Dialog {
         });
 
         next.setOnClickListener(view -> {
+            ReviewDetailFragment.isRefresh = true;
+            Navigator.goReviewDetail(context, review);
             ((BaseActivity) context).setOnBackPressedListener(null);
             ((Activity)context).onBackPressed();
         });

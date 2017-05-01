@@ -41,7 +41,7 @@ public enum Retro {
 
         if (BuildConfig.DEBUG) {
             BASE_URL = TEST_URL;
-            // BASE_URL = REAL_URL;
+             //BASE_URL = REAL_URL;
         } else {
             BASE_URL = REAL_URL;
         }

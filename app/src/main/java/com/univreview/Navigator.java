@@ -1,10 +1,14 @@
 package com.univreview;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.univreview.activity.LoginActivity;
 import com.univreview.activity.MainActivity;
@@ -28,6 +32,7 @@ import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.Register;
 import com.univreview.model.Review;
 import com.univreview.util.ImageUtil;
+import com.univreview.util.Util;
 
 /**
  * Created by DavidHa on 2017. 1. 11..
@@ -39,7 +44,7 @@ public class Navigator {
     public static final int PERMISSION_CHECKER = 405;
 
     public static void goLogin(Context context){
-        App.setUserToken(null);
+        App.userLogout();
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
@@ -124,6 +129,12 @@ public class Navigator {
         (context).startActivity(intent);
     }
 
+    public static void goReviewDetail(Context context, Review data, View sharedView) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(ReviewDetailFragment.newInstance(data));
+        Util.sharedElement(context, intent, sharedView, "title");
+    }
+
     //review report
     public static void goReviewReport(Context context, long reviewId) {
         Intent intent = new Intent(context, NavigationActivity.class);
@@ -181,10 +192,17 @@ public class Navigator {
         context.startActivity(intent);
     }
 
-    public static void goAppSetting(Activity activity) {
+    public static void goAppSetting(Context context) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + activity.getPackageName()));
-        activity.startActivity(intent);
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(intent);
        // activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+    }
+
+    public static void goGooglePlayStore(){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.univreview"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        App.getCurrentActivity().startActivity(intent);
+        (App.getCurrentActivity()).finish();
     }
 }
