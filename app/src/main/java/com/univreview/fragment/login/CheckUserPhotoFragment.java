@@ -79,9 +79,13 @@ public class CheckUserPhotoFragment extends BaseFragment {
 
         if (path == null) {
             App.picasso.load(ImageUtil.TEMP_IMAGE_URI.toString())
+                    .fit()
+                    .centerInside()
                     .into(checkImage);
         } else {
             App.picasso.load("file://" + path)
+                    .fit()
+                    .centerInside()
                     .into(checkImage);
         }
         okBtn.setOnClickListener(v -> upload());
@@ -125,13 +129,20 @@ public class CheckUserPhotoFragment extends BaseFragment {
                     Navigator.goAlbum(context);
                 }
             } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
+                Logger.v("camera");
                 uri = ImageUtil.TEMP_IMAGE_URI.toString();
-                App.picasso.load(ImageUtil.TEMP_IMAGE_URI.toString())
+                App.picasso.invalidate(uri);
+                App.picasso.load(uri)
+                        .fit()
+                        .centerInside()
                         .into(checkImage);
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
+                Logger.v("album");
                 uri = activityResultEvent.getIntent().getData().toString();
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 App.picasso.load("file://" + albumPath)
+                        .fit()
+                        .centerInside()
                         .into(checkImage);
             }
         }

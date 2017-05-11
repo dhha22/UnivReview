@@ -19,7 +19,6 @@ import com.univreview.log.Logger;
 import com.univreview.model.Setting;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
-import com.univreview.util.Util;
 import com.univreview.view.SettingItemView;
 
 import java.util.Arrays;
