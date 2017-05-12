@@ -13,6 +13,7 @@ import com.univreview.R;
 import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
+import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewDetail;
@@ -30,15 +31,18 @@ import rx.schedulers.Schedulers;
  */
 public class UploadReviewDetailFragment extends BaseWriteFragment {
     private static final int POSITION_NONE = -1;
+    private static final int CONTINUE = -2;
     @BindView(R.id.review_item) ReviewItemView reviewItemView;
     @BindView(R.id.input_review) EditText inputReview;
     private boolean isUpdate = false;
     private Review review;
     private ReviewDetail reviewDetail;
+    private int position;
 
-    public static UploadReviewDetailFragment newInstance(Review review){
+    public static UploadReviewDetailFragment newInstance(Review review, int position){
         UploadReviewDetailFragment fragment = new UploadReviewDetailFragment();
         Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
         bundle.putSerializable("review", review);
         fragment.setArguments(bundle);
         return fragment;
@@ -48,6 +52,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         review = (Review) getArguments().getSerializable("review");
+        position = getArguments().getInt("position");
     }
 
     @Nullable
@@ -101,8 +106,14 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
-                    ReviewDetailFragment.isRefresh = true;
-                    Navigator.goReviewDetail(context, review);
+                    if (position == POSITION_NONE) {
+                        ReviewDetailFragment.isRefresh = true;
+                    } else if (position == CONTINUE) {
+                        Navigator.goReviewDetail(context, review);
+                    } else {
+                        ReviewListFragment.reviewSingleId = review.id;
+                        ReviewListFragment.reviewItemRefreshPosition = position;
+                    }
                     ((BaseActivity) activity).setOnBackPressedListener(null);
                     activity.onBackPressed();
                 }, this::errorResponse);
@@ -115,7 +126,12 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
-                    ReviewDetailFragment.isRefresh = true;
+                    if (position == POSITION_NONE) {
+                        ReviewDetailFragment.isRefresh = true;
+                    } else {
+                        ReviewListFragment.reviewSingleId = review.id;
+                        ReviewListFragment.reviewItemRefreshPosition = position;
+                    }
                     ((BaseActivity) activity).setOnBackPressedListener(null);
                     activity.onBackPressed();
                 }, this::errorResponse);

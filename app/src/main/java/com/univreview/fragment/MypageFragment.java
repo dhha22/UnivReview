@@ -49,6 +49,7 @@ public class MypageFragment extends BaseFragment {
     private static final int MY_REVIEW = 0;
     private static final int POINT = 1;
     private static final int USER_IDENTIFY = 2;
+    public static boolean isRefresh = true;
     @BindView(R.id.profile_image_layout) RelativeLayout profileImageLayout;
     @BindView(R.id.profile_image) ImageView profileImage;
     @BindView(R.id.name_txt) TextView nameTxt;
@@ -59,7 +60,7 @@ public class MypageFragment extends BaseFragment {
     private MyPageAdapter adapter;
     private long userId;
     private List<Setting> settings = Arrays.asList(new Setting(0, "My 리뷰"), new Setting(1, "포인트"), new Setting(2, "학생 인증"));
-
+    private boolean isFirst = true;
 
     public static MypageFragment newInstance(long userId) {
         MypageFragment fragment = new MypageFragment();
@@ -122,16 +123,21 @@ public class MypageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        callProfileApi(userId);
+        if(isRefresh) {
+            callProfileApi(userId);
+        }
     }
 
     public void setUserData(UserModel userModel){
+        isRefresh = false;
         Logger.v(userModel.toString());
         nameTxt.setText(userModel.user.name);
         departmentTxt.setText(userModel.user.department.getName());
         majorTxt.setText(userModel.user.major.getName());
-        Util.setProfileImage(userModel.user.profileImageUrl, profileImage);
-
+        if(isFirst) {
+            Util.setProfileImage(userModel.user.profileImageUrl, profileImage);
+            isFirst = false;
+        }
         adapter.clear();
         Observable.from(settings)
                 .map(setting -> {
@@ -184,9 +190,10 @@ public class MypageFragment extends BaseFragment {
         if(activityResultEvent.getResultCode() == activity.RESULT_OK) {
             if(activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER){
                Navigator.goAlbum(context);
-            }else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
+            } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Logger.v("album path: " + albumPath);
+                Util.setProfileImage("file://" + albumPath, profileImage);
                 callFileUploadApi(activityResultEvent.getIntent().getData());
             }
         }
@@ -218,6 +225,12 @@ public class MypageFragment extends BaseFragment {
         Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Util.setProfileImage(result.user.profileImageUrl, profileImage), Logger::e);
+                .subscribe(result -> Logger.v("result: " + result), ErrorUtils::parseError);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isRefresh = true;
     }
 }

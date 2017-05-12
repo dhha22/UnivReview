@@ -78,6 +78,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
         Logger.v("path: " + path);
 
         if (path == null) {
+            App.picasso.invalidate(ImageUtil.TEMP_IMAGE_URI.toString());
             App.picasso.load(ImageUtil.TEMP_IMAGE_URI.toString())
                     .fit()
                     .centerInside()

@@ -311,7 +311,7 @@ public class ReviewListFragment extends AbsListFragment {
         if (App.userId == review.userId) {
             update.setOnClickListener(v -> {
                 hiddenBottomSheet();
-                Navigator.goUploadReviewDetail(context, review);
+                Navigator.goUploadReviewDetail(context, review, position);
             });
             report.setVisibility(View.GONE);
             update.setVisibility(View.VISIBLE);

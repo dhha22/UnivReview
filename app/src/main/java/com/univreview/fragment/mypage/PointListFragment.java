@@ -15,6 +15,7 @@ import com.univreview.App;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
+import com.univreview.fragment.MypageFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
 import com.univreview.model.PointHistory;
@@ -188,14 +189,17 @@ public class PointListFragment extends AbsListFragment {
                 .subscribe(result -> pointResponse(result.pointHistories, page), this::errorResponse);
     }
 
-    private void callBuyTicketApi(){
+    private void callBuyTicketApi() {
         UserTicket userTicket = new UserTicket();
         userTicket.userId = App.userId;
         Logger.v("user ticket: " + userTicket);
         Retro.instance.userService().postUserTicket(App.setAuthHeader(App.userToken), userTicket)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> refresh(), this::ticketErrorResponse);
+                .subscribe(result -> {
+                    MypageFragment.isRefresh = true;
+                    refresh();
+                }, this::ticketErrorResponse);
     }
 
     private void getUserTicketResponse(List<UserTicket> userTickets) {

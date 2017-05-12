@@ -20,6 +20,7 @@ import com.univreview.activity.BaseActivity;
 import com.univreview.dialog.RecommendRvDialog;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.BaseWriteFragment;
+import com.univreview.fragment.MypageFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Review;
@@ -191,6 +192,7 @@ public class UploadReviewFragment extends BaseWriteFragment {
 
     private void response(Review review) {
         Logger.v("response review: " + review);
+        MypageFragment.isRefresh = true;
         this.review.id = review.id;
         recommendRvDialog =new RecommendRvDialog(context, this.review);
         recommendRvDialog.show();

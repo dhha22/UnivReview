@@ -35,6 +35,7 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 24..
  */
 public class ReviewDetailFragment extends BaseFragment {
+    private static final int POSITION_NONE = -1;
     @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMark;
@@ -68,6 +69,7 @@ public class ReviewDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Logger.v("review detail fragment refresh");
         if(isRefresh){
             callReviewSingleApi(data.id);
         }
@@ -153,7 +155,7 @@ public class ReviewDetailFragment extends BaseFragment {
         if (App.userId == data.userId) {
             update.setOnClickListener(v -> {
                 hiddenBottomSheet();
-                Navigator.goUploadReviewDetail(context, data);
+                Navigator.goUploadReviewDetail(context, data, POSITION_NONE);
             });
             report.setVisibility(View.GONE);
             update.setVisibility(View.VISIBLE);

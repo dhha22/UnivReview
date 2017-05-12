@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 4. 23..
  */
 public class RecommendRvDialog extends Dialog {
+    private static final int CONTINUE = -2;
     @BindView(R.id.next) TextView next;
     @BindView(R.id.go_review_detail) TextView goReviewDetail;
     private Review review;
@@ -46,11 +47,13 @@ public class RecommendRvDialog extends Dialog {
         ButterKnife.bind(this);
         setCancelable(false);
 
+        // 계속해서 상세 리뷰를 남긴다 (리뷰 업로드 상세 페이지로 이동)
         goReviewDetail.setOnClickListener(view -> {
-            Navigator.goUploadReviewDetail(context, this.review);
-            ((Activity)context).finish();
+            Navigator.goUploadReviewDetail(context, this.review, CONTINUE);
+            ((Activity) context).finish();
         });
 
+        // 다음에 리뷰를 남긴다 (리뷰 디테일 페이지로 이동)
         next.setOnClickListener(view -> {
             ReviewDetailFragment.isRefresh = true;
             Navigator.goReviewDetail(context, review);

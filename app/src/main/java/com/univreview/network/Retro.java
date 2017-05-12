@@ -7,8 +7,10 @@ import com.univreview.BuildConfig;
 import com.univreview.log.Logger;
 import com.univreview.model.FileUploadModel;
 import com.univreview.util.ImageUtil;
+import com.univreview.util.Util;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
@@ -91,10 +93,24 @@ public enum Retro {
         return reviewService;
     }
 
-    public Observable<FileUploadModel> fileService(Uri uploadUri, String type){
+    public Observable<FileUploadModel> fileService(Uri uploadUri, String type) {
         String path = ImageUtil.getPath(uploadUri);
         Logger.v("path: " + path);
-        File file = new File(path);
+
+        final Thread thread = new Thread(() -> {
+            try {
+                ImageUtil.compressImage(path);
+            } catch (Exception e) {
+                Logger.e(e);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (Exception e) {
+            Logger.e(e.toString());
+        }
+        File file = new File(ImageUtil.IMAGE_PATH + "tmp.jpg");
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);

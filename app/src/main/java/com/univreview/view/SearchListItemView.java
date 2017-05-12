@@ -40,7 +40,7 @@ public class SearchListItemView extends FrameLayout {
     }
 
     public void setTextSize(int size) {
-        nameTxt.setTextSize(Util.dpToPx(context, size));
+        nameTxt.setTextSize(size);
     }
 
     public void setText(String str){
