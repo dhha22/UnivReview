@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -33,6 +34,8 @@ import com.univreview.model.Register;
 import com.univreview.model.Review;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
+
+import java.io.File;
 
 /**
  * Created by DavidHa on 2017. 1. 11..
@@ -78,7 +81,12 @@ public class Navigator {
 
     public static void goCamera(Context context) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, ImageUtil.TEMP_IMAGE_URI);
+        File filePath = new File(ImageUtil.IMAGE_PATH);
+        if (!filePath.isDirectory()) {
+            filePath.mkdirs();
+        }
+        File file = new File(ImageUtil.IMAGE_PATH + "tmp.jpg");
+        intent.putExtra( MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context,"com.univreview.provider",file) );
         ((Activity) context).startActivityForResult(intent, CAMERA);
     }
 
@@ -173,9 +181,9 @@ public class Navigator {
 
     //
 
-    public static void goCheckUserPhoto(Context context, String type, String path, String uri) {
+    public static void goCheckUserPhoto(Context context, String type, String path) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(CheckUserPhotoFragment.newInstance(type, path, uri));
+        NavigationActivity.setFragment(CheckUserPhotoFragment.newInstance(type, path));
         context.startActivity(intent);
     }
 

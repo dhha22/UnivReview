@@ -1,6 +1,5 @@
 package com.univreview.fragment.login;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.squareup.otto.Subscribe;
+import com.univreview.BuildConfig;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
-import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
@@ -59,12 +58,19 @@ public class RegisterUserIdentityFragment extends BaseFragment{
                 } else if ("album".equals(type)) {
                     Navigator.goAlbum(context);
                 }
-            }else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
-                Navigator.goCheckUserPhoto(context, CAMERA, null, ImageUtil.TEMP_IMAGE_URI.toString());
+            } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
+                String albumPath = ImageUtil.IMAGE_PATH + "tmp.jpg";
+                if (BuildConfig.DEBUG) {
+                    Util.toast(albumPath);
+                }
+                Navigator.goCheckUserPhoto(context, CAMERA, albumPath);
                 activity.finish();
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
-                Navigator.goCheckUserPhoto(context, ALBUM, albumPath, activityResultEvent.getIntent().getData().toString());
+                if (BuildConfig.DEBUG) {
+                    Util.toast(albumPath);
+                }
+                Navigator.goCheckUserPhoto(context, ALBUM, albumPath);
                 activity.finish();
             }
         }

@@ -40,14 +40,12 @@ public class CheckUserPhotoFragment extends BaseFragment {
     @BindView(R.id.ok_btn) Button okBtn;
     private String type;
     private String path;
-    private String uri;
 
-    public static CheckUserPhotoFragment newInstance(String type, String path, String uri){
+    public static CheckUserPhotoFragment newInstance(String type, String path){
         CheckUserPhotoFragment fragment = new CheckUserPhotoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
         bundle.putString("path", path);
-        bundle.putString("uri", uri);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -57,7 +55,6 @@ public class CheckUserPhotoFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         type = getArguments().getString("type");
         path = getArguments().getString("path");
-        uri = getArguments().getString("uri");
     }
 
     @Nullable
@@ -75,27 +72,14 @@ public class CheckUserPhotoFragment extends BaseFragment {
             reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
         }
 
-        Logger.v("path: " + path);
-
-        if (path == null) {
-            App.picasso.invalidate(ImageUtil.TEMP_IMAGE_URI.toString());
-            App.picasso.load(ImageUtil.TEMP_IMAGE_URI.toString())
-                    .fit()
-                    .centerInside()
-                    .into(checkImage);
-        } else {
-            App.picasso.load("file://" + path)
-                    .fit()
-                    .centerInside()
-                    .into(checkImage);
-        }
+        setCheckImage(path);
         okBtn.setOnClickListener(v -> upload());
         rootLayout.addView(view);
         return rootLayout;
     }
 
     private void upload() {
-        Retro.instance.fileService(Uri.parse(uri), "file")
+        Retro.instance.fileService(path, "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> progressDialog.show())
@@ -129,24 +113,23 @@ public class CheckUserPhotoFragment extends BaseFragment {
                 } else if ("album".equals(type)) {
                     Navigator.goAlbum(context);
                 }
-            } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
-                Logger.v("camera");
-                uri = ImageUtil.TEMP_IMAGE_URI.toString();
-                App.picasso.invalidate(uri);
-                App.picasso.load(uri)
-                        .fit()
-                        .centerInside()
-                        .into(checkImage);
-            } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
-                Logger.v("album");
-                uri = activityResultEvent.getIntent().getData().toString();
-                String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
-                App.picasso.load("file://" + albumPath)
-                        .fit()
-                        .centerInside()
-                        .into(checkImage);
+            } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA){
+                path = ImageUtil.IMAGE_PATH + "tmp.jpg";
+                setCheckImage(path);
+            }else if(activityResultEvent.getRequestCode() == Navigator.ALBUM){
+                path = ImageUtil.getPath(activityResultEvent.getIntent().getData());
+                setCheckImage(path);
             }
         }
+    }
+
+    private void setCheckImage(String path){
+        Logger.v("path: " + path);
+        App.picasso.invalidate("file://" + path);
+        App.picasso.load("file://" + path)
+                .fit()
+                .centerInside()
+                .into(checkImage);
     }
 
 }

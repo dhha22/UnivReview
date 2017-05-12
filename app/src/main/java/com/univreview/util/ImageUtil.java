@@ -11,6 +11,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 
 import com.univreview.App;
 import com.univreview.log.Logger;
@@ -27,7 +28,6 @@ import java.io.OutputStream;
 public class ImageUtil {
     private static final float MAX_HEIGHT = 1280.0f;
     private static final float MAX_WIDTH = 1280.0f;
-    public static final Uri TEMP_IMAGE_URI = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "tmp.jpg"));
     private static final String EXTRA_STORAGE = Environment.getExternalStorageDirectory().getAbsolutePath();
     private static final String FOLDER_NAME = "/" + "UnivReview" + "/";
     public static final String IMAGE_PATH = EXTRA_STORAGE + FOLDER_NAME;

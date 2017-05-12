@@ -211,7 +211,7 @@ public class MypageFragment extends BaseFragment {
     }
 
     private void callFileUploadApi(Uri uploadUri) {
-        Retro.instance.fileService(uploadUri, "profile")
+        Retro.instance.fileService(ImageUtil.getPath(uploadUri), "profile")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> callUserUpdateApi(result.fileLocation), Logger::e);

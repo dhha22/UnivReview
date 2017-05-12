@@ -26,6 +26,7 @@ import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
 import com.univreview.util.ErrorUtils;
+import com.univreview.util.ImageUtil;
 import com.univreview.util.SimpleButtonState;
 import com.univreview.util.Util;
 
@@ -246,7 +247,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
     private void callFileUploadApi(Uri uploadUri) {
         if (uploadUri != null) {
-            Retro.instance.fileService(uploadUri, "profile")
+            Retro.instance.fileService(ImageUtil.getPath(uploadUri), "profile")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> callUserUpdateApi(result.fileLocation), error -> goMain());

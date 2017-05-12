@@ -17,7 +17,7 @@ android {
         applicationId "com.univreview"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName "@string/app_version"
         multiDexEnabled true
     }
