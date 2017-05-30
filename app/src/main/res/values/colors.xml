@@ -26,6 +26,8 @@
     <!-- review -->
     <color name="reviewTxtColor">#a5a5a5</color>
     <color name="toolbarSubTxtColor">#9bffffff</color>
+    <color name="reviewUserNameColor">#8f92a0</color>
+    <color name="reviewCommentColor">#9d9fa8</color>
 
     <!-- search -->
     <color name="searchBgColor">#327afd</color>

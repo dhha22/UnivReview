@@ -48,10 +48,11 @@ public class ExpandableAdapter extends AbstractExpandableItemAdapter<ExpandableA
             boolean isExpanded;
             if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
                 isExpanded = true;
+
             } else {
                 isExpanded = false;
             }
-            //holder.v.setExpandState(isExpanded);
+            holder.v.setExpandState(isExpanded);
         }
 
     }
@@ -129,6 +130,7 @@ public class ExpandableAdapter extends AbstractExpandableItemAdapter<ExpandableA
         public SearchItemGroup(View itemView) {
             super(itemView);
             v = (SearchListItemView)itemView;
+            v.showIndicator();
         }
     }
 
@@ -138,7 +140,7 @@ public class ExpandableAdapter extends AbstractExpandableItemAdapter<ExpandableA
         public SearchItemChild(View itemView) {
             super(itemView);
             v = (SearchListItemView) itemView;
-            v.setLeftPadding(16);
+            v.setSearchChild();
         }
     }
 }

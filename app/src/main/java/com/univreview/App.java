@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -35,7 +36,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2016. 12. 25..
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     private static App instance;
     private static volatile Activity currentActivity = null;
     public static int SCREEN_WIDTH;

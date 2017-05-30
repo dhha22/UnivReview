@@ -6,6 +6,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.univreview.App;
@@ -20,6 +23,7 @@ import butterknife.ButterKnife;
  */
 public class SearchListItemView extends FrameLayout {
     @BindView(R.id.name_txt) TextView nameTxt;
+    @BindView(R.id.indicator) ImageView indicator;
     private Context context;
 
     public SearchListItemView(Context context) {
@@ -53,7 +57,21 @@ public class SearchListItemView extends FrameLayout {
         }
     }
 
-    public void setLeftPadding(int size) {
-        nameTxt.setPadding((int) Util.dpToPx(context, size), App.dp12, App.dp12, App.dp12);
+    public void setSearchChild() {
+        RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        param.setMargins(Util.dpToPx(context, 26), 0, 0, 0);
+        nameTxt.setLayoutParams(param);
+    }
+
+    public void setExpandState(boolean isExpanded){
+        if(isExpanded){
+            indicator.setImageDrawable(Util.getDrawable(context, R.drawable.ic_search_list_close));
+        }else{
+            indicator.setImageDrawable(Util.getDrawable(context, R.drawable.ic_search_list_open));
+        }
+    }
+
+    public void showIndicator(){
+        indicator.setVisibility(VISIBLE);
     }
 }
