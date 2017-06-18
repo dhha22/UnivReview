@@ -5,6 +5,7 @@ import android.support.v7.widget.AppCompatRatingBar;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -48,6 +49,10 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.attendance_rate) AppCompatRatingBar attendanceRate;
     @BindView(R.id.grade_rate) AppCompatRatingBar gradeRate;
     @BindView(R.id.achievement_rate) AppCompatRatingBar achievementRate;
+    @BindView(R.id.bottom_line) View bottomLine;
+    @BindView(R.id.bottom_layout) LinearLayout bottomLayout;
+    @BindView(R.id.like_layout) LinearLayout likeLayout;
+    @BindView(R.id.comment_layout) LinearLayout commentLayout;
     private Context context;
     private int position;
     private Status status;
@@ -135,7 +140,7 @@ public class ReviewItemView extends FrameLayout {
                     Navigator.goReviewDetail(context, review, layout);
                 }
             });
-
+            likeLayout.setOnClickListener(v -> callLikeApi(review.id));
         } else {
             setVisibility(INVISIBLE);
         }
@@ -159,6 +164,8 @@ public class ReviewItemView extends FrameLayout {
                 userLayout.setVisibility(GONE);
                 reviewTxt.setVisibility(GONE);
                 moreBtn.setVisibility(GONE);
+                bottomLine.setVisibility(GONE);
+                bottomLayout.setVisibility(GONE);
                 break;
             case MY_REVIEW:
                 subjectTxt.setVisibility(VISIBLE);
@@ -167,6 +174,8 @@ public class ReviewItemView extends FrameLayout {
                 userLayout.setVisibility(GONE);
                 reviewTxt.setVisibility(VISIBLE);
                 moreBtn.setVisibility(VISIBLE);
+                bottomLine.setVisibility(VISIBLE);
+                bottomLayout.setVisibility(VISIBLE);
                 break;
             case READ_REVIEW:
                 subjectTxt.setVisibility(VISIBLE);
@@ -175,6 +184,8 @@ public class ReviewItemView extends FrameLayout {
                 userLayout.setVisibility(VISIBLE);
                 reviewTxt.setVisibility(VISIBLE);
                 moreBtn.setVisibility(VISIBLE);
+                bottomLine.setVisibility(VISIBLE);
+                bottomLayout.setVisibility(VISIBLE);
                 break;
         }
     }
@@ -182,4 +193,10 @@ public class ReviewItemView extends FrameLayout {
     public enum Status {
         WRITE_REVIEW, MY_REVIEW, READ_REVIEW
     }
+
+    // api
+    private void callLikeApi(long id){
+        Util.toast("like review id: " + id);
+    }
+
 }

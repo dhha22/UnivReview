@@ -75,6 +75,7 @@ public class ReviewListFragment extends AbsListFragment {
     @BindView(R.id.bottom_sheet) LinearLayout bottomSheet;
     @BindView(R.id.update) TextView update;
     @BindView(R.id.report) TextView report;
+    private ReviewTotalScoreView headerView;
     private ReviewAdapter adapter;
     private String type;
     private long id;
@@ -161,7 +162,8 @@ public class ReviewListFragment extends AbsListFragment {
             toolbarTitleTxt.setText(name);
             toolbarSubtitleTxt.setText("전체");
         }
-        adapter = new ReviewAdapter(context);
+        headerView = new ReviewTotalScoreView(context);
+        adapter = new ReviewAdapter(context, headerView);
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -222,28 +224,22 @@ public class ReviewListFragment extends AbsListFragment {
 
 
     private class ReviewAdapter extends CustomAdapter {
-        private static final int HEADER = 0;
-        private static final int CONTENT = 1;
-        private float totalRate;
-        private Review reviewAverage = new Review();
 
-        public ReviewAdapter(Context context) {
-            super(context);
+        public ReviewAdapter(Context context, View headerView) {
+            super(context, headerView);
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == HEADER) {
-                return new HeaderViewHolder(new ReviewTotalScoreView(context));
+            if (viewType != HEADER) {
+                return new ViewHolder(new ReviewItemView(context));
             }
-            return new ViewHolder(new ReviewItemView(context));
+            return super.onCreateViewHolder(parent, viewType);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (getItemViewType(position) == HEADER) {
-                ((HeaderViewHolder) holder).v.setData(totalRate, reviewAverage);
-            } else if (getItemViewType(position) == CONTENT) {
+           if (getItemViewType(position) != HEADER) {
                 if (!type.equals(MY_REVIEW)) {
                     ((ViewHolder) holder).v.setData((Review) list.get(position - 1), position - 1);
                 } else {
@@ -253,19 +249,12 @@ public class ReviewListFragment extends AbsListFragment {
             }
         }
 
-        public void setTotalRate(float rate, Review average) {
-            this.totalRate = rate;
-            this.reviewAverage = average;
-            notifyDataSetChanged();
-        }
-
-
         @Override
         public int getItemCount() {
             if (!type.equals(MY_REVIEW)) {
-                return list.size() + 1;
+                return list.size() + HEADER;
             }
-            return list.size();
+            return super.getItemCount();
         }
 
         @Override
@@ -273,7 +262,7 @@ public class ReviewListFragment extends AbsListFragment {
             if (!type.equals(MY_REVIEW) && position == 0) {
                 return HEADER;
             }
-            return CONTENT;
+            return super.getItemViewType(position);
         }
 
         @Override
@@ -281,14 +270,6 @@ public class ReviewListFragment extends AbsListFragment {
             return (Review) list.get(position);
         }
 
-        protected class HeaderViewHolder extends RecyclerView.ViewHolder{
-            final ReviewTotalScoreView v;
-
-            public HeaderViewHolder(View itemView) {
-                super(itemView);
-                v = (ReviewTotalScoreView) itemView;
-            }
-        }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {
             final ReviewItemView v;
@@ -377,7 +358,6 @@ public class ReviewListFragment extends AbsListFragment {
                 refresh();
                 filterNameTxt.setText(name);
                 toolbarSubtitleTxt.setText(name);
-                ((NavigationActivity)getActivity()).unregisterActivityResult();
             }
         }
     }
@@ -439,7 +419,7 @@ public class ReviewListFragment extends AbsListFragment {
         setResult(page);
         setStatus(Status.IDLE);
         Logger.v("result: " + reviewListModel);
-        adapter.setTotalRate(reviewListModel.totalAverageRates, reviewListModel.getReviewAverage());
+        headerView.setData(reviewListModel.totalAverageRates, reviewListModel.getReviewAverage());
         Observable.from(reviewListModel.reviews)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -449,6 +429,9 @@ public class ReviewListFragment extends AbsListFragment {
     private void errorResponse(Throwable e) {
         setStatus(Status.ERROR);
         if (isFirstError) {
+            if (page == DEFAULT_PAGE){
+                adapter.clear();
+            }
             adapter.addItem(null);
             isFirstError = false;
         }

@@ -2,6 +2,8 @@ package com.univreview.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.listener.OnItemLongClickListener;
@@ -20,14 +22,39 @@ import rx.schedulers.Schedulers;
  */
 public abstract class CustomAdapter extends RecyclerView.Adapter {
     protected Context context;
+    protected View headerView;
+    protected final int HEADER = 1;
 
     public CustomAdapter(Context context) {
         this.context = context;
     }
 
+    public CustomAdapter(Context context, View headerView) {
+        this.context = context;
+        this.headerView = headerView;
+    }
+
     protected List<AbstractDataProvider> list = new ArrayList<>();
     protected OnItemClickListener itemClickListener;
     protected OnItemLongClickListener itemLongClickListener;
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (headerView != null && viewType == HEADER) {
+            Logger.v("create header view holder: " + headerView.toString());
+            return new HeaderViewHolder(headerView);
+        }
+        return null;
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        if(headerView != null && position == 0){
+            return HEADER;
+        }
+        return super.getItemViewType(position);
+    }
 
     public AbstractDataProvider getItem(int position) {
         if (list.size() > position) {
@@ -63,6 +90,16 @@ public abstract class CustomAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        if (headerView != null) {
+            return list.size() + HEADER;
+        }
         return list.size();
+    }
+
+    protected class HeaderViewHolder extends RecyclerView.ViewHolder {
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+            headerView = itemView;
+        }
     }
 }

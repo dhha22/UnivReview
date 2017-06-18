@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.univreview.App;
 import com.univreview.R;
+import com.univreview.activity.NavigationActivity;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.fragment.BaseFragment;

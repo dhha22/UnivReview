@@ -9,6 +9,7 @@
     <color name="transparent">#00000000</color>
     <color name="kakaoColor">#f6a623</color>
     <color name="facebookColor">#225b99</color>
+    <color name="rowColor">#f5f5f5</color>
 
     <color name="advice_review_dialog">#ce000000</color>
     <color name="textColor">#414141</color>
@@ -28,6 +29,7 @@
     <color name="toolbarSubTxtColor">#9bffffff</color>
     <color name="reviewUserNameColor">#8f92a0</color>
     <color name="reviewCommentColor">#9d9fa8</color>
+    <color name="reviewSecondTxtColor">#8f92a0</color>
 
     <!-- search -->
     <color name="searchBgColor">#327afd</color>
@@ -35,7 +37,6 @@
 
     <!-- point -->
     <color name="timeColor">#c2c2c2</color>
-    <color name="pointRowColor">#f5f5f5</color>
     <color name="pointSubtractColor">#ff421b</color>
 
     <!-- icon -->

@@ -110,9 +110,10 @@ public class SearchFragment extends AbsListFragment {
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
             if (isReviewSearch) {
-                Navigator.goReviewList(context, type,
-                        adapter.getItem(position).getId(), adapter.getItem(position).getName());
-                activity.finish();
+                String name = adapter.getItem(position).getName();
+                input.setText(name);
+                input.setSelection(name.length());
+                Navigator.goReviewList(context, type, adapter.getItem(position).getId(), name);
             } else {
                 Intent intent = new Intent();
                 Logger.v("id : " + adapter.getItem(position).getId());

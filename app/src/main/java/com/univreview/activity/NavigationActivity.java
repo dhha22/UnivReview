@@ -52,35 +52,41 @@ public class NavigationActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+        Logger.v("register activity result");
         BusProvider.newInstance().register(this);
     }
 
-    @Override protected void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
-        unregisterActivityResult();
+        this.requestCode = this.resultCode = 0;
+        this.data = null;
+            BusProvider.newInstance().unregister(this);
     }
 
-    public void unregisterActivityResult(){
-        BusProvider.newInstance().unregister(this);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        this.requestCode =requestCode;
-        this.resultCode = resultCode;
-        this.data =data;
-        Logger.v("navigation activity on activity result");
-        BusProvider.newInstance().post(produceActivityResultEvent());
+        if(resultCode == RESULT_OK) {
+            this.requestCode = requestCode;
+            this.resultCode = resultCode;
+            this.data = data;
+            Logger.v("navigation activity on activity result");
+            BusProvider.newInstance().post(produceActivityResultEvent());
+        }
     }
 
 
-    @Produce public ActivityResultEvent produceActivityResultEvent() {
+    @Produce
+    public ActivityResultEvent produceActivityResultEvent() {
         return new ActivityResultEvent(requestCode, resultCode, data);
     }
+
 
     @Override
     public void finish() {

@@ -35,6 +35,7 @@ import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
 import com.univreview.view.CommentItemView;
 import com.univreview.view.RecyclerViewCustom;
+import com.univreview.view.ReviewDetailHeader;
 import com.univreview.view.ReviewRatingIndicatorView;
 
 import java.io.IOException;
@@ -50,19 +51,12 @@ import rx.schedulers.Schedulers;
  */
 public class ReviewDetailFragment extends BaseFragment {
     private static final int POSITION_NONE = -1;
-    @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
-    @BindView(R.id.name_txt) TextView nameTxt;
-    @BindView(R.id.auth_mark) TextView authMark;
-    @BindView(R.id.time_txt) TextView timeTxt;
-    @BindView(R.id.more_btn) ImageButton moreBtn;
-    @BindView(R.id.review_rating_indicator_view) ReviewRatingIndicatorView reviewRatingIndicatorView;
-    @BindView(R.id.review_detail_layout) LinearLayout reviewDetailLayout;
-    @BindView(R.id.review_detail_txt) TextView reviewDetailTxt;
+    private ReviewDetailHeader headerView;
     @BindView(R.id.dim_view) View dimView;
     @BindView(R.id.bottom_sheet) LinearLayout bottomSheet;
     @BindView(R.id.update) TextView update;
     @BindView(R.id.report) TextView report;
-    @BindView(R.id.comment_post) Button commentBtn;
+
     @BindView(R.id.recycler_view) RecyclerViewCustom commentRecyclerView;
     private BottomSheetBehavior behavior;
     private Review data;
@@ -100,6 +94,7 @@ public class ReviewDetailFragment extends BaseFragment {
         ((BaseActivity)activity).setOnBackPressedListener(backPressedListener);
         View view = inflater.inflate(R.layout.fragment_review_detail, container, false);
         ButterKnife.bind(this, view);
+        headerView = new ReviewDetailHeader(context);
         toolbar.setBackBtnVisibility(true);
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
         rootLayout.addView(view);
@@ -109,7 +104,7 @@ public class ReviewDetailFragment extends BaseFragment {
 
     private void init() {
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        commentAdapter = new CommentAdapter(context);
+        commentAdapter = new CommentAdapter(context, headerView);
         commentAdapter.setOnItemClickListener(commentItemClickListener);
         commentAdapter.setOnItemLongClickListener(commentItemLongClickListener);
         commentRecyclerView.setAdapter(commentAdapter);
@@ -138,49 +133,12 @@ public class ReviewDetailFragment extends BaseFragment {
         callReviewComment(data.id);
 
         dimView.setOnClickListener(moreBtnClickListener);
-        moreBtn.setOnClickListener(moreBtnClickListener);
+        headerView.setMoreBtnOnClickListener(moreBtnClickListener);
 
     }
 
     private void setData(Review data) {
-        nameTxt.setText(data.user.name);
-        if (data.user.authenticated != null) {
-            if (data.user.authenticated) {
-                authMark.setVisibility(View.VISIBLE);
-            } else {
-                authMark.setVisibility(View.GONE);
-            }
-        }else{
-            authMark.setVisibility(View.GONE);
-        }
-        commentBtn.setOnClickListener(v -> postReviewComment(data.id));
-
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        int index = 0;
-        if (data.subjectDetail.subject != null) {
-            builder.append(data.subjectDetail.subject.getName() + " ");
-        }
-        Util.addSizeSpan(builder, index, Util.dpToPx(context, 16));
-        Util.addColorSpan(context, builder, index, R.color.colorPrimary);
-        index = builder.length();
-
-        if (data.subjectDetail.professor != null) {
-            builder.append(data.subjectDetail.professor.getName() + " 교수님");
-        }
-        Util.addSizeSpan(builder, index, Util.dpToPx(context, 14));
-        Util.addColorSpan(context, builder, index, R.color.professorTxtColor);
-
-        subjectProfessorTxt.setText(builder);
-
-        if (data.reviewDetail != null) {
-            reviewDetailTxt.setText(data.reviewDetail.reviewDetail);
-            reviewDetailLayout.setVisibility(View.VISIBLE);
-        }
-
-        timeTxt.setText(new TimeUtil().getPointFormat(data.createdDate));
-        reviewRatingIndicatorView.setData(data);
-
-
+        headerView.setData(data);
         if (App.userId == data.userId) {
             update.setOnClickListener(v -> {
                 hiddenBottomSheet();
@@ -207,24 +165,29 @@ public class ReviewDetailFragment extends BaseFragment {
     private class CommentAdapter extends CustomAdapter{
         private static final int MAX_LENGTH = 5;
 
-        public CommentAdapter(Context context) {
-            super(context);
+        public CommentAdapter(Context context, View headerView) {
+            super(context, headerView);
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(new CommentItemView(context));
+            if (viewType != HEADER) {
+                return new ViewHolder(new CommentItemView(context));
+            }
+            return super.onCreateViewHolder(parent, viewType);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder)holder).v.setData((ReviewComment)list.get(position));
+            if (getItemViewType(position) != HEADER) {
+                ((ViewHolder) holder).v.setData((ReviewComment) list.get(position - 1));
+            }
         }
 
         @Override
         public int getItemCount() {
             if (list.size() > MAX_LENGTH) {
-                return MAX_LENGTH;
+                return MAX_LENGTH + HEADER;
             }
             return super.getItemCount();
         }
