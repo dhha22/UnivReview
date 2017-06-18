@@ -2,6 +2,8 @@ package com.univreview.network;
 
 import com.univreview.model.RecentReviewModel;
 import com.univreview.model.Review;
+import com.univreview.model.ReviewComment;
+import com.univreview.model.ReviewCommentListModel;
 import com.univreview.model.ReviewDetail;
 import com.univreview.model.ReviewExist;
 import com.univreview.model.ReviewListModel;
@@ -13,8 +15,7 @@ import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
@@ -55,5 +56,18 @@ public interface ReviewService {
 
     @GET("review/exist")
     Observable<ReviewExist> getReviewExist(@HeaderMap Map<String, String> headers, @Query("subjectId") long subjectId);
+
+    //  리뷰 댓글
+    @GET("comment/review")
+    Observable<ReviewCommentListModel> getReviewComment(@HeaderMap Map<String, String> headers, @Query("reviewId") long reviewId);
+
+    @POST("comment/review")
+    Observable<ResponseBody> postReviewComment(@HeaderMap Map<String, String> headers, @Body ReviewComment body);
+
+    @PUT("comment/review/{id}")
+    Observable<ResponseBody> putReviewComment(@HeaderMap Map<String, String> headers, @Path("id") long id, @Body ReviewComment body);
+
+    @DELETE("comment/review")
+    Observable<ResponseBody> deleteComment(@HeaderMap Map<String, String> headers,  @Query("commentId") long id);
 
 }

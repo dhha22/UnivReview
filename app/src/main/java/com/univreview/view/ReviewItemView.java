@@ -17,6 +17,7 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.listener.OnItemClickListener;
+import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
@@ -71,6 +72,7 @@ public class ReviewItemView extends FrameLayout {
 
     public void setData(Review review, int position) {
         if (review != null) {
+            Logger.v("review: " + review);
             setVisibility(VISIBLE);
             if (review.user != null) {
                 nameTxt.setText(review.user.name);
@@ -80,6 +82,8 @@ public class ReviewItemView extends FrameLayout {
                     } else {
                         authMarkTxt.setVisibility(GONE);
                     }
+                }else{
+                    authMarkTxt.setVisibility(GONE);
                 }
             }
             if (review.reviewDetail != null) {

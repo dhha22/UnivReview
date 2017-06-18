@@ -60,6 +60,10 @@ public class NavigationActivity extends BaseActivity {
 
     @Override protected void onPause() {
         super.onPause();
+        unregisterActivityResult();
+    }
+
+    public void unregisterActivityResult(){
         BusProvider.newInstance().unregister(this);
     }
 

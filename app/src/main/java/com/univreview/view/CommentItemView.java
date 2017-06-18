@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.model.ReviewComment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +32,8 @@ public class CommentItemView extends FrameLayout{
         ButterKnife.bind(this);
     }
 
-    public void setData(){
-
+    public void setData(ReviewComment data){
+        nameTxt.setText(data.name);
+        messageTxt.setText(data.commentDetail);
     }
 }

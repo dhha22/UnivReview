@@ -1,13 +1,18 @@
 package com.univreview.fragment.review;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,18 +21,27 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
+import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.listener.OnBackPressedListener;
+import com.univreview.listener.OnItemClickListener;
+import com.univreview.listener.OnItemLongClickListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
+import com.univreview.model.ReviewComment;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
+import com.univreview.view.CommentItemView;
+import com.univreview.view.RecyclerViewCustom;
 import com.univreview.view.ReviewRatingIndicatorView;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -48,8 +62,11 @@ public class ReviewDetailFragment extends BaseFragment {
     @BindView(R.id.bottom_sheet) LinearLayout bottomSheet;
     @BindView(R.id.update) TextView update;
     @BindView(R.id.report) TextView report;
+    @BindView(R.id.comment_post) Button commentBtn;
+    @BindView(R.id.recycler_view) RecyclerViewCustom commentRecyclerView;
     private BottomSheetBehavior behavior;
     private Review data;
+    private CommentAdapter commentAdapter;
     public static boolean isRefresh = false;
 
     public static ReviewDetailFragment newInstance(Review data){
@@ -72,6 +89,7 @@ public class ReviewDetailFragment extends BaseFragment {
         Logger.v("review detail fragment refresh");
         if(isRefresh){
             callReviewSingleApi(data.id);
+            callReviewComment(data.id);
         }
     }
 
@@ -90,6 +108,11 @@ public class ReviewDetailFragment extends BaseFragment {
     }
 
     private void init() {
+        commentRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        commentAdapter = new CommentAdapter(context);
+        commentAdapter.setOnItemClickListener(commentItemClickListener);
+        commentAdapter.setOnItemLongClickListener(commentItemLongClickListener);
+        commentRecyclerView.setAdapter(commentAdapter);
         behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -112,8 +135,11 @@ public class ReviewDetailFragment extends BaseFragment {
             callReviewSingleApi(data.id);
         }
 
+        callReviewComment(data.id);
+
         dimView.setOnClickListener(moreBtnClickListener);
         moreBtn.setOnClickListener(moreBtnClickListener);
+
     }
 
     private void setData(Review data) {
@@ -124,7 +150,10 @@ public class ReviewDetailFragment extends BaseFragment {
             } else {
                 authMark.setVisibility(View.GONE);
             }
+        }else{
+            authMark.setVisibility(View.GONE);
         }
+        commentBtn.setOnClickListener(v -> postReviewComment(data.id));
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         int index = 0;
@@ -175,6 +204,43 @@ public class ReviewDetailFragment extends BaseFragment {
         isRefresh = false;
     }
 
+    private class CommentAdapter extends CustomAdapter{
+        private static final int MAX_LENGTH = 5;
+
+        public CommentAdapter(Context context) {
+            super(context);
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(new CommentItemView(context));
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ((ViewHolder)holder).v.setData((ReviewComment)list.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            if (list.size() > MAX_LENGTH) {
+                return MAX_LENGTH;
+            }
+            return super.getItemCount();
+        }
+
+        protected class ViewHolder extends RecyclerView.ViewHolder{
+            final CommentItemView v;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                v = (CommentItemView)itemView;
+                v.setOnLongClickListener(view -> itemLongClickListener.onLongClick(view, getAdapterPosition()));
+                v.setOnClickListener(view -> itemClickListener.onItemClick(view, getAdapterPosition()));
+            }
+
+        }
+    }
+
     private View.OnClickListener moreBtnClickListener = view -> {
         if(behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             expandBottomSheet();
@@ -190,6 +256,21 @@ public class ReviewDetailFragment extends BaseFragment {
             ((BaseActivity) activity).setOnBackPressedListener(null);
             activity.onBackPressed();
         }
+    };
+
+    private OnItemClickListener commentItemClickListener = (view, position) -> {
+        Logger.v("click position: " + position);
+        putReviewComment(commentAdapter.getItem(position).getId());
+    };
+
+    private OnItemLongClickListener commentItemLongClickListener = (view, position) -> {
+        Logger.v("click position: " + position);
+        new AlertDialog.Builder(context)
+                .setMessage("댓글을 삭제하시겠습니까?")
+                .setPositiveButton("확인", (dialog, which) -> deleteReviewComment(commentAdapter.getItem(position).getId()))
+                .setNegativeButton("취소", null)
+                .show();
+        return true;
     };
 
 
@@ -216,6 +297,63 @@ public class ReviewDetailFragment extends BaseFragment {
                     review.user.name = review.userName;
                     review.user.authenticated = review.authenticated;
                     setData(review);
+                }, ErrorUtils::parseError);
+    }
+
+    private void callReviewComment(long reviewId){
+        Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), reviewId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Logger.v("comment result: " + result.toString());
+                    Observable.from(result.comments)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(data -> commentAdapter.addItem(data), Logger::e);
+                }, ErrorUtils::parseError);
+    }
+
+    private void postReviewComment(long id){
+        ReviewComment body = new ReviewComment();
+        body.reviewId = id;
+        body.commentDetail = "테스트";
+        Retro.instance.reviewService().postReviewComment(App.setAuthHeader(App.userToken), body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    try {
+                        Logger.v("result: " + result.string());
+                    }catch (IOException e){
+
+                    }
+                }, ErrorUtils::parseError);
+    }
+
+    private void putReviewComment(long id){
+        ReviewComment body = new ReviewComment();
+        body.commentDetail = " 수정 테스트";
+        Retro.instance.reviewService().putReviewComment(App.setAuthHeader(App.userToken),id ,body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    try {
+                        Logger.v("result: " + result.string());
+                    }catch (IOException e){
+
+                    }
+                }, ErrorUtils::parseError);
+    }
+
+    private void deleteReviewComment(long id){
+        Retro.instance.reviewService().deleteComment(App.setAuthHeader(App.userToken), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    try {
+                        Logger.v("result: " + result.string());
+                    }catch (IOException e){
+
+                    }
                 }, ErrorUtils::parseError);
     }
 

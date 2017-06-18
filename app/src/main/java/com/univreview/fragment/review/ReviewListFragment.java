@@ -22,6 +22,7 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
+import com.univreview.activity.NavigationActivity;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
@@ -376,6 +377,7 @@ public class ReviewListFragment extends AbsListFragment {
                 refresh();
                 filterNameTxt.setText(name);
                 toolbarSubtitleTxt.setText(name);
+                ((NavigationActivity)getActivity()).unregisterActivityResult();
             }
         }
     }

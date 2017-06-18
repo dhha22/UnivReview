@@ -167,7 +167,6 @@ public class Review extends AbstractDataProvider implements Serializable{
     }
 
 
-
     @Override
     public String toString() {
         return "Review{" +
@@ -177,8 +176,19 @@ public class Review extends AbstractDataProvider implements Serializable{
                 ", attendanceRate=" + attendanceRate +
                 ", gradeRate=" + gradeRate +
                 ", achievementRate=" + achievementRate +
-                ", reviewDetail='" + reviewDetail + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", reviewDetail=" + reviewDetail +
                 ", subjectDetailId=" + subjectDetailId +
+                ", subjectId=" + subjectId +
+                ", userId=" + userId +
+                ", professorId=" + professorId +
+                ", professorName='" + professorName + '\'' +
+                ", subjectName='" + subjectName + '\'' +
+                ", user=" + user +
+                ", userName='" + userName + '\'' +
+                ", authenticated=" + authenticated +
+                ", subjectDetail=" + subjectDetail +
                 '}';
     }
 }

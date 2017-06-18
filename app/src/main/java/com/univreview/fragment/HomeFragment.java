@@ -66,7 +66,6 @@ public class HomeFragment extends BaseFragment {
 
     private void init() {
         Logger.v("init");
-        subjectTxt.setOnClickListener(v ->  Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), true));
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
         professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), true));
         majorTxt.setOnClickListener(v -> Navigator.goMajorExpandable(context));
@@ -75,11 +74,35 @@ public class HomeFragment extends BaseFragment {
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             int height = appBarLayout.getHeight() - appBarLayout.getBottom();
             float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
-            majorTxt.setAlpha(value);
-            professorTxt.setAlpha(value);
+            float majorValue;
+            if (value == 1) {
+                collapseBtn.setVisibility(View.VISIBLE);
+                majorValue = 1;
+                majorTxt.setVisibility(View.VISIBLE);
+                collapseBtn.setAlpha(1f);
+                professorTxt.setVisibility(View.VISIBLE);
+            } else if (value <= 0.7) {
+                majorValue = 0;
+                collapseBtn.setAlpha((float) Math.log(value * 1.8));
+                majorTxt.setVisibility(View.GONE);
+                professorTxt.setVisibility(View.GONE);
+            } else {
+                majorTxt.setVisibility(View.VISIBLE);
+                professorTxt.setVisibility(View.VISIBLE);
+                collapseBtn.setAlpha((float) Math.log(value * 1.8));
+                majorValue = (float) Math.log(value * 1.5);
+            }
+
+            if (value < 0.55) {
+                collapseBtn.setVisibility(View.GONE);
+            }
+
+            collapseBtn.setAlpha((float) Math.log(value * 1.8));
+            majorTxt.setAlpha(majorValue);
+            professorTxt.setAlpha(majorValue);
             if (height == 0) {
                 setSearchFormData(true);
-            } else if (height >= toolbar.getHeight() * 1.4) {
+            } else {
                 setSearchFormData(false);
             }
         });
@@ -100,13 +123,14 @@ public class HomeFragment extends BaseFragment {
 
     private void setSubjectState(boolean isExpand) {
         if (!isExpand) {
+            setSearchFormData(true);
             this.isExpand = true;
             appBarLayout.setExpanded(true, true);
         } else {
             Logger.v("go search");
             Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), true);
         }
-        setSearchFormData(isExpand);
+
     }
 
     private void setCollapseBtnState() {
@@ -120,14 +144,10 @@ public class HomeFragment extends BaseFragment {
     private void setSearchFormData(boolean isExpand) {
         Logger.v("isExpand: " + isExpand);
         if (isExpand) {
-            collapseBtn.setVisibility(View.VISIBLE);
-            majorTxt.setVisibility(View.VISIBLE);
-            professorTxt.setVisibility(View.VISIBLE);
+            this.isExpand = true;
             subjectTxt.setHint("과목명");
         } else {
-            collapseBtn.setVisibility(View.GONE);
-            majorTxt.setVisibility(View.INVISIBLE);
-            professorTxt.setVisibility(View.INVISIBLE);
+            this.isExpand = false;
             subjectTxt.setHint("과목명·교수명·학과명");
         }
     }
