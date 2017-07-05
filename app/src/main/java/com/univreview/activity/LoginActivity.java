@@ -49,9 +49,7 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
-
     private CallbackManager facebookCallbackManager;
-    private ProgressDialog progressDialog;
     private SessionCallback kakaoCallback;
 
     @Override
@@ -65,7 +63,7 @@ public class LoginActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        progressDialog = Util.progressDialog(this);
+
 
         //facebook
         facebookCallbackManager = CallbackManager.Factory.create();
@@ -118,6 +116,7 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onCancel() {
+            progressDialog.dismiss();
         }
 
         @Override
@@ -156,6 +155,7 @@ public class LoginActivity extends BaseActivity {
         UserManagement.requestMe(new MeResponseCallback() {
             @Override
             public void onFailure(ErrorResult errorResult) {
+                progressDialog.dismiss();
                 int ErrorCode = errorResult.getErrorCode();
                 int ClientErrorCode = -777;
                 if (ErrorCode == ClientErrorCode) {
@@ -167,6 +167,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onSessionClosed(ErrorResult errorResult) {
+                progressDialog.dismiss();
                 Logger.e("카카오 로그인 에러");
             }
 

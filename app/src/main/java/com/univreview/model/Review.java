@@ -45,6 +45,12 @@ public class Review extends AbstractDataProvider implements Serializable{
     public String userName;
     @Expose
     public Boolean authenticated;
+    @Expose
+    public boolean likes;
+    @Expose
+    public long likeCount;
+    @Expose
+    public long commentCount;
 
     @Expose
     public SubjectDetail subjectDetail = new SubjectDetail();

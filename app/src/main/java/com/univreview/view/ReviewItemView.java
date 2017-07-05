@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.univreview.App;
@@ -20,11 +20,15 @@ import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
-import com.univreview.util.TimeUtil;
+import com.univreview.model.ReviewLike;
+import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 23..
@@ -39,6 +43,7 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
     @BindView(R.id.more_btn) ImageButton moreBtn;
     @BindView(R.id.review_txt) TextView reviewTxt;
+    @BindView(R.id.like_img) ImageView likeImg;
     @BindView(R.id.difficulty_txt) TextView difficultyTxt;
     @BindView(R.id.assignment_txt) TextView assignmentTxt;
     @BindView(R.id.attendance_txt) TextView attendanceTxt;
@@ -52,6 +57,8 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.bottom_line) View bottomLine;
     @BindView(R.id.bottom_layout) LinearLayout bottomLayout;
     @BindView(R.id.like_layout) LinearLayout likeLayout;
+    @BindView(R.id.like_cnt) TextView likeCntTxt;
+    @BindView(R.id.comment_cnt) TextView commentCntTxt;
     @BindView(R.id.comment_layout) LinearLayout commentLayout;
     private Context context;
     private int position;
@@ -91,6 +98,19 @@ public class ReviewItemView extends FrameLayout {
                     authMarkTxt.setVisibility(GONE);
                 }
             }
+
+            likeImg.setSelected(review.likes);
+            likeCntTxt.setText(review.likeCount+"명");
+            commentCntTxt.setText(review.commentCount+"명");
+            likeLayout.setOnClickListener(v -> {
+                callReviewLike(review.id);
+                if (likeImg.isSelected()) {
+                    likeImg.setSelected(false);
+                } else {
+                    likeImg.setSelected(true);
+                }
+            });
+
             if (review.reviewDetail != null) {
                 reviewTxt.setVisibility(VISIBLE);
                 reviewTxt.setText(review.reviewDetail.reviewDetail);
@@ -140,7 +160,7 @@ public class ReviewItemView extends FrameLayout {
                     Navigator.goReviewDetail(context, review, layout);
                 }
             });
-            likeLayout.setOnClickListener(v -> callLikeApi(review.id));
+            likeLayout.setOnClickListener(v -> callReviewLike(review.id));
         } else {
             setVisibility(INVISIBLE);
         }
@@ -195,8 +215,10 @@ public class ReviewItemView extends FrameLayout {
     }
 
     // api
-    private void callLikeApi(long id){
-        Util.toast("like review id: " + id);
+    private void callReviewLike(long id){
+        Retro.instance.reviewService().likeReview(App.setAuthHeader(App.userToken), new ReviewLike(id))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> likeImg.setSelected(result.like), ErrorUtils::parseError);
     }
-
 }

@@ -331,14 +331,14 @@
                 android:layout_height="14dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="4dp"
-                android:src="@color/black" />
+                android:src="@drawable/like_selector" />
 
             <TextView
                 android:id="@+id/like_cnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
-                android:text="0명"
+                android:text="0개"
                 android:textColor="@color/reviewSecondTxtColor"
                 android:textStyle="bold" />
 
@@ -363,7 +363,7 @@
                 android:layout_height="14dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="4dp"
-                android:src="@color/black" />
+                android:src="@drawable/ic_review_comment" />
 
             <TextView
                 android:id="@+id/comment_cnt"

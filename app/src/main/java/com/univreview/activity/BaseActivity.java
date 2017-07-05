@@ -1,21 +1,25 @@
 package com.univreview.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.univreview.R;
 import com.univreview.listener.OnBackPressedListener;
+import com.univreview.util.Util;
 
 /**
  * Created by DavidHa on 2016. 12. 25..
  */
 public class BaseActivity extends AppCompatActivity {
     protected OnBackPressedListener onBackPressedListener;
+    protected ProgressDialog progressDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme_NoActionBar);
+        progressDialog = Util.progressDialog(this);
     }
 
     protected void setFullScreen(){
@@ -36,6 +40,14 @@ public class BaseActivity extends AppCompatActivity {
             onBackPressedListener.doBack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
     }
 }

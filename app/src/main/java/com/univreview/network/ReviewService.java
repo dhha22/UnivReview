@@ -1,11 +1,13 @@
 package com.univreview.network;
 
+import com.univreview.model.LikeResponse;
 import com.univreview.model.RecentReviewModel;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewComment;
 import com.univreview.model.ReviewCommentListModel;
 import com.univreview.model.ReviewDetail;
 import com.univreview.model.ReviewExist;
+import com.univreview.model.ReviewLike;
 import com.univreview.model.ReviewListModel;
 import com.univreview.model.ReviewModel;
 import com.univreview.model.ReviewReport;
@@ -69,5 +71,9 @@ public interface ReviewService {
 
     @DELETE("comment/review")
     Observable<ResponseBody> deleteComment(@HeaderMap Map<String, String> headers,  @Query("commentId") long id);
+
+    // 리뷰 좋아요
+    @POST("like/review")
+    Observable<LikeResponse> likeReview(@HeaderMap Map<String, String> headers, @Body ReviewLike body);
 
 }

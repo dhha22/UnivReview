@@ -130,10 +130,13 @@ public class ReviewListFragment extends AbsListFragment {
     private void init() {
         App.picasso.load(randomImageModel.getImageURL()).fit().centerCrop().into(toolbarImage);
         if (type.equals(MY_REVIEW)) {
+            adapter = new ReviewAdapter(context);
             appBarLayout.setVisibility(View.GONE);
             toolbar.setBackBtnVisibility(true);
             toolbar.setTitleTxt(name);
         } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
+            headerView = new ReviewTotalScoreView(context);
+            adapter = new ReviewAdapter(context, headerView);
             toolbar.setVisibility(View.GONE);
             recyclerView.setPadding(0, (int) Util.dpToPx(context, 38), 0, 0);
             appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
@@ -162,8 +165,7 @@ public class ReviewListFragment extends AbsListFragment {
             toolbarTitleTxt.setText(name);
             toolbarSubtitleTxt.setText("전체");
         }
-        headerView = new ReviewTotalScoreView(context);
-        adapter = new ReviewAdapter(context, headerView);
+
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -224,6 +226,9 @@ public class ReviewListFragment extends AbsListFragment {
 
 
     private class ReviewAdapter extends CustomAdapter {
+        public ReviewAdapter(Context context) {
+            super(context);
+        }
 
         public ReviewAdapter(Context context, View headerView) {
             super(context, headerView);
@@ -419,7 +424,9 @@ public class ReviewListFragment extends AbsListFragment {
         setResult(page);
         setStatus(Status.IDLE);
         Logger.v("result: " + reviewListModel);
-        headerView.setData(reviewListModel.totalAverageRates, reviewListModel.getReviewAverage());
+        if (headerView != null) {
+            headerView.setData(reviewListModel.totalAverageRates, reviewListModel.getReviewAverage());
+        }
         Observable.from(reviewListModel.reviews)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -429,7 +436,7 @@ public class ReviewListFragment extends AbsListFragment {
     private void errorResponse(Throwable e) {
         setStatus(Status.ERROR);
         if (isFirstError) {
-            if (page == DEFAULT_PAGE){
+            if (page == DEFAULT_PAGE) {
                 adapter.clear();
             }
             adapter.addItem(null);

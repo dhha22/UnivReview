@@ -2,6 +2,9 @@ package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by DavidHa on 2017. 5. 31..
  */
@@ -21,7 +24,10 @@ public class ReviewComment extends AbstractDataProvider{
     public String createdDate;
     @Expose
     public String commentType;
-
+    @Expose
+    public Long parentCommentId;
+    @Expose
+    public List<ReviewComment> reply;
     @Override
     public long getId() {
         return id;

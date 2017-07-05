@@ -10,16 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.univreview.App;
 import com.univreview.R;
 import com.univreview.model.Review;
+import com.univreview.model.ReviewLike;
+import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.univreview.App.context;
 
@@ -36,6 +43,10 @@ public class ReviewDetailHeader extends FrameLayout {
     @BindView(R.id.review_rating_indicator_view) ReviewRatingIndicatorView reviewRatingIndicatorView;
     @BindView(R.id.review_detail_layout) LinearLayout reviewDetailLayout;
     @BindView(R.id.review_detail_txt) TextView reviewDetailTxt;
+    @BindView(R.id.like_layout) LinearLayout likeLayout;
+    @BindView(R.id.like_cnt) TextView likeCntTxt;
+    @BindView(R.id.comment_cnt) TextView commentCntTxt;
+    @BindView(R.id.like_img) ImageView likeImg;
     private Context context;
 
     public ReviewDetailHeader(@NonNull Context context) {
@@ -51,7 +62,9 @@ public class ReviewDetailHeader extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.review_detail_header, this, true);
         this.context = context;
         ButterKnife.bind(this);
+
     }
+
 
     public void setData(Review data){
         nameTxt.setText(data.user.name);
@@ -65,6 +78,17 @@ public class ReviewDetailHeader extends FrameLayout {
             authMark.setVisibility(View.GONE);
         }
 
+        likeImg.setSelected(data.likes);
+        likeCntTxt.setText(data.likeCount+"명");
+        commentCntTxt.setText(data.commentCount+"명");
+        likeLayout.setOnClickListener(v -> {
+            callReviewLike(data.id);
+            if (likeImg.isSelected()) {
+                likeImg.setSelected(false);
+            } else {
+                likeImg.setSelected(true);
+            }
+        });
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         int index = 0;
@@ -94,5 +118,12 @@ public class ReviewDetailHeader extends FrameLayout {
 
     public void setMoreBtnOnClickListener(OnClickListener clickListener){
         moreBtn.setOnClickListener(clickListener);
+    }
+
+    private void callReviewLike(long id){
+        Retro.instance.reviewService().likeReview(App.setAuthHeader(App.userToken), new ReviewLike(id))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> likeImg.setSelected(result.like), ErrorUtils::parseError);
     }
 }
