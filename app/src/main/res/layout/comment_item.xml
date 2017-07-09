@@ -48,7 +48,8 @@
         android:textColor="@color/timeColor"
         android:layout_marginTop="6dp"
         android:layout_marginRight="12dp"
-        android:text="댓글달기"
+        android:textStyle="bold"
+        android:text="답글달기"
         android:textSize="12dp" />
 
     <TextView

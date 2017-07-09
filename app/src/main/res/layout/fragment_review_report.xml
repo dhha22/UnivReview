@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RadioGroup
@@ -15,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="28dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:paddingLeft="18dp"
             android:text="음란성 및 욕설 또는 허위사실 내용"
             android:textColor="@color/black"

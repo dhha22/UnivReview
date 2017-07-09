@@ -42,6 +42,7 @@ public class PointListFragment extends AbsListFragment {
     private UnivReviewRecyclerView recyclerView;
     private int point;
     private PointAdapter adapter;
+    private PointListHeaderView headerView;
 
     public static PointListFragment newInstance(int point){
         PointListFragment fragment = new PointListFragment();
@@ -66,8 +67,16 @@ public class PointListFragment extends AbsListFragment {
         toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("포인트");
+        init();
+        rootLayout.addView(recyclerView);
+        return rootLayout;
+    }
 
-        adapter = new PointAdapter(context);
+    private void init() {
+        headerView = new PointListHeaderView(context);
+        headerView.setPoint(point);
+        headerView.setBuyTicketListener(v -> callBuyTicketApi());
+        adapter = new PointAdapter(context, headerView);
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
@@ -82,8 +91,6 @@ public class PointListFragment extends AbsListFragment {
                 }
             }
         });
-        rootLayout.addView(recyclerView);
-        return rootLayout;
     }
 
     @Override
@@ -107,58 +114,24 @@ public class PointListFragment extends AbsListFragment {
     }
 
     private class PointAdapter extends CustomAdapter {
-        private static final int HEADER = 0;
-        private static final int CONTENT = 1;
-        private UserTicket userTicket;
 
-        public PointAdapter(Context context) {
-            super(context);
+        public PointAdapter(Context context, View headerView) {
+            super(context, headerView);
         }
+
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == HEADER) {
-                return new HeaderViewHolder(new PointListHeaderView(context));
+            if (viewType == CONTENT) {
+                return new ViewHolder(new PointItemView(context));
             }
-            return new ViewHolder(new PointItemView(context));
+            return super.onCreateViewHolder(parent, viewType);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (getItemViewType(position) == HEADER) {
-                ((HeaderViewHolder) holder).v.setUserTicket(userTicket);
-            } else {
+             if (getItemViewType(position) == CONTENT) {
                 ((ViewHolder) holder).v.setData((PointHistory) list.get(position - 1));
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return list.size() + 1;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (position == 0) {
-                return HEADER;
-            }
-            return CONTENT;
-        }
-
-        public void setUserTicket(UserTicket userTicket){
-            this.userTicket = userTicket;
-            notifyDataSetChanged();
-        }
-
-
-        protected class HeaderViewHolder extends RecyclerView.ViewHolder{
-            final PointListHeaderView v;
-
-            public HeaderViewHolder(View itemView) {
-                super(itemView);
-                v = (PointListHeaderView) itemView;
-                v.setPoint(point);
-                v.setBuyTicketListener(v -> callBuyTicketApi());
             }
         }
 
@@ -204,9 +177,9 @@ public class PointListFragment extends AbsListFragment {
 
     private void getUserTicketResponse(List<UserTicket> userTickets) {
         if (userTickets.size() > 0) {
-            adapter.setUserTicket(userTickets.get(0));
+            headerView.setUserTicket(userTickets.get(0));
         } else {
-            adapter.setUserTicket(null);
+            headerView.setUserTicket(null);
         }
     }
 

@@ -48,6 +48,7 @@ public class ReviewDetailHeader extends FrameLayout {
     @BindView(R.id.comment_cnt) TextView commentCntTxt;
     @BindView(R.id.like_img) ImageView likeImg;
     private Context context;
+    private Review data;
 
     public ReviewDetailHeader(@NonNull Context context) {
         this(context, null);
@@ -67,6 +68,7 @@ public class ReviewDetailHeader extends FrameLayout {
 
 
     public void setData(Review data){
+        this.data = data;
         nameTxt.setText(data.user.name);
         if (data.user.authenticated != null) {
             if (data.user.authenticated) {
@@ -120,10 +122,19 @@ public class ReviewDetailHeader extends FrameLayout {
         moreBtn.setOnClickListener(clickListener);
     }
 
-    private void callReviewLike(long id){
+    private void callReviewLike(long id) {
         Retro.instance.reviewService().likeReview(App.setAuthHeader(App.userToken), new ReviewLike(id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> likeImg.setSelected(result.like), ErrorUtils::parseError);
+                .subscribe(result -> {
+                    if (data.likes) {
+                        data.likes = false;
+                        data.likeCount--;
+                    } else {
+                        data.likes = true;
+                        data.likeCount++;
+                    }
+                    setData(data);
+                }, ErrorUtils::parseError);
     }
 }

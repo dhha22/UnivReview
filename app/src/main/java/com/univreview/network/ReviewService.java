@@ -66,9 +66,6 @@ public interface ReviewService {
     @POST("comment/review")
     Observable<ResponseBody> postReviewComment(@HeaderMap Map<String, String> headers, @Body ReviewComment body);
 
-    @PUT("comment/review/{id}")
-    Observable<ResponseBody> putReviewComment(@HeaderMap Map<String, String> headers, @Path("id") long id, @Body ReviewComment body);
-
     @DELETE("comment/review")
     Observable<ResponseBody> deleteComment(@HeaderMap Map<String, String> headers,  @Query("commentId") long id);
 

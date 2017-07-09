@@ -236,7 +236,7 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType != HEADER) {
+            if (viewType == CONTENT) {
                 return new ViewHolder(new ReviewItemView(context));
             }
             return super.onCreateViewHolder(parent, viewType);
@@ -244,7 +244,7 @@ public class ReviewListFragment extends AbsListFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-           if (getItemViewType(position) != HEADER) {
+           if (getItemViewType(position) == CONTENT) {
                 if (!type.equals(MY_REVIEW)) {
                     ((ViewHolder) holder).v.setData((Review) list.get(position - 1), position - 1);
                 } else {

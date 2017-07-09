@@ -59,7 +59,7 @@ public class ReviewReportFragment extends BaseWriteFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_review_report, container, false);
         ButterKnife.bind(this, view);
-        toolbar.setCancelBtnVisibility(true);
+        toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("신고하기");
         init();
         rootLayout.addView(view);
