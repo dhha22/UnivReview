@@ -61,7 +61,7 @@ public interface ReviewService {
 
     //  리뷰 댓글
     @GET("comment/review")
-    Observable<ReviewCommentListModel> getReviewComment(@HeaderMap Map<String, String> headers, @Query("reviewId") long reviewId);
+    Observable<ReviewCommentListModel> getReviewComment(@HeaderMap Map<String, String> headers, @Query("reviewId") long reviewId, @Query("page") int page);
 
     @POST("comment/review")
     Observable<ResponseBody> postReviewComment(@HeaderMap Map<String, String> headers, @Body ReviewComment body);

@@ -54,6 +54,7 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 24..
  */
 public class ReviewDetailFragment extends BaseFragment {
+    private static final int DEFAULT_PAGE = 1;
     private static final int POSITION_NONE = -1;
     private ReviewDetailHeader headerView;
     @BindView(R.id.recycler_view) RecyclerViewCustom commentRecyclerView;
@@ -63,6 +64,7 @@ public class ReviewDetailFragment extends BaseFragment {
     public static boolean isRefresh = false;
     private ListDialog dialog;
     private List<String> dialogList;
+    private int page = DEFAULT_PAGE;
 
     public static ReviewDetailFragment newInstance(Review data){
         ReviewDetailFragment fragment = new ReviewDetailFragment();
@@ -84,7 +86,7 @@ public class ReviewDetailFragment extends BaseFragment {
         Logger.v("review detail fragment refresh");
         if(isRefresh){
             callReviewSingleApi(data.id);
-            callReviewComment(data.id);
+            callReviewComment(data.id, DEFAULT_PAGE);
         }
     }
 
@@ -115,9 +117,7 @@ public class ReviewDetailFragment extends BaseFragment {
             callReviewSingleApi(data.id);
         }
 
-        callReviewComment(data.id);
-
-
+        callReviewComment(data.id, DEFAULT_PAGE);
     }
 
     private void setData(Review data) {
@@ -210,37 +210,35 @@ public class ReviewDetailFragment extends BaseFragment {
                 }, ErrorUtils::parseError);
     }
 
-    private void callReviewComment(long reviewId){
+    private void callReviewComment(long reviewId, int page) {
         // 가장 최신에 달린 댓글이 list 하단에 존재
-        Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), reviewId)
+        Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), reviewId, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
+                    this.page++;
                     Logger.v("comment result: " + result.toString());
                     Observable.from(result.comments)
                             .takeLast(5)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(data -> commentAdapter.addItem(data), Logger::e);
-                }, ErrorUtils::parseError);
+                }, error -> {
+                    this.page = DEFAULT_PAGE;
+                    ErrorUtils.parseError(error);
+                });
     }
 
-    private void postReviewComment(long id, String message){
-        if(message != null) {
+    private void postReviewComment(long id, String message) {
+        if (message != null) {
             ReviewComment body = new ReviewComment();
             body.reviewId = id;
             body.commentDetail = message;
             Retro.instance.reviewService().postReviewComment(App.setAuthHeader(App.userToken), body)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> {
-                        try {
-                            Logger.v("result: " + result.string());
-                        } catch (IOException e) {
-
-                        }
-                    }, ErrorUtils::parseError);
-        }else{
+                    .subscribe(result -> callReviewComment(data.id, DEFAULT_PAGE), ErrorUtils::parseError);
+        } else {
             Util.toast("메세지를 입력해주세요");
         }
     }
