@@ -64,10 +64,10 @@ public interface ReviewService {
     Observable<ReviewCommentListModel> getReviewComment(@HeaderMap Map<String, String> headers, @Query("reviewId") long reviewId, @Query("page") int page);
 
     @POST("comment/review")
-    Observable<ResponseBody> postReviewComment(@HeaderMap Map<String, String> headers, @Body ReviewComment body);
+    Observable<ReviewComment> postReviewComment(@HeaderMap Map<String, String> headers, @Body ReviewComment body);
 
-    @DELETE("comment/review")
-    Observable<ResponseBody> deleteComment(@HeaderMap Map<String, String> headers,  @Query("commentId") long id);
+    @DELETE("comment/review/{commentId}")
+    Observable<ResponseBody> deleteComment(@HeaderMap Map<String, String> headers,  @Path("commentId") long id);
 
     // 리뷰 좋아요
     @POST("like/review")

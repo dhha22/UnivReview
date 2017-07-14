@@ -85,4 +85,16 @@ public class BaseFragment extends Fragment {
         Logger.v("on destroy: " + this.getClass().getName());
     }
 
+    public void showProgress(){
+        if(progressDialog != null){
+            progressDialog.show();
+        }
+    }
+
+    public void dismissProgress(){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+    }
+
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.univreview.App;
+import com.univreview.adapter.contract.ReviewDetailAdapterContract;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.listener.OnItemLongClickListener;
 import com.univreview.log.Logger;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
-public abstract class CustomAdapter extends RecyclerView.Adapter {
+public abstract class CustomAdapter extends RecyclerView.Adapter{
     protected Context context;
     protected View headerView;
     protected View footerView;
@@ -106,6 +107,9 @@ public abstract class CustomAdapter extends RecyclerView.Adapter {
         this.itemLongClickListener = listener;
     }
 
+    public void clearItem() {
+        list.clear();
+    }
 
     private int getCount() {
         if (headerView != null) {

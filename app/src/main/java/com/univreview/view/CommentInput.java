@@ -39,6 +39,7 @@ public class CommentInput extends FrameLayout {
 
     public String getInputMsg() {
         String inputStr = input.getText().toString();
+        input.setText(null);
         return inputStr.length() > 0 ? inputStr : null;
     }
 

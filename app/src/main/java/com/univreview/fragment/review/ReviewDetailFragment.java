@@ -1,30 +1,23 @@
 package com.univreview.fragment.review;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.activity.BaseActivity;
 import com.univreview.adapter.CustomAdapter;
+import com.univreview.adapter.contract.ReviewDetailAdapterContract;
 import com.univreview.dialog.ListDialog;
 import com.univreview.fragment.BaseFragment;
-import com.univreview.listener.OnBackPressedListener;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.listener.OnItemLongClickListener;
 import com.univreview.log.Logger;
@@ -32,15 +25,14 @@ import com.univreview.model.Review;
 import com.univreview.model.ReviewComment;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
-import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
 import com.univreview.view.CommentInput;
 import com.univreview.view.CommentItemView;
 import com.univreview.view.RecyclerViewCustom;
 import com.univreview.view.ReviewDetailHeader;
-import com.univreview.view.ReviewRatingIndicatorView;
+import com.univreview.view.presenter.ReviewDetailContract;
+import com.univreview.view.presenter.ReviewDetailPresenter;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,7 +45,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2017. 1. 24..
  */
-public class ReviewDetailFragment extends BaseFragment {
+public class ReviewDetailFragment extends BaseFragment implements ReviewDetailContract.View {
     private static final int DEFAULT_PAGE = 1;
     private static final int POSITION_NONE = -1;
     private ReviewDetailHeader headerView;
@@ -65,6 +57,8 @@ public class ReviewDetailFragment extends BaseFragment {
     private ListDialog dialog;
     private List<String> dialogList;
     private int page = DEFAULT_PAGE;
+    private long reviewId;
+    private ReviewDetailPresenter presenter;
 
     public static ReviewDetailFragment newInstance(Review data){
         ReviewDetailFragment fragment = new ReviewDetailFragment();
@@ -78,17 +72,13 @@ public class ReviewDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         data = (Review)getArguments().getSerializable("review");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Logger.v("review detail fragment refresh");
-        if(isRefresh){
-            callReviewSingleApi(data.id);
-            callReviewComment(data.id, DEFAULT_PAGE);
+        presenter = new ReviewDetailPresenter();
+        presenter.attachView(this);
+        if(data != null){
+            reviewId = data.id;
         }
     }
+
 
     @Nullable
     @Override
@@ -99,46 +89,71 @@ public class ReviewDetailFragment extends BaseFragment {
         toolbar.setBackBtnVisibility(true);
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
         rootLayout.addView(view);
-        init();
+        init(data);
         return rootLayout;
     }
 
-    private void init() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isRefresh){
+            Logger.v("review detail fragment refresh");
+            presenter.loadReviewSingle();
+            presenter.loadCommentItem(DEFAULT_PAGE);
+            isRefresh = false;
+        }
+    }
+
+    private void init(Review data) {
         headerView = new ReviewDetailHeader(context);
         commentRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         commentAdapter = new CommentAdapter(context, headerView);
-        commentAdapter.setOnItemLongClickListener(commentItemLongClickListener);
         commentRecyclerView.setAdapter(commentAdapter);
-        commentInput.setSendListener(v -> postReviewComment(data.id, commentInput.getInputMsg()));
-
-        if(data != null && data.user.name != null) {
+        commentInput.setSendListener(v -> postReviewComment(getReviewId(), commentInput.getInputMsg()));
+        presenter.setAdapterModel(commentAdapter);
+        presenter.setAdapterView(commentAdapter);
+        if(data != null) {
             setData(data);
-        }else{
-            callReviewSingleApi(data.id);
+            setDialog(data.userId);
         }
-
-        callReviewComment(data.id, DEFAULT_PAGE);
+        presenter.loadCommentItem(DEFAULT_PAGE);
     }
 
-    private void setData(Review data) {
-        this.data = data;
+    public void setData(Review data) {
+        Logger.v("set review data: " + data);
         headerView.setData(data);
-        if (App.userId == data.userId) {
-            dialogList = Arrays.asList("리뷰신고","리뷰수정");
+        if(data.user.name == null){
+            presenter.loadReviewSingle();
+        }
+    }
+
+    @Override
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public long getReviewId(){
+       return reviewId;
+    }
+
+    private void setDialog(long userId) {
+        if (App.userId == userId) {
+            dialogList = Arrays.asList("리뷰수정");
             if (data.reviewDetail != null) {
-                dialogList = Arrays.asList("리뷰신고","리뷰수정");
+                dialogList = Arrays.asList("리뷰신고", "리뷰수정");
             } else {
-                dialogList = Arrays.asList("리뷰신고","상세리뷰 쓰기");
+                dialogList = Arrays.asList("리뷰신고", "상세리뷰 쓰기");
             }
         } else {
             dialogList = Arrays.asList("리뷰신고");
         }
-        dialog = new ListDialog(context, dialogList, itemClickListener);
-        headerView.setMoreBtnOnClickListener(v -> dialog.show());
-        isRefresh = false;
+        if (dialog == null) {
+            dialog = new ListDialog(context, dialogList, dialogItemClickListener);
+            headerView.setMoreBtnOnClickListener(v -> dialog.show());
+        }
     }
 
-    private OnItemClickListener itemClickListener = (view, position) -> {
+    private OnItemClickListener dialogItemClickListener = (view, position) -> {
       switch (position){
           case 0:   // 리뷰신고
               Navigator.goReviewReport(context, data.id);
@@ -149,7 +164,7 @@ public class ReviewDetailFragment extends BaseFragment {
       }
     };
 
-    private class CommentAdapter extends CustomAdapter{
+    private class CommentAdapter extends CustomAdapter implements ReviewDetailAdapterContract.Model, ReviewDetailAdapterContract.View{
 
         public CommentAdapter(Context context, View headerView) {
             super(context, headerView, null);
@@ -170,7 +185,6 @@ public class ReviewDetailFragment extends BaseFragment {
             }
         }
 
-
         protected class ViewHolder extends RecyclerView.ViewHolder{
             final CommentItemView v;
             public ViewHolder(View itemView) {
@@ -178,86 +192,43 @@ public class ReviewDetailFragment extends BaseFragment {
                 v = (CommentItemView)itemView;
                 v.setOnLongClickListener(view -> itemLongClickListener.onLongClick(view, getAdapterPosition()));
             }
+        }
 
+        @Override
+        public void removeItem(int position) {
+            list.remove(position -1);
+            notifyItemRemoved(position);
         }
     }
 
 
-    private OnItemLongClickListener commentItemLongClickListener = (view, position) -> {
-        Logger.v("click position: " + position);
+    @Override
+     public void showCommentDeleteDialog(DialogInterface.OnClickListener clickListener){
         new AlertDialog.Builder(context)
                 .setMessage("댓글을 삭제하시겠습니까?")
-                .setPositiveButton("확인", (dialog, which) -> deleteReviewComment(commentAdapter.getItem(position).getId()))
+                .setPositiveButton("확인", clickListener)
                 .setNegativeButton("취소", null)
                 .show();
-        return true;
-    };
-
-
-
-    private void callReviewSingleApi(long reviewId){
-        Logger.v("review id: " + reviewId);
-        Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), reviewId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    Review review = result.review;
-                    review.subjectDetail.subject.name = review.subjectName;
-                    review.subjectDetail.professor.name = review.professorName;
-                    review.user.name = review.userName;
-                    review.user.authenticated = review.authenticated;
-                    setData(review);
-                }, ErrorUtils::parseError);
     }
 
-    private void callReviewComment(long reviewId, int page) {
-        // 가장 최신에 달린 댓글이 list 하단에 존재
-        Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), reviewId, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    this.page++;
-                    Logger.v("comment result: " + result.toString());
-                    Observable.from(result.comments)
-                            .takeLast(5)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(data -> commentAdapter.addItem(data), Logger::e);
-                }, error -> {
-                    this.page = DEFAULT_PAGE;
-                    ErrorUtils.parseError(error);
-                });
-    }
 
     private void postReviewComment(long id, String message) {
         if (message != null) {
+            showProgress();
             ReviewComment body = new ReviewComment();
             body.reviewId = id;
             body.commentDetail = message;
-            Retro.instance.reviewService().postReviewComment(App.setAuthHeader(App.userToken), body)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> callReviewComment(data.id, DEFAULT_PAGE), ErrorUtils::parseError);
+            commentRecyclerView.smoothScrollToPosition(commentAdapter.getItemCount());
+            presenter.postComment(body);
         } else {
             Util.toast("메세지를 입력해주세요");
         }
     }
 
 
-
-    private void deleteReviewComment(long id){
-        Retro.instance.reviewService().deleteComment(App.setAuthHeader(App.userToken), id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    try {
-                        Logger.v("result: " + result.string());
-                    }catch (IOException e){
-
-                    }
-                }, ErrorUtils::parseError);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
-
-
-
 }

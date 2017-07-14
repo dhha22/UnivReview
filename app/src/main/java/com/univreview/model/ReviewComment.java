@@ -26,8 +26,6 @@ public class ReviewComment extends AbstractDataProvider{
     public String commentType;
     @Expose
     public Long parentCommentId;
-    @Expose
-    public List<ReviewComment> reply;
     @Override
     public long getId() {
         return id;
@@ -35,7 +33,7 @@ public class ReviewComment extends AbstractDataProvider{
 
     @Override
     public String getName() {
-        return name;
+        return commentDetail;
     }
 
     @Override

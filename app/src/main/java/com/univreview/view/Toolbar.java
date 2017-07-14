@@ -80,6 +80,9 @@ public class Toolbar extends FrameLayout {
         }
     }
 
-
+    public void setCancelBtnListener(OnClickListener clickListener){
+        cancelBtn.setVisibility(VISIBLE);
+        cancelBtn.setOnClickListener(clickListener);
+    }
 
 }

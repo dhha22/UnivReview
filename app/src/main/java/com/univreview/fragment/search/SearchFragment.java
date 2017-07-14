@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.univreview.App;
 import com.univreview.Navigator;
@@ -43,6 +44,7 @@ import rx.schedulers.Schedulers;
 public class SearchFragment extends AbsListFragment {
     private static final String MAJOR = "M";
     @BindView(R.id.input) EditText input;
+    @BindView(R.id.delete_btn) ImageButton deleteBtn;
     @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
     private String type;
     private SearchAdapter adapter;
@@ -75,7 +77,7 @@ public class SearchFragment extends AbsListFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
-        toolbar.setCancelBtnVisibility(true);
+        toolbar.setBackBtnVisibility(true);
         init();
         rootLayout.addView(view);
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.searchBgColor));
@@ -86,6 +88,27 @@ public class SearchFragment extends AbsListFragment {
         Logger.v("type: " + type);
         Logger.v("id: " + id);
         input.setHint(getHintStr(type));
+        deleteBtn.setOnClickListener(v -> input.setText(null));
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0){
+                    deleteBtn.setVisibility(View.VISIBLE);
+                }else{
+                    deleteBtn.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         //recycler view
         adapter = new SearchAdapter(context);
