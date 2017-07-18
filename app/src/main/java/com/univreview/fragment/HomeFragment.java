@@ -21,6 +21,7 @@ import com.univreview.log.Logger;
 import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.RecentReview;
 import com.univreview.model.Review;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.view.RecentReviewItemView;
@@ -67,7 +68,7 @@ public class HomeFragment extends BaseFragment {
     private void init() {
         Logger.v("init");
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
-        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, "professor", professorTxt.getText().toString(), true));
+        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.PROFESSOR, professorTxt.getText().toString(), true));
         majorTxt.setOnClickListener(v -> Navigator.goMajorExpandable(context));
         collapseBtn.setOnClickListener(v -> setCollapseBtnState());
 
@@ -128,7 +129,7 @@ public class HomeFragment extends BaseFragment {
             appBarLayout.setExpanded(true, true);
         } else {
             Logger.v("go search");
-            Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), true);
+            Navigator.goSearch(context, ReviewSearchType.SUBJECT, subjectTxt.getText().toString(), true);
         }
 
     }

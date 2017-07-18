@@ -107,7 +107,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
                     if (position == POSITION_NONE) {
-                        ReviewDetailFragment.isRefresh = true;
+                       // detail refresh
                     } else if (position == CONTINUE) {
                         Navigator.goReviewDetail(context, review);
                     } else {
@@ -127,7 +127,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 .doAfterTerminate(() -> progressDialog.dismiss())
                 .subscribe(result -> {
                     if (position == POSITION_NONE) {
-                        ReviewDetailFragment.isRefresh = true;
+                      // detail refresh
                     } else {
                         ReviewListFragment.reviewSingleId = review.id;
                         ReviewListFragment.reviewItemRefreshPosition = position;

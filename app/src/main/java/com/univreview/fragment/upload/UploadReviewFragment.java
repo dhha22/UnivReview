@@ -24,6 +24,7 @@ import com.univreview.fragment.MypageFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.Review;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
@@ -78,7 +79,7 @@ public class UploadReviewFragment extends BaseWriteFragment {
         review = new Review();
         backBtn.setOnClickListener(v -> activity.onBackPressed());
         okBtn.setOnClickListener(v -> registerReview());
-        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, "subject", subjectTxt.getText().toString(), false));
+        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.SUBJECT, subjectTxt.getText().toString(), false));
         professorTxt.setOnClickListener(v -> {
             if (subjectTxt.getText().length() > 0) {
                 if (!isReviewExist) {

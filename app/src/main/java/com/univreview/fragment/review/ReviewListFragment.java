@@ -24,6 +24,8 @@ import com.univreview.R;
 import com.univreview.activity.BaseActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.adapter.CustomAdapter;
+import com.univreview.adapter.contract.ReviewListAdapterContract;
+import com.univreview.dialog.ListDialog;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.listener.OnBackPressedListener;
@@ -34,6 +36,7 @@ import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.RandomImageModel;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewListModel;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.AnimationUtils;
 import com.univreview.util.ErrorUtils;
@@ -41,7 +44,11 @@ import com.univreview.util.Util;
 import com.univreview.view.ReviewItemView;
 import com.univreview.view.ReviewTotalScoreView;
 import com.univreview.view.UnivReviewRecyclerView;
+import com.univreview.view.contract.ReviewListContract;
+import com.univreview.view.presenter.ReviewListPresenter;
 import com.univreview.widget.PreCachingLayoutManager;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,13 +57,14 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.univreview.model.enumeration.ReviewSearchType.MY_REVIEW;
+import static com.univreview.model.enumeration.ReviewSearchType.PROFESSOR;
+import static com.univreview.model.enumeration.ReviewSearchType.SUBJECT;
+
 /**
  * Created by DavidHa on 2017. 2. 21..
  */
-public class ReviewListFragment extends AbsListFragment {
-    private static final String SUBJECT = "subject";
-    private static final String PROFESSOR = "professor";
-    private static final String MY_REVIEW = "myReview";
+public class ReviewListFragment extends AbsListFragment implements ReviewListContract.View{
     private static final int POSITION_NONE = -1;
     public static long reviewSingleId = POSITION_NONE;
     public static int reviewItemRefreshPosition = POSITION_NONE;
@@ -77,19 +85,21 @@ public class ReviewListFragment extends AbsListFragment {
     @BindView(R.id.report) TextView report;
     private ReviewTotalScoreView headerView;
     private ReviewAdapter adapter;
-    private String type;
+    private ReviewSearchType type;
     private long id;
     private String name;
+    private RandomImageModel randomImageModel;
+    private BottomSheetBehavior behavior;
+    private ReviewListPresenter presenter;
     private Long subjectId;
     private Long professorId;
-    private RandomImageModel randomImageModel;
-    private boolean isFirstError = true;
-    private BottomSheetBehavior behavior;
+    private Long userId;
+    private ListDialog filterDialog;
 
-    public static ReviewListFragment newInstance(String type, long id, String name) {
+    public static ReviewListFragment newInstance(ReviewSearchType type, long id, String name) {
         ReviewListFragment fragment = new ReviewListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("type", type);
+        bundle.putSerializable("type", type);
         bundle.putLong("id", id);
         bundle.putString("name", name);
         fragment.setArguments(bundle);
@@ -99,10 +109,21 @@ public class ReviewListFragment extends AbsListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        type = getArguments().getString("type");
+        type = (ReviewSearchType) getArguments().getSerializable("type");
         id = getArguments().getLong("id");
         name = getArguments().getString("name");
         randomImageModel = new RandomImageModel();
+        presenter = new ReviewListPresenter();
+        presenter.attachView(this);
+
+        switch (type){
+            case SUBJECT:
+                subjectId = id;
+                break;
+            case PROFESSOR:
+                professorId = id;
+                break;
+        }
     }
 
     @Nullable
@@ -123,7 +144,7 @@ public class ReviewListFragment extends AbsListFragment {
     public void onResume() {
         super.onResume();
         if (reviewSingleId != -1 && reviewItemRefreshPosition != -1) {
-            callReviewSingleApi(reviewSingleId, reviewItemRefreshPosition);
+            //callReviewSingleApi(reviewSingleId, reviewItemRefreshPosition);
         }
     }
 
@@ -141,10 +162,7 @@ public class ReviewListFragment extends AbsListFragment {
             recyclerView.setPadding(0, (int) Util.dpToPx(context, 38), 0, 0);
             appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
                 int height = appBarLayout.getHeight() - appBarLayout.getBottom();
-              //  Logger.v("appbar height: " + appBarLayout.getHeight());
-              //  Logger.v("appbar bottom: " + appBarLayout.getBottom());
                 float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
-              //  Logger.v("height: " + height);
                 AnimationUtils.setScale(titleTxt, value);
                 if (height == 0) {
                     AnimationUtils.fadeOut(context, toolbarTitleLayout);
@@ -159,18 +177,30 @@ public class ReviewListFragment extends AbsListFragment {
                     AnimationUtils.fadeOut(context, filterLayout);
                 }
             });
-            filterLayout.setOnClickListener(v-> Navigator.goSimpleSearchResult(context, type, id));
+
             titleTxt.setText(name);
             toolbarBackBtn.setOnClickListener(v -> activity.onBackPressed());
             toolbarTitleTxt.setText(name);
             toolbarSubtitleTxt.setText("전체");
         }
+        setRecyclerView();
+        setBottomSheetBehavior();
 
+        if(subjectId != null) {
+            presenter.searchProfessor(subjectId);
+        }else if(professorId != null){
+            presenter.searchSubject(professorId);
+        }
+    }
+
+    private void setRecyclerView(){
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        presenter.setAdapterModel(adapter);
+        presenter.setAdapterView(adapter);
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onScrolled(RecyclerView view, int dx, int dy) {
@@ -180,6 +210,9 @@ public class ReviewListFragment extends AbsListFragment {
                 }
             }
         });
+    }
+
+    private void setBottomSheetBehavior(){
         behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -214,18 +247,18 @@ public class ReviewListFragment extends AbsListFragment {
     public void refresh() {
         Logger.v("refresh");
         setStatus(Status.REFRESHING);
-        callReviewListApi(id, DEFAULT_PAGE);
+        presenter.loadReviewItem(type, DEFAULT_PAGE);
     }
 
     @Override
     public void loadMore() {
         setStatus(Status.LOADING_MORE);
         Logger.v("page: " + page);
-        callReviewListApi(id, page);
+        presenter.loadReviewItem(type, page);
     }
 
 
-    private class ReviewAdapter extends CustomAdapter {
+    private class ReviewAdapter extends CustomAdapter implements ReviewListAdapterContract.Model, ReviewListAdapterContract.View{
         public ReviewAdapter(Context context) {
             super(context);
         }
@@ -344,65 +377,47 @@ public class ReviewListFragment extends AbsListFragment {
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
-    @Subscribe
-    public void onActivityResult(ActivityResultEvent activityResultEvent) {
-        if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
-            if (activityResultEvent.getRequestCode() == Navigator.SEARCH) {
-                Intent data = activityResultEvent.getIntent();
-                long id = data.getLongExtra("id", 0);
-                String name = data.getStringExtra("name");
-                String type = data.getStringExtra("type");
-                Logger.v("on activity result: " + type);
-                if (SUBJECT.equals(type)) {
-                    professorId = id;
-                } else if (PROFESSOR.equals(type)) {
-                    subjectId = id;
-                }
-                isFirstError = true;
-                page = DEFAULT_PAGE;
-                refresh();
-                filterNameTxt.setText(name);
-                toolbarSubtitleTxt.setText(name);
+    @Override
+    public void setDialog(List<String> list) {
+        if (filterDialog == null) {
+            list.add(0, "전체");
+            filterDialog = new ListDialog(context, list, dialogItemClickListener);
+            filterLayout.setOnClickListener(v-> filterDialog.show());
+        }
+    }
+
+    private OnItemClickListener dialogItemClickListener = (view, position) -> {
+        String filterName = "";
+        if (position != 0) {
+            switch (type) {
+                case SUBJECT:  // 교수명 리스트
+                    professorId = presenter.getProfessors().get(position - 1).getId();
+                    filterName = presenter.getProfessors().get(position - 1).getName();
+                    break;
+                case PROFESSOR: // 과목 리스트
+                    subjectId = presenter.getSubjects().get(position - 1).getId();
+                    filterName = presenter.getSubjects().get(position - 1).getName();
+                    break;
+            }
+        } else {
+            filterName = "전체";
+            switch (type) {
+                case SUBJECT:
+                    professorId = null;
+                    break;
+                case PROFESSOR:
+                    subjectId = null;
             }
         }
-    }
+        presenter.loadReviewItem(type, DEFAULT_PAGE);
+        filterNameTxt.setText(filterName);
+        toolbarSubtitleTxt.setText(filterName);
+    };
 
-    private void callReviewListApi(Long id, int page) {
-        Long userId = null;
-        if (type.equals(SUBJECT)) {
-            subjectId = id;
-        } else if (type.equals(PROFESSOR)) {
-            professorId = id;
-        } else if (type.equals(MY_REVIEW)) {
-            userId = App.userId;
-        }
 
-        if (subjectId != null && subjectId == 0) subjectId = null;
-        if (professorId != null && professorId == 0) professorId = null;
 
-        Logger.v("page: " + page);
-        Logger.v("type: " + type);
-        Logger.v("subject id: " + subjectId);
-        Logger.v("professor id: " + professorId);
-        Logger.v("user id: " + userId);
-        if (type.equals(MY_REVIEW)) {
-            Retro.instance.reviewService().getMyReviews(App.setAuthHeader(App.userToken), page)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::response, this::errorResponse, () -> {
-                        if (page == DEFAULT_PAGE) adapter.clear();
-                    });
-        } else {
-            Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken), subjectId, professorId, userId, page)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::response, this::errorResponse, () -> {
-                        if (page == DEFAULT_PAGE) adapter.clear();
-                    });
-        }
-    }
 
-    private void callReviewSingleApi(long id, int position) {
+    /*private void callReviewSingleApi(long id, int position) {
         Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -418,30 +433,35 @@ public class ReviewListFragment extends AbsListFragment {
                     review.user.authenticated = review.authenticated;
                     adapter.setItem(position, review);
                 }, this::errorResponse);
+    }*/
+
+
+    @Override
+    public ReviewTotalScoreView getReviewTotalScoreView() {
+        return headerView;
     }
 
-    private void response(ReviewListModel reviewListModel) {
-        setResult(page);
-        setStatus(Status.IDLE);
-        Logger.v("result: " + reviewListModel);
-        if (headerView != null) {
-            headerView.setData(reviewListModel.totalAverageRates, reviewListModel.getReviewAverage());
-        }
-        Observable.from(reviewListModel.reviews)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> adapter.addItem(result), Logger::e);
+    @Override
+    public Long getSubjectId() {
+        Logger.v("subjectId: " + subjectId);
+        return subjectId;
     }
 
-    private void errorResponse(Throwable e) {
-        setStatus(Status.ERROR);
-        if (isFirstError) {
-            if (page == DEFAULT_PAGE) {
-                adapter.clear();
-            }
-            adapter.addItem(null);
-            isFirstError = false;
-        }
-        ErrorUtils.parseError(e);
+    @Override
+    public Long getProfessorId() {
+        Logger.v("professorId: " + professorId);
+        return professorId;
+    }
+
+    @Override
+    public Long getUserId() {
+        Logger.v("userId: " + userId);
+        return userId;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
 }

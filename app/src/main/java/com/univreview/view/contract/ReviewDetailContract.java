@@ -1,4 +1,4 @@
-package com.univreview.view.presenter;
+package com.univreview.view.contract;
 
 import android.content.DialogInterface;
 
@@ -16,6 +16,7 @@ public interface ReviewDetailContract{
         void setPage(int page);
         void showCommentDeleteDialog(DialogInterface.OnClickListener clickListener);
         void dismissProgress();
+        void setCommentMoreBtn(boolean hasMore);
     }
 
     void attachView(View view);

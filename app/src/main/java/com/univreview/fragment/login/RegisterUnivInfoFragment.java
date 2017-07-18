@@ -23,6 +23,7 @@ import com.univreview.model.Register;
 import com.univreview.model.Token;
 import com.univreview.model.User;
 import com.univreview.model.UserModel;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.ButtonStateManager;
 import com.univreview.util.ErrorUtils;
@@ -126,13 +127,13 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
         universityTxt.setOnClickListener(v -> {
             if (formVerification(STUDENT, UNIVERSITY)) {
-                Navigator.goSearch(getActivity(), "university", universityTxt.getText().toString(), false);
+                Navigator.goSearch(getActivity(), ReviewSearchType.UNIVERSITY, universityTxt.getText().toString(), false);
             }
         });
 
         departmentTxt.setOnClickListener(v -> {
             if (formVerification(STUDENT, DEPARTMENT)) {
-                Navigator.goSearch(getActivity(), "department",
+                Navigator.goSearch(getActivity(), ReviewSearchType.DEPARTMENT,
                         register.universityId, departmentTxt.getText().toString(), false);
             }
         });
@@ -140,7 +141,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         majorTxt.setOnClickListener(v -> {
             if (formVerification(STUDENT, MAJOR)) {
                 Logger.v("register department id: " + register.departmentId);
-                Navigator.goSearch(getActivity(), "major",
+                Navigator.goSearch(getActivity(), ReviewSearchType.MAJOR,
                         register.departmentId, majorTxt.getText().toString(), false);
             }
         });

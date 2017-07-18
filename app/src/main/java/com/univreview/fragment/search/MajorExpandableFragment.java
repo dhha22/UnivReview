@@ -20,6 +20,7 @@ import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.Major;
 import com.univreview.model.MajorExpandableDataProvider;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.Util;
 import com.univreview.view.UnivReviewRecyclerView;
@@ -124,7 +125,7 @@ public class MajorExpandableFragment extends BaseFragment implements RecyclerVie
         recyclerView.getRecyclerView().setHasFixedSize(false);
         mRecyclerViewExpandableItemManager.attachRecyclerView(recyclerView.getRecyclerView());
         adapter.setItemClickListener((view, groupPosition, childPosition) -> {
-            Navigator.goReviewList(context, "subject",
+            Navigator.goReviewList(context, ReviewSearchType.SUBJECT,
                     adapter.getChildItemId(groupPosition, childPosition),
                     adapter.getChildItemName(groupPosition, childPosition));
             activity.finish();

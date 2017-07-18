@@ -19,18 +19,15 @@ import com.univreview.adapter.contract.ReviewDetailAdapterContract;
 import com.univreview.dialog.ListDialog;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.listener.OnItemClickListener;
-import com.univreview.listener.OnItemLongClickListener;
 import com.univreview.log.Logger;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewComment;
-import com.univreview.network.Retro;
-import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.CommentInput;
 import com.univreview.view.CommentItemView;
 import com.univreview.view.RecyclerViewCustom;
 import com.univreview.view.ReviewDetailHeader;
-import com.univreview.view.presenter.ReviewDetailContract;
+import com.univreview.view.contract.ReviewDetailContract;
 import com.univreview.view.presenter.ReviewDetailPresenter;
 
 import java.util.Arrays;
@@ -38,9 +35,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 24..
@@ -53,7 +47,7 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
     @BindView(R.id.comment_input) CommentInput commentInput;
     private Review data;
     private CommentAdapter commentAdapter;
-    public static boolean isRefresh = false;
+    public  boolean isRefresh = true;
     private ListDialog dialog;
     private List<String> dialogList;
     private int page = DEFAULT_PAGE;
@@ -116,15 +110,17 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
             setData(data);
             setDialog(data.userId);
         }
-        presenter.loadCommentItem(DEFAULT_PAGE);
     }
 
+    @Override
     public void setData(Review data) {
         Logger.v("set review data: " + data);
         headerView.setData(data);
-        if(data.user.name == null){
-            presenter.loadReviewSingle();
-        }
+    }
+
+    @Override
+    public void setCommentMoreBtn(boolean hasMore) {
+        headerView.setCommentMoreBtn(hasMore);
     }
 
     @Override

@@ -55,7 +55,6 @@ public class RecommendRvDialog extends Dialog {
 
         // 다음에 리뷰를 남긴다 (리뷰 디테일 페이지로 이동)
         next.setOnClickListener(view -> {
-            ReviewDetailFragment.isRefresh = true;
             Navigator.goReviewDetail(context, review);
             ((BaseActivity) context).setOnBackPressedListener(null);
             ((Activity)context).onBackPressed();

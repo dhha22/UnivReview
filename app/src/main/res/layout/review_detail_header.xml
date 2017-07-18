@@ -203,6 +203,19 @@
                 android:text="@string/review_comment_txt"
                 android:textColor="@color/reviewSecondTxtColor" />
         </LinearLayout>
-
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rowColor"/>
+    <TextView
+        android:id="@+id/comment_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="14dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="더보기"/>
 </LinearLayout>

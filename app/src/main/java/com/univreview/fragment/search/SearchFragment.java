@@ -22,6 +22,7 @@ import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
 import com.univreview.model.SearchModel;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
@@ -42,21 +43,21 @@ import rx.schedulers.Schedulers;
  * Created by DavidHa on 2017. 1. 16..
  */
 public class SearchFragment extends AbsListFragment {
-    private static final String MAJOR = "M";
+
     @BindView(R.id.input) EditText input;
     @BindView(R.id.delete_btn) ImageButton deleteBtn;
     @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
-    private String type;
+    private ReviewSearchType type;
     private SearchAdapter adapter;
     private Long id;
     private boolean isReviewSearch;
     private Timer timer;
     private String subjectType;
 
-    public static SearchFragment newInstance(String type, long id, String name, boolean isReviewSearch) {
+    public static SearchFragment newInstance(ReviewSearchType type, long id, String name, boolean isReviewSearch) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("type", type);
+        bundle.putSerializable("type", type);
         bundle.putLong("id", id);
         bundle.putBoolean("isReviewSearch", isReviewSearch);
         fragment.setArguments(bundle);
@@ -66,7 +67,7 @@ public class SearchFragment extends AbsListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        type = getArguments().getString("type");
+        type = (ReviewSearchType) getArguments().getSerializable("type");
         id = getArguments().getLong("id");
         isReviewSearch = getArguments().getBoolean("isReviewSearch");
     }
@@ -85,7 +86,7 @@ public class SearchFragment extends AbsListFragment {
     }
 
     private void init() {
-        Logger.v("type: " + type);
+        Logger.v("type: " + type.getTypeName());
         Logger.v("id: " + id);
         input.setHint(getHintStr(type));
         deleteBtn.setOnClickListener(v -> input.setText(null));
@@ -128,7 +129,7 @@ public class SearchFragment extends AbsListFragment {
         if(isReviewSearch){
             subjectType = null;
         }else{
-            subjectType = MAJOR;
+            //subjectType = MAJOR;
         }
         input.addTextChangedListener(textWatcher);
         adapter.setOnItemClickListener((view, position) -> {
@@ -178,38 +179,38 @@ public class SearchFragment extends AbsListFragment {
     };
 
 
-    private void callSearchApi(Long id, String type, String name, int page) {
+    private void callSearchApi(Long id, ReviewSearchType type, String name, int page) {
         switch (type) {
-            case "university":
+            case UNIVERSITY:
                 callGetUniversityApi(name, page);
                 break;
-            case "department":
+            case DEPARTMENT:
                 callGetDepartmentApi(id, name, page);
                 break;
-            case "major":
+            case MAJOR:
                 callGetMajorApi(id, name, page);
                 break;
-            case "subject":
+            case SUBJECT:
                 callGetSubjectApi(id, name, page);
                 break;
-            case "professor":
+            case PROFESSOR:
                 callGetProfessorApi(id, name, page);
                 break;
             default:
         }
     }
 
-    private String getHintStr(String type) {
+    private String getHintStr(ReviewSearchType type) {
         switch (type) {
-            case "university":
+            case UNIVERSITY:
                 return "대학교를 입력해주세요";
-            case "department":
+            case DEPARTMENT:
                 return "학과군을 입력해주세요";
-            case "major":
+            case MAJOR:
                 return "학과를 입력해주세요";
-            case "subject":
+            case SUBJECT:
                 return "과목을 입력해주세요";
-            case "professor":
+            case PROFESSOR:
                 return "교수명을 입력해주세요";
             default:
                 return "";

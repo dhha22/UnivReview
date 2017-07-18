@@ -109,6 +109,7 @@ public abstract class CustomAdapter extends RecyclerView.Adapter{
 
     public void clearItem() {
         list.clear();
+        notifyDataSetChanged();
     }
 
     private int getCount() {

@@ -47,6 +47,7 @@ public class ReviewDetailHeader extends FrameLayout {
     @BindView(R.id.like_cnt) TextView likeCntTxt;
     @BindView(R.id.comment_cnt) TextView commentCntTxt;
     @BindView(R.id.like_img) ImageView likeImg;
+    @BindView(R.id.comment_more) TextView commentMore;
     private Context context;
     private Review data;
 
@@ -64,6 +65,18 @@ public class ReviewDetailHeader extends FrameLayout {
         this.context = context;
         ButterKnife.bind(this);
 
+    }
+
+    public void setCommentMoreBtn(boolean hasMore){
+        if(hasMore){
+            commentMore.setVisibility(VISIBLE);
+        }else{
+            commentMore.setVisibility(GONE);
+        }
+    }
+
+    public void setCommentMoreBtnListener(OnClickListener clickListener){
+        moreBtn.setOnClickListener(clickListener);
     }
 
 

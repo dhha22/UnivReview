@@ -32,6 +32,7 @@ import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.Register;
 import com.univreview.model.Review;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
 
@@ -125,7 +126,7 @@ public class Navigator {
     }
 
     //review
-    public static void goReviewList(Context context, String type, long id, String name) {
+    public static void goReviewList(Context context, ReviewSearchType type, long id, String name) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(ReviewListFragment.newInstance(type, id, name));
         (context).startActivity(intent);
@@ -153,14 +154,14 @@ public class Navigator {
 
     //search
 
-    public static void goSearch(Context context, String type, String name, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type, String name, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, 0, name, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
 
-    public static void goSearch(Context context, String type, long id, String name, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type, long id, String name, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id, name, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);

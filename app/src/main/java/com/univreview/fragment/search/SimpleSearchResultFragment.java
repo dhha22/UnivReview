@@ -10,24 +10,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.univreview.App;
 import com.univreview.R;
-import com.univreview.activity.NavigationActivity;
 import com.univreview.adapter.CustomAdapter;
-import com.univreview.fragment.AbsListFragment;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
-import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.Professor;
 import com.univreview.model.SearchModel;
 import com.univreview.model.Subject;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
-import com.univreview.view.AbsRecyclerView;
 import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
 
@@ -139,14 +133,14 @@ public class SimpleSearchResultFragment extends BaseFragment {
     }
 
     private void callGetProfessorSubject(long id){
-        Retro.instance.searchService().getProfessorSubject(id)
+        Retro.instance.searchService().getProfessorFromSubject(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::response,  ErrorUtils::parseError);
     }
 
     private void callGetSubjectProfessor(long id){
-        Retro.instance.searchService().getSubjectProfessor(id)
+        Retro.instance.searchService().getSubjectFromProfessor(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::response,  ErrorUtils::parseError);

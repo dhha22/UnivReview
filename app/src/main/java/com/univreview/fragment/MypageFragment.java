@@ -26,6 +26,7 @@ import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.User;
 import com.univreview.model.UserModel;
 import com.univreview.model.Setting;
+import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.ImageUtil;
@@ -102,7 +103,7 @@ public class MypageFragment extends BaseFragment {
         adapter.setOnItemClickListener((view, position) -> {
             switch (position) {
                 case MY_REVIEW:
-                    Navigator.goReviewList(context, "myReview", App.userId, "내 리뷰");
+                    Navigator.goReviewList(context, ReviewSearchType.MY_REVIEW, App.userId, "내 리뷰");
                     break;
                 case POINT:
                     if (adapter.getItem(position) != null) {
