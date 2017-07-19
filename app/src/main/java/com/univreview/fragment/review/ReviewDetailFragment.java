@@ -110,6 +110,7 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
             setData(data);
             setDialog(data.userId);
         }
+        headerView.setCommentMoreBtnListener(v -> presenter.loadCommentItem(page));
     }
 
     @Override

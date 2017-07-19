@@ -60,6 +60,7 @@ public class ReviewItemView extends FrameLayout {
     @BindView(R.id.like_cnt) TextView likeCntTxt;
     @BindView(R.id.comment_cnt) TextView commentCntTxt;
     @BindView(R.id.comment_layout) LinearLayout commentLayout;
+    private Review data;
     private Context context;
     private int position;
     private Status status;
@@ -84,6 +85,7 @@ public class ReviewItemView extends FrameLayout {
 
     public void setData(Review review, int position) {
         if (review != null) {
+            this.data = review;
             Logger.v("review: " + review);
             setVisibility(VISIBLE);
             if (review.user != null) {
@@ -219,6 +221,15 @@ public class ReviewItemView extends FrameLayout {
         Retro.instance.reviewService().likeReview(App.setAuthHeader(App.userToken), new ReviewLike(id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> likeImg.setSelected(result.like), ErrorUtils::parseError);
+                .subscribe(result -> {
+                    if (data.likes) {
+                        data.likes = false;
+                        data.likeCount--;
+                    } else {
+                        data.likes = true;
+                        data.likeCount++;
+                    }
+                    setData(data, position);
+                }, ErrorUtils::parseError);
     }
 }
