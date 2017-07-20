@@ -18,6 +18,7 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
+import com.univreview.adapter.contract.SearchAdapterContract;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
@@ -28,6 +29,8 @@ import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
+import com.univreview.view.contract.SearchContract;
+import com.univreview.view.presenter.SearchPresenter;
 import com.univreview.widget.PreCachingLayoutManager;
 
 import java.util.Timer;
@@ -42,7 +45,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2017. 1. 16..
  */
-public class SearchFragment extends AbsListFragment {
+public class SearchFragment extends AbsListFragment implements SearchContract.View {
 
     @BindView(R.id.input) EditText input;
     @BindView(R.id.delete_btn) ImageButton deleteBtn;
@@ -52,7 +55,7 @@ public class SearchFragment extends AbsListFragment {
     private Long id;
     private boolean isReviewSearch;
     private Timer timer;
-    private String subjectType;
+    private SearchPresenter presenter;
 
     public static SearchFragment newInstance(ReviewSearchType type, long id, String name, boolean isReviewSearch) {
         SearchFragment fragment = new SearchFragment();
@@ -70,6 +73,13 @@ public class SearchFragment extends AbsListFragment {
         type = (ReviewSearchType) getArguments().getSerializable("type");
         id = getArguments().getLong("id");
         isReviewSearch = getArguments().getBoolean("isReviewSearch");
+        presenter = new SearchPresenter();
+        presenter.attachView(this);
+        if (isReviewSearch) {
+            presenter.setSubjectType(null);
+        } else {
+            presenter.setSubjectType("M");
+        }
     }
 
     @Nullable
@@ -90,27 +100,11 @@ public class SearchFragment extends AbsListFragment {
         Logger.v("id: " + id);
         input.setHint(getHintStr(type));
         deleteBtn.setOnClickListener(v -> input.setText(null));
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        input.addTextChangedListener(textWatcher);
+        setRecyclerView();
+    }
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length()>0){
-                    deleteBtn.setVisibility(View.VISIBLE);
-                }else{
-                    deleteBtn.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
+    private void setRecyclerView(){
         //recycler view
         adapter = new SearchAdapter(context);
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
@@ -126,12 +120,7 @@ public class SearchFragment extends AbsListFragment {
                 }
             }
         });
-        if(isReviewSearch){
-            subjectType = null;
-        }else{
-            //subjectType = MAJOR;
-        }
-        input.addTextChangedListener(textWatcher);
+        presenter.setSearchAdapterModel(adapter);
         adapter.setOnItemClickListener((view, position) -> {
             if (isReviewSearch) {
                 String name = adapter.getItem(position).getName();
@@ -141,15 +130,17 @@ public class SearchFragment extends AbsListFragment {
             } else {
                 Intent intent = new Intent();
                 Logger.v("id : " + adapter.getItem(position).getId());
-                Logger.v("type : " + type);
+                Logger.v("type : " + type.getTypeName());
                 intent.putExtra("id", adapter.getItem(position).getId());
                 intent.putExtra("name", adapter.getItem(position).getName());
-                intent.putExtra("type", type);
+                intent.putExtra("type", type.getTypeName());
                 getActivity().setResult(getActivity().RESULT_OK, intent);
                 getActivity().onBackPressed();
             }
         });
     }
+
+    // search input textWatcher
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -167,6 +158,11 @@ public class SearchFragment extends AbsListFragment {
         @Override
         public void afterTextChanged(Editable s) {
             Logger.v("search str: " + s.toString());
+            if(s.length()>0){
+                deleteBtn.setVisibility(View.VISIBLE);
+            }else{
+                deleteBtn.setVisibility(View.INVISIBLE);
+            }
             page = DEFAULT_PAGE;
             timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -182,19 +178,19 @@ public class SearchFragment extends AbsListFragment {
     private void callSearchApi(Long id, ReviewSearchType type, String name, int page) {
         switch (type) {
             case UNIVERSITY:
-                callGetUniversityApi(name, page);
+                presenter.searchUniversity(name, page);
                 break;
             case DEPARTMENT:
-                callGetDepartmentApi(id, name, page);
+                presenter.searchDepartment(id, name, page);
                 break;
             case MAJOR:
-                callGetMajorApi(id, name, page);
+                presenter.searchMajor(id, name, page);
                 break;
             case SUBJECT:
-                callGetSubjectApi(id, name, page);
+                presenter.searchSubject(id, name, page);
                 break;
             case PROFESSOR:
-                callGetProfessorApi(id, name, page);
+                presenter.searchProfessor(id, name, page);
                 break;
             default:
         }
@@ -237,7 +233,7 @@ public class SearchFragment extends AbsListFragment {
         callSearchApi(id, type, input.getText().toString(), page);
     }
 
-    private class SearchAdapter extends CustomAdapter {
+    private class SearchAdapter extends CustomAdapter implements SearchAdapterContract.Model{
 
         public SearchAdapter(Context context) {
             super(context);
@@ -253,8 +249,6 @@ public class SearchFragment extends AbsListFragment {
             ((ViewHolder) holder).v.setText(list.get(position).getName());
         }
 
-
-
         protected class ViewHolder extends RecyclerView.ViewHolder {
             final SearchListItemView v;
 
@@ -266,96 +260,7 @@ public class SearchFragment extends AbsListFragment {
         }
     }
 
-    //api
-    private void callGetUniversityApi(String name, int page) {
-        Retro.instance.searchService().getUniversities(name, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) adapter.clear();
-                })
-                .subscribe(result -> response(result, "university"), this::errorResponse);
-    }
 
-    private void callGetDepartmentApi(long id, String name, int page) {
-        Retro.instance.searchService().getDepartments(id, name, subjectType, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) adapter.clear();
-                })
-                .subscribe(result -> response(result, "department"), this::errorResponse);
-    }
-
-    private void callGetMajorApi(long id, String name, int page) {
-        Retro.instance.searchService().getMajors(App.universityId, id, name, subjectType, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) adapter.clear();
-                })
-                .subscribe(result -> response(result, "major"), this::errorResponse);
-    }
-
-    private void callGetProfessorApi(Long departmentId, String name, int page) {
-        if(departmentId == 0) departmentId = null;
-        Retro.instance.searchService().getProfessors(App.universityId, departmentId, name, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) adapter.clear();
-                })
-                .subscribe(result -> response(result, "professor"), this::errorResponse);
-    }
-
-    private void callGetSubjectApi(Long majorId, String name, int page) {
-        if(majorId ==0) majorId = null;
-        Logger.v("university id: " + App.universityId);
-        Logger.v("major id: " + majorId);
-        Retro.instance.searchService().getSubjects(App.universityId, majorId, name, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) adapter.clear();
-                })
-                .subscribe(result -> response(result, "subject"), this::errorResponse);
-    }
-
-    public void response(SearchModel result, String type) {
-        setResult(page);
-        setStatus(Status.IDLE);
-        if (type.equals("university")) {
-            Observable.from(result.universities)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), Logger::e);
-        } else if (type.equals("department")) {
-            Observable.from(result.departments)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), Logger::e);
-        } else if (type.equals("major")) {
-            Observable.from(result.majors)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), Logger::e);
-        } else if (type.equals("professor")) {
-            Observable.from(result.professors)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), Logger::e);
-        } else if (type.equals("subject")) {
-            Observable.from(result.subjects)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(data -> adapter.addItem(data), Logger::e);
-        }
-    }
-
-    private void errorResponse(Throwable e){
-        setStatus(Status.ERROR);
-        ErrorUtils.parseError(e);
-    }
 
     @Override
     public void onPause() {
@@ -363,4 +268,9 @@ public class SearchFragment extends AbsListFragment {
         Util.hideKeyboard(activity, input);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
 }

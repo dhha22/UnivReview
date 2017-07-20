@@ -17,20 +17,26 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
+import com.univreview.dialog.ListDialog;
 import com.univreview.dialog.RecommendRvDialog;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.BaseWriteFragment;
 import com.univreview.fragment.MypageFragment;
+import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
+import com.univreview.model.Professor;
 import com.univreview.model.Review;
 import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -56,6 +62,8 @@ public class UploadReviewFragment extends BaseWriteFragment {
     private RecommendRvDialog recommendRvDialog;
     private Review review;
     private boolean isReviewExist = false;
+    private List<Professor> professors;
+    private ListDialog profNamesDialog;
 
     public static UploadReviewFragment newInstance(){
         UploadReviewFragment fragment = new UploadReviewFragment();
@@ -83,7 +91,8 @@ public class UploadReviewFragment extends BaseWriteFragment {
         professorTxt.setOnClickListener(v -> {
             if (subjectTxt.getText().length() > 0) {
                 if (!isReviewExist) {
-                    Navigator.goSimpleSearchResult(context, "searchProfessor", review.subjectId);
+                   //
+
                 } else {
                     showAlertDialog();
                 }
@@ -113,6 +122,25 @@ public class UploadReviewFragment extends BaseWriteFragment {
         });
     }
 
+    private void makeListDialog(long subjectId){
+        Retro.instance.searchService().getProfessorFromSubject(subjectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                     this.professors = result.professors;
+                    Observable.from(professors)
+                            .map(Professor::getName)
+                            .toList()
+                            .subscribe(data -> {
+                                profNamesDialog = new ListDialog(context, data, dialogItemClickListener);
+                            });
+                });
+    }
+
+
+    private OnItemClickListener dialogItemClickListener = (view, position) -> {
+
+    };
 
 
     @Subscribe

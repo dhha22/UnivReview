@@ -44,6 +44,7 @@ public class ListDialog extends Dialog {
         adapter.setOnItemClickListener(itemClickListener);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
