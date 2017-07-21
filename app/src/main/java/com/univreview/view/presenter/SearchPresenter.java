@@ -26,47 +26,23 @@ public class SearchPresenter implements SearchContract {
 
     @Override
     public void searchUniversity(String name, int page) {
-        Retro.instance.searchService().getUniversities(name, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) searchAdapterModel.clear();
-                })
-                .subscribe(result -> response(result, page), this::errorResponse);
+        setObservable(Retro.instance.searchService().getUniversities(name, page), page);
     }
 
     @Override
     public void searchDepartment(long id, String name, int page) {
-        Retro.instance.searchService().getDepartments(id, name, subjectType, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) searchAdapterModel.clear();
-                })
-                .subscribe(result -> response(result, page), this::errorResponse);
+        setObservable(Retro.instance.searchService().getDepartments(id, name, subjectType, page), page);
     }
 
     @Override
     public void searchMajor(long id, String name, int page) {
-        Retro.instance.searchService().getMajors(App.universityId, id, name, subjectType, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) searchAdapterModel.clear();
-                })
-                .subscribe(result -> response(result, page), this::errorResponse);
+        setObservable(Retro.instance.searchService().getMajors(App.universityId, id, name, subjectType, page), page);
     }
 
     @Override
     public void searchProfessor(Long departmentId, String name, int page) {
         if(departmentId == 0) departmentId = null;
-        Retro.instance.searchService().getProfessors(App.universityId, departmentId, name, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) searchAdapterModel.clear();
-                })
-                .subscribe(result -> response(result, page), this::errorResponse);
+        setObservable(Retro.instance.searchService().getProfessors(App.universityId, departmentId, name, page), page);
     }
 
     @Override
@@ -74,13 +50,24 @@ public class SearchPresenter implements SearchContract {
         if(majorId ==0) majorId = null;
         Logger.v("university id: " + App.universityId);
         Logger.v("major id: " + majorId);
-        Retro.instance.searchService().getSubjects(App.universityId, majorId, name, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .finallyDo(() -> {
-                    if (page == DEFAULT_PAGE) searchAdapterModel.clear();
-                })
-                .subscribe(result -> response(result, page), this::errorResponse);
+        setObservable(Retro.instance.searchService().getSubjects(App.universityId, majorId, name, page), page);
+    }
+
+    @Override
+    public void searchProfFromSubj(long subjectId, String name, int page) {
+        Logger.v("subjectId: " + subjectId);
+        setObservable(Retro.instance.searchService().getProfessorFromSubject(subjectId, page), page);
+    }
+
+    private void setObservable(Observable<SearchModel> observable, int page){
+        if(observable != null){
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doAfterTerminate(() -> {
+                        if (page == DEFAULT_PAGE) searchAdapterModel.clear();
+                    })
+                    .subscribe(result -> response(result, page), this::errorResponse);
+        }
     }
 
     private void response(SearchModel result, int page) {

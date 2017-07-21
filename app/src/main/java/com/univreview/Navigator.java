@@ -154,24 +154,19 @@ public class Navigator {
 
     //search
 
-    public static void goSearch(Context context, ReviewSearchType type, String name, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0, name, isReviewSearch));
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
 
-    public static void goSearch(Context context, ReviewSearchType type, long id, String name, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type, long id, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, id, name, isReviewSearch));
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, id, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
-    public static void goSimpleSearchResult(Context context, String type, long id){
-        Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SimpleSearchResultFragment.newInstance(type, id));
-        ((Activity)context).startActivityForResult(intent, SEARCH);
-    }
 
     public static void goMajorExpandable(Context context){
         Intent intent = new Intent(context, NavigationActivity.class);

@@ -22,4 +22,5 @@ public interface SearchContract {
     void searchMajor(long id, String name, int page);
     void searchProfessor(Long departmentId, String name, int page);
     void searchSubject(Long majorId, String name, int page);
+    void searchProfFromSubj(long subjectId, String name, int page);
 }

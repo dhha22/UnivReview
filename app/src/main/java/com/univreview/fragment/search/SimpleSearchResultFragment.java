@@ -133,10 +133,10 @@ public class SimpleSearchResultFragment extends BaseFragment {
     }
 
     private void callGetProfessorSubject(long id){
-        Retro.instance.searchService().getProfessorFromSubject(id)
+        /*Retro.instance.searchService().getProfessorFromSubject(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::response,  ErrorUtils::parseError);
+                .subscribe(this::response,  ErrorUtils::parseError);*/
     }
 
     private void callGetSubjectProfessor(long id){

@@ -57,7 +57,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
     private Timer timer;
     private SearchPresenter presenter;
 
-    public static SearchFragment newInstance(ReviewSearchType type, long id, String name, boolean isReviewSearch) {
+    public static SearchFragment newInstance(ReviewSearchType type, long id, boolean isReviewSearch) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("type", type);
@@ -122,18 +122,18 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         });
         presenter.setSearchAdapterModel(adapter);
         adapter.setOnItemClickListener((view, position) -> {
-            if (isReviewSearch) {
+            if (isReviewSearch) {   // 일반적인 review search
                 String name = adapter.getItem(position).getName();
                 input.setText(name);
                 input.setSelection(name.length());
                 Navigator.goReviewList(context, type, adapter.getItem(position).getId(), name);
-            } else {
+            } else {    // 보여주는 search
                 Intent intent = new Intent();
                 Logger.v("id : " + adapter.getItem(position).getId());
                 Logger.v("type : " + type.getTypeName());
                 intent.putExtra("id", adapter.getItem(position).getId());
                 intent.putExtra("name", adapter.getItem(position).getName());
-                intent.putExtra("type", type.getTypeName());
+                intent.putExtra("type", type);
                 getActivity().setResult(getActivity().RESULT_OK, intent);
                 getActivity().onBackPressed();
             }
@@ -192,7 +192,9 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             case PROFESSOR:
                 presenter.searchProfessor(id, name, page);
                 break;
-            default:
+            case PROF_FROM_SUBJ:
+                presenter.searchProfFromSubj(id, name, page);
+                break;
         }
     }
 
@@ -207,6 +209,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             case SUBJECT:
                 return "과목을 입력해주세요";
             case PROFESSOR:
+                return "교수명을 입력해주세요";
+            case PROF_FROM_SUBJ:
                 return "교수명을 입력해주세요";
             default:
                 return "";
@@ -259,6 +263,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             }
         }
     }
+
 
 
 

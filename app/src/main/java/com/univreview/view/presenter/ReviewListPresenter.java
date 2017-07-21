@@ -72,7 +72,7 @@ public class ReviewListPresenter implements ReviewListContract {
     @Override
     public void searchProfessor(long subjectId) {
         Logger.v("subject id: " + subjectId);
-        Retro.instance.searchService().getProfessorFromSubject(subjectId)
+        Retro.instance.searchService().getProfessorFromSubject(subjectId, DEFAULT_PAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::searchResponse,  ErrorUtils::parseError);

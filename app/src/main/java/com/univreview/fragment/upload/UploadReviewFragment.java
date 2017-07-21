@@ -1,6 +1,5 @@
 package com.univreview.fragment.upload;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,37 +12,24 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
-import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.activity.BaseActivity;
-import com.univreview.dialog.ListDialog;
 import com.univreview.dialog.RecommendRvDialog;
-import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.BaseWriteFragment;
-import com.univreview.fragment.MypageFragment;
-import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
-import com.univreview.model.Professor;
-import com.univreview.model.Review;
 import com.univreview.model.enumeration.ReviewSearchType;
-import com.univreview.network.Retro;
-import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
-
-import java.util.List;
+import com.univreview.view.contract.UploadReviewContract;
+import com.univreview.view.presenter.UploadReviewPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 8..
  */
-public class UploadReviewFragment extends BaseWriteFragment {
+public class UploadReviewFragment extends BaseWriteFragment implements UploadReviewContract.View{
     @BindView(R.id.back_btn) ImageButton backBtn;
     @BindView(R.id.ok_btn) TextView okBtn;
     @BindView(R.id.subject_txt) TextView subjectTxt;
@@ -58,12 +44,10 @@ public class UploadReviewFragment extends BaseWriteFragment {
     @BindView(R.id.attendance_txt) TextView attendanceTxt;
     @BindView(R.id.grade_txt) TextView gradeTxt;
     @BindView(R.id.achievement_txt) TextView achievementTxt;
-    private ProgressDialog progressDialog;
-    private RecommendRvDialog recommendRvDialog;
-    private Review review;
     private boolean isReviewExist = false;
-    private List<Professor> professors;
-    private ListDialog profNamesDialog;
+    private RecommendRvDialog recommendRvDialog;
+
+    private UploadReviewPresenter presenter;
 
     public static UploadReviewFragment newInstance(){
         UploadReviewFragment fragment = new UploadReviewFragment();
@@ -83,16 +67,15 @@ public class UploadReviewFragment extends BaseWriteFragment {
     }
 
     private void init() {
-        progressDialog = Util.progressDialog(context);
-        review = new Review();
+        presenter = new UploadReviewPresenter();
+        presenter.attachView(this);
         backBtn.setOnClickListener(v -> activity.onBackPressed());
-        okBtn.setOnClickListener(v -> registerReview());
-        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.SUBJECT, subjectTxt.getText().toString(), false));
+        okBtn.setOnClickListener(v -> presenter.registerReview());
+        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.SUBJECT, false));
         professorTxt.setOnClickListener(v -> {
             if (subjectTxt.getText().length() > 0) {
-                if (!isReviewExist) {
-                   //
-
+                if (!isReviewExist) { // review 를 처음 남기는 학생
+                    Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.getReview().subjectId, false);
                 } else {
                     showAlertDialog();
                 }
@@ -100,47 +83,30 @@ public class UploadReviewFragment extends BaseWriteFragment {
                 Util.simpleMessageDialog(context, "과목을 입력해주세요");
             }
         });
+
+        // rating (difficulty, assignment, attendance, grade, achievement)
+
         difficultyRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
-            review.difficultyRate = v;
-            difficultyTxt.setText(review.getDifficultyRateMessage());
+            presenter.getReview().difficultyRate = v;
+            difficultyTxt.setText(presenter.getReview().getDifficultyRateMessage());
         });
         assignmentRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
-            review.assignmentRate = v;
-            assignmentTxt.setText(review.getAssignmentRateMessage());
+            presenter.getReview().assignmentRate = v;
+            assignmentTxt.setText(presenter.getReview().getAssignmentRateMessage());
         });
         attendanceRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
-            review.attendanceRate = v;
-            attendanceTxt.setText(review.getAttendanceRateMessage());
+            presenter.getReview().attendanceRate = v;
+            attendanceTxt.setText(presenter.getReview().getAttendanceRateMessage());
         });
         gradeRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
-            review.gradeRate = v;
-            gradeTxt.setText(review.getGradeRateMessage());
+            presenter.getReview().gradeRate = v;
+            gradeTxt.setText(presenter.getReview().getGradeRateMessage());
         });
         achievementRate.setOnRatingBarChangeListener((ratingBar, v, b) -> {
-            review.achievementRate = v;
-            achievementTxt.setText(review.getAchievementRateMessage());
+            presenter.getReview().achievementRate = v;
+            achievementTxt.setText(presenter.getReview().getAchievementRateMessage());
         });
     }
-
-    private void makeListDialog(long subjectId){
-        Retro.instance.searchService().getProfessorFromSubject(subjectId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                     this.professors = result.professors;
-                    Observable.from(professors)
-                            .map(Professor::getName)
-                            .toList()
-                            .subscribe(data -> {
-                                profNamesDialog = new ListDialog(context, data, dialogItemClickListener);
-                            });
-                });
-    }
-
-
-    private OnItemClickListener dialogItemClickListener = (view, position) -> {
-
-    };
 
 
     @Subscribe
@@ -150,86 +116,59 @@ public class UploadReviewFragment extends BaseWriteFragment {
                 Intent data = activityResultEvent.getIntent();
                 long id = data.getLongExtra("id", 0);
                 String name = data.getStringExtra("name");
-                String type = data.getStringExtra("type");
+                ReviewSearchType type = (ReviewSearchType)data.getSerializableExtra("type");
                 Logger.v("on activity result: " + type);
-                if ("subject".equals(type)) {
+                if (ReviewSearchType.SUBJECT.equals(type)) {
                     subjectTxt.setText(name);
-                    review.subjectId = id;
-                    review.subjectDetailId = 0;
-                    review.professorId = 0;
+                    presenter.getReview().subjectId = id;
+                    presenter.getReview().subjectDetailId = 0;
+                    presenter.getReview().professorId = 0;
                     professorTxt.setText(null);
-                    callGetReviewExist(id);
-                } else if ("searchProfessor".equals(type)) {
+                    presenter.checkReviewExist();
+                } else if (ReviewSearchType.PROF_FROM_SUBJ.equals(type)) {
                     long detailId = data.getLongExtra("detailId", 0);
                     professorTxt.setText(name);
-                    review.subjectDetailId = detailId;
-                    review.professorId = id;
+                    presenter.getReview().subjectDetailId = detailId;
+                    presenter.getReview().professorId = id;
                 }
             }
         }
     }
 
-    private void registerReview() {
-        review.userId = App.userId;
-        review.difficultyRate = difficultyRate.getRating();
-        review.assignmentRate = assignmentRate.getRating();
-        review.attendanceRate = attendanceRate.getRating();
-        review.gradeRate = gradeRate.getRating();
-        review.achievementRate = achievementRate.getRating();
-        review.subjectDetail.subject.name = subjectTxt.getText().toString();
-        review.subjectDetail.professor.name = professorTxt.getText().toString();
-        if (review.getAlertMessage() == null) {
-            callPostSimpleReviewApi(review);
-            progressDialog.show();
-        } else {
-            Util.simpleMessageDialog(context, review.getAlertMessage());
-        }
+
+    @Override
+    public void showRecommendRvDialog() {
+        recommendRvDialog =new RecommendRvDialog(context, presenter.getReview());
+        recommendRvDialog.show();
     }
 
-
-
-    //api
-
-    private void callGetReviewExist(long subjectId){
-        Retro.instance.reviewService().getReviewExist(App.setAuthHeader(App.userToken), subjectId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    isReviewExist = result.exist;
-                    if(isReviewExist){
-                        showAlertDialog();
-                    }
-                }, ErrorUtils::parseError);
-
-    }
-
-    private void showAlertDialog(){
+    @Override
+    public void showAlertDialog(){
         new AlertDialog.Builder(context, R.style.customDialog)
                 .setMessage("이미 해당 과목 리뷰를 쓰셨습니다.\n다른 과목 리뷰를 써주시길 바랍니다.")
                 .setPositiveButton("확인", null)
                 .show();
     }
 
-    private void callPostSimpleReviewApi(Review review){
-        Logger.v("post review: " + review);
-        Retro.instance.reviewService().postSimpleReview(App.setAuthHeader(App.userToken), review)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate(() -> progressDialog.dismiss())
-                .subscribe(result -> response(result.review), ErrorUtils::parseError);
+    @Override
+    public void setReviewExist(boolean reviewExist) {
+        isReviewExist = reviewExist;
     }
 
-    private void response(Review review) {
-        Logger.v("response review: " + review);
-        MypageFragment.isRefresh = true;
-        this.review.id = review.id;
-        recommendRvDialog =new RecommendRvDialog(context, this.review);
-        recommendRvDialog.show();
+    @Override
+    public String getSubjectName() {
+        return subjectTxt.getText().toString();
+    }
+
+    @Override
+    public String getProfessorName() {
+        return professorTxt.getText().toString();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        presenter.detachView();
         if (recommendRvDialog != null) recommendRvDialog.dismiss();
     }
 }

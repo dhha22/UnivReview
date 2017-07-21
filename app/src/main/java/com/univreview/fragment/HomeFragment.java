@@ -68,7 +68,7 @@ public class HomeFragment extends BaseFragment {
     private void init() {
         Logger.v("init");
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
-        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.PROFESSOR, professorTxt.getText().toString(), true));
+        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.PROFESSOR, true));
         majorTxt.setOnClickListener(v -> Navigator.goMajorExpandable(context));
         collapseBtn.setOnClickListener(v -> setCollapseBtnState());
 
@@ -129,7 +129,7 @@ public class HomeFragment extends BaseFragment {
             appBarLayout.setExpanded(true, true);
         } else {
             Logger.v("go search");
-            Navigator.goSearch(context, ReviewSearchType.SUBJECT, subjectTxt.getText().toString(), true);
+            Navigator.goSearch(context, ReviewSearchType.SUBJECT, true);
         }
 
     }

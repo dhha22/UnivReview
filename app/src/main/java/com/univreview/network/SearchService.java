@@ -31,7 +31,7 @@ public interface SearchService {
     Observable<MajorSubjectModel> getMajorSubject(@Query("universityId") long universityId);
 
     @GET("professorSubject")
-    Observable<SearchModel> getProfessorFromSubject(@Query("subjectId") long subjectId);
+    Observable<SearchModel> getProfessorFromSubject(@Query("subjectId") long subjectId, @Query("page") int page);
 
     @GET("subjectProfessor")
     Observable<SearchModel> getSubjectFromProfessor(@Query("professorId") long professorId);

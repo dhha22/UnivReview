@@ -10,7 +10,9 @@ public enum ReviewSearchType {
     DEPARTMENT("department"),
     MAJOR("major"),
     PROFESSOR("professor"),
-    MY_REVIEW("myReview");
+    MY_REVIEW("myReview"),
+    PROF_FROM_SUBJ("profFromSubj"),
+    SUBJ_FROM_PROF("subjFromProf");
 
 
     private String typeName;

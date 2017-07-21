@@ -127,22 +127,21 @@ public class RegisterUnivInfoFragment extends BaseFragment {
 
         universityTxt.setOnClickListener(v -> {
             if (formVerification(STUDENT, UNIVERSITY)) {
-                Navigator.goSearch(getActivity(), ReviewSearchType.UNIVERSITY, universityTxt.getText().toString(), false);
+                Navigator.goSearch(getActivity(), ReviewSearchType.UNIVERSITY, false);
             }
         });
 
         departmentTxt.setOnClickListener(v -> {
             if (formVerification(STUDENT, DEPARTMENT)) {
                 Navigator.goSearch(getActivity(), ReviewSearchType.DEPARTMENT,
-                        register.universityId, departmentTxt.getText().toString(), false);
+                        register.universityId, false);
             }
         });
 
         majorTxt.setOnClickListener(v -> {
             if (formVerification(STUDENT, MAJOR)) {
                 Logger.v("register department id: " + register.departmentId);
-                Navigator.goSearch(getActivity(), ReviewSearchType.MAJOR,
-                        register.departmentId, majorTxt.getText().toString(), false);
+                Navigator.goSearch(getActivity(), ReviewSearchType.MAJOR, register.departmentId, false);
             }
         });
 
