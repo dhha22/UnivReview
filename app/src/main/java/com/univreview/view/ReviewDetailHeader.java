@@ -28,8 +28,6 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.univreview.App.context;
-
 /**
  * Created by DavidHa on 2017. 6. 18..
  */
@@ -39,7 +37,7 @@ public class ReviewDetailHeader extends FrameLayout {
     @BindView(R.id.name_txt) TextView nameTxt;
     @BindView(R.id.auth_mark) TextView authMark;
     @BindView(R.id.time_txt) TextView timeTxt;
-    @BindView(R.id.more_btn) ImageButton moreBtn;
+    @BindView(R.id.etc_btn) ImageButton etcBtn;
     @BindView(R.id.review_rating_indicator_view) ReviewRatingIndicatorView reviewRatingIndicatorView;
     @BindView(R.id.review_detail_layout) LinearLayout reviewDetailLayout;
     @BindView(R.id.review_detail_txt) TextView reviewDetailTxt;
@@ -76,7 +74,7 @@ public class ReviewDetailHeader extends FrameLayout {
     }
 
     public void setCommentMoreBtnListener(OnClickListener clickListener){
-        moreBtn.setOnClickListener(clickListener);
+        commentMore.setOnClickListener(clickListener);
     }
 
 
@@ -131,8 +129,8 @@ public class ReviewDetailHeader extends FrameLayout {
         reviewRatingIndicatorView.setData(data);
     }
 
-    public void setMoreBtnOnClickListener(OnClickListener clickListener){
-        moreBtn.setOnClickListener(clickListener);
+    public void setEtcBtnClickListener(OnClickListener clickListener){
+        etcBtn.setOnClickListener(clickListener);
     }
 
     private void callReviewLike(long id) {

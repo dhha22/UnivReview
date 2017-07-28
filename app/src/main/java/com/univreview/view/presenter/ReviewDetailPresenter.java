@@ -1,5 +1,7 @@
 package com.univreview.view.presenter;
 
+import android.util.Log;
+
 import com.univreview.App;
 import com.univreview.adapter.contract.ReviewDetailAdapterContract;
 import com.univreview.listener.OnItemLongClickListener;
@@ -9,6 +11,11 @@ import com.univreview.model.ReviewComment;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.view.contract.ReviewDetailContract;
+
+import org.w3c.dom.Comment;
+
+import java.util.Collections;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -56,17 +63,14 @@ public class ReviewDetailPresenter implements ReviewDetailContract, OnItemLongCl
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if(page == DEFAULT_PAGE){
+                    if (page == DEFAULT_PAGE) {
                         adapterModel.clearItem();
-                        view.setCommentMoreBtn(result.comments.size() > 5);
                     }
+                    view.setCommentMoreBtn(result.comments.size() == 5);
                     view.setPage(page + 1);
 
                     Logger.v("comment result: " + result.toString());
                     Observable.from(result.comments)
-                            .takeLast(5)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(data -> adapterModel.addItem(data), Logger::e);
                 }, error -> {
                     view.setPage(DEFAULT_PAGE);
@@ -80,7 +84,7 @@ public class ReviewDetailPresenter implements ReviewDetailContract, OnItemLongCl
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> view.dismissProgress())
-                .subscribe(result -> adapterModel.addItem(result), ErrorUtils::parseError);
+                .subscribe(result -> adapterModel.addLastItem(result), ErrorUtils::parseError);
     }
 
     public void setAdapterModel(ReviewDetailAdapterContract.Model adapterModel) {

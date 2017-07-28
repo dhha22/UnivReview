@@ -73,7 +73,7 @@
             android:layout_weight="1" />
 
         <ImageButton
-            android:id="@+id/more_btn"
+            android:id="@+id/etc_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"

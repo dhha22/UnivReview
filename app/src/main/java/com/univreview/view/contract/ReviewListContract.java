@@ -21,6 +21,8 @@ public interface ReviewListContract {
         void setResult(int page);
         void setStatus(AbsListFragment.Status status);
         ReviewTotalScoreView getReviewTotalScoreView();
+        void setHeaderViewVisibility(boolean isVisibility);
+        void setFilterName(String filterName);
     }
 
     void attachView(View view);

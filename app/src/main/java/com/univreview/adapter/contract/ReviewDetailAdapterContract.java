@@ -14,8 +14,10 @@ public interface ReviewDetailAdapterContract {
 
     interface  Model{
         void addItem(AbstractDataProvider item);
+        void addLastItem(AbstractDataProvider item);
         void clearItem();
         AbstractDataProvider getItem(int position);
+        int getItemCount();
         void removeItem(int position);
     }
 }

@@ -65,7 +65,10 @@ public class ReviewListPresenter implements ReviewListContract {
 
     private void errorResponse(int page, Throwable e) {
         view.setStatus(AbsListFragment.Status.ERROR);
-        if (page == DEFAULT_PAGE) adapterModel.clearItem();
+        if (page == DEFAULT_PAGE){
+            view.setHeaderViewVisibility(false);
+            adapterModel.clearItem();
+        }
         ErrorUtils.parseError(e);
     }
 

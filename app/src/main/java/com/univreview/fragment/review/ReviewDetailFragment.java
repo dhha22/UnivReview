@@ -20,6 +20,7 @@ import com.univreview.dialog.ListDialog;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
+import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.Review;
 import com.univreview.model.ReviewComment;
 import com.univreview.util.Util;
@@ -30,6 +31,7 @@ import com.univreview.view.ReviewDetailHeader;
 import com.univreview.view.contract.ReviewDetailContract;
 import com.univreview.view.presenter.ReviewDetailPresenter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,10 +51,11 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
     private CommentAdapter commentAdapter;
     public  boolean isRefresh = true;
     private ListDialog dialog;
-    private List<String> dialogList;
+    private List<String> dialogList = new ArrayList<>();
     private int page = DEFAULT_PAGE;
     private long reviewId;
     private ReviewDetailPresenter presenter;
+
 
     public static ReviewDetailFragment newInstance(Review data){
         ReviewDetailFragment fragment = new ReviewDetailFragment();
@@ -119,6 +122,11 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
         headerView.setData(data);
     }
 
+    public void scrollToPosition(int position){
+        Logger.v("scroll position: " + position);
+        commentRecyclerView.scrollToPosition(position);
+    }
+
     @Override
     public void setCommentMoreBtn(boolean hasMore) {
         headerView.setCommentMoreBtn(hasMore);
@@ -134,20 +142,19 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
     }
 
     private void setDialog(long userId) {
-        if (App.userId == userId) {
-            dialogList = Arrays.asList("리뷰수정");
-            if (data.reviewDetail != null) {
-                dialogList = Arrays.asList("리뷰신고", "리뷰수정");
-            } else {
-                dialogList = Arrays.asList("리뷰신고", "상세리뷰 쓰기");
-            }
+
+        if (data.reviewDetail != null) {
+            dialogList.add("리뷰수정");
         } else {
-            dialogList = Arrays.asList("리뷰신고");
+            dialogList.add("상세리뷰 쓰기");
         }
-        if (dialog == null) {
-            dialog = new ListDialog(context, dialogList, dialogItemClickListener);
-            headerView.setMoreBtnOnClickListener(v -> dialog.show());
+
+        if ((long) App.userId != userId) {
+            dialogList.add(0, "리뷰신고");
         }
+        dialog = new ListDialog(context, dialogList, dialogItemClickListener);
+        headerView.setEtcBtnClickListener(v -> dialog.show());
+
     }
 
     private OnItemClickListener dialogItemClickListener = (view, position) -> {
@@ -189,6 +196,12 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
                 v = (CommentItemView)itemView;
                 v.setOnLongClickListener(view -> itemLongClickListener.onLongClick(view, getAdapterPosition()));
             }
+        }
+
+        @Override
+        public void addItem(AbstractDataProvider item) {
+            list.add(0, item);
+            notifyDataSetChanged();
         }
 
         @Override

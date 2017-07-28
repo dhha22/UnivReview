@@ -193,6 +193,14 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
         }
     }
 
+    public void setHeaderViewVisibility(boolean isVisibility){
+        if(isVisibility) {
+            headerView.setVisibility(View.VISIBLE);
+        }else{
+            headerView.setVisibility(View.GONE);
+        }
+    }
+
     private void setRecyclerView(){
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
         layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT);
@@ -410,10 +418,14 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
             }
         }
         presenter.loadReviewItem(type, DEFAULT_PAGE);
-        filterNameTxt.setText(filterName);
-        toolbarSubtitleTxt.setText(filterName);
+        setFilterName(filterName);
     };
 
+    @Override
+    public void setFilterName(String filterName){
+        filterNameTxt.setText(filterName);
+        toolbarSubtitleTxt.setText(filterName);
+    }
 
 
 

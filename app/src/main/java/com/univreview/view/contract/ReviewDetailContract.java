@@ -17,6 +17,7 @@ public interface ReviewDetailContract{
         void showCommentDeleteDialog(DialogInterface.OnClickListener clickListener);
         void dismissProgress();
         void setCommentMoreBtn(boolean hasMore);
+        void scrollToPosition(int position);
     }
 
     void attachView(View view);
