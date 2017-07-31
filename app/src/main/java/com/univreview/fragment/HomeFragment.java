@@ -43,7 +43,6 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapse_btn) ImageButton collapseBtn;
     @BindView(R.id.subject_txt) TextView subjectTxt;
-    @BindView(R.id.major_txt) TextView majorTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
     @BindView(R.id.latest_culture_recycler_view) RecyclerView latestCultureRecyclerView;
     @BindView(R.id.latest_major_recycler_view) RecyclerView latestMajorRecyclerView;
@@ -69,29 +68,22 @@ public class HomeFragment extends BaseFragment {
         Logger.v("init");
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
         professorTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.PROFESSOR, true));
-        majorTxt.setOnClickListener(v -> Navigator.goMajorExpandable(context));
         collapseBtn.setOnClickListener(v -> setCollapseBtnState());
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             int height = appBarLayout.getHeight() - appBarLayout.getBottom();
             float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
-            float majorValue;
+
             if (value == 1) {
                 collapseBtn.setVisibility(View.VISIBLE);
-                majorValue = 1;
-                majorTxt.setVisibility(View.VISIBLE);
                 collapseBtn.setAlpha(1f);
                 professorTxt.setVisibility(View.VISIBLE);
             } else if (value <= 0.7) {
-                majorValue = 0;
                 collapseBtn.setAlpha((float) Math.log(value * 1.8));
-                majorTxt.setVisibility(View.GONE);
                 professorTxt.setVisibility(View.GONE);
             } else {
-                majorTxt.setVisibility(View.VISIBLE);
                 professorTxt.setVisibility(View.VISIBLE);
                 collapseBtn.setAlpha((float) Math.log(value * 1.8));
-                majorValue = (float) Math.log(value * 1.5);
             }
 
             if (value < 0.55) {
@@ -99,8 +91,6 @@ public class HomeFragment extends BaseFragment {
             }
 
             collapseBtn.setAlpha((float) Math.log(value * 1.8));
-            majorTxt.setAlpha(majorValue);
-            professorTxt.setAlpha(majorValue);
             if (height == 0) {
                 setSearchFormData(true);
             } else {
@@ -149,7 +139,7 @@ public class HomeFragment extends BaseFragment {
             subjectTxt.setHint("과목명");
         } else {
             this.isExpand = false;
-            subjectTxt.setHint("과목명·교수명·학과명");
+            subjectTxt.setHint("과목명·교수명");
         }
     }
 

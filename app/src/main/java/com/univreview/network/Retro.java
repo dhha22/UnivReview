@@ -42,8 +42,8 @@ public enum Retro {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         if (BuildConfig.DEBUG) {
-            BASE_URL = TEST_URL;
-             //BASE_URL = REAL_URL;
+            //BASE_URL = TEST_URL;
+             BASE_URL = REAL_URL;
         } else {
             BASE_URL = REAL_URL;
         }
