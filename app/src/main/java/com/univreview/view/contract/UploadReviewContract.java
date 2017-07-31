@@ -8,7 +8,7 @@ import com.univreview.model.Review;
  * Created by DavidHa on 2017. 7. 20..
  */
 
-public interface UploadReviewContract {
+public interface UploadReviewContract extends BaseContract<UploadReviewContract.View> {
     interface View {
         void showProgress();
         void dismissProgress();
@@ -21,8 +21,6 @@ public interface UploadReviewContract {
 
     Review getReview();
     void setContext(Context context);
-    void attachView(View view);
-    void detachView();
     void registerReview();
     void checkReviewExist();
 

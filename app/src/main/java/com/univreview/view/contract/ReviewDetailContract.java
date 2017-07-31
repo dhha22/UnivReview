@@ -9,7 +9,7 @@ import com.univreview.model.ReviewComment;
  * Created by DavidHa on 2017. 7. 14..
  */
 
-public interface ReviewDetailContract{
+public interface ReviewDetailContract extends BaseContract<ReviewDetailContract.View> {
     interface View{
         void setData(Review data);
         long getReviewId();
@@ -20,8 +20,6 @@ public interface ReviewDetailContract{
         void scrollToPosition(int position);
     }
 
-    void attachView(View view);
-    void detachView();
     void loadReviewSingle();
     void postComment(ReviewComment body);
     void loadCommentItem(int page);

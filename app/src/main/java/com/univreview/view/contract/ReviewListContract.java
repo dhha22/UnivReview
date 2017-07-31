@@ -12,7 +12,7 @@ import java.util.List;
  * Created by DavidHa on 2017. 7. 14..
  */
 
-public interface ReviewListContract {
+public interface ReviewListContract extends BaseContract<ReviewListContract.View> {
     interface View{
         void setDialog(List<String> list);
         Long getSubjectId();
@@ -25,8 +25,6 @@ public interface ReviewListContract {
         void setFilterName(String filterName);
     }
 
-    void attachView(View view);
-    void detachView();
     void loadReviewItem(ReviewSearchType type, int page);
     void searchProfessor(long subjectId);
     void searchSubject(long professorId);
