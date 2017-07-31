@@ -35,6 +35,7 @@ import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
+import com.univreview.view.presenter.LoginPresenter;
 
 import java.util.Arrays;
 
@@ -46,11 +47,12 @@ import rx.schedulers.Schedulers;
 /**
  * Created by DavidHa on 2016. 12. 25..
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements LoginPresenter.View{
     @BindView(R.id.facebook_login_btn) Button facebookLoginBtn;
     @BindView(R.id.kakao_login_btn) Button kakaoLoginBtn;
     private CallbackManager facebookCallbackManager;
     private SessionCallback kakaoCallback;
+    private LoginPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +65,9 @@ public class LoginActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        presenter = new LoginPresenter();
+        presenter.attachView(this);
+        presenter.setContext(this);
 
         //facebook
         facebookCallbackManager = CallbackManager.Factory.create();
@@ -77,17 +81,17 @@ public class LoginActivity extends BaseActivity {
 
     private void facebookLogin() {
         Logger.v("facebook login");
-        progressDialog.show();
+        showProgress();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         LoginManager.getInstance().registerCallback(facebookCallbackManager, facebookCallback);
     }
 
     private void kakaoLogin(){
         Logger.v("kakao login");
-        progressDialog.show();
+        showProgress();
         boolean isOpen = Session.getCurrentSession().checkAndImplicitOpen();
         if(!isOpen){
-            progressDialog.dismiss();
+            dismissProgress();
             Session.getCurrentSession().open(AuthType.KAKAO_TALK , LoginActivity.this);
         }
     }
@@ -95,100 +99,46 @@ public class LoginActivity extends BaseActivity {
     private FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(final LoginResult loginResult) {
-            GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
-                Logger.v("facebook responseMajor" + response.toString());
-                try {
-                    String userId = object.getString("id");   //facebook user id
-                    String accessToken = loginResult.getAccessToken().getToken();    //facebookAccessToken
-                    String nickName = object.getString("name");
-                    String profileUrl = object.getJSONObject("picture").getJSONObject("data").getString("url"); //facebook profile image
-                    callLoginApi("F", userId, accessToken, nickName, profileUrl);
-                } catch (Exception e) {
-                    Logger.e(e.toString());
-                }
-
-            });
-            Bundle parameters = new Bundle();
-            parameters.putString("fields", "id, name, picture.type(large)");
-            request.setParameters(parameters);
-            request.executeAsync();
+           presenter.facebookOnSuccess(loginResult);
         }
 
         @Override
         public void onCancel() {
-            progressDialog.dismiss();
+            dismissProgress();
         }
 
         @Override
         public void onError(FacebookException error) {
-            progressDialog.dismiss();
+            dismissProgress();
             Logger.e(error);
             if (error instanceof FacebookAuthorizationException) {
                 if (AccessToken.getCurrentAccessToken() != null) {
                     LoginManager.getInstance().logOut();
                     facebookLogin();
-                } else {
-
                 }
             }
         }
     };
 
     //kakao
+
     private class SessionCallback implements ISessionCallback {
         @Override
         public void onSessionOpened() {
             // 사용자 정보를 가져옴, 회원가입 미가입시 자동가입 시킴
             Logger.v("카카오 로그인 세션 오픈");
-            kakaoRequestMe();
+            presenter.kakaoOnSuccess();
         }
 
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
             if(exception != null) {
+                dismissProgress();
                 Logger.e(exception.getMessage());
             }
         }
     }
 
-    protected void kakaoRequestMe() {
-        UserManagement.requestMe(new MeResponseCallback() {
-            @Override
-            public void onFailure(ErrorResult errorResult) {
-                progressDialog.dismiss();
-                int ErrorCode = errorResult.getErrorCode();
-                int ClientErrorCode = -777;
-                if (ErrorCode == ClientErrorCode) {
-                    Util.toast("카카오톡 서버의 네트워크가 불안정합니다. 잠시 후 다시 시도해주세요.");
-                } else {
-                    Logger.e("오류로 카카오로그인 실패 ");
-                }
-            }
-
-            @Override
-            public void onSessionClosed(ErrorResult errorResult) {
-                progressDialog.dismiss();
-                Logger.e("카카오 로그인 에러");
-            }
-
-            @Override
-            public void onSuccess(UserProfile userProfile) {
-                Logger.v("카카오 로그인 성공");
-                String userId = String.valueOf(userProfile.getId());
-                String accessToken = Session.getCurrentSession().getAccessToken();
-                String nickName = userProfile.getNickname();  //kakao nickname
-                String profileURL = userProfile.getProfileImagePath();  //kakao profile image
-
-                callLoginApi("K", userId, accessToken, nickName, profileURL);
-            }
-
-            @Override
-            public void onNotSignedUp() {
-                Logger.v("자동로그인 아님");
-                // 자동가입이 아닐경우 동의창
-            }
-        });
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -202,37 +152,12 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    //api
-    private void callLoginApi(String userType, String userId, String accessToken, String nickName, String profileURL) {
-        Logger.v("userType: " + userType + ", userId: " + userId + ", accessToken: " + accessToken + ", nickName: " + nickName + ", profileUrl: " + profileURL);
-        Retro.instance.loginService().login(App.setAuthHeader(""), new Login(userType, userId, accessToken))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate(() -> progressDialog.dismiss())
-                .subscribe(result -> response(result),
-                        error -> loginErrorResponse(error, new Register(userType, userId, accessToken, nickName, profileURL)));
-    }
 
-    private void response(UserModel userModel){
-        Logger.v("response: " + userModel);
-        App.setUserId(userModel.user.id);
-        App.setUserToken(userModel.auth.getToken());
-        App.setUniversityId(userModel.user.universityId);
-        Navigator.goMain(this);
-    }
-
-
-    private void loginErrorResponse(Throwable error, Register register) {
-        if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_404) {   //신규회원
-            Navigator.goRegisterUserInfo(this, register);
-        } else {
-            Navigator.goRegisterUserInfo(this, register);
-        }
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.detachView();
         Session.getCurrentSession().removeCallback(kakaoCallback);
     }
 }

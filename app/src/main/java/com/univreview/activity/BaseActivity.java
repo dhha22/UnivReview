@@ -34,6 +34,18 @@ public class BaseActivity extends AppCompatActivity {
         this.onBackPressedListener = onBackPressedListener;
     }
 
+    public void showProgress(){
+        if(progressDialog != null){
+            progressDialog.show();
+        }
+    }
+
+    public void dismissProgress(){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (onBackPressedListener != null) {
