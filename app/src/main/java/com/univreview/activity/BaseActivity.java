@@ -12,7 +12,7 @@ import com.univreview.util.Util;
 /**
  * Created by DavidHa on 2016. 12. 25..
  */
-public class BaseActivity extends AppCompatActivity {
+/*public class BaseActivity extends AppCompatActivity {
     protected OnBackPressedListener onBackPressedListener;
     protected ProgressDialog progressDialog;
     @Override
@@ -62,4 +62,4 @@ public class BaseActivity extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
-}
+}*/
