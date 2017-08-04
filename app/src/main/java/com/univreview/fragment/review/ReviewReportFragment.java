@@ -67,15 +67,15 @@ public class ReviewReportFragment extends BaseWriteFragment {
     }
 
     private void init() {
-        nextButtonState = new SimpleButtonState(context, button);
+        nextButtonState = new SimpleButtonState(getContext(), button);
         nextButtonState.setDrawable(R.drawable.rounded_primary_rect, R.drawable.fill_rounded_primary_rect);
         nextButtonState.setTxtColor(R.color.colorPrimary, R.color.white);
         radio1.setOnClickListener(view -> {
-            Util.hideKeyboard(context, input);
+            Util.hideKeyboard(getContext(), input);
             nextButtonState.setButtonState(true);
         });
         radio2.setOnClickListener(view -> {
-            Util.hideKeyboard(context, input);
+            Util.hideKeyboard(getContext(), input);
             nextButtonState.setButtonState(true);
         });
         radio3.setOnCheckedChangeListener((compoundButton, b) -> setInputFocusable(b));
@@ -117,7 +117,7 @@ public class ReviewReportFragment extends BaseWriteFragment {
 
     private void registerReport() {
         progressDialog.show();
-        Util.hideKeyboard(context, input);
+        Util.hideKeyboard(getContext(), input);
         String message = null;
         if (radio1.isChecked()) {
             message = "음란성 및 욕설 또는 허위사실 내용";
@@ -138,8 +138,8 @@ public class ReviewReportFragment extends BaseWriteFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> {
                     progressDialog.dismiss();
-                    ((BaseActivity) activity).setOnBackPressedListener(null);
-                    activity.onBackPressed();
+                    ((BaseActivity) getActivity()).setOnBackPressedListener(null);
+                    getActivity().onBackPressed();
                 })
                 .subscribe(result -> Logger.v("result: " + result), ErrorUtils::parseError);
     }

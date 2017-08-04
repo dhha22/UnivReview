@@ -84,7 +84,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_univ_info, container, false);
         ButterKnife.bind(this, view);
-        rootLayout.setBackground(Util.getDrawable(context, R.drawable.cr_login_bg));
+        rootLayout.setBackground(Util.getDrawable(getContext(), R.drawable.cr_login_bg));
         setToolbarTransparent();
         toolbar.setBackBtnVisibility(true);
         init();
@@ -93,11 +93,11 @@ public class RegisterUnivInfoFragment extends BaseFragment {
     }
 
     private void init() {
-        progressDialog = Util.progressDialog(context);
-        nextButtonState = new SimpleButtonState(context, nextBtn);
+        progressDialog = Util.progressDialog(getContext());
+        nextButtonState = new SimpleButtonState(getContext(), nextBtn);
         nextButtonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         nextButtonState.setTxtColor(R.color.white, R.color.white);
-        buttonStateManager = new ButtonStateManager(context, new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
+        buttonStateManager = new ButtonStateManager(getContext(), new SimpleButtonState(studentBtn), new SimpleButtonState(professorBtn));
         buttonStateManager.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonStateManager.setTxtColor(R.color.white, R.color.white);
 
@@ -120,7 +120,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         } else if (state == PROFESSOR) {
             nextBtn.setText("교수님 인증하기");
             nextBtn.setOnClickListener(v -> {
-                if (formVerification(PROFESSOR, NEXT)) Navigator.goRegisterUserIdentity(context);
+                if (formVerification(PROFESSOR, NEXT)) Navigator.goRegisterUserIdentity(getContext());
             });
             majorLayout.setVisibility(View.GONE);
         }
@@ -165,11 +165,11 @@ public class RegisterUnivInfoFragment extends BaseFragment {
             return true;
         } else {
             if (position == UNIVERSITY) {
-                Util.simpleMessageDialog(context, "대학을 선택해주세요.");
+                Util.simpleMessageDialog(getContext(), "대학을 선택해주세요.");
             } else if (position == DEPARTMENT) {
-                Util.simpleMessageDialog(context, "학과군을 선택해주세요.");
+                Util.simpleMessageDialog(getContext(), "학과군을 선택해주세요.");
             } else if (position == MAJOR && state != PROFESSOR) {
-                Util.simpleMessageDialog(context, "전공을 선택해주세요.");
+                Util.simpleMessageDialog(getContext(), "전공을 선택해주세요.");
             }
             return false;
         }
@@ -193,22 +193,22 @@ public class RegisterUnivInfoFragment extends BaseFragment {
                     register.departmentId = null;
                     register.majorId = null;
                     nextButtonState.setButtonState(false);
-                    universityLine.setBackgroundColor(Util.getColor(context, R.color.white));
-                    departmentLine.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor));
-                    majorLine.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor));
+                    universityLine.setBackgroundColor(Util.getColor(getContext(), R.color.white));
+                    departmentLine.setBackgroundColor(Util.getColor(getContext(), R.color.lineDisableColor));
+                    majorLine.setBackgroundColor(Util.getColor(getContext(), R.color.lineDisableColor));
                 } else if ("department".equals(type)) {
                     departmentTxt.setText(name);
                     majorTxt.setText(null);
                     register.departmentId = id;
                     register.majorId = null;
                     nextButtonState.setButtonState(false);
-                    departmentLine.setBackgroundColor(Util.getColor(context, R.color.white));
-                    majorLine.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor));
+                    departmentLine.setBackgroundColor(Util.getColor(getContext(), R.color.white));
+                    majorLine.setBackgroundColor(Util.getColor(getContext(), R.color.lineDisableColor));
                 } else if ("major".equals(type)) {
                     majorTxt.setText(name);
                     register.majorId = id;
                     nextButtonState.setButtonState(true);
-                    majorLine.setBackgroundColor(Util.getColor(context, R.color.white));
+                    majorLine.setBackgroundColor(Util.getColor(getContext(), R.color.white));
                 }
 
             }
@@ -255,7 +255,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
             callUserUpdateApi(register.profileUrl);
         } else {
             progressDialog.dismiss();
-            Navigator.goMain(context);
+            Navigator.goMain(getContext());
         }
     }
 
@@ -275,7 +275,7 @@ public class RegisterUnivInfoFragment extends BaseFragment {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-        Navigator.goMain(context);
+        Navigator.goMain(getContext());
     }
 
 

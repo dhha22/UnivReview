@@ -84,7 +84,7 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
         View view = inflater.inflate(R.layout.fragment_review_detail, container, false);
         ButterKnife.bind(this, view);
         toolbar.setBackBtnVisibility(true);
-        rootLayout.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
+        rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.backgroundColor));
         rootLayout.addView(view);
         init(data);
         return rootLayout;
@@ -102,9 +102,9 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
     }
 
     private void init(Review data) {
-        headerView = new ReviewDetailHeader(context);
-        commentRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        commentAdapter = new CommentAdapter(context, headerView);
+        headerView = new ReviewDetailHeader(getContext());
+        commentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        commentAdapter = new CommentAdapter(getContext(), headerView);
         commentRecyclerView.setAdapter(commentAdapter);
         commentInput.setSendListener(v -> postReviewComment(getReviewId(), commentInput.getInputMsg()));
         presenter.setAdapterModel(commentAdapter);
@@ -152,7 +152,7 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
         if ((long) App.userId != userId) {
             dialogList.add(0, "리뷰신고");
         }
-        dialog = new ListDialog(context, dialogList, dialogItemClickListener);
+        dialog = new ListDialog(getContext(), dialogList, dialogItemClickListener);
         headerView.setEtcBtnClickListener(v -> dialog.show());
 
     }
@@ -160,10 +160,10 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
     private OnItemClickListener dialogItemClickListener = (view, position) -> {
       switch (position){
           case 0:   // 리뷰신고
-              Navigator.goReviewReport(context, data.id);
+              Navigator.goReviewReport(getContext(), data.id);
               break;
           case 1:   // 리뷰 수정 or 상세리뷰 쓰기
-              Navigator.goUploadReviewDetail(context, data, POSITION_NONE);
+              Navigator.goUploadReviewDetail(getContext(), data, POSITION_NONE);
               break;
       }
     };
@@ -214,7 +214,7 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
 
     @Override
      public void showCommentDeleteDialog(DialogInterface.OnClickListener clickListener){
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(getContext())
                 .setMessage("댓글을 삭제하시겠습니까?")
                 .setPositiveButton("확인", clickListener)
                 .setNegativeButton("취소", null)

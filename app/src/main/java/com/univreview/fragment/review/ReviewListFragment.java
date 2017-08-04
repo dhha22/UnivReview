@@ -130,12 +130,12 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((BaseActivity)activity).setOnBackPressedListener(backPressedListener);
+        ((BaseActivity)getActivity()).setOnBackPressedListener(backPressedListener);
         View view = inflater.inflate(R.layout.fragment_review_list, container, false);
         ButterKnife.bind(this, view);
         init();
         recyclerView.setMode(UnivReviewRecyclerView.Mode.DISABLED);
-        recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
+        recyclerView.setBackgroundColor(Util.getColor(getContext(), R.color.backgroundColor));
         rootLayout.addView(view);
         return rootLayout;
     }
@@ -151,35 +151,35 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
     private void init() {
         App.picasso.load(randomImageModel.getImageURL()).fit().centerCrop().into(toolbarImage);
         if (type.equals(MY_REVIEW)) {
-            adapter = new ReviewAdapter(context);
+            adapter = new ReviewAdapter(getContext());
             appBarLayout.setVisibility(View.GONE);
             toolbar.setBackBtnVisibility(true);
             toolbar.setTitleTxt(name);
         } else if (type.equals(SUBJECT) || type.equals(PROFESSOR)) {
-            headerView = new ReviewTotalScoreView(context);
-            adapter = new ReviewAdapter(context, headerView);
+            headerView = new ReviewTotalScoreView(getContext());
+            adapter = new ReviewAdapter(getContext(), headerView);
             toolbar.setVisibility(View.GONE);
-            recyclerView.setPadding(0, (int) Util.dpToPx(context, 38), 0, 0);
+            recyclerView.setPadding(0, (int) Util.dpToPx(getContext(), 38), 0, 0);
             appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
                 int height = appBarLayout.getHeight() - appBarLayout.getBottom();
                 float value = (float) appBarLayout.getBottom() / appBarLayout.getHeight();
                 AnimationUtils.setScale(titleTxt, value);
                 if (height == 0) {
-                    AnimationUtils.fadeOut(context, toolbarTitleLayout);
-                    AnimationUtils.fadeIn(context, titleTxt);
-                    AnimationUtils.fadeIn(context, filterLayout);
+                    AnimationUtils.fadeOut(getContext(), toolbarTitleLayout);
+                    AnimationUtils.fadeIn(getContext(), titleTxt);
+                    AnimationUtils.fadeIn(getContext(), filterLayout);
                 } else if (height >= customToolbar.getHeight() * 1.02) {
-                    AnimationUtils.fadeIn(context, toolbarTitleLayout);
-                    AnimationUtils.fadeOut(context, titleTxt);
+                    AnimationUtils.fadeIn(getContext(), toolbarTitleLayout);
+                    AnimationUtils.fadeOut(getContext(), titleTxt);
                 } else {
-                    AnimationUtils.fadeOut(context, toolbarTitleLayout);
-                    AnimationUtils.fadeIn(context, titleTxt);
-                    AnimationUtils.fadeOut(context, filterLayout);
+                    AnimationUtils.fadeOut(getContext(), toolbarTitleLayout);
+                    AnimationUtils.fadeIn(getContext(), titleTxt);
+                    AnimationUtils.fadeOut(getContext(), filterLayout);
                 }
             });
 
             titleTxt.setText(name);
-            toolbarBackBtn.setOnClickListener(v -> activity.onBackPressed());
+            toolbarBackBtn.setOnClickListener(v -> getActivity().onBackPressed());
             toolbarTitleTxt.setText(name);
             toolbarSubtitleTxt.setText("전체");
         }
@@ -202,7 +202,7 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
     }
 
     private void setRecyclerView(){
-        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
+        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(getContext());
         layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -339,7 +339,7 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
         if (App.userId == review.userId) {
             update.setOnClickListener(v -> {
                 hiddenBottomSheet();
-                Navigator.goUploadReviewDetail(context, review, position);
+                Navigator.goUploadReviewDetail(getContext(), review, position);
             });
             report.setVisibility(View.GONE);
             update.setVisibility(View.VISIBLE);
@@ -354,7 +354,7 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
             update.setVisibility(View.GONE);
             report.setOnClickListener(v -> {
                 hiddenBottomSheet();
-                Navigator.goReviewReport(context, review.id);
+                Navigator.goReviewReport(getContext(), review.id);
             });
         }
 
@@ -369,8 +369,8 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
         if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hiddenBottomSheet();
         } else {
-            ((BaseActivity) activity).setOnBackPressedListener(null);
-            activity.onBackPressed();
+            ((BaseActivity) getActivity()).setOnBackPressedListener(null);
+            getActivity().onBackPressed();
         }
     };
 
@@ -389,7 +389,7 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
     public void setDialog(List<String> list) {
         if (filterDialog == null) {
             list.add(0, "전체");
-            filterDialog = new ListDialog(context, list, dialogItemClickListener);
+            filterDialog = new ListDialog(getContext(), list, dialogItemClickListener);
             filterLayout.setOnClickListener(v-> filterDialog.show());
         }
     }

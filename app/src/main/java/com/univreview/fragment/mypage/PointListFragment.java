@@ -62,9 +62,9 @@ public class PointListFragment extends AbsListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        recyclerView = new UnivReviewRecyclerView(context);
+        recyclerView = new UnivReviewRecyclerView(getContext());
         recyclerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        toolbar.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
+        toolbar.setBackgroundColor(Util.getColor(getContext(), R.color.colorPrimary));
         toolbar.setBackBtnVisibility(true);
         toolbar.setTitleTxt("포인트");
         init();
@@ -73,13 +73,13 @@ public class PointListFragment extends AbsListFragment {
     }
 
     private void init() {
-        headerView = new PointListHeaderView(context);
+        headerView = new PointListHeaderView(getContext());
         headerView.setPoint(point);
         headerView.setBuyTicketListener(v -> callBuyTicketApi());
-        adapter = new PointAdapter(context, headerView);
-        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
+        adapter = new PointAdapter(getContext(), headerView);
+        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor));
+        recyclerView.setBackgroundColor(Util.getColor(getContext(), R.color.backgroundColor));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -202,7 +202,7 @@ public class PointListFragment extends AbsListFragment {
     private void ticketErrorResponse(Throwable e) {
         String message = ErrorUtils.getErrorBody(e);
         if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_400) {
-            new AlertDialog.Builder(context, R.style.customDialog)
+            new AlertDialog.Builder(getContext(), R.style.customDialog)
                     .setMessage(message)
                     .setPositiveButton("확인", null)
                     .show();

@@ -63,7 +63,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         setToolbarTransparent();
         toolbar.setBackBtnVisibility(true);
-        rootLayout.setBackground(Util.getDrawable(context, R.drawable.cr_login_bg));
+        rootLayout.setBackground(Util.getDrawable(getContext(), R.drawable.cr_login_bg));
         init(register);
         setData(register);
         rootLayout.addView(view);
@@ -71,14 +71,14 @@ public class RegisterUserInfoFragment extends BaseFragment {
     }
 
     private void init(Register register){
-        buttonState = new SimpleButtonState(context, nextBtn);
+        buttonState = new SimpleButtonState(getContext(), nextBtn);
         buttonState.setDrawable(R.drawable.rounded_white_rect, R.drawable.fill_rounded_primary_rect);
         buttonState.setTxtColor(R.color.white, R.color.white);
-        profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
+        profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "album"));
 
         nextBtn.setOnClickListener(v -> {
             if (formVerification() && buttonState.getButtonState()) {
-                Navigator.goRegisterUnivInfo(context, register);
+                Navigator.goRegisterUnivInfo(getContext(), register);
             }
         });
         inputName.addTextChangedListener(new TextWatcher() {
@@ -115,7 +115,7 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
     private boolean formVerification() {
         if (inputName.getText().length() == 0) {
-            Util.simpleMessageDialog(context, "이름을 입력해주시길 바랍니다.");
+            Util.simpleMessageDialog(getContext(), "이름을 입력해주시길 바랍니다.");
         } else {
             return true;
         }
@@ -124,9 +124,9 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
-        if (activityResultEvent.getResultCode() == activity.RESULT_OK) {
+        if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
             if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
-                Navigator.goAlbum(context);
+                Navigator.goAlbum(getContext());
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Logger.v("album path: " + albumPath);

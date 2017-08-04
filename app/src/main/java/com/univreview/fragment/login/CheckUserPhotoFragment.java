@@ -66,10 +66,10 @@ public class CheckUserPhotoFragment extends BaseFragment {
         toolbar.setCancelBtnVisibility(true);
         if (CAMERA.equals(type)) {
             reselectBtn.setText("다시 찍기");
-            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "camera"));
+            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "camera"));
         } else if (ALBUM.equals(type)) {
             reselectBtn.setText("앨범 가기");
-            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
+            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "album"));
         }
 
         setCheckImage(path);
@@ -92,8 +92,8 @@ public class CheckUserPhotoFragment extends BaseFragment {
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate(() -> {
                                 progressDialog.dismiss();
-                                Navigator.goUserAuthCompleted(context);
-                                activity.finish();
+                                Navigator.goUserAuthCompleted(getContext());
+                                getActivity().finish();
                             })
                             .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);
                 }, error -> {
@@ -109,9 +109,9 @@ public class CheckUserPhotoFragment extends BaseFragment {
             if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
                 String type = activityResultEvent.getIntent().getStringExtra("type");
                 if ("camera".equals(type)) {
-                    Navigator.goCamera(context);
+                    Navigator.goCamera(getContext());
                 } else if ("album".equals(type)) {
-                    Navigator.goAlbum(context);
+                    Navigator.goAlbum(getContext());
                 }
             } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA){
                 path = ImageUtil.IMAGE_PATH + "tmp.jpg";

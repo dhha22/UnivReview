@@ -19,16 +19,16 @@ public class BaseWriteFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((BaseActivity) activity).setOnBackPressedListener(onBackPressedListener);
+        ((BaseActivity) getActivity()).setOnBackPressedListener(onBackPressedListener);
         return rootLayout;
     }
 
     private OnBackPressedListener onBackPressedListener = () -> {
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(getContext())
                 .setMessage("작성을 취소하시겠습니까?")
                 .setPositiveButton("예", (dialog, i) -> {
-                    ((BaseActivity) activity).setOnBackPressedListener(null);
-                    activity.onBackPressed();
+                    ((BaseActivity) getActivity()).setOnBackPressedListener(null);
+                    getActivity().onBackPressed();
                 })
                 .setNegativeButton("아니오", null)
                 .setCancelable(false)

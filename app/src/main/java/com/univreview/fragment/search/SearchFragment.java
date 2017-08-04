@@ -91,7 +91,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         toolbar.setBackBtnVisibility(true);
         init();
         rootLayout.addView(view);
-        rootLayout.setBackgroundColor(Util.getColor(context, R.color.searchBgColor));
+        rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.searchBgColor));
         return rootLayout;
     }
 
@@ -106,8 +106,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
 
     private void setRecyclerView(){
         //recycler view
-        adapter = new SearchAdapter(context);
-        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(context);
+        adapter = new SearchAdapter(getContext());
+        PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -126,7 +126,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
                 String name = adapter.getItem(position).getName();
                 input.setText(name);
                 input.setSelection(name.length());
-                Navigator.goReviewList(context, type, adapter.getItem(position).getId(), name);
+                Navigator.goReviewList(getContext(), type, adapter.getItem(position).getId(), name);
             } else {    // 보여주는 search
                 Intent intent = new Intent();
                 Logger.v("id : " + adapter.getItem(position).getId());
@@ -168,7 +168,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    activity.runOnUiThread(() -> callSearchApi(id, type, s.toString(), page));
+                    getActivity().runOnUiThread(() -> callSearchApi(id, type, s.toString(), page));
                 }
             }, 300);
         }
@@ -270,7 +270,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
     @Override
     public void onPause() {
         super.onPause();
-        Util.hideKeyboard(activity, input);
+        Util.hideKeyboard(getContext(), input);
     }
 
     @Override

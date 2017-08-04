@@ -67,7 +67,7 @@ public class HomeFragment extends BaseFragment {
     private void init() {
         Logger.v("init");
         subjectTxt.setOnClickListener(v -> setSubjectState(isExpand));
-        professorTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.PROFESSOR, true));
+        professorTxt.setOnClickListener(v -> Navigator.goSearch(getContext(), ReviewSearchType.PROFESSOR, true));
         collapseBtn.setOnClickListener(v -> setCollapseBtnState());
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
@@ -97,12 +97,12 @@ public class HomeFragment extends BaseFragment {
                 setSearchFormData(false);
             }
         });
-        LinearLayoutManager cultureLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager cultureLayoutManager = new LinearLayoutManager(getContext());
         cultureLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        LinearLayoutManager majorLayoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager majorLayoutManager = new LinearLayoutManager(getContext());
         majorLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        cultureAdapter = new LatestReviewAdapter(context);
-        majorAdapter = new LatestReviewAdapter(context);
+        cultureAdapter = new LatestReviewAdapter(getContext());
+        majorAdapter = new LatestReviewAdapter(getContext());
         latestCultureRecyclerView.setLayoutManager(cultureLayoutManager);
         latestMajorRecyclerView.setLayoutManager(majorLayoutManager);
         latestCultureRecyclerView.setAdapter(cultureAdapter);
@@ -119,7 +119,7 @@ public class HomeFragment extends BaseFragment {
             appBarLayout.setExpanded(true, true);
         } else {
             Logger.v("go search");
-            Navigator.goSearch(context, ReviewSearchType.SUBJECT, true);
+            Navigator.goSearch(getContext(), ReviewSearchType.SUBJECT, true);
         }
 
     }

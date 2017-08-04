@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment;
 
 import android.app.Activity;
@@ -19,9 +20,11 @@ import com.univreview.model.BusProvider;
 import com.univreview.util.Util;
 import com.univreview.view.Toolbar;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 13..
- */
+ *//*
+
 public class BaseFragment extends Fragment {
     private static final String HOME_FRAGMENT = "com.univreview.fragment.HomeFragment";
     protected LinearLayout rootLayout;
@@ -61,7 +64,7 @@ public class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(!this.getClass().getName().equals(HOME_FRAGMENT)) {
-            Logger.v("on resume: " + this.getClass().getName());
+
             BusProvider.newInstance().register(this);
         }
 
@@ -98,3 +101,4 @@ public class BaseFragment extends Fragment {
     }
 
 }
+*/

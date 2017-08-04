@@ -39,11 +39,11 @@ public class RegisterUserIdentityFragment extends BaseFragment{
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_user_identity, container, false);
         ButterKnife.bind(this, view);
-        rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
+        rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.colorPrimary));
         toolbar.setCancelBtnVisibility(true);
         toolbar.setTitleTxt("학교인증하기");
-        cameraBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "camera"));
-        albumBtn.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
+        cameraBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "camera"));
+        albumBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "album"));
         rootLayout.addView(view);
         return rootLayout;
     }
@@ -54,24 +54,24 @@ public class RegisterUserIdentityFragment extends BaseFragment{
             if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
                 String type = activityResultEvent.getIntent().getStringExtra("type");
                 if ("camera".equals(type)) {
-                    Navigator.goCamera(context);
+                    Navigator.goCamera(getContext());
                 } else if ("album".equals(type)) {
-                    Navigator.goAlbum(context);
+                    Navigator.goAlbum(getContext());
                 }
             } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
                 String albumPath = ImageUtil.IMAGE_PATH + "tmp.jpg";
                 if (BuildConfig.DEBUG) {
                     Util.toast(albumPath);
                 }
-                Navigator.goCheckUserPhoto(context, CAMERA, albumPath);
-                activity.finish();
+                Navigator.goCheckUserPhoto(getContext(), CAMERA, albumPath);
+                getActivity().finish();
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 if (BuildConfig.DEBUG) {
                     Util.toast(albumPath);
                 }
-                Navigator.goCheckUserPhoto(context, ALBUM, albumPath);
-                activity.finish();
+                Navigator.goCheckUserPhoto(getContext(), ALBUM, albumPath);
+                getActivity().finish();
             }
         }
     }

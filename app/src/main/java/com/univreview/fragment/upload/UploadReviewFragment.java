@@ -69,18 +69,18 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
     private void init() {
         presenter = new UploadReviewPresenter();
         presenter.attachView(this);
-        backBtn.setOnClickListener(v -> activity.onBackPressed());
+        backBtn.setOnClickListener(v -> getActivity().onBackPressed());
         okBtn.setOnClickListener(v -> presenter.registerReview());
-        subjectTxt.setOnClickListener(v -> Navigator.goSearch(context, ReviewSearchType.SUBJECT, false));
+        subjectTxt.setOnClickListener(v -> Navigator.goSearch(getContext(), ReviewSearchType.SUBJECT, false));
         professorTxt.setOnClickListener(v -> {
             if (subjectTxt.getText().length() > 0) {
                 if (!isReviewExist) { // review 를 처음 남기는 학생
-                    Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.getReview().subjectId, false);
+                    Navigator.goSearch(getContext(), ReviewSearchType.PROF_FROM_SUBJ, presenter.getReview().subjectId, false);
                 } else {
                     showAlertDialog();
                 }
             } else {
-                Util.simpleMessageDialog(context, "과목을 입력해주세요");
+                Util.simpleMessageDialog(getContext(), "과목을 입력해주세요");
             }
         });
 
@@ -138,13 +138,13 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
 
     @Override
     public void showRecommendRvDialog() {
-        recommendRvDialog =new RecommendRvDialog(context, presenter.getReview());
+        recommendRvDialog =new RecommendRvDialog(getContext(), presenter.getReview());
         recommendRvDialog.show();
     }
 
     @Override
     public void showAlertDialog(){
-        new AlertDialog.Builder(context, R.style.customDialog)
+        new AlertDialog.Builder(getContext(), R.style.customDialog)
                 .setMessage("이미 해당 과목 리뷰를 쓰셨습니다.\n다른 과목 리뷰를 써주시길 바랍니다.")
                 .setPositiveButton("확인", null)
                 .show();

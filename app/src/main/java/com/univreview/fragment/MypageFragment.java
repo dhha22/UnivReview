@@ -90,32 +90,32 @@ public class MypageFragment extends BaseFragment {
     }
 
     private void init() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new MyPageAdapter(context);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new MyPageAdapter(getContext());
         recyclerView.setAdapter(adapter);
         Observable.from(settings)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> adapter.addItem(result), Logger::e);
 
-        profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(context, "album"));
-        settingBtn.setOnClickListener(v -> Navigator.goSetting(context));
+        profileImageLayout.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "album"));
+        settingBtn.setOnClickListener(v -> Navigator.goSetting(getContext()));
         adapter.setOnItemClickListener((view, position) -> {
             switch (position) {
                 case MY_REVIEW:
-                    Navigator.goReviewList(context, ReviewSearchType.MY_REVIEW, App.userId, "내 리뷰");
+                    Navigator.goReviewList(getContext(), ReviewSearchType.MY_REVIEW, App.userId, "내 리뷰");
                     break;
                 case POINT:
                     if (adapter.getItem(position) != null) {
                         String name = ((Setting) adapter.getItem(position)).previewStr;
                         int index = name.indexOf("point") - 1;
-                        Navigator.goPointList(context, Integer.parseInt(name.substring(0, index)));
+                        Navigator.goPointList(getContext(), Integer.parseInt(name.substring(0, index)));
                     } else {
-                        Navigator.goPointList(context, 0);
+                        Navigator.goPointList(getContext(), 0);
                     }
                     break;
                 case USER_IDENTIFY:
-                    Navigator.goRegisterUserIdentity(context);
+                    Navigator.goRegisterUserIdentity(getContext());
                     break;
             }
         });
@@ -188,9 +188,9 @@ public class MypageFragment extends BaseFragment {
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         Logger.v("on activity result");
-        if(activityResultEvent.getResultCode() == activity.RESULT_OK) {
+        if(activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
             if(activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER){
-               Navigator.goAlbum(context);
+               Navigator.goAlbum(getContext());
             } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
                 String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 Logger.v("album path: " + albumPath);

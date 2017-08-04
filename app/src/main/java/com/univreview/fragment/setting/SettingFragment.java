@@ -70,14 +70,14 @@ public class SettingFragment extends BaseFragment {
             //settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"));
         }
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        adapter = new SettingAdapter(context);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new SettingAdapter(getContext());
         recyclerView.setAdapter(adapter);
         Observable.from(settings)
                 .map(setting -> {
                     switch ((int)setting.id){
                         case VERSION:
-                            setting.previewStr = context.getResources().getString(R.string.app_version);
+                            setting.previewStr = getActivity().getResources().getString(R.string.app_version);
                             break;
                         /*case NOTIFICATION:
                             break;*/
@@ -92,7 +92,7 @@ public class SettingFragment extends BaseFragment {
                /* case NOTIFICATION:
                     break;*/
                 case LOGOUT:
-                    Navigator.goLogin(context);
+                    Navigator.goLogin(getContext());
                     break;
                 case USER_DELETE:
                     callUserDelete();
@@ -104,7 +104,7 @@ public class SettingFragment extends BaseFragment {
         Retro.instance.userService().deleteUser(App.setAuthHeader(App.userToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Navigator.goLogin(context), ErrorUtils::parseError);
+                .subscribe(result -> Navigator.goLogin(getContext()), ErrorUtils::parseError);
     }
 
     public class SettingAdapter extends CustomAdapter {

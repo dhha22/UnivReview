@@ -55,13 +55,13 @@ public class MajorExpandableFragment extends BaseFragment implements RecyclerVie
         init(savedInstanceState);
         toolbar.setCancelBtnVisibility(true);
         rootLayout.addView(recyclerView);
-        rootLayout.setBackgroundColor(Util.getColor(context, R.color.colorPrimary));
+        rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.colorPrimary));
         return rootLayout;
     }
 
     private void init(Bundle savedInstanceState){
-        recyclerView = new UnivReviewRecyclerView(context);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView = new UnivReviewRecyclerView(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
@@ -99,8 +99,8 @@ public class MajorExpandableFragment extends BaseFragment implements RecyclerVie
 
 
     private void adjustScrollPositionOnGroupExpanded(int groupPosition) {
-        int childItemHeight = (int) (Util.dpToPx(context, 64));
-        int topMargin = (int) (Util.dpToPx(context, 16)); // top-spacing: 16dp
+        int childItemHeight = (int) (Util.dpToPx(getContext(), 64));
+        int topMargin = (int) (Util.dpToPx(getContext(), 16)); // top-spacing: 16dp
         int bottomMargin = topMargin; // bottom-spacing: 16dp
 
         mRecyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
@@ -116,7 +116,7 @@ public class MajorExpandableFragment extends BaseFragment implements RecyclerVie
 
     private void response(List<Major> majors){
         MajorExpandableDataProvider provider = new MajorExpandableDataProvider(majors);
-        adapter = new ExpandableAdapter(context, provider);
+        adapter = new ExpandableAdapter(getContext(), provider);
         mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(adapter);
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
         animator.setSupportsChangeAnimations(false);
@@ -125,10 +125,10 @@ public class MajorExpandableFragment extends BaseFragment implements RecyclerVie
         recyclerView.getRecyclerView().setHasFixedSize(false);
         mRecyclerViewExpandableItemManager.attachRecyclerView(recyclerView.getRecyclerView());
         adapter.setItemClickListener((view, groupPosition, childPosition) -> {
-            Navigator.goReviewList(context, ReviewSearchType.SUBJECT,
+            Navigator.goReviewList(getContext(), ReviewSearchType.SUBJECT,
                     adapter.getChildItemId(groupPosition, childPosition),
                     adapter.getChildItemName(groupPosition, childPosition));
-            activity.finish();
+            getActivity().finish();
         });
     }
 

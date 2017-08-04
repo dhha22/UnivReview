@@ -83,7 +83,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
     }
 
     private void registerReview(long reviewId) {
-        Util.hideKeyboard(context, inputReview);
+        Util.hideKeyboard(getContext(), inputReview);
         reviewDetail = new ReviewDetail();
         reviewDetail.reviewId = reviewId;
         reviewDetail.reviewDetail = inputReview.getText().toString();
@@ -96,7 +96,7 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                 callPostReviewDetail(reviewDetail);
             }
         } else {
-            Util.simpleMessageDialog(context, reviewDetail.getAlertMessage());
+            Util.simpleMessageDialog(getContext(), reviewDetail.getAlertMessage());
         }
     }
 
@@ -109,13 +109,13 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                     if (position == POSITION_NONE) {
                        // detail refresh
                     } else if (position == CONTINUE) {
-                        Navigator.goReviewDetail(context, review);
+                        Navigator.goReviewDetail(getContext(), review);
                     } else {
                         ReviewListFragment.reviewSingleId = review.id;
                         ReviewListFragment.reviewItemRefreshPosition = position;
                     }
-                    ((BaseActivity) activity).setOnBackPressedListener(null);
-                    activity.onBackPressed();
+                    ((BaseActivity) getActivity()).setOnBackPressedListener(null);
+                    getActivity().onBackPressed();
                 }, this::errorResponse);
     }
 
@@ -132,8 +132,8 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                         ReviewListFragment.reviewSingleId = review.id;
                         ReviewListFragment.reviewItemRefreshPosition = position;
                     }
-                    ((BaseActivity) activity).setOnBackPressedListener(null);
-                    activity.onBackPressed();
+                    ((BaseActivity) getActivity()).setOnBackPressedListener(null);
+                    getActivity().onBackPressed();
                 }, this::errorResponse);
     }
 
