@@ -135,5 +135,6 @@ public class LoginPresenter implements LoginContract {
     @Override
     public void detachView() {
         view = null;
+        context = null;
     }
 }

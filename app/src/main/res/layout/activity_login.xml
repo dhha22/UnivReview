@@ -33,7 +33,7 @@
             android:src="@drawable/ic_login_text" />
 
         <Button
-            android:id="@+id/facebook_login_btn"
+            android:id="@+id/facebookLoginBtn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="14dp"
@@ -45,7 +45,7 @@
             android:textSize="16dp" />
 
         <Button
-            android:id="@+id/kakao_login_btn"
+            android:id="@+id/kakaoLoginBtn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginLeft="14dp"
