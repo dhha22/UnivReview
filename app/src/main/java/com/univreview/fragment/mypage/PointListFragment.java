@@ -96,15 +96,15 @@ public class PointListFragment extends AbsListFragment {
     @Override
     public void loadMore() {
         Logger.v("load more");
-        Logger.v("page: " + page);
+        Logger.v("page: " + getPage());
         setStatus(Status.LOADING_MORE);
-        callGetPointHistory(page);
+        callGetPointHistory(getPage());
     }
 
     @Override
     public void refresh() {
         setStatus(Status.REFRESHING);
-        callGetPointHistory(DEFAULT_PAGE);
+        callGetPointHistory(getDEFAULT_PAGE());
         callGetUserTicket();
     }
 
@@ -185,7 +185,7 @@ public class PointListFragment extends AbsListFragment {
 
     private void pointResponse(List<PointHistory> pointHistories, int page) {
         Logger.v("result: " + pointHistories);
-        if (page == DEFAULT_PAGE) adapter.clear();
+        if (page == getDEFAULT_PAGE()) adapter.clear();
         setResult(page);
         setStatus(Status.IDLE);
         Observable.from(pointHistories)

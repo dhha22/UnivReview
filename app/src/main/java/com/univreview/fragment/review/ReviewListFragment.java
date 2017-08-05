@@ -255,14 +255,14 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
     public void refresh() {
         Logger.v("refresh");
         setStatus(Status.REFRESHING);
-        presenter.loadReviewItem(type, DEFAULT_PAGE);
+        presenter.loadReviewItem(type, getDEFAULT_PAGE());
     }
 
     @Override
     public void loadMore() {
         setStatus(Status.LOADING_MORE);
-        Logger.v("page: " + page);
-        presenter.loadReviewItem(type, page);
+        Logger.v("page: " + getPage());
+        presenter.loadReviewItem(type, getPage());
     }
 
 
@@ -417,7 +417,7 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
                     subjectId = null;
             }
         }
-        presenter.loadReviewItem(type, DEFAULT_PAGE);
+        presenter.loadReviewItem(type, getDEFAULT_PAGE());
         setFilterName(filterName);
     };
 

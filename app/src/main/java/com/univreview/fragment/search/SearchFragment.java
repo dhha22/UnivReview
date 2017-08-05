@@ -163,12 +163,12 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             }else{
                 deleteBtn.setVisibility(View.INVISIBLE);
             }
-            page = DEFAULT_PAGE;
+            setPage(getDEFAULT_PAGE());
             timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    getActivity().runOnUiThread(() -> callSearchApi(id, type, s.toString(), page));
+                    getActivity().runOnUiThread(() -> callSearchApi(id, type, s.toString(), getPage()));
                 }
             }, 300);
         }
@@ -226,15 +226,15 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
     @Override
     public void refresh() {
         setStatus(Status.REFRESHING);
-        callSearchApi(id, type, input.getText().toString(), DEFAULT_PAGE);
+        callSearchApi(id, type, input.getText().toString(), getDEFAULT_PAGE());
     }
 
     @Override
     public void loadMore() {
         Logger.v("load more");
-        Logger.v("page: " + page);
+        Logger.v("page: " + getPage());
         setStatus(Status.LOADING_MORE);
-        callSearchApi(id, type, input.getText().toString(), page);
+        callSearchApi(id, type, input.getText().toString(), getPage());
     }
 
     private class SearchAdapter extends CustomAdapter implements SearchAdapterContract.Model{

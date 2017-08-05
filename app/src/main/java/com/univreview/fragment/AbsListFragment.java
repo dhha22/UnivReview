@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment;
 
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import com.univreview.view.UnivReviewRecyclerView;
 import java.util.HashMap;
 import java.util.Map;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 19..
- */
+ *//*
+
 public abstract class AbsListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     protected static final int DEFAULT_PAGE = 1;
     private static final Map<Class, Boolean> needRefresh = new HashMap<>();
@@ -143,3 +146,4 @@ public abstract class AbsListFragment extends BaseFragment implements SwipeRefre
         setNeedRefresh(((Object) this).getClass(), true);
     }
 }
+*/
