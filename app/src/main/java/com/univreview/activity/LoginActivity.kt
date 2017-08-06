@@ -35,8 +35,8 @@ class LoginActivity : BaseActivity(), LoginContract.View {
             finish()
         }
         setContentView(R.layout.activity_login)
-        presenter.attachView(this)
-        presenter.setContext(this)
+        presenter.view = this
+        presenter.context = this
 
         // facebook
         LoginManager.getInstance().registerCallback(facebookCallbackManager, facebookCallback)
@@ -118,7 +118,6 @@ class LoginActivity : BaseActivity(), LoginContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.detachView()
         LoginManager.getInstance().unregisterCallback(facebookCallbackManager)
         Session.getCurrentSession().removeCallback(kakaoCallback)
     }

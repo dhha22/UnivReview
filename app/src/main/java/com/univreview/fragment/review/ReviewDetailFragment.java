@@ -70,7 +70,8 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
         super.onCreate(savedInstanceState);
         data = (Review)getArguments().getSerializable("review");
         presenter = new ReviewDetailPresenter();
-        presenter.attachView(this);
+        presenter.view = this;
+
         if(data != null){
             reviewId = data.id;
         }
@@ -239,6 +240,5 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.detachView();
     }
 }

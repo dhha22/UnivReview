@@ -108,13 +108,4 @@ public class SearchPresenter implements SearchContract {
         this.subjectType = subjectType;
     }
 
-    @Override
-    public void attachView(View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void detachView() {
-        view = null;
-    }
 }

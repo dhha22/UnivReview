@@ -1,3 +1,4 @@
+/*
 package com.univreview.view.presenter;
 
 import com.univreview.App;
@@ -13,15 +14,18 @@ import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.view.contract.ReviewListContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 14..
- */
+ *//*
+
 
 public class ReviewListPresenter implements ReviewListContract {
     private static final int DEFAULT_PAGE = 1;
@@ -124,15 +128,6 @@ public class ReviewListPresenter implements ReviewListContract {
         return null;
     }
 
-    @Override
-    public void attachView(View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void detachView() {
-        this.view = null;
-    }
 
     public void setAdapterView(ReviewListAdapterContract.View adapterView) {
         this.adapterView = adapterView;
@@ -142,3 +137,4 @@ public class ReviewListPresenter implements ReviewListContract {
         this.adapterModel = adapterModel;
     }
 }
+*/

@@ -11,26 +11,16 @@ import java.util.List;
  */
 public class SearchModel  implements Serializable {
     @SerializedName("university")
-    public List<University> universities = new ArrayList<>();
+    public List<University> universities;
     @SerializedName("major")
-    public List<Major> majors = new ArrayList<>();
+    public List<Major> majors;
     @SerializedName("department")
-    public List<Department> departments = new ArrayList<>();
+    public List<Department> departments;
     @SerializedName("professor")
-    public List<Professor> professors = new ArrayList<>();
+    public List<Professor> professors;
     @SerializedName("subject")
-    public List<Subject> subjects = new ArrayList<>();
+    public List<Subject> subjects;
 
 
-    @Override
-    public String toString() {
-        if(universities.size()>0){
-            return universities.toString();
-        }else if(majors.size()>0){
-            return majors.toString();
-        }else if(departments.size()>0){
-            return departments.toString();
-        }
-        return super.toString();
-    }
+
 }

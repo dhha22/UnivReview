@@ -68,7 +68,6 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
 
     private void init() {
         presenter = new UploadReviewPresenter();
-        presenter.attachView(this);
         backBtn.setOnClickListener(v -> getActivity().onBackPressed());
         okBtn.setOnClickListener(v -> presenter.registerReview());
         subjectTxt.setOnClickListener(v -> Navigator.goSearch(getContext(), ReviewSearchType.SUBJECT, false));
@@ -168,7 +167,6 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.detachView();
         if (recommendRvDialog != null) recommendRvDialog.dismiss();
     }
 }

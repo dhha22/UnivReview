@@ -1,12 +1,15 @@
+/*
 package com.univreview.view.contract;
 
 import android.content.Context;
 
 import com.univreview.model.Review;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 20..
- */
+ *//*
+
 
 public interface UploadReviewContract extends BaseContract<UploadReviewContract.View> {
     interface View {
@@ -25,3 +28,4 @@ public interface UploadReviewContract extends BaseContract<UploadReviewContract.
     void checkReviewExist();
 
 }
+*/

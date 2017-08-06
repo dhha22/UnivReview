@@ -114,7 +114,7 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
         name = getArguments().getString("name");
         randomImageModel = new RandomImageModel();
         presenter = new ReviewListPresenter();
-        presenter.attachView(this);
+        presenter.view = this;
 
         switch (type){
             case SUBJECT:
@@ -399,12 +399,12 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
         if (position != 0) {
             switch (type) {
                 case SUBJECT:  // 교수명 리스트
-                    professorId = presenter.getProfessors().get(position - 1).getId();
-                    filterName = presenter.getProfessors().get(position - 1).getName();
+                    professorId = presenter.searchModel.professors.get(position - 1).getId();
+                    filterName = presenter.searchModel.professors.get(position - 1).getName();
                     break;
                 case PROFESSOR: // 과목 리스트
-                    subjectId = presenter.getSubjects().get(position - 1).getId();
-                    filterName = presenter.getSubjects().get(position - 1).getName();
+                    subjectId = presenter.searchModel.subjects.get(position - 1).getId();
+                    filterName = presenter.searchModel.subjects.get(position - 1).getName();
                     break;
             }
         } else {
@@ -474,6 +474,5 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.detachView();
     }
 }

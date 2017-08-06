@@ -1,3 +1,4 @@
+/*
 package com.univreview.view.contract;
 
 import com.univreview.fragment.AbsListFragment;
@@ -8,9 +9,11 @@ import com.univreview.view.ReviewTotalScoreView;
 
 import java.util.List;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 14..
- */
+ *//*
+
 
 public interface ReviewListContract extends BaseContract<ReviewListContract.View> {
     interface View{
@@ -31,3 +34,4 @@ public interface ReviewListContract extends BaseContract<ReviewListContract.View
     List<Subject> getSubjects();
     List<Professor> getProfessors();
 }
+*/

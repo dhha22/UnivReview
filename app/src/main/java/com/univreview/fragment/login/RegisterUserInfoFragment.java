@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment.login;
 
 import android.os.Bundle;
@@ -27,9 +28,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 11..
- */
+ *//*
+
 public class RegisterUserInfoFragment extends BaseFragment {
     @BindView(R.id.profile_image_layout) RelativeLayout profileImageLayout;
     @BindView(R.id.profile_image) CircleImageView profileImage;
@@ -140,3 +143,4 @@ public class RegisterUserInfoFragment extends BaseFragment {
 
 
 }
+*/

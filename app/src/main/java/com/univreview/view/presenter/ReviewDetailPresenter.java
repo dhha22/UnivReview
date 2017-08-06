@@ -1,3 +1,4 @@
+/*
 package com.univreview.view.presenter;
 
 import android.util.Log;
@@ -21,25 +22,17 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 13..
- */
+ *//*
+
 
 public class ReviewDetailPresenter implements ReviewDetailContract, OnItemLongClickListener {
     private static final int DEFAULT_PAGE = 1;
     private ReviewDetailContract.View view;
     private ReviewDetailAdapterContract.Model adapterModel;
     private ReviewDetailAdapterContract.View adapterView;
-
-    @Override
-    public void attachView(View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void detachView() {
-        view = null;
-    }
 
     @Override
     public void loadReviewSingle() {
@@ -108,3 +101,4 @@ public class ReviewDetailPresenter implements ReviewDetailContract, OnItemLongCl
         return true;
     }
 }
+*/

@@ -74,7 +74,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         id = getArguments().getLong("id");
         isReviewSearch = getArguments().getBoolean("isReviewSearch");
         presenter = new SearchPresenter();
-        presenter.attachView(this);
+
         if (isReviewSearch) {
             presenter.setSubjectType(null);
         } else {
@@ -276,6 +276,5 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.detachView();
     }
 }

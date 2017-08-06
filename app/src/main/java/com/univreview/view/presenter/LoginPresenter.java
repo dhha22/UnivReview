@@ -1,3 +1,4 @@
+/*
 package com.univreview.view.presenter;
 
 import android.content.Context;
@@ -19,14 +20,15 @@ import com.univreview.model.UserModel;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
-import com.univreview.view.contract.LoginContract;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 31..
- */
+ *//*
+
 
 public class LoginPresenter implements LoginContract {
     private LoginContract.View view;
@@ -122,19 +124,6 @@ public class LoginPresenter implements LoginContract {
         }
     }
 
-    @Override
-    public void setContext(Context context) {
-        this.context = context;
-    }
 
-    @Override
-    public void attachView(View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void detachView() {
-        view = null;
-        context = null;
-    }
 }
+*/

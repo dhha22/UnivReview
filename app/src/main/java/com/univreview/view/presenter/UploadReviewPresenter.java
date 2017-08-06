@@ -78,15 +78,4 @@ public class UploadReviewPresenter implements UploadReviewContract {
         this.context = context;
     }
 
-    @Override
-    public void attachView(View view) {
-        this.view = view;
-        this.review = new Review();
-    }
-
-    @Override
-    public void detachView() {
-        view = null;
-        review = null;
-    }
 }

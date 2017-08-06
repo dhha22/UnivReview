@@ -1,11 +1,14 @@
+/*
 package com.univreview.view.contract;
 
 import com.univreview.adapter.contract.SearchAdapterContract;
 import com.univreview.fragment.AbsListFragment;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 15..
- */
+ *//*
+
 
 public interface SearchContract extends BaseContract<SearchContract.View> {
     interface View{
@@ -22,3 +25,4 @@ public interface SearchContract extends BaseContract<SearchContract.View> {
     void searchSubject(Long majorId, String name, int page);
     void searchProfFromSubj(long subjectId, String name, int page);
 }
+*/
