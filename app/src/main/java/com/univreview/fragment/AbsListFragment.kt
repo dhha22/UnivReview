@@ -46,13 +46,9 @@ import java.util.HashMap
     }
 
     protected fun lastItemExposed() {
-        if (getStatus() != Status.LOADING_MORE && getStatus() != Status.REFRESHING) {
+        if (status != Status.LOADING_MORE && status != Status.REFRESHING) {
             loadMore()
         }
-    }
-
-    fun getStatus(): Status {
-        return status
     }
 
     fun setStatus(status: Status) {
