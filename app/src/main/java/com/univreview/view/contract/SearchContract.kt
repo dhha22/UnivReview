@@ -1,6 +1,5 @@
 package com.univreview.view.contract
 
-import com.univreview.adapter.contract.SearchAdapterContract
 import com.univreview.fragment.AbsListFragment
 
 /**
@@ -12,8 +11,6 @@ interface SearchContract {
         fun setStatus(status: AbsListFragment.Status)
     }
 
-     fun setSubjectType(type: String)
-     fun setSearchAdapterModel(model: SearchAdapterContract.Model)
      fun searchUniversity(name: String, page: Int)
      fun searchDepartment(id: Long, name: String, page: Int)
      fun searchMajor(id: Long, name: String, page: Int)

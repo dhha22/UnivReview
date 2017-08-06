@@ -1,3 +1,4 @@
+/*
 package com.univreview.view.presenter;
 
 import com.univreview.App;
@@ -14,9 +15,11 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 20..
- */
+ *//*
+
 
 public class SearchPresenter implements SearchContract {
     private static final int DEFAULT_PAGE = 1;
@@ -109,3 +112,4 @@ public class SearchPresenter implements SearchContract {
     }
 
 }
+*/
