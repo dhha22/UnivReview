@@ -15,17 +15,16 @@ import rx.schedulers.Schedulers
 /**
  * Created by DavidHa on 2017. 8. 6..
  */
-class UploadReviewPresenter : UploadReviewContract {
+class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContract {
     lateinit var view : UploadReviewContract.View
     lateinit var context : Context
-    lateinit var review : Review
 
 
     override fun registerReview() {
-        this.review = review.apply {
-            userId = App.userId
-            subjectDetail.subject.name = view.subjectName
-            subjectDetail.professor.name = view.professorName
+        review.let {
+            it.userId = App.userId
+            it.subjectDetail.subject.name = view.subjectName
+            it.subjectDetail.professor.name = view.professorName
         }
 
         if (review.alertMessage == null) {
@@ -34,7 +33,6 @@ class UploadReviewPresenter : UploadReviewContract {
         } else {
             Util.simpleMessageDialog(context, review.alertMessage)
         }
-
     }
 
     private fun callPostSimpleReviewApi(review: Review) {

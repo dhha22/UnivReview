@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_register_user_info.*
  */
 class RegisterUserInfoFragment : BaseFragment() {
     private lateinit var register : Register
-
     companion object {
         @JvmStatic
         fun newInstance(register: Register): RegisterUserInfoFragment {
@@ -47,14 +46,18 @@ class RegisterUserInfoFragment : BaseFragment() {
         setToolbarTransparent()
         toolbar.setBackBtnVisibility(true)
         rootLayout.background = Util.getDrawable(context, R.drawable.cr_login_bg)
-        init(register)
-        setData(register)
         rootLayout.addView(view)
         return rootLayout
     }
 
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init(register)
+        setData(register)
+    }
+
     fun init(register: Register) {
-        nextBtn.setOnClickListener { v ->
+        nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
                 Navigator.goRegisterUnivInfo(context, register)
             }
@@ -78,11 +81,11 @@ class RegisterUserInfoFragment : BaseFragment() {
 
 
     fun setData(register: Register?){
-        register?.run {
-            Util.setProfileImage(profileUrl, profileImage)
-            inputName.setText(nickName)
-            inputName.setSelection(nickName.length)
-            nextBtn.isSelected = !nickName.isEmpty()
+        register?.let {
+            Util.setProfileImage(it.profileUrl, profileImage)
+            inputName.setText(it.nickName)
+            inputName.setSelection(it.nickName.length)
+            nextBtn.isSelected = !it.nickName.isEmpty()
         }
     }
 
