@@ -6,6 +6,7 @@
 /.idea/libraries
 /.idea/vcs.xml
 /.idea/.name
+/.idea
 .DS_Store
 /build
 /captures
