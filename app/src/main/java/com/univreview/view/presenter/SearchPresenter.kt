@@ -19,9 +19,9 @@ class SearchPresenter : SearchContract {
     companion object {
         val DEFAULT_PAGE = 1
     }
-    private lateinit var subjectType : String
-    private lateinit var view : SearchContract.View
-    private lateinit var searchAdapterModel : SearchAdapterContract.Model
+    var subjectType : String? = null
+    lateinit var view : SearchContract.View
+    lateinit var searchAdapterModel : SearchAdapterContract.Model
 
     override fun searchUniversity(name: String, page: Int) {
         setObservable(Retro.instance.searchService().getUniversities(name, page), page)

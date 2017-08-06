@@ -1,3 +1,4 @@
+/*
 package com.univreview.view.presenter;
 
 import android.content.Context;
@@ -14,9 +15,11 @@ import com.univreview.view.contract.UploadReviewContract;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 20..
- */
+ *//*
+
 
 public class UploadReviewPresenter implements UploadReviewContract {
     private UploadReviewContract.View view;
@@ -79,3 +82,4 @@ public class UploadReviewPresenter implements UploadReviewContract {
     }
 
 }
+*/

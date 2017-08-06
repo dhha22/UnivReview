@@ -23,6 +23,8 @@ import com.univreview.util.Util;
 import com.univreview.view.contract.UploadReviewContract;
 import com.univreview.view.presenter.UploadReviewPresenter;
 
+import org.jetbrains.annotations.NotNull;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -68,6 +70,8 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
 
     private void init() {
         presenter = new UploadReviewPresenter();
+        presenter.view = this;
+
         backBtn.setOnClickListener(v -> getActivity().onBackPressed());
         okBtn.setOnClickListener(v -> presenter.registerReview());
         subjectTxt.setOnClickListener(v -> Navigator.goSearch(getContext(), ReviewSearchType.SUBJECT, false));
@@ -154,11 +158,13 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
         isReviewExist = reviewExist;
     }
 
+    @NotNull
     @Override
     public String getSubjectName() {
         return subjectTxt.getText().toString();
     }
 
+    @NotNull
     @Override
     public String getProfessorName() {
         return professorTxt.getText().toString();

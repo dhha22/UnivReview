@@ -1,8 +1,5 @@
 package com.univreview.view.contract
 
-import android.content.Context
-import com.univreview.model.Review
-
 /**
  * Created by DavidHa on 2017. 8. 6..
  */
@@ -17,8 +14,6 @@ interface UploadReviewContract {
         fun setReviewExist(isExist: Boolean)
     }
 
-     fun getReview(): Review
-     fun setContext(context: Context)
      fun registerReview()
      fun checkReviewExist()
 }
