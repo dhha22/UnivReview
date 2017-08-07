@@ -40,11 +40,11 @@ class LoginActivity : BaseActivity(), LoginContract.View {
 
         // facebook
         LoginManager.getInstance().registerCallback(facebookCallbackManager, facebookCallback)
-        facebookLoginBtn.setOnClickListener { v -> facebookLogin() }
+        facebookLoginBtn.setOnClickListener { facebookLogin() }
 
         //kakao
         Session.getCurrentSession().addCallback(kakaoCallback)
-        kakaoLoginBtn.setOnClickListener { v -> kakaoLogin() }
+        kakaoLoginBtn.setOnClickListener { kakaoLogin() }
     }
 
 

@@ -20,7 +20,7 @@ import java.util.HashMap
 
     companion object {
         @JvmStatic
-        protected val DEFAULT_PAGE = 1
+        val DEFAULT_PAGE = 1
         private val needRefresh = HashMap<Class<*>, Boolean>()
 
         @JvmStatic

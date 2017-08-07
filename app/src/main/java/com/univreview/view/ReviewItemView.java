@@ -157,8 +157,8 @@ public class ReviewItemView extends FrameLayout {
             achievementRate.setRating(review.achievementRate);
             setOnClickListener(v -> {
                 if (Status.MY_REVIEW.equals(status) || Status.READ_REVIEW.equals(status)) {
-                    ReviewListFragment.reviewSingleId = review.id;
-                    ReviewListFragment.reviewItemRefreshPosition = position;
+                    /*ReviewListFragment.reviewSingleId = review.id;
+                    ReviewListFragment.reviewItemRefreshPosition = position;*/
                     Navigator.goReviewDetail(context, review, layout);
                 }
             });

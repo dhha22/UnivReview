@@ -123,7 +123,7 @@ public class Navigator {
     //review
     public static void goReviewList(Context context, ReviewSearchType type, long id, String name) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewListFragment.newInstance(type, id, name));
+        NavigationActivity.setFragment(ReviewListFragment.getInstance(type, id, name));
         (context).startActivity(intent);
     }
 

@@ -64,6 +64,7 @@ import static com.univreview.model.enumeration.ReviewSearchType.SUBJECT;
 /**
  * Created by DavidHa on 2017. 2. 21..
  */
+/*
 public class ReviewListFragment extends AbsListFragment implements ReviewListContract.View{
     private static final int POSITION_NONE = -1;
     public static long reviewSingleId = POSITION_NONE;
@@ -429,7 +430,8 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
 
 
 
-    /*private void callReviewSingleApi(long id, int position) {
+    */
+/*private void callReviewSingleApi(long id, int position) {
         Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -445,7 +447,8 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
                     review.user.authenticated = review.authenticated;
                     adapter.setItem(position, review);
                 }, this::errorResponse);
-    }*/
+    }*//*
+
 
 
     @Override
@@ -476,3 +479,4 @@ public class ReviewListFragment extends AbsListFragment implements ReviewListCon
         super.onDestroy();
     }
 }
+*/

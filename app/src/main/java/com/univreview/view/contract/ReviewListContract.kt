@@ -1,6 +1,7 @@
 package com.univreview.view.contract
 
 import com.univreview.fragment.AbsListFragment
+import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.view.ReviewTotalScoreView
 
@@ -10,12 +11,9 @@ import com.univreview.view.ReviewTotalScoreView
 interface ReviewListContract {
     interface View {
         fun setDialog(list: List<String>)
-        val subjectId: Long?
-        val professorId: Long?
-        val userId: Long?
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
-        val reviewTotalScoreView: ReviewTotalScoreView
+        fun setHeaderData(rate : Float, review : Review)
         fun setHeaderViewVisibility(isVisibility: Boolean)
         fun setFilterName(filterName: String)
     }

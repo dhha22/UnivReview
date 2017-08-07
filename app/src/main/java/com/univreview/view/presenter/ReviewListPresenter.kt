@@ -12,6 +12,7 @@ import com.univreview.view.contract.ReviewListContract
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import kotlin.properties.Delegates
 
 /**
  * Created by DavidHa on 2017. 8. 6..
@@ -25,6 +26,9 @@ class ReviewListPresenter : ReviewListContract {
     lateinit var adapterModel: ReviewListAdapterContract.Model
     lateinit var adapterView: ReviewListAdapterContract.View
     lateinit var searchModel: SearchModel
+    var subjectId: Long? = null
+    var professorId: Long? = null
+    var userId: Long? = null
 
     override fun loadReviewItem(type: ReviewSearchType, page: Int) {
         val observable: Observable<ReviewListModel>
@@ -33,7 +37,7 @@ class ReviewListPresenter : ReviewListContract {
 
         } else {
             observable = Retro.instance.reviewService().getReviews(App.setAuthHeader(App.userToken),
-                    view.subjectId, view.professorId, view.userId, page)
+                    subjectId, professorId, userId, page)
         }
 
         observable.subscribeOn(Schedulers.io())
@@ -49,7 +53,7 @@ class ReviewListPresenter : ReviewListContract {
             Logger.v("result size: " + it.reviews.size)
             Logger.v("review: " + it.totalAverageRates + " " + it.reviewAverage)
             if (type != ReviewSearchType.MY_REVIEW) {
-                view.reviewTotalScoreView.setData(reviewListModel.totalAverageRates, reviewListModel.reviewAverage)
+                view.setHeaderData(reviewListModel.totalAverageRates, reviewListModel.reviewAverage)
             }
             Observable.from<Review>(reviewListModel.reviews)
                     .subscribeOn(Schedulers.io())

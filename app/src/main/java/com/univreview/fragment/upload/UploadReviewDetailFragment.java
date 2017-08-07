@@ -111,8 +111,8 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                     } else if (position == CONTINUE) {
                         Navigator.goReviewDetail(getContext(), review);
                     } else {
-                        ReviewListFragment.reviewSingleId = review.id;
-                        ReviewListFragment.reviewItemRefreshPosition = position;
+                        /*ReviewListFragment.reviewSingleId = review.id;
+                        ReviewListFragment.reviewItemRefreshPosition = position;*/
                     }
                     ((BaseActivity) getActivity()).setOnBackPressedListener(null);
                     getActivity().onBackPressed();
@@ -129,8 +129,8 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                     if (position == POSITION_NONE) {
                       // detail refresh
                     } else {
-                        ReviewListFragment.reviewSingleId = review.id;
-                        ReviewListFragment.reviewItemRefreshPosition = position;
+                       /* ReviewListFragment.reviewSingleId = review.id;
+                        ReviewListFragment.reviewItemRefreshPosition = position;*/
                     }
                     ((BaseActivity) getActivity()).setOnBackPressedListener(null);
                     getActivity().onBackPressed();
