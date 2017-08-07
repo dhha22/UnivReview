@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
@@ -22,10 +21,7 @@ import com.univreview.adapter.contract.SearchAdapterContract;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
-import com.univreview.model.SearchModel;
 import com.univreview.model.enumeration.ReviewSearchType;
-import com.univreview.network.Retro;
-import com.univreview.util.ErrorUtils;
 import com.univreview.util.Util;
 import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
@@ -38,9 +34,8 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by DavidHa on 2017. 1. 16..
@@ -135,7 +130,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
                 intent.putExtra("id", adapter.getItem(position).getId());
                 intent.putExtra("name", adapter.getItem(position).getName());
                 intent.putExtra("type", type);
-                getActivity().setResult(getActivity().RESULT_OK, intent);
+                getActivity().setResult(RESULT_OK, intent);
                 getActivity().onBackPressed();
             }
         });

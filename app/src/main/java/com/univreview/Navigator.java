@@ -1,15 +1,12 @@
 package com.univreview;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.univreview.activity.LoginActivity;
 import com.univreview.activity.MainActivity;
@@ -24,9 +21,7 @@ import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.review.ReviewReportFragment;
-import com.univreview.fragment.search.MajorExpandableFragment;
 import com.univreview.fragment.search.SearchFragment;
-import com.univreview.fragment.search.SimpleSearchResultFragment;
 import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
@@ -64,7 +59,7 @@ public class Navigator {
 
     public static void goRegisterUnivInfo(Context context, Register register){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(RegisterUnivInfoFragment.newInstance(register));
+        NavigationActivity.setFragment(RegisterUnivInfoFragment.getInstance(register));
         context.startActivity(intent);
     }
 
@@ -165,13 +160,6 @@ public class Navigator {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);
-    }
-
-
-    public static void goMajorExpandable(Context context){
-        Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(MajorExpandableFragment.newInstance());
-        context.startActivity(intent);
     }
 
 

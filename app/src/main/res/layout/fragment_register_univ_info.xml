@@ -2,39 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="82dp"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-
-        <Button
-            android:id="@+id/student_btn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/rounded_primary_rect"
-            android:text="학생"
-            android:textSize="14dp" />
-
-        <Button
-            android:id="@+id/professor_btn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/rounded_primary_rect"
-            android:text="교수님"
-            android:textSize="14dp" />
-    </LinearLayout>
-
-
     <TextView
-        android:id="@+id/university_txt"
+        android:id="@+id/universityTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -48,7 +20,7 @@
         android:textSize="18dp" />
 
     <View
-        android:id="@+id/university_line"
+        android:id="@+id/universityLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="38dp"
@@ -57,7 +29,7 @@
         android:background="@color/lineDisableColor" />
 
     <TextView
-        android:id="@+id/department_txt"
+        android:id="@+id/departmentTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -71,7 +43,7 @@
         android:textSize="18dp" />
 
     <View
-        android:id="@+id/department_line"
+        android:id="@+id/departmentLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="38dp"
@@ -79,43 +51,38 @@
         android:layout_marginRight="48dp"
         android:background="@color/lineDisableColor" />
 
-    <LinearLayout
-        android:id="@+id/major_layout"
+
+    <TextView
+        android:id="@+id/majorTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:gravity="center"
+        android:hint="전공"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="18dp" />
 
-        <TextView
-            android:id="@+id/major_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:gravity="center"
-            android:hint="전공"
-            android:padding="8dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="18dp" />
+    <View
+        android:id="@+id/majorLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@color/lineDisableColor" />
 
-        <View
-            android:id="@+id/major_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="50dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:background="@color/lineDisableColor" />
-    </LinearLayout>
 
     <Button
-        android:id="@+id/next_btn"
+        android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@drawable/rounded_white_rect"
+        android:background="@drawable/login_next_btn_selector"
         android:text="확인"
         android:textColor="@color/white"
         android:textSize="18dp" />

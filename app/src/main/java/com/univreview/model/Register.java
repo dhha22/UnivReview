@@ -15,7 +15,7 @@ public class Register implements Parcelable {
     public String accessToken;
     public String nickName;
     public String profileUrl;
-    public Integer universityId;
+    public Long universityId;
     public Long departmentId;
     public Long majorId;
     public Uri profileUri;
@@ -69,7 +69,7 @@ public class Register implements Parcelable {
         this.accessToken = in.readString();
         this.nickName = in.readString();
         this.profileUrl = in.readString();
-        this.universityId = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.universityId = (Long) in.readValue(Long.class.getClassLoader());
         this.departmentId = (Long) in.readValue(Long.class.getClassLoader());
         this.majorId = (Long) in.readValue(Long.class.getClassLoader());
         this.profileUri = in.readParcelable(Uri.class.getClassLoader());
