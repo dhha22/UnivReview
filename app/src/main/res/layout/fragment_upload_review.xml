@@ -37,7 +37,7 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/difficulty_rate"
+                    android:id="@+id/difficultyRate"
                     style="@style/reviewRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:stepSize="1" />
 
                 <TextView
-                    android:id="@+id/difficulty_txt"
+                    android:id="@+id/difficultyTxt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="12dp"
@@ -72,7 +72,7 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/assignment_rate"
+                    android:id="@+id/assignmentRate"
                     style="@style/reviewRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                     android:stepSize="1" />
 
                 <TextView
-                    android:id="@+id/assignment_txt"
+                    android:id="@+id/assignmentTxt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="12dp"
@@ -106,7 +106,7 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/attendance_rate"
+                    android:id="@+id/attendanceRate"
                     style="@style/reviewRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                     android:stepSize="1" />
 
                 <TextView
-                    android:id="@+id/attendance_txt"
+                    android:id="@+id/attendanceTxt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="12dp"
@@ -141,7 +141,7 @@
 
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/grade_rate"
+                    android:id="@+id/gradeRate"
                     style="@style/reviewRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                     android:stepSize="1" />
 
                 <TextView
-                    android:id="@+id/grade_txt"
+                    android:id="@+id/gradeTxt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="12dp"
@@ -178,7 +178,7 @@
 
 
                 <android.support.v7.widget.AppCompatRatingBar
-                    android:id="@+id/achievement_rate"
+                    android:id="@+id/achievementRate"
                     style="@style/reviewRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
                     android:stepSize="1" />
 
                 <TextView
-                    android:id="@+id/achievement_txt"
+                    android:id="@+id/achievementTxt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="12dp"

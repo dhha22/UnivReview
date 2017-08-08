@@ -2,6 +2,7 @@ package com.univreview.view.presenter
 
 import android.content.Context
 import com.univreview.App
+import com.univreview.dialog.RecommendRvDialog
 import com.univreview.fragment.MypageFragment
 import com.univreview.log.Logger
 import com.univreview.model.Review
@@ -17,21 +18,21 @@ import rx.schedulers.Schedulers
  */
 class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContract {
     lateinit var view : UploadReviewContract.View
-    lateinit var context : Context
-
+    var subjectName:String? = null
+    var professorName:String? = null
 
     override fun registerReview() {
         review.let {
             it.userId = App.userId
-            it.subjectDetail.subject.name = view.subjectName
-            it.subjectDetail.professor.name = view.professorName
+            it.subjectDetail.subject.name = this.subjectName
+            it.subjectDetail.professor.name = this.professorName
         }
 
         if (review.alertMessage == null) {
             callPostSimpleReviewApi(review)
             view.showProgress()
         } else {
-            Util.simpleMessageDialog(context, review.alertMessage)
+            view.showSimpleMsgDialog(review.alertMessage)
         }
     }
 
@@ -51,7 +52,7 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    view.setReviewExist(result.exist)
+                    view.isReviewExist = result.exist
                     if (result.exist) {
                         view.showAlertDialog()
                     }
@@ -64,4 +65,5 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
         this.review.id = review.id
         view.showRecommendRvDialog()
     }
+
 }

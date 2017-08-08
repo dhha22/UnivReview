@@ -18,7 +18,7 @@
             android:gravity="center">
 
             <ImageButton
-                android:id="@+id/back_btn"
+                android:id="@+id/backBtn"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:layout_gravity="center"
@@ -35,7 +35,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/ok_btn"
+                android:id="@+id/okBtn"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:layout_gravity="center"
@@ -47,7 +47,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/subject_txt"
+            android:id="@+id/subjectTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -64,7 +64,7 @@
             android:textSize="14dp" />
 
         <TextView
-            android:id="@+id/professor_txt"
+            android:id="@+id/professorTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"

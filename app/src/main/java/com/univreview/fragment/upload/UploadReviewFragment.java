@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment.upload;
 
 import android.content.Intent;
@@ -28,9 +29,11 @@ import org.jetbrains.annotations.NotNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 8..
- */
+ *//*
+
 public class UploadReviewFragment extends BaseWriteFragment implements UploadReviewContract.View{
     @BindView(R.id.back_btn) ImageButton backBtn;
     @BindView(R.id.ok_btn) TextView okBtn;
@@ -176,3 +179,4 @@ public class UploadReviewFragment extends BaseWriteFragment implements UploadRev
         if (recommendRvDialog != null) recommendRvDialog.dismiss();
     }
 }
+*/

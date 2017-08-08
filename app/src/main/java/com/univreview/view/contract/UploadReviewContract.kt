@@ -7,11 +7,10 @@ interface UploadReviewContract {
     interface View {
         fun showProgress()
         fun dismissProgress()
-        fun showRecommendRvDialog()
-        val subjectName: String
-        val professorName: String
+        var isReviewExist : Boolean
         fun showAlertDialog()
-        fun setReviewExist(isExist: Boolean)
+        fun showSimpleMsgDialog(msg : String)
+        fun showRecommendRvDialog()
     }
 
      fun registerReview()

@@ -70,4 +70,8 @@ open class BaseFragment : Fragment() {
     fun dismissProgress() {
         progressDialog.dismiss()
     }
+
+    fun showSimpleMsgDialog(msg : String){
+        Util.simpleMessageDialog(context, msg)
+    }
 }

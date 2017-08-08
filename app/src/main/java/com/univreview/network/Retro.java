@@ -28,7 +28,7 @@ import rx.Observable;
 public enum Retro {
     instance;
     private String BASE_URL;
-    private final String TEST_URL = "http://alpha-api.8hakgoon.com/api/";
+    private final String TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/";
     private final String REAL_URL = "https://api.8hakgoon.com/api/";
     private final String VERSION = "v1/";
     private UserService userService;
@@ -42,8 +42,8 @@ public enum Retro {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         if (BuildConfig.DEBUG) {
-            //BASE_URL = TEST_URL;
-             BASE_URL = REAL_URL;
+            BASE_URL = TEST_URL;
+             //BASE_URL = REAL_URL;
         } else {
             BASE_URL = REAL_URL;
         }
