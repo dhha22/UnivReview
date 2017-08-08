@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment.upload;
 
 import android.os.Bundle;
@@ -26,9 +27,11 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 13..
- */
+ *//*
+
 public class UploadReviewDetailFragment extends BaseWriteFragment {
     private static final int POSITION_NONE = -1;
     private static final int CONTINUE = -2;
@@ -111,8 +114,10 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                     } else if (position == CONTINUE) {
                         Navigator.goReviewDetail(getContext(), review);
                     } else {
-                        /*ReviewListFragment.reviewSingleId = review.id;
-                        ReviewListFragment.reviewItemRefreshPosition = position;*/
+                        */
+/*ReviewListFragment.reviewSingleId = review.id;
+                        ReviewListFragment.reviewItemRefreshPosition = position;*//*
+
                     }
                     ((BaseActivity) getActivity()).setOnBackPressedListener(null);
                     getActivity().onBackPressed();
@@ -129,8 +134,10 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
                     if (position == POSITION_NONE) {
                       // detail refresh
                     } else {
-                       /* ReviewListFragment.reviewSingleId = review.id;
-                        ReviewListFragment.reviewItemRefreshPosition = position;*/
+                       */
+/* ReviewListFragment.reviewSingleId = review.id;
+                        ReviewListFragment.reviewItemRefreshPosition = position;*//*
+
                     }
                     ((BaseActivity) getActivity()).setOnBackPressedListener(null);
                     getActivity().onBackPressed();
@@ -144,3 +151,4 @@ public class UploadReviewDetailFragment extends BaseWriteFragment {
 
 
 }
+*/

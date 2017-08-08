@@ -74,7 +74,7 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
                 Util.simpleMessageDialog(context, "과목을 입력해주세요")
             }
         }
-        
+
         // rating (difficulty, assignment, attendance, grade, achievement)
         difficultyRate.setOnRatingBarChangeListener { _, rating, _ ->
             presenter.review.difficultyRate = rating
