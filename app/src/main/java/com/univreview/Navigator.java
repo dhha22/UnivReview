@@ -129,13 +129,13 @@ public class Navigator {
 
     public static void goReviewDetail(Context context, Review data) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewDetailFragment.newInstance(data));
+        NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
         (context).startActivity(intent);
     }
 
     public static void goReviewDetail(Context context, Review data, View sharedView) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewDetailFragment.newInstance(data));
+        NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
         Util.sharedElement(context, intent, sharedView, "title");
     }
 

@@ -20,6 +20,7 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.listener.OnItemClickListener;
+import com.univreview.log.Logger;
 import com.univreview.util.SimpleDividerItemDecoration;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class ListDialog extends Dialog {
         this.context = context;
         adapter = new DialogAdapter(context, data);
         adapter.setOnItemClickListener(itemClickListener);
+        Logger.v("LisDialog Constructor");
     }
 
 

@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment.review;
 
 import android.content.Context;
@@ -38,9 +39,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 24..
- */
+ *//*
+
 public class ReviewDetailFragment extends BaseFragment implements ReviewDetailContract.View {
     private static final int DEFAULT_PAGE = 1;
     private static final int POSITION_NONE = -1;
@@ -242,3 +245,4 @@ public class ReviewDetailFragment extends BaseFragment implements ReviewDetailCo
         super.onDestroy();
     }
 }
+*/

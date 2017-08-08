@@ -6,12 +6,12 @@
     android:transitionName="title">
 
     <com.univreview.view.RecyclerViewCustom
-        android:id="@+id/recycler_view"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.univreview.view.CommentInput
-        android:id="@+id/comment_input"
+        android:id="@+id/commentInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom" />

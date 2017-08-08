@@ -1,10 +1,15 @@
 package com.univreview.view.presenter
 
+import android.content.Context
 import android.content.DialogInterface
+import android.view.View
 import com.univreview.App
+import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewDetailAdapterContract
+import com.univreview.dialog.ListDialog
 import com.univreview.listener.OnItemLongClickListener
 import com.univreview.log.Logger
+import com.univreview.model.Review
 import com.univreview.model.ReviewComment
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
@@ -19,15 +24,33 @@ import rx.schedulers.Schedulers
 class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     companion object {
         val DEFAULT_PAGE = 1
+        val POSITION_NONE = -1
     }
 
+
+    var page = DEFAULT_PAGE
+    lateinit var context:Context
+    lateinit var review : Review
     lateinit var view: ReviewDetailContract.View
     lateinit var adapterModel: ReviewDetailAdapterContract.Model
     lateinit var adapterView: ReviewDetailAdapterContract.View
+    val dialog: ListDialog by lazy {
+        val dialogList = ArrayList<String>()
+        if (review.reviewDetail != null) {
+            dialogList.add("리뷰수정")
+        } else {
+            dialogList.add("상세리뷰 쓰기")
+        }
+
+        if (App.userId as Long != review.userId) {
+            dialogList.add(0, "리뷰신고")
+        }
+        ListDialog(context, dialogList, dialogItemClickListener)
+    }
 
     override fun loadReviewSingle() {
         // review single api 호출
-        Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), view.getReviewId())
+        Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), review.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
@@ -37,13 +60,13 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                         user.name = userName
                         user.authenticated = authenticated
                     }
-                    view.setData(review)    // review 동기화
+                    view.setHeaderData(review)    // review 동기화
                 }, { ErrorUtils.parseError(it) })
     }
 
-    override fun loadCommentItem(page: Int) {
+    override fun loadCommentItem() {
         // 가장 최신에 달린 댓글이 list 하단에 존재
-        Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), view.getReviewId(), page)
+        Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), review.id, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
@@ -51,13 +74,13 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                         adapterModel.clearItem()
                     }
                     view.setCommentMoreBtn(result.comments.size == 5)
-                    view.setPage(page + 1)
+                    page.inc()
 
                     Logger.v("comment result: " + result.toString())
                     Observable.from(result.comments)
                             .subscribe({ data -> adapterModel.addItem(data) }, { Logger.e(it) })
                 }) { error ->
-                    view.setPage(DEFAULT_PAGE)
+                    this.page = DEFAULT_PAGE
                     ErrorUtils.parseError(error)
                 }
     }
@@ -81,5 +104,14 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                     .subscribe({ adapterModel.removeItem(position) }, { ErrorUtils.parseError(it) })
         })
         return true
+    }
+
+
+
+    private val dialogItemClickListener = { _: View, position: Int ->
+        when (position) {
+            0 -> Navigator.goReviewReport(context, review.id)   //리뷰 신고
+            1 -> Navigator.goUploadReviewDetail(context, review, POSITION_NONE)    // 리뷰 수정 or 상세리뷰 쓰기
+        }
     }
 }

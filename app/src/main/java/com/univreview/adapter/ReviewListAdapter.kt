@@ -44,7 +44,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
     }
 
     private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val v = itemView as ReviewItemView
+        val v : ReviewItemView by lazy { itemView as ReviewItemView }
 
         init {
             if (type == ReviewSearchType.MY_REVIEW) {
