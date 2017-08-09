@@ -1,8 +1,12 @@
 package com.univreview.view.presenter
 
+import android.content.Context
+import android.view.View
 import com.univreview.App
+import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewListAdapterContract
 import com.univreview.fragment.AbsListFragment
+import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.*
 import com.univreview.model.enumeration.ReviewSearchType
@@ -17,14 +21,17 @@ import kotlin.properties.Delegates
 /**
  * Created by DavidHa on 2017. 8. 6..
  */
-class ReviewListPresenter : ReviewListContract {
+class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     companion object {
         val DEFAULT_PAGE = 1
     }
 
+    lateinit var context : Context
     lateinit var view: ReviewListContract.View
     lateinit var adapterModel: ReviewListAdapterContract.Model
-    lateinit var adapterView: ReviewListAdapterContract.View
+    var adapterView: ReviewListAdapterContract.View? = null
+    set(value) {value?.setOnItemClickListener(this)}
+
     lateinit var searchModel: SearchModel
     var subjectId: Long? = null
     var professorId: Long? = null
@@ -98,5 +105,10 @@ class ReviewListPresenter : ReviewListContract {
             observable = Observable.from(result.professors).map { it.getName() }
         }
         observable?.toList()?.subscribe({ name -> view.setDialog(name) }, { Logger.e(it) })
+    }
+
+    // Review List Item
+    override fun onItemClick(view: View, position: Int) {
+        Navigator.goReviewDetail(context, adapterModel.getItem(position) as Review)
     }
 }

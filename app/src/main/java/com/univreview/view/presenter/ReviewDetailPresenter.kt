@@ -110,8 +110,8 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
     private val dialogItemClickListener = { _: View, position: Int ->
         when (position) {
-            0 -> Navigator.goReviewReport(context, review.id)   //리뷰 신고
-            1 -> Navigator.goUploadReviewDetail(context, review, POSITION_NONE)    // 리뷰 수정 or 상세리뷰 쓰기
+            0 -> Navigator.goUploadReviewDetail(context, review, POSITION_NONE)    // 리뷰 수정 or 상세리뷰 쓰기
+            1 -> Navigator.goReviewReport(context, review.id)   //리뷰 신고
         }
     }
 }

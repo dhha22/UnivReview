@@ -33,10 +33,13 @@ class LoginActivity : BaseActivity(), LoginContract.View {
         if (App.userToken != null) {
             Navigator.goMain(this)
             finish()
+            return
         }
         setContentView(R.layout.activity_login)
-        presenter.view = this
-        presenter.context = this
+        presenter.apply {
+            view = this@LoginActivity
+            context = this@LoginActivity
+        }
 
         // facebook
         LoginManager.getInstance().registerCallback(facebookCallbackManager, facebookCallback)
@@ -48,7 +51,7 @@ class LoginActivity : BaseActivity(), LoginContract.View {
     }
 
 
-    // facebook
+    // facebook login
     private fun facebookLogin() {
         Logger.v("facebook login")
         showProgress()
@@ -56,6 +59,7 @@ class LoginActivity : BaseActivity(), LoginContract.View {
 
     }
 
+    // kakao login
     private fun kakaoLogin() {
         Logger.v("kakao login")
         showProgress()

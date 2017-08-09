@@ -17,6 +17,7 @@ import com.univreview.view.ReviewDetailHeader
 import com.univreview.view.contract.ReviewDetailContract
 import com.univreview.view.presenter.ReviewDetailPresenter
 import kotlinx.android.synthetic.main.fragment_review_detail.*
+import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 8..
@@ -68,15 +69,19 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     }
 
     private fun init() {
-        headerView = ReviewDetailHeader(context)
+        headerView = ReviewDetailHeader(context).apply {
+            setCommentMoreBtnListener { presenter.loadCommentItem() }
+            setEtcBtnClickListener { presenter.dialog.show() }
+
+        }
+        setHeaderData(presenter.review)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = ReviewCommentAdapter(context, headerView)
         recyclerView.adapter = adapter
         commentInput.setSendListener { postReviewComment(presenter.review.id, commentInput.inputMsg) }
         presenter.adapterModel = adapter
         presenter.adapterView = adapter
-        headerView.setCommentMoreBtnListener { presenter.loadCommentItem() }
-        headerView.setEtcBtnClickListener { presenter.dialog.show() }
+
     }
 
     override fun setHeaderData(review: Review) {

@@ -59,6 +59,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         presenter = ReviewListPresenter()
         presenter.apply {
             view = this@ReviewListFragment
+            context = getContext()
             when (type) {
                 ReviewSearchType.SUBJECT -> subjectId = id
                 ReviewSearchType.PROFESSOR -> professorId = id
@@ -82,6 +83,8 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     private fun init() {
         App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
         when (type) {
+
+        // My Review
             ReviewSearchType.MY_REVIEW -> {
                 adapter = ReviewListAdapter(context, type)
                 smooth_app_bar_layout.visibility = View.GONE
@@ -89,6 +92,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                 toolbar.setTitleTxt(name)
             }
 
+        // Subject List, Professor List
             ReviewSearchType.SUBJECT, ReviewSearchType.PROFESSOR -> {
                 headerView = ReviewTotalScoreView(context)
                 adapter = ReviewListAdapter(context, type, headerView)
@@ -128,8 +132,10 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         list.setLayoutManager(layoutManager)
         list.setAdapter(adapter)
-        presenter.adapterModel = adapter
-        presenter.adapterView = adapter
+        presenter.let {
+            it.adapterModel = adapter
+            it.adapterView = adapter
+        }
         list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)

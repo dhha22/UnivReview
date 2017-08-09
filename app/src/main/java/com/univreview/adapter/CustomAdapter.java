@@ -133,15 +133,15 @@ public abstract class CustomAdapter extends RecyclerView.Adapter{
         return getCount();
     }
 
-    protected class HeaderViewHolder extends RecyclerView.ViewHolder {
-        public HeaderViewHolder(View itemView) {
+    private class HeaderViewHolder extends RecyclerView.ViewHolder {
+        private HeaderViewHolder(View itemView) {
             super(itemView);
             headerView = itemView;
         }
     }
 
-    protected class FooterViewHolder extends RecyclerView.ViewHolder{
-        public FooterViewHolder(View itemView) {
+    private class FooterViewHolder extends RecyclerView.ViewHolder{
+        private FooterViewHolder(View itemView) {
             super(itemView);
             footerView = itemView;
         }

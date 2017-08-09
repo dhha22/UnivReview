@@ -24,7 +24,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (getItemViewType(position) == CONTENT) {
-            (holder as ViewHolder).v.setData(list[position] as Review, position)
+            (holder as ViewHolder).v.setData(list[position] as Review)
         }
     }
 
@@ -52,6 +52,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
             } else if (type == ReviewSearchType.SUBJECT || type == ReviewSearchType.PROFESSOR) {
                 v.setMode(ReviewItemView.Status.READ_REVIEW)
             }
+            v.setOnClickListener { itemClickListener.onItemClick(it, adapterPosition) }
         }
     }
 }

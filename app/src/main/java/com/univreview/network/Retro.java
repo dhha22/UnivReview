@@ -1,16 +1,13 @@
+/*
 package com.univreview.network;
-
-import android.net.Uri;
 
 import com.univreview.App;
 import com.univreview.BuildConfig;
 import com.univreview.log.Logger;
 import com.univreview.model.FileUploadModel;
 import com.univreview.util.ImageUtil;
-import com.univreview.util.Util;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
@@ -22,9 +19,11 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 3..
- */
+ *//*
+
 public enum Retro {
     instance;
     private String BASE_URL;
@@ -42,8 +41,8 @@ public enum Retro {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         if (BuildConfig.DEBUG) {
-            BASE_URL = TEST_URL;
-             //BASE_URL = REAL_URL;
+            //BASE_URL = TEST_URL;
+             BASE_URL = REAL_URL;
         } else {
             BASE_URL = REAL_URL;
         }
@@ -117,3 +116,4 @@ public enum Retro {
         return fileService.postFile(App.setAuthHeader(App.userToken), body, location);
     }
 }
+*/

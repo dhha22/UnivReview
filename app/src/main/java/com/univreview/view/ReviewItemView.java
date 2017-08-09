@@ -83,7 +83,7 @@ public class ReviewItemView extends FrameLayout {
         setLayoutParams(params);
     }
 
-    public void setData(Review review, int position) {
+    public void setData(Review review) {
         if (review != null) {
             this.data = review;
             Logger.v("review: " + review);
@@ -155,13 +155,13 @@ public class ReviewItemView extends FrameLayout {
             attendanceRate.setRating(review.attendanceRate);
             gradeRate.setRating(review.gradeRate);
             achievementRate.setRating(review.achievementRate);
-            setOnClickListener(v -> {
+            /*setOnClickListener(v -> {
                 if (Status.MY_REVIEW.equals(status) || Status.READ_REVIEW.equals(status)) {
-                    /*ReviewListFragment.reviewSingleId = review.id;
-                    ReviewListFragment.reviewItemRefreshPosition = position;*/
+                    *//*ReviewListFragment.reviewSingleId = review.id;
+                    ReviewListFragment.reviewItemRefreshPosition = position;*//*
                     Navigator.goReviewDetail(context, review, layout);
                 }
-            });
+            });*/
             likeLayout.setOnClickListener(v -> callReviewLike(review.id));
         } else {
             setVisibility(INVISIBLE);
@@ -229,7 +229,7 @@ public class ReviewItemView extends FrameLayout {
                         data.likes = true;
                         data.likeCount++;
                     }
-                    setData(data, position);
+                    setData(data);
                 }, ErrorUtils::parseError);
     }
 }
