@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit
 enum class Retro {
     instance;
 
-    private var BASE_URL: String? = null
     private val TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/"
     private val REAL_URL = "https://api.8hakgoon.com/api/"
     private val VERSION = "v1/"
@@ -35,8 +34,8 @@ enum class Retro {
 
     init {
         Logger.v("init retro")
-        val builder = OkHttpClient.Builder()
-
+       
+        val BASE_URL: String
         if (BuildConfig.DEBUG) {
             //BASE_URL = TEST_URL;
             BASE_URL = REAL_URL
@@ -44,6 +43,7 @@ enum class Retro {
             BASE_URL = REAL_URL
         }
 
+        val builder = OkHttpClient.Builder()
         builder.readTimeout(20, TimeUnit.SECONDS)
         builder.writeTimeout(20, TimeUnit.SECONDS)
         builder.addInterceptor { chain ->
@@ -57,7 +57,7 @@ enum class Retro {
 
 
         val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL!! + VERSION)
+                .baseUrl(BASE_URL + VERSION)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(App.gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

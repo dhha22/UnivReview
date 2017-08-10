@@ -13,6 +13,7 @@ import com.squareup.otto.Produce;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
+import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.HomeFragment;
 import com.univreview.fragment.MypageFragment;
 import com.univreview.log.Logger;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.subjects.PublishSubject;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.bottom_bar) BottomBar bottomBar;
@@ -46,6 +48,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void init() {
+        BaseFragment.reviewPublishSubject = PublishSubject.create();
         App.initializeFCMToken();
         adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -128,7 +131,7 @@ public class MainActivity extends BaseActivity {
     private class PagerAdapter extends FragmentStatePagerAdapter {
         private List<Fragment> fragmentList = Arrays.asList(HomeFragment.newInstance(), MypageFragment.newInstance(App.userId));
 
-        public PagerAdapter(FragmentManager fm) {
+        private PagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -147,5 +150,11 @@ public class MainActivity extends BaseActivity {
             return POSITION_NONE;
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BaseFragment.reviewPublishSubject.onCompleted();
     }
 }

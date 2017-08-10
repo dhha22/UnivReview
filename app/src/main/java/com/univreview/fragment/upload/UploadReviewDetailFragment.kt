@@ -103,6 +103,8 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { progressDialog.dismiss() }
                 .subscribe({
+                    review.reviewDetail = reviewDetail
+                    reviewPublishSubject.onNext(review)
                     activity.finish()
                 }, { this.errorResponse(it) })
     }
@@ -116,6 +118,8 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { progressDialog.dismiss() }
                 .subscribe({
+                    review.reviewDetail = reviewDetail
+                    reviewPublishSubject.onNext(review)
                     activity.finish()
                 }, { this.errorResponse(it) })
     }

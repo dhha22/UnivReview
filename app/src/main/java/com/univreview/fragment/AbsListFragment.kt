@@ -35,7 +35,7 @@ import java.util.HashMap
     private fun isNeedRefresh(): Boolean {
         val aClass = (this as Any).javaClass
         if (needRefresh.containsKey(aClass)) {
-            return needRefresh.get(aClass)?:true
+            return needRefresh[aClass]?:true
         }
         return true
     }

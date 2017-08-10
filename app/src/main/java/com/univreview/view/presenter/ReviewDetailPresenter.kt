@@ -24,7 +24,6 @@ import rx.schedulers.Schedulers
 class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     companion object {
         val DEFAULT_PAGE = 1
-        val POSITION_NONE = -1
     }
 
 
@@ -73,7 +72,8 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                     if (page == DEFAULT_PAGE) {
                         adapterModel.clearItem()
                     }
-                    view.setCommentMoreBtn(result.comments.size == 5)
+                    // 댓글 개수가 5개 이상이면 더보기 버튼 표시
+                   // view.setCommentMoreBtn(result.comments.size == 5)
                     page.inc()
 
                     Logger.v("comment result: " + result.toString())
@@ -110,7 +110,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
     private val dialogItemClickListener = { _: View, position: Int ->
         when (position) {
-            0 -> Navigator.goUploadReviewDetail(context, review, POSITION_NONE)    // 리뷰 수정 or 상세리뷰 쓰기
+            0 -> Navigator.goUploadReviewDetail(context, review)    // 리뷰 수정 or 상세리뷰 쓰기
             1 -> Navigator.goReviewReport(context, review.id)   //리뷰 신고
         }
     }

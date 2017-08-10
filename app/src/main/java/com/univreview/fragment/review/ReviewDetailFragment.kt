@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.univreview.R
 import com.univreview.adapter.ReviewCommentAdapter
 import com.univreview.fragment.BaseFragment
+import com.univreview.log.Logger
 import com.univreview.model.Review
 import com.univreview.model.ReviewComment
 import com.univreview.util.Util
@@ -66,6 +67,10 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
 
     override fun onResume() {
         super.onResume()
+        reviewPublishSubject.subscribe({
+            setHeaderData(it)
+            presenter.loadReviewSingle()
+        }, { Logger.e(it) })
     }
 
     private fun init() {
@@ -81,6 +86,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         commentInput.setSendListener { postReviewComment(presenter.review.id, commentInput.inputMsg) }
         presenter.adapterModel = adapter
         presenter.adapterView = adapter
+        presenter.loadReviewSingle()
 
     }
 
@@ -95,7 +101,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
             val body = ReviewComment()
             body.reviewId = id
             body.commentDetail = message
-            recyclerView.smoothScrollToPosition(adapter.getItemCount())
+            recyclerView.smoothScrollToPosition(adapter.itemCount)
             presenter.postComment(body)
         } else {
             Util.toast("메세지를 입력해주세요")

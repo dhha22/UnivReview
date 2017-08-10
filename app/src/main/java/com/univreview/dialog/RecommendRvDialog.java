@@ -49,7 +49,7 @@ public class RecommendRvDialog extends Dialog {
 
         // 계속해서 상세 리뷰를 남긴다 (리뷰 업로드 상세 페이지로 이동)
         goReviewDetail.setOnClickListener(view -> {
-            Navigator.goUploadReviewDetail(context, this.review, CONTINUE);
+            Navigator.goUploadReviewDetail(context, this.review);
             ((Activity) context).finish();
         });
 

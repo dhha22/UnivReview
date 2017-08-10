@@ -106,6 +106,12 @@ public class Navigator {
         context.startActivity(intent);
     }
 
+    public static void goUploadReviewDetail(Context context, Review review) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(UploadReviewDetailFragment.getInstance(review));
+        context.startActivity(intent);
+    }
+
     public static void goUploadReviewDetail(Context context, Review review, int position) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(UploadReviewDetailFragment.getInstance(review));

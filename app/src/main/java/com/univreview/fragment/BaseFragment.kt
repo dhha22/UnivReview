@@ -10,15 +10,19 @@ import android.widget.LinearLayout
 import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.BusProvider
+import com.univreview.model.Review
 import com.univreview.util.Util
 import com.univreview.view.Toolbar
+import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 4..
  */
 open class BaseFragment : Fragment() {
-    private companion object {
-        val HOME_FRAGMENT = "com.univreview.fragment.HomeFragment"
+     companion object {
+        private val HOME_FRAGMENT = "com.univreview.fragment.HomeFragment"
+         @JvmField
+         var reviewPublishSubject : PublishSubject<Review> = PublishSubject.create()
     }
 
     protected lateinit var rootLayout: LinearLayout
