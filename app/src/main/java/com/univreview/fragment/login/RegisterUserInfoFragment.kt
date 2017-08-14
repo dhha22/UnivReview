@@ -92,7 +92,11 @@ class RegisterUserInfoFragment : BaseFragment() {
     private fun formVerification(): Boolean {
         if (inputName.text.isEmpty()) {
             Util.simpleMessageDialog(context, "이름을 입력해주시길 바랍니다.")
-        } else {
+        } else if(inputEmail.text.isEmpty()){
+            Util.simpleMessageDialog(context, "이메일을 입력해주시길 바랍니다.")
+        }else if(!Util.isEmail(inputEmail.text.toString())){
+            Util.simpleMessageDialog(context, "올바른 이메일을 입력해주시길 바랍니다.")
+        }else {
             return true
         }
         return false

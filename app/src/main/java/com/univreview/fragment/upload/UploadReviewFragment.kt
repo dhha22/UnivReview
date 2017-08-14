@@ -62,9 +62,9 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
     fun init() {
         backBtn.setOnClickListener { activity.onBackPressed() }
         okBtn.setOnClickListener { presenter.registerReview() }
-        subject_txt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT, false) }
-        professor_txt.setOnClickListener {
-            if (!subject_txt.text.isEmpty()) {
+        subjectTxt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT, false) }
+        professorTxt.setOnClickListener {
+            if (!subjectTxt.text.isEmpty()) {
                 if (!isReviewExist) { // review 를 처음 남기는 학생
                     Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.review.subjectId, false)
                 } else {

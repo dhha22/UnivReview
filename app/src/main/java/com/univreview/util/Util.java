@@ -24,6 +24,8 @@ import com.univreview.App;
 import com.univreview.R;
 import com.univreview.log.Logger;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by DavidHa on 2017. 1. 4..
  */
@@ -110,6 +112,14 @@ public class Util {
             return true;
         }
         return false;
+    }
+
+    public static boolean isEmail(String email) {
+        if (email==null) return false;
+        return Pattern.matches(
+                "[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",
+                email.trim());
+
     }
 
 

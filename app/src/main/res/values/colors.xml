@@ -6,6 +6,7 @@
     <color name="colorAccent">#4A90E2</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="white50">#7effffff</color>
     <color name="transparent">#00000000</color>
     <color name="kakaoColor">#f6a623</color>
     <color name="facebookColor">#225b99</color>

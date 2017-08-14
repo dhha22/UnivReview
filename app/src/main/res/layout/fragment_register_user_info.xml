@@ -44,7 +44,8 @@
         android:background="@color/transparent"
         android:gravity="center"
         android:padding="8dp"
-        android:text="test"
+        android:hint="이름"
+        android:textColorHint="@color/white50"
         android:textColor="@color/white"
         android:textSize="18dp" />
 
@@ -56,15 +57,39 @@
         android:layout_marginRight="48dp"
         android:background="@color/white" />
 
+    <EditText
+        android:id="@+id/inputEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputName"
+        android:layout_gravity="center"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="44dp"
+        android:hint="이메일"
+        android:textColorHint="@color/white50"
+        android:background="@color/transparent"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/inputEmail"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@color/white" />
 
     <Button
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:layout_below="@id/inputName"
+        android:layout_below="@id/inputEmail"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="149dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/login_next_btn_selector"
         android:text="다음"
         android:textColor="@color/white"
