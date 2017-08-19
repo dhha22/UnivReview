@@ -19,6 +19,7 @@ import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
 import com.univreview.view.contract.LoginContract
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -82,7 +83,7 @@ class LoginPresenter : LoginContract {
     }
 
     //api
-    private fun callLoginApi(userType: String, userId: String, accessToken: String, nickName: String, profileURL: String, email : String? = null) {
+    private fun callLoginApi(userType: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
         Logger.v("userType: $userType, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
         Retro.instance.loginService().login(App.setAuthHeader(""), Login(userType, userId, accessToken))
                 .subscribeOn(Schedulers.io())
@@ -94,11 +95,14 @@ class LoginPresenter : LoginContract {
 
     private fun response(userModel: UserModel) {
         Logger.v("response: " + userModel)
-        userModel.run {
-            App.setUserId(user.id)
-            App.setUserToken(auth.token)
-            App.setUniversityId(user.universityId)
-        }
+        Observable.just(userModel)
+                .observeOn(Schedulers.newThread())
+                .subscribe {
+                    App.setUserId(it.user.id)
+                    App.setUserToken(it.auth.token)
+                    App.setUniversityId(it.user.universityId)
+
+                }
         Navigator.goMain(context)
     }
 

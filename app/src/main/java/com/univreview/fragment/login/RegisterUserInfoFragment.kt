@@ -16,6 +16,7 @@ import com.univreview.model.ActivityResultEvent
 import com.univreview.model.Register
 import com.univreview.util.ImageUtil
 import com.univreview.util.Util
+import kotlinx.android.synthetic.main.comment_input.*
 import kotlinx.android.synthetic.main.fragment_register_user_info.*
 
 /**
@@ -73,7 +74,21 @@ class RegisterUserInfoFragment : BaseFragment() {
             }
 
             override fun afterTextChanged(s: Editable) {
-                nextBtn.isSelected = !s.isEmpty()
+                nextBtn.isSelected = !isInputEmpty()
+            }
+        })
+
+        inputEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                nextBtn.isSelected = !isInputEmpty()
             }
         })
     }
@@ -85,8 +100,17 @@ class RegisterUserInfoFragment : BaseFragment() {
             Util.setProfileImage(it.profileURL, profileImage)
             inputName.setText(it.nickName)
             inputName.setSelection(it.nickName.length)
-            nextBtn.isSelected = !it.nickName.isEmpty()
+            inputEmail.setText(it.email)
+            inputEmail.setSelection(it.email?.length ?: 0)
+            nextBtn.isSelected = !isInputEmpty()
         }
+    }
+
+    private fun isInputEmpty() : Boolean{
+        if(inputName.text.isEmpty() || inputEmail.text.isEmpty()){
+            return true
+        }
+        return false
     }
 
     private fun formVerification(): Boolean {
