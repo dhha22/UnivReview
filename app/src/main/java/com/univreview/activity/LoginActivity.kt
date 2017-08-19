@@ -55,7 +55,7 @@ class LoginActivity : BaseActivity(), LoginContract.View {
     private fun facebookLogin() {
         Logger.v("facebook login")
         showProgress()
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
 
     }
 

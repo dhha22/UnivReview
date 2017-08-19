@@ -32,16 +32,16 @@ class LoginPresenter : LoginContract {
 
     override fun facebookOnSuccess(loginResult: LoginResult) {
         val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response ->
-            Logger.v("facebook responseMajor" + response.toString())
+            Logger.v("facebook response: " + `object`.toString())
             val userId = `object`.getString("id")   //facebook user id
             val accessToken = loginResult.accessToken.token    //facebookAccessToken
             val nickName = `object`.getString("name") // name
             val profileUrl = `object`.getJSONObject("picture").getJSONObject("data").getString("url") //facebook profile image
-            val email: String? = `object`.getString("email") // facebook email
+            val email: String? = `object`.has("email").let { `object`.getString("email") } // facebook email
             callLoginApi("F", userId, accessToken, nickName, profileUrl, email)
         }
         val parameters = Bundle()
-        parameters.putString("fields", "id, name, picture.type(large)")
+        parameters.putString("fields", "id, name, picture.type(large), email")
         request.parameters = parameters
         request.executeAsync()
     }
