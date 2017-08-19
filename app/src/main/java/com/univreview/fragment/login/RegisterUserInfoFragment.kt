@@ -82,7 +82,7 @@ class RegisterUserInfoFragment : BaseFragment() {
 
     fun setData(register: Register?){
         register?.let {
-            Util.setProfileImage(it.profileUrl, profileImage)
+            Util.setProfileImage(it.profileURL, profileImage)
             inputName.setText(it.nickName)
             inputName.setSelection(it.nickName.length)
             nextBtn.isSelected = !it.nickName.isEmpty()
@@ -110,7 +110,7 @@ class RegisterUserInfoFragment : BaseFragment() {
             } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
                 Logger.v("album path: " + albumPath)
-                register.profileUrl = "file://" + albumPath
+                register.profileURL = "file://" + albumPath
                 register.profileUri = activityResultEvent.intent.data
                 setData(register)
             }

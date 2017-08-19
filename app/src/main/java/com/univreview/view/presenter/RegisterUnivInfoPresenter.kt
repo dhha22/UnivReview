@@ -49,11 +49,8 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
         App.setUniversityId(App.universityId)
 
         // 회원 프로필 사진을 앨범에서 선택했을 경우
-        if (register.profileUri != null) {
-            callImageFileUploadApi(register.profileUri)
-        } else {
-            goMain()
-        }
+        register.profileUri?:goMain()   // profile uri 가 없는 경우 main 으로 이동
+        callImageFileUploadApi(register.profileUri)
 
     }
 
@@ -65,7 +62,7 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
 
     // File upload -> User 회원가입
 
-    private fun callImageFileUploadApi(uploadUri: Uri) {
+    private fun callImageFileUploadApi(uploadUri: Uri?) {
         Retro.instance.fileService(ImageUtil.getPath(uploadUri), "profile")
                 .subscribeOn(Schedulers.io())
                 .subscribe({ result -> callUserProfileUpdateApi(result.fileLocation) }) { goMain() }

@@ -54,11 +54,6 @@ public class KakaoSDKAdapter extends KakaoAdapter{
     public IApplicationConfig getApplicationConfig() {
         return new IApplicationConfig() {
             @Override
-            public Activity getTopActivity() {
-                return App.getCurrentActivity();
-            }
-
-            @Override
             public Context getApplicationContext() {
                 return App.getGlobalApplicationContext();
             }

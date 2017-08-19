@@ -162,7 +162,7 @@ public class Navigator {
     }
 
 
-    public static void goSearch(Context context, ReviewSearchType type, long id, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type, Long id, boolean isReviewSearch){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.newInstance(type, id, isReviewSearch));
         ((Activity)context).startActivityForResult(intent, SEARCH);

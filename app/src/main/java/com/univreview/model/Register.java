@@ -1,3 +1,4 @@
+/*
 package com.univreview.model;
 
 import android.net.Uri;
@@ -6,9 +7,11 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 15..
- */
+ *//*
+
 public class Register implements Parcelable {
     public String userType;
     public String userId;
@@ -87,3 +90,4 @@ public class Register implements Parcelable {
         }
     };
 }
+*/

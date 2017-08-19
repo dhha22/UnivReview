@@ -26,23 +26,18 @@ import rx.schedulers.Schedulers
  * Created by DavidHa on 2017. 8. 6..
  */
 class LoginPresenter : LoginContract {
-    lateinit var view : LoginContract.View
-    lateinit var context : Context
+    lateinit var view: LoginContract.View
+    lateinit var context: Context
 
     override fun facebookOnSuccess(loginResult: LoginResult) {
         val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response ->
             Logger.v("facebook responseMajor" + response.toString())
-            try {
-                val userId = `object`.getString("id")   //facebook user id
-                val accessToken = loginResult.accessToken.token    //facebookAccessToken
-                val nickName = `object`.getString("name")
-                val profileUrl = `object`.getJSONObject("picture").getJSONObject("data").getString("url") //facebook profile image
-                callLoginApi("F", userId, accessToken, nickName, profileUrl)
-            } catch (e: Exception) {
-                Logger.e(e.toString())
-            }
-
-
+            val userId = `object`.getString("id")   //facebook user id
+            val accessToken = loginResult.accessToken.token    //facebookAccessToken
+            val nickName = `object`.getString("name") // name
+            val profileUrl = `object`.getJSONObject("picture").getJSONObject("data").getString("url") //facebook profile image
+            val email: String? = `object`.getString("email") // facebook email
+            callLoginApi("F", userId, accessToken, nickName, profileUrl, email)
         }
         val parameters = Bundle()
         parameters.putString("fields", "id, name, picture.type(large)")
@@ -71,11 +66,12 @@ class LoginPresenter : LoginContract {
             override fun onSuccess(userProfile: UserProfile) {
                 Logger.v("카카오 로그인 성공")
                 val userId = userProfile.id.toString()
-                val accessToken = Session.getCurrentSession().accessToken
+                val accessToken = Session.getCurrentSession().tokenInfo.accessToken
                 val nickName = userProfile.nickname  //kakao nickname
                 val profileURL = userProfile.profileImagePath  //kakao profile image
+                val email: String? = userProfile.email // kakao email
 
-                callLoginApi("K", userId, accessToken, nickName, profileURL)
+                callLoginApi("K", userId, accessToken, nickName, profileURL, email)
             }
 
             override fun onNotSignedUp() {
@@ -86,14 +82,14 @@ class LoginPresenter : LoginContract {
     }
 
     //api
-    private fun callLoginApi(userType: String, userId: String, accessToken: String, nickName: String, profileURL: String) {
-        Logger.v("userType: $userType, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL")
+    private fun callLoginApi(userType: String, userId: String, accessToken: String, nickName: String, profileURL: String, email : String? = null) {
+        Logger.v("userType: $userType, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
         Retro.instance.loginService().login(App.setAuthHeader(""), Login(userType, userId, accessToken))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe( { this.response(it) })
-                { error -> loginErrorResponse(error, Register(userType, userId, accessToken, nickName, profileURL)) }
+                .subscribe({ this.response(it) })
+                { error -> loginErrorResponse(error, Register(userType, userId, accessToken, nickName, profileURL, email)) }
     }
 
     private fun response(userModel: UserModel) {
