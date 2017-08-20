@@ -13,20 +13,19 @@ import com.univreview.R
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
-import com.univreview.model.Register
+import com.univreview.model.model_kotlin.User
 import com.univreview.util.ImageUtil
 import com.univreview.util.Util
-import kotlinx.android.synthetic.main.comment_input.*
 import kotlinx.android.synthetic.main.fragment_register_user_info.*
 
 /**
  * Created by DavidHa on 2017. 8. 5..
  */
 class RegisterUserInfoFragment : BaseFragment() {
-    private lateinit var register : Register
+    private lateinit var register : User
     companion object {
         @JvmStatic
-        fun newInstance(register: Register): RegisterUserInfoFragment {
+        fun newInstance(register: User): RegisterUserInfoFragment {
             val fragment = RegisterUserInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable("register", register)
@@ -57,7 +56,7 @@ class RegisterUserInfoFragment : BaseFragment() {
         setData(register)
     }
 
-    fun init(register: Register) {
+    fun init(register: User) {
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
                 Navigator.goRegisterUnivInfo(context, register)
@@ -95,11 +94,11 @@ class RegisterUserInfoFragment : BaseFragment() {
 
 
 
-    fun setData(register: Register?){
+    fun setData(register: User?){
         register?.let {
-            Util.setProfileImage(it.profileURL, profileImage)
-            inputName.setText(it.nickName)
-            inputName.setSelection(it.nickName.length)
+            Util.setProfileImage(it.profileImageUrl, profileImage)
+            inputName.setText(it.name)
+            inputName.setSelection(it.name.length)
             inputEmail.setText(it.email)
             inputEmail.setSelection(it.email?.length ?: 0)
             nextBtn.isSelected = !isInputEmpty()
@@ -134,8 +133,8 @@ class RegisterUserInfoFragment : BaseFragment() {
             } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
                 Logger.v("album path: " + albumPath)
-                register.profileURL = "file://" + albumPath
-                register.profileUri = activityResultEvent.intent.data
+                register.profileImageUrl = "file://" + albumPath
+                register.profileImageUri = activityResultEvent.intent.data
                 setData(register)
             }
         }

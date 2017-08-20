@@ -51,17 +51,17 @@ class LoginActivity : BaseActivity(), LoginContract.View {
     }
 
 
-    // facebook login
+    // facebook callSignIn
     private fun facebookLogin() {
-        Logger.v("facebook login")
+        Logger.v("facebook callSignIn")
         showProgress()
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
 
     }
 
-    // kakao login
+    // kakao callSignIn
     private fun kakaoLogin() {
-        Logger.v("kakao login")
+        Logger.v("kakao callSignIn")
         showProgress()
         val isOpen = Session.getCurrentSession().checkAndImplicitOpen()
         Logger.v("is kakao session open: " + isOpen)

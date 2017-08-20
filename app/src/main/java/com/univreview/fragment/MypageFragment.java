@@ -1,7 +1,6 @@
 package com.univreview.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,19 +20,17 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.log.Logger;
-import com.univreview.model.AbstractDataProvider;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.User;
 import com.univreview.model.UserModel;
-import com.univreview.model.Setting;
 import com.univreview.model.enumeration.ReviewSearchType;
+import com.univreview.model.model_kotlin.Setting;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
 import com.univreview.view.SettingItemView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -107,7 +104,7 @@ public class MypageFragment extends BaseFragment {
                     break;
                 case POINT:
                     if (adapter.getItem(position) != null) {
-                        String name = ((Setting) adapter.getItem(position)).previewStr;
+                        String name = ((Setting) adapter.getItem(position)).getPreviewStr();
                         int index = name.indexOf("point") - 1;
                         Navigator.goPointList(getContext(), Integer.parseInt(name.substring(0, index)));
                     } else {
@@ -142,7 +139,7 @@ public class MypageFragment extends BaseFragment {
         adapter.clear();
         Observable.from(settings)
                 .map(setting -> {
-                    switch ((int) setting.id) {
+                    switch ((int) setting.getId()) {
                         case 0:
                             setting.previewStr = userModel.review + "개";
                             break;

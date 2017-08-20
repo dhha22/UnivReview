@@ -56,6 +56,7 @@ public class App extends MultiDexApplication {
     public static Long universityId;
     public static Long userId;
     public static String userToken;
+    public static String client;
     public static String registrationId;
 
     @Override
@@ -117,6 +118,12 @@ public class App extends MultiDexApplication {
         pref.savePreferences("userId", userId);
     }
 
+    public static void setClient(String client){
+        Logger.v("set client: " + client);
+        App.client = client;
+        pref.savePreferences("client", client);
+    }
+
     public static void setUniversityId(long universityId) {
         Logger.v("set universityId id: " + universityId);
         App.universityId =  universityId;
@@ -127,9 +134,11 @@ public class App extends MultiDexApplication {
         userToken = pref.getPreferences("userToken", null);
         userId = pref.getPreferences("userId", 0l);
         universityId = pref.getPreferences("universityId", 0l);
+        client = pref.getPreferences("client", null);
         Logger.v("user token: " + userToken);
         Logger.v("user id: " + userId);
         Logger.v("university id: " + universityId);
+        Logger.v("client: " + client);
     }
 
     public static void userLogout() {
@@ -137,6 +146,7 @@ public class App extends MultiDexApplication {
         setFCMToken(null);
         setUserToken(null);
         setUniversityId(0);
+        setClient(null);
     }
 
 
@@ -164,9 +174,9 @@ public class App extends MultiDexApplication {
 
     public static Map<String, String> setHeader(){
         Map<String, String> map = new HashMap<>();
-        map.put("uid", "1");
-        map.put("client", "client");
-        map.put("access token", "access");
+        map.put("uid", String.valueOf(App.userId));
+        map.put("client", App.client);
+        map.put("access-token", App.userToken);
         return map;
     }
 

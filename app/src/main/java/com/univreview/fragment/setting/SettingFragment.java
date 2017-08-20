@@ -16,7 +16,8 @@ import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
-import com.univreview.model.Setting;
+
+import com.univreview.model.model_kotlin.Setting;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.view.SettingItemView;
@@ -75,7 +76,7 @@ public class SettingFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         Observable.from(settings)
                 .map(setting -> {
-                    switch ((int)setting.id){
+                    switch ((int)setting.getId()){
                         case VERSION:
                             setting.previewStr = getActivity().getResources().getString(R.string.app_version);
                             break;
@@ -85,8 +86,9 @@ public class SettingFragment extends BaseFragment {
                     return setting;
                 })
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-                //.subscribe(result -> adapter.addItem(result), Logger::e);
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> adapter.addItem(result), Logger::e);
+
         adapter.setOnItemClickListener((view, position) -> {
             switch (position){
                /* case NOTIFICATION:
@@ -124,7 +126,7 @@ public class SettingFragment extends BaseFragment {
                 ((ViewHolder) holder).v.setNextImgVisibility(false);
             }
             ((ViewHolder) holder).v.setTitle(list.get(position).getName());
-           // ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
+            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {

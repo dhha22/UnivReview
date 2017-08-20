@@ -5,14 +5,12 @@ import android.net.Uri
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.log.Logger
-import com.univreview.model.Register
-import com.univreview.model.Token
-import com.univreview.model.User
-import com.univreview.model.UserModel
+import com.univreview.model.model_kotlin.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.ImageUtil
 import com.univreview.view.contract.RegisterUnivInfoContract
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -22,36 +20,31 @@ import rx.schedulers.Schedulers
 class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
     lateinit var view: RegisterUnivInfoContract.View
     lateinit var context: Context
-    lateinit var register: Register
+    lateinit var register: User
 
 
     // 회원 등록 과정
-    // temp token -> register -> image file upload -> update profile
-    override fun registerUser() {
-        Retro.instance.tokenService().tempToken(App.setAuthHeader(""))
-                .subscribeOn(Schedulers.io())
-                .subscribe({ result -> callRegisterApi(register, result) }) { this.errorResponse(it) }
-    }
 
-    private fun callRegisterApi(register: Register, token: Token) {
-        Logger.v("userToken: " + token)
-        Logger.v("register : " + register)
-        Retro.instance.userService().register(App.setAuthHeader(token.token), register)
+    override fun registerUser() {
+        Retro.instance.loginService().callSignUp(register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.response(it) }, { this.errorResponse(it) })
+                .subscribe({ this.response(it.data) }, { this.errorResponse(it) })
     }
 
-    private fun response(userModel: UserModel) {
-        Logger.v("response: " + userModel)
-        App.setUserId(userModel.user.id)
-        App.setUserToken(userModel.auth.token)
-        App.setUniversityId(App.universityId)
-
-        // 회원 프로필 사진을 앨범에서 선택했을 경우
+    private fun response(user: User) {
+        Logger.v("response: " + user)
+        Observable.just(user)
+                .observeOn(Schedulers.newThread())
+                .subscribe {
+                    App.setUniversityId(it.universityId!!)
+                    App.setUserId(it.uid)
+                    App.setUserToken(it.accessToken)
+                    App.setClient(it.client)
+                }
+       /* // 회원 프로필 사진을 앨범에서 선택했을 경우
         register.profileUri?:goMain()   // profile uri 가 없는 경우 main 으로 이동
-        callImageFileUploadApi(register.profileUri)
-
+        callImageFileUploadApi(register.profileUri)*/
     }
 
     private fun errorResponse(e: Throwable) {
@@ -69,7 +62,7 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
     }
 
     private fun callUserProfileUpdateApi(profileUrl: String) {
-        Logger.v("file location: " + profileUrl)
+       /* Logger.v("file location: " + profileUrl)
         val user = User().apply {
             profileImageUrl = profileUrl
         }
@@ -77,7 +70,7 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate({ goMain() })
-                .subscribe({ result -> Logger.v("profile update: " + result) }, { ErrorUtils.parseError(it) })
+                .subscribe({ result -> Logger.v("profile update: " + result) }, { ErrorUtils.parseError(it) })*/
     }
 
     private fun goMain() {

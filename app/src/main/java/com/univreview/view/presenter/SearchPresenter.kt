@@ -42,13 +42,13 @@ class SearchPresenter : SearchContract {
     }
 
     override fun searchProfessor(departmentId: Long?, name: String, page: Int) {
-        //setObservable(Retro.instance.searchService().getProfessors(App.universityId.toLong(), departmentId, name, page), page)
+        setObservable(Retro.instance.searchService().callProfessors(App.setHeader()), page)
     }
 
     override fun searchSubject(majorId: Long?, name: String, page: Int) {
         Logger.v("university id: " + App.universityId)
         Logger.v("major id: " + majorId)
-        //setObservable(Retro.instance.searchService().getSubjects(App.universityId.toLong(), majorId, name, page), page)
+        setObservable(Retro.instance.searchService().callSubjects(App.setHeader(), majorId), page)
     }
 
     override fun searchProfFromSubj(subjectId: Long, name: String, page: Int) {

@@ -2,7 +2,6 @@ package com.univreview.network;
 
 import com.univreview.model.PointHistoryModel;
 import com.univreview.model.PushId;
-import com.univreview.model.Register;
 import com.univreview.model.ResultMessage;
 import com.univreview.model.User;
 import com.univreview.model.UserModel;
@@ -25,8 +24,6 @@ import rx.Observable;
  */
 public interface UserService {
 
-    @POST("signUp")
-    Observable<UserModel> register(@HeaderMap Map<String, String> headers, @Body Register body);
 
     @GET("profile")
     Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);

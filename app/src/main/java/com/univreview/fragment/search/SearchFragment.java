@@ -67,6 +67,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         super.onCreate(savedInstanceState);
         type = (ReviewSearchType) getArguments().getSerializable("type");
         id = getArguments().getLong("id");
+        if(id == 0) id = null;
         isReviewSearch = getArguments().getBoolean("isReviewSearch");
         presenter = new SearchPresenter();
         presenter.view = this;

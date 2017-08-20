@@ -12,10 +12,7 @@ import com.kakao.usermgmt.response.model.UserProfile
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.log.Logger
-import com.univreview.model.Login
-import com.univreview.model.Register
 import com.univreview.model.SignIn
-import com.univreview.model.UserModel
 import com.univreview.model.model_kotlin.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
@@ -85,34 +82,35 @@ class LoginPresenter : LoginContract {
     }
 
     //api
-    private fun callLoginApi(userType: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
-        Logger.v("userType: $userType, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
-        Retro.instance.loginService().login(SignIn(accessToken, userType))
+    private fun callLoginApi(provider: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
+        Logger.v("provider: $provider, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
+        Retro.instance.loginService().callSignIn(SignIn(accessToken, provider))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ this.response(it.data, Register(userType, userId, accessToken, nickName, profileURL, email)) })
-                { error -> loginErrorResponse(error, Register(userType, userId, accessToken, nickName, profileURL, email)) }
+                .subscribe({ this.response(it.data, User(provider, userId.toLong(), nickName, email, profileURL,accessToken)) })
+                { error -> loginErrorResponse(error, User(provider, userId.toLong(), nickName, email, profileURL,accessToken)) }
     }
 
-    private fun response(userModel: User?, register: Register) {
+    private fun response(userModel: User?, register: User) {
         Logger.v("response: " + userModel)
-        if (userModel != null) {
+        userModel?.let {
             Observable.just(userModel)
                     .observeOn(Schedulers.newThread())
                     .subscribe {
+                        App.setUniversityId(it.universityId!!)
                         App.setUserId(it.uid)
-                        App.setUniversityId(it.universityId)
+                        App.setUserToken(it.accessToken)
+                        App.setClient(it.client)
                     }
-        } else {
-            Navigator.goRegisterUserInfo(context, register)
+            Navigator.goMain(context)
         }
-        //Navigator.goMain(context)
+        userModel ?: Navigator.goRegisterUserInfo(context, register)
     }
 
-    private fun loginErrorResponse(error: Throwable, register: Register) {
+    private fun loginErrorResponse(error: Throwable, register: User) {
         if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_404) {   //신규회원
-            Navigator.goRegisterUserInfo(context, register)
+           // Navigator.goRegisterUserInfo(context, register)
         } else {
             Util.toast("서버 오류입니다.")
         }

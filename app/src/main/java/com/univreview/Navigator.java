@@ -25,9 +25,9 @@ import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
-import com.univreview.model.Register;
 import com.univreview.model.Review;
 import com.univreview.model.enumeration.ReviewSearchType;
+import com.univreview.model.model_kotlin.User;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
 
@@ -51,13 +51,13 @@ public class Navigator {
     }
 
     //register
-    public static void goRegisterUserInfo(Context context, Register register){
+    public static void goRegisterUserInfo(Context context, User register){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register));
         context.startActivity(intent);
     }
 
-    public static void goRegisterUnivInfo(Context context, Register register){
+    public static void goRegisterUnivInfo(Context context, User register){
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUnivInfoFragment.getInstance(register));
         context.startActivity(intent);

@@ -29,8 +29,6 @@ public class User implements Serializable{
     public Long universityId;
 
     @Expose
-    public University university = new University();
-    @Expose
     public Department department = new Department();
     @Expose
     public Major major = new Major();
@@ -46,7 +44,6 @@ public class User implements Serializable{
                 ", point=" + point +
                 ", authenticated=" + authenticated +
                 ", department=" + department +
-                ", university=" + university +
                 ", major=" + major +
                 '}';
     }

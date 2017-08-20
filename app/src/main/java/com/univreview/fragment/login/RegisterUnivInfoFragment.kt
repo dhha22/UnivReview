@@ -14,6 +14,7 @@ import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
 import com.univreview.model.*
 import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.model_kotlin.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.ImageUtil
@@ -39,7 +40,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         private val NEXT = 3
 
         @JvmStatic
-        fun getInstance(register: Register): RegisterUnivInfoFragment {
+        fun getInstance(register: User): RegisterUnivInfoFragment {
             val fragment = RegisterUnivInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable("register", register)
@@ -94,7 +95,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         }
         nextBtn.setOnClickListener {
             if (formVerification(NEXT)) {
-                Util.toast("등록")
+               presenter.registerUser()
             }
         }
     }

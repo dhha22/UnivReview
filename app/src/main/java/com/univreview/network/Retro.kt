@@ -125,7 +125,4 @@ enum class Retro {
         return fileService.postFile(App.setAuthHeader(App.userToken), body, location)
     }
 
-    fun getVersion() : String{
-        return VERSION
-    }
 }

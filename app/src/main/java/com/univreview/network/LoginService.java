@@ -1,13 +1,10 @@
 package com.univreview.network;
 
-import com.univreview.model.Login;
 import com.univreview.model.SignIn;
+import com.univreview.model.model_kotlin.User;
 import com.univreview.model.model_kotlin.UserModel;
 
-import java.util.Map;
-
 import retrofit2.http.Body;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -20,6 +17,9 @@ public interface LoginService {
     // 회원이 아닌 유저 : 404
 
     @POST("auth/sign_in")
-    Observable<UserModel> login(@Body SignIn body);
+    Observable<UserModel> callSignIn(@Body SignIn body);
+
+    @POST("auth")
+    Observable<UserModel> callSignUp(@Body User body);
 
 }
