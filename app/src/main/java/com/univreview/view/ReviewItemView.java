@@ -105,7 +105,7 @@ public class ReviewItemView extends FrameLayout {
             likeCntTxt.setText(review.likeCount+"명");
             commentCntTxt.setText(review.commentCount+"명");
             likeLayout.setOnClickListener(v -> {
-                callReviewLike(review.id);
+                callReviewLike(review.rid);
                 if (likeImg.isSelected()) {
                     likeImg.setSelected(false);
                 } else {
@@ -162,7 +162,7 @@ public class ReviewItemView extends FrameLayout {
                     Navigator.goReviewDetail(context, review, layout);
                 }
             });*/
-            likeLayout.setOnClickListener(v -> callReviewLike(review.id));
+            likeLayout.setOnClickListener(v -> callReviewLike(review.rid));
         } else {
             setVisibility(INVISIBLE);
         }

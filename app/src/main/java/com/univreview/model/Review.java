@@ -1,6 +1,8 @@
 package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.univreview.model.model_kotlin.AbstractDataProvider;
 
 import java.io.Serializable;
 
@@ -8,8 +10,8 @@ import java.io.Serializable;
  * Created by DavidHa on 2017. 1. 13..
  */
 public class Review extends AbstractDataProvider implements Serializable{
-    @Expose
-    public long id;
+    @SerializedName("id")
+    public long rid;
     @Expose
     public float difficultyRate;
     @Expose
@@ -58,12 +60,22 @@ public class Review extends AbstractDataProvider implements Serializable{
 
     @Override
     public long getId() {
-        return id;
+        return rid;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.rid = id;
     }
 
     @Override
     public String getName() {
         return null;
+    }
+
+    @Override
+    public void setName(String s) {
+
     }
 
     public String getDifficultyRateMessage() {
@@ -176,7 +188,7 @@ public class Review extends AbstractDataProvider implements Serializable{
     @Override
     public String toString() {
         return "Review{" +
-                "id=" + id +
+                "id=" + rid +
                 ", difficultyRate=" + difficultyRate +
                 ", assignmentRate=" + assignmentRate +
                 ", attendanceRate=" + attendanceRate +

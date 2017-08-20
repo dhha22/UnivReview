@@ -162,6 +162,14 @@ public class App extends MultiDexApplication {
         return map;
     }
 
+    public static Map<String, String> setHeader(){
+        Map<String, String> map = new HashMap<>();
+        map.put("uid", "1");
+        map.put("client", "client");
+        map.put("access token", "access");
+        return map;
+    }
+
     public static String makeApiSignature(String token, String timeStamp) {
         String saltKey = "e7b35739643f6f595e1a3231666138ca";
         String appVersion = context.getResources().getString(R.string.app_version);

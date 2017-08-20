@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.univreview.App;
-import com.univreview.adapter.contract.ReviewDetailAdapterContract;
+
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.listener.OnItemLongClickListener;
 import com.univreview.log.Logger;
-import com.univreview.model.AbstractDataProvider;
+import com.univreview.model.model_kotlin.AbstractDataProvider;
 
 import java.util.ArrayList;
 import java.util.List;

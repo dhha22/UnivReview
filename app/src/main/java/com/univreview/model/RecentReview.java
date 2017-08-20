@@ -1,12 +1,11 @@
 package com.univreview.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by DavidHa on 2017. 3. 8..
  */
-public class RecentReview extends AbstractDataProvider implements Serializable {
+public class RecentReview extends com.univreview.model.model_kotlin.AbstractDataProvider implements Serializable {
     public long id;
     public long detailId;
     public String subjectName;
@@ -19,8 +18,18 @@ public class RecentReview extends AbstractDataProvider implements Serializable {
     }
 
     @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
     public String getName() {
         return null;
+    }
+
+    @Override
+    public void setName(String s) {
+
     }
 
     @Override

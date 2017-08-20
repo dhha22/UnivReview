@@ -18,7 +18,7 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
 import com.univreview.log.Logger;
-import com.univreview.model.AbstractDataProvider;
+import com.univreview.model.model_kotlin.AbstractDataProvider;
 import com.univreview.model.RecentReview;
 import com.univreview.model.Review;
 import com.univreview.model.enumeration.ReviewSearchType;

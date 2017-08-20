@@ -1,10 +1,7 @@
 package com.univreview.adapter.contract;
 
-import android.view.View;
-
 import com.univreview.listener.OnItemClickListener;
-import com.univreview.model.AbstractDataProvider;
-import com.univreview.model.Review;
+import com.univreview.model.model_kotlin.AbstractDataProvider;
 
 /**
  * Created by DavidHa on 2017. 7. 14..

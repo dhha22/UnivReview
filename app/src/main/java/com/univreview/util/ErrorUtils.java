@@ -29,7 +29,7 @@ public class ErrorUtils {
                 Logger.e(response.code());
                 Logger.e(response.message());
                 String responseBody = response.errorBody().string();
-                Logger.e(responseBody);
+                //Logger.e(responseBody);
                 if (response.code() == 500) {
                     Util.toast("서버 에러");
                 }else if(response.code() == 401){

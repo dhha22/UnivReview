@@ -95,7 +95,7 @@ public class ReviewDetailHeader extends FrameLayout {
         likeCntTxt.setText(data.likeCount+"명");
         commentCntTxt.setText(data.commentCount+"명");
         likeLayout.setOnClickListener(v -> {
-            callReviewLike(data.id);
+            callReviewLike(data.rid);
             if (likeImg.isSelected()) {
                 likeImg.setSelected(false);
             } else {

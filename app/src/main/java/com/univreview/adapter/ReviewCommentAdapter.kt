@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.adapter.contract.ReviewDetailAdapterContract
-import com.univreview.model.AbstractDataProvider
+import com.univreview.model.model_kotlin.AbstractDataProvider
 import com.univreview.model.ReviewComment
 import com.univreview.view.CommentItemView
 

@@ -49,7 +49,7 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
         val view = inflater?.inflate(R.layout.fragment_upload_review_detail, container, false)
         toolbar.setToolbarBackgroundColor(R.color.colorPrimary)
         toolbar.setBackBtnVisibility(true)
-        toolbar.setOnConfirmListener { registerReview(review.id) }
+        //toolbar.setOnConfirmListener { registerReview(review.id) }
         rootLayout.addView(view)
         return rootLayout
     }

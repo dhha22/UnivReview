@@ -1,11 +1,12 @@
 package com.univreview.model;
 
 import com.google.gson.annotations.Expose;
+import com.univreview.model.model_kotlin.*;
 
 /**
  * Created by DavidHa on 2017. 2. 22..
  */
-public class PointHistory extends AbstractDataProvider {
+public class PointHistory extends com.univreview.model.model_kotlin.AbstractDataProvider {
     @Expose
     public long id;
     @Expose
@@ -32,8 +33,18 @@ public class PointHistory extends AbstractDataProvider {
     }
 
     @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
     public String getName() {
         return point;
+    }
+
+    @Override
+    public void setName(String s) {
+        this.point = s;
     }
 
     @Override

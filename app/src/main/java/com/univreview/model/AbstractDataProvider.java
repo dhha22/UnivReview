@@ -6,4 +6,5 @@ package com.univreview.model;
 public abstract class AbstractDataProvider {
     public abstract long getId();
     public abstract String getName();
+
 }

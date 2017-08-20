@@ -2,6 +2,15 @@ package com.univreview.network;
 
 import com.univreview.model.MajorSubjectModel;
 import com.univreview.model.SearchModel;
+import com.univreview.model.model_kotlin.DataListModel;
+import com.univreview.model.model_kotlin.Department;
+import com.univreview.model.model_kotlin.DepartmentListModel;
+import com.univreview.model.model_kotlin.Major;
+import com.univreview.model.model_kotlin.ResultModel;
+import com.univreview.model.model_kotlin.University;
+import com.univreview.model.model_kotlin.UniversityListModel;
+
+import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,6 +22,17 @@ import rx.Observable;
 public interface SearchService {
     @GET("university")
     Observable<SearchModel> getUniversities(@Query("name") String universityName, @Query("page") int page);
+
+
+    @GET(Retro.VERSION + "universities")
+    Observable<DataListModel<University>> callUniversityList();
+
+    @GET(Retro.VERSION + "departments")
+    Observable<DataListModel<Department>> callDepartmentList(@Query("university_id") long universityId);
+
+    @GET(Retro.VERSION + "majors")
+    Observable<DataListModel<Major>> callMajorList(@Query("university_id") long universityId, @Query("department_id") long departmentId);
+
 
     // M : 전공 , C: 교양
     @GET("department")

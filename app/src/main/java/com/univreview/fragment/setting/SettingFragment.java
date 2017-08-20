@@ -85,8 +85,8 @@ public class SettingFragment extends BaseFragment {
                     return setting;
                 })
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> adapter.addItem(result), Logger::e);
+                .observeOn(AndroidSchedulers.mainThread());
+                //.subscribe(result -> adapter.addItem(result), Logger::e);
         adapter.setOnItemClickListener((view, position) -> {
             switch (position){
                /* case NOTIFICATION:
@@ -124,7 +124,7 @@ public class SettingFragment extends BaseFragment {
                 ((ViewHolder) holder).v.setNextImgVisibility(false);
             }
             ((ViewHolder) holder).v.setTitle(list.get(position).getName());
-            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
+           // ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {

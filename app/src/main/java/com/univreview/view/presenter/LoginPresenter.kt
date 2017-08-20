@@ -14,7 +14,9 @@ import com.univreview.Navigator
 import com.univreview.log.Logger
 import com.univreview.model.Login
 import com.univreview.model.Register
+import com.univreview.model.SignIn
 import com.univreview.model.UserModel
+import com.univreview.model.model_kotlin.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
@@ -38,7 +40,7 @@ class LoginPresenter : LoginContract {
             val nickName = `object`.getString("name") // name
             val profileUrl = `object`.getJSONObject("picture").getJSONObject("data").getString("url") //facebook profile image
             val email: String? = `object`.has("email").let { `object`.getString("email") } // facebook email
-            callLoginApi("F", userId, accessToken, nickName, profileUrl, email)
+            callLoginApi("facebook", userId, accessToken, nickName, profileUrl, email)
         }
         val parameters = Bundle()
         parameters.putString("fields", "id, name, picture.type(large), email")
@@ -72,7 +74,7 @@ class LoginPresenter : LoginContract {
                 val profileURL = userProfile.profileImagePath  //kakao profile image
                 val email: String? = userProfile.email // kakao email
 
-                callLoginApi("K", userId, accessToken, nickName, profileURL, email)
+                callLoginApi("kakao", userId, accessToken, nickName, profileURL, email)
             }
 
             override fun onNotSignedUp() {
@@ -85,25 +87,27 @@ class LoginPresenter : LoginContract {
     //api
     private fun callLoginApi(userType: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
         Logger.v("userType: $userType, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
-        Retro.instance.loginService().login(App.setAuthHeader(""), Login(userType, userId, accessToken))
+        Retro.instance.loginService().login(SignIn(accessToken, userType))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ this.response(it) })
+                .subscribe({ this.response(it.data, Register(userType, userId, accessToken, nickName, profileURL, email)) })
                 { error -> loginErrorResponse(error, Register(userType, userId, accessToken, nickName, profileURL, email)) }
     }
 
-    private fun response(userModel: UserModel) {
+    private fun response(userModel: User?, register: Register) {
         Logger.v("response: " + userModel)
-        Observable.just(userModel)
-                .observeOn(Schedulers.newThread())
-                .subscribe {
-                    App.setUserId(it.user.id)
-                    App.setUserToken(it.auth.token)
-                    App.setUniversityId(it.user.universityId)
-
-                }
-        Navigator.goMain(context)
+        if (userModel != null) {
+            Observable.just(userModel)
+                    .observeOn(Schedulers.newThread())
+                    .subscribe {
+                        App.setUserId(it.uid)
+                        App.setUniversityId(it.universityId)
+                    }
+        } else {
+            Navigator.goRegisterUserInfo(context, register)
+        }
+        //Navigator.goMain(context)
     }
 
     private fun loginErrorResponse(error: Throwable, register: Register) {

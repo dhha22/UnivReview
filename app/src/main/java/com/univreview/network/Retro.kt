@@ -9,6 +9,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,10 +22,13 @@ import java.util.concurrent.TimeUnit
  */
 enum class Retro {
     instance;
+    companion object {
+        @JvmField
+        val VERSION = "api/v2/"
+    }
 
     private val TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/"
     private val REAL_URL = "https://api.8hakgoon.com/api/"
-    private val VERSION = "v1/"
     private var userService: UserService
     private var loginService: LoginService
     private var tokenService: TokenService
@@ -37,28 +41,16 @@ enum class Retro {
        
         val BASE_URL: String
         if (BuildConfig.DEBUG) {
-            //BASE_URL = TEST_URL;
-            BASE_URL = REAL_URL
+            BASE_URL = TEST_URL
+            //BASE_URL = REAL_URL
         } else {
             BASE_URL = REAL_URL
         }
 
-        val builder = OkHttpClient.Builder()
-        builder.readTimeout(20, TimeUnit.SECONDS)
-        builder.writeTimeout(20, TimeUnit.SECONDS)
-        builder.addInterceptor { chain ->
-            chain.proceed(chain.request().newBuilder()
-                    .header("User-Agent", "Android")
-                    .header("Content-Type", "application/json")
-                    .build())
-        }
-
-        val client = builder.build()
-
 
         val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL + VERSION)
-                .client(client)
+                .baseUrl(BASE_URL)
+                .client(createOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create(App.gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
@@ -69,6 +61,24 @@ enum class Retro {
         searchService = retrofit.create(SearchService::class.java)
         reviewService = retrofit.create(ReviewService::class.java)
         fileService = retrofit.create(FileService::class.java)
+    }
+
+    fun createOkHttpClient(): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+        builder.readTimeout(20, TimeUnit.SECONDS)
+        builder.writeTimeout(20, TimeUnit.SECONDS)
+        if (BuildConfig.DEBUG) {    // http 로그
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.level = HttpLoggingInterceptor.Level.BODY
+            builder.addInterceptor(interceptor)
+            builder.addInterceptor {
+                it.proceed(it.request().newBuilder()
+                        .header("User-Agent", "Android")
+                        .header("Content-Type", "application/json")
+                        .build())
+            }
+        }
+        return builder.build()
     }
 
     fun userService(): UserService {
@@ -113,5 +123,9 @@ enum class Retro {
         val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
         val location = RequestBody.create(okhttp3.MultipartBody.FORM, "/" + type)
         return fileService.postFile(App.setAuthHeader(App.userToken), body, location)
+    }
+
+    fun getVersion() : String{
+        return VERSION
     }
 }
