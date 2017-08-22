@@ -9,7 +9,7 @@ import com.univreview.view.ReviewTotalScoreView
  * Created by DavidHa on 2017. 8. 6..
  */
 interface ReviewListContract {
-    interface View {
+    interface View : BaseView{
         fun setDialog(list: List<String>)
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)

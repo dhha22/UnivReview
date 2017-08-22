@@ -9,10 +9,9 @@ import com.univreview.model.ReviewComment
  * Created by DavidHa on 2017. 8. 6..
  */
 interface ReviewDetailContract {
-    interface View {
+    interface View : BaseView {
         fun setHeaderData(data: Review)
         fun showCommentDeleteDialog(clickListener: DialogInterface.OnClickListener)
-        fun dismissProgress()
         fun setCommentMoreBtn(hasMore: Boolean)
     }
 

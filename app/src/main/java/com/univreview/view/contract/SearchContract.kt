@@ -6,7 +6,7 @@ import com.univreview.fragment.AbsListFragment
  * Created by DavidHa on 2017. 8. 6..
  */
 interface SearchContract {
-    interface View {
+    interface View : BaseView{
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
     }

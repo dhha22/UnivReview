@@ -4,9 +4,7 @@ package com.univreview.view.contract
  * Created by DavidHa on 2017. 8. 6..
  */
 interface UploadReviewContract {
-    interface View {
-        fun showProgress()
-        fun dismissProgress()
+    interface View : BaseView{
         var isReviewExist : Boolean
         fun showAlertDialog()
         fun showSimpleMsgDialog(msg : String)
