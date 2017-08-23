@@ -21,19 +21,19 @@ import rx.Observable;
 public interface SearchService {
 
     @GET(Retro.VERSION + "universities")
-    Observable<DataListModel<University>> callUniversityList();
+    Observable<DataListModel<University>> callUniversityList(@Query("name") String name);
 
     @GET(Retro.VERSION + "departments")
-    Observable<DataListModel<Department>> callDepartmentList(@Query("university_id") long universityId);
+    Observable<DataListModel<Department>> callDepartmentList(@Query("university_id") long universityId, @Query("name") String name);
 
     @GET(Retro.VERSION + "majors")
-    Observable<DataListModel<Major>> callMajorList(@Query("university_id") long universityId, @Query("department_id") long departmentId);
+    Observable<DataListModel<Major>> callMajorList(@Query("university_id") long universityId, @Query("department_id") long departmentId, @Query("name") String name);
 
     @GET(Retro.VERSION +"subjects")
-    Observable<DataListModel<Subject>> callSubjects(@HeaderMap Map<String, String> headers, @Query("major_id") Long majorId);
+    Observable<DataListModel<Subject>> callSubjects(@HeaderMap Map<String, String> headers, @Query("major_id") Long majorId, @Query("name") String name);
 
     @GET(Retro.VERSION +"professors")
-    Observable<DataListModel<Professor>> callProfessors(@HeaderMap Map<String, String> headers);
+    Observable<DataListModel<Professor>> callProfessors(@HeaderMap Map<String, String> headers, @Query("name") String name);
 
 
     @GET("professorSubject")

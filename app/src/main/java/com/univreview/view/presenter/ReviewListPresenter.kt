@@ -109,6 +109,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
 
     // Review List Item
     override fun onItemClick(view: View, position: Int) {
+        Logger.v("review list item click position: " + position)
         Navigator.goReviewDetail(context, adapterModel.getItem(position) as Review)
     }
 }

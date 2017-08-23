@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.adapter.CustomAdapter;
+import com.univreview.adapter.SearchAdapter;
 import com.univreview.adapter.contract.SearchAdapterContract;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
@@ -108,7 +109,9 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+
+        // pagination 추후 적용
+        /*recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onScrolled(RecyclerView view, int dx, int dy) {
                 super.onScrolled(view, dx, dy);
@@ -116,9 +119,10 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
                     lastItemExposed();
                 }
             }
-        });
+        });*/
         presenter.setSearchAdapterModel(adapter);
         adapter.setOnItemClickListener((view, position) -> {
+            Logger.v("search position: " + position);
             if (isReviewSearch) {   // 일반적인 review search
                 String name = adapter.getItem(position).getName();
                 input.setText(name);
@@ -228,39 +232,11 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
 
     @Override
     public void loadMore() {
-        Logger.v("load more");
+       /* Logger.v("load more");
         Logger.v("page: " + getPage());
         setStatus(Status.LOADING_MORE);
-        callSearchApi(id, type, input.getText().toString(), getPage());
+        callSearchApi(id, type, input.getText().toString(), getPage());*/
     }
-
-    private class SearchAdapter extends CustomAdapter implements SearchAdapterContract.Model{
-
-        public SearchAdapter(Context context) {
-            super(context);
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(new SearchListItemView(context));
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder) holder).v.setText(list.get(position).getName());
-        }
-
-        protected class ViewHolder extends RecyclerView.ViewHolder {
-            final SearchListItemView v;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                v = (SearchListItemView) itemView;
-                v.setOnClickListener(view -> itemClickListener.onItemClick(v, getAdapterPosition()));
-            }
-        }
-    }
-
 
 
 
@@ -270,8 +246,10 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         Util.hideKeyboard(getContext(), input);
     }
 
+
     @Override
     public void onDestroy() {
+        presenter.stopSearch();
         super.onDestroy();
     }
 }

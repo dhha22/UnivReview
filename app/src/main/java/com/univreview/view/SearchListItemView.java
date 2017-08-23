@@ -39,8 +39,6 @@ public class SearchListItemView extends FrameLayout {
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.search_list_item, this, true);
         ButterKnife.bind(this);
-        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
     }
 
     public void setTextSize(int size) {

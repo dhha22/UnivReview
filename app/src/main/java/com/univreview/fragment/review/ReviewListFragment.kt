@@ -56,6 +56,8 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         type = arguments.getSerializable("type") as ReviewSearchType
         val id = arguments.getLong("id")
         name = arguments.getString("name")
+
+        Logger.v("type: $type , id: $id, name: $name")
         presenter = ReviewListPresenter()
         presenter.apply {
             view = this@ReviewListFragment
@@ -72,6 +74,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_review_list, container, false)
         rootLayout.addView(view)
+
         return rootLayout
     }
 
@@ -89,7 +92,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                 adapter = ReviewListAdapter(context, type)
                 smooth_app_bar_layout.visibility = View.GONE
                 toolbar.setBackBtnVisibility(true)
-                toolbar.setTitleTxt(name)
+                reviewTitleTxt.text = name
             }
 
         // Subject List, Professor List
@@ -101,22 +104,23 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                 smooth_app_bar_layout.addOnOffsetChangedListener { appBarLayout, _ ->
                     val height = appBarLayout.height - appBarLayout.bottom
                     val value = appBarLayout.bottom.toFloat() / appBarLayout.height
-                    AnimationUtils.setScale(title_txt, value)
+                    AnimationUtils.setScale(reviewTitleTxt, value)
                     if (height == 0) {
                         AnimationUtils.fadeOut(context, toolbar_title_layout)
-                        AnimationUtils.fadeIn(context, title_txt)
+                        AnimationUtils.fadeIn(context, reviewTitleTxt)
                         AnimationUtils.fadeIn(context, filter_layout)
                     } else if (height >= innerToolbar.height * 1.02) {
                         AnimationUtils.fadeIn(context, toolbar_title_layout)
-                        AnimationUtils.fadeOut(context, title_txt)
+                        AnimationUtils.fadeOut(context, reviewTitleTxt)
                     } else {
                         AnimationUtils.fadeOut(context, toolbar_title_layout)
-                        AnimationUtils.fadeIn(context, title_txt)
+                        AnimationUtils.fadeIn(context, reviewTitleTxt)
                         AnimationUtils.fadeOut(context, filter_layout)
                     }
                 }
-                title_txt.text = name
+
                 toolbar_back_btn.setOnClickListener { activity.onBackPressed() }
+                reviewTitleTxt.text = name
                 toolbar_title_txt.text = name
                 toolbar_subtitle_txt.text = "전체"
             }
@@ -136,14 +140,14 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
             it.adapterModel = adapter
             it.adapterView = adapter
         }
-        list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        /*list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)
                 if (lastVisibleItemPosition == totalItemCount - 1) {
                     lastItemExposed()
                 }
             }
-        })
+        })*/
     }
 
     override fun getRecyclerView(): AbsRecyclerView? {
@@ -152,13 +156,13 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
     override fun refresh() {
         Logger.v("refresh")
-        setStatus(AbsListFragment.Status.REFRESHING)
+        //setStatus(AbsListFragment.Status.REFRESHING)
        // presenter.loadReviewItem(type, DEFAULT_PAGE)
     }
 
     override fun loadMore() {
-        setStatus(AbsListFragment.Status.LOADING_MORE)
-        Logger.v("page: " + page)
+        //setStatus(AbsListFragment.Status.LOADING_MORE)
+        //Logger.v("page: " + page)
      //   presenter.loadReviewItem(type, page)
     }
 

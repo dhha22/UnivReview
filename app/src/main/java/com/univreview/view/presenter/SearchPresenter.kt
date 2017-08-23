@@ -13,8 +13,10 @@ import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.SearchContract
 import rx.Observable
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import rx.subscriptions.CompositeSubscription
 import java.io.UncheckedIOException
 
 /**
@@ -25,30 +27,31 @@ class SearchPresenter : SearchContract {
         val DEFAULT_PAGE = 1
     }
 
+    private var subscription : CompositeSubscription = CompositeSubscription()
     var subjectType: String? = null
     lateinit var view: SearchContract.View
     lateinit var searchAdapterModel: SearchAdapterContract.Model
 
     override fun searchUniversity(name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callUniversityList(), page)
+        setObservable(Retro.instance.searchService().callUniversityList(name), page)
     }
 
     override fun searchDepartment(id: Long, name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callDepartmentList(id), page)
+        setObservable(Retro.instance.searchService().callDepartmentList(id, name), page)
     }
 
     override fun searchMajor(id: Long, name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callMajorList(App.universityId.toLong(), id), page)
+        setObservable(Retro.instance.searchService().callMajorList(App.universityId.toLong(), id, name), page)
     }
 
     override fun searchProfessor(departmentId: Long?, name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callProfessors(App.setHeader()), page)
+        setObservable(Retro.instance.searchService().callProfessors(App.setHeader(), name), page)
     }
 
     override fun searchSubject(majorId: Long?, name: String, page: Int) {
         Logger.v("university id: " + App.universityId)
         Logger.v("major id: " + majorId)
-        setObservable(Retro.instance.searchService().callSubjects(App.setHeader(), majorId), page)
+        setObservable(Retro.instance.searchService().callSubjects(App.setHeader(), majorId, name), page)
     }
 
     override fun searchProfFromSubj(subjectId: Long, name: String, page: Int) {
@@ -57,13 +60,13 @@ class SearchPresenter : SearchContract {
     }
 
     private fun <T> setObservable(observable: Observable<DataListModel<T>>, page: Int) {
-        observable.subscribeOn(Schedulers.io())
+        subscription.add( observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { if (page == DEFAULT_PAGE) searchAdapterModel.clear() }
                 .subscribe({
                     @Suppress("UNCHECKED_CAST")
                     response(it.data as List<AbstractDataProvider>)
-                }, { this.errorResponse(it) })
+                }, { this.errorResponse(it) }))
     }
 
 
@@ -79,5 +82,9 @@ class SearchPresenter : SearchContract {
     private fun errorResponse(e: Throwable) {
         view.setStatus(AbsListFragment.Status.ERROR)
         ErrorUtils.parseError(e)
+    }
+
+    override fun stopSearch() {
+        subscription.unsubscribe()
     }
 }
