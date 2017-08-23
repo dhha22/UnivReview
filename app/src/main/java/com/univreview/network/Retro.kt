@@ -30,8 +30,7 @@ enum class Retro {
     private val TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/"
     private val REAL_URL = "https://api.8hakgoon.com/api/"
     private var userService: UserService
-    private var loginService: LoginService
-    private var tokenService: TokenService
+    var loginService: LoginService
     private var searchService: SearchService
     private var reviewService: ReviewService
     private var fileService: FileService
@@ -57,7 +56,6 @@ enum class Retro {
 
         userService = retrofit.create(UserService::class.java)
         loginService = retrofit.create(LoginService::class.java)
-        tokenService = retrofit.create(TokenService::class.java)
         searchService = retrofit.create(SearchService::class.java)
         reviewService = retrofit.create(ReviewService::class.java)
         fileService = retrofit.create(FileService::class.java)
@@ -85,13 +83,6 @@ enum class Retro {
         return userService
     }
 
-    fun loginService(): LoginService {
-        return loginService
-    }
-
-    fun tokenService(): TokenService {
-        return tokenService
-    }
 
     fun searchService(): SearchService {
         return searchService

@@ -12,6 +12,8 @@ import com.univreview.model.ReviewListModel;
 import com.univreview.model.ReviewModel;
 import com.univreview.model.ReviewReport;
 import com.univreview.model.ReviewSingleModel;
+import com.univreview.model.model_kotlin.DataListModel;
+import com.univreview.model.model_kotlin.Professor;
 
 import java.util.Map;
 
@@ -30,6 +32,12 @@ import rx.Observable;
  * Created by DavidHa on 2017. 2. 6..
  */
 public interface ReviewService {
+
+    // 신규 api
+    @GET("reviews")
+    Observable<DataListModel<Professor>> callProfNameFromSubject();
+
+
     @GET("review")
     Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
 

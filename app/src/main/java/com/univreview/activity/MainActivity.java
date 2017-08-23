@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
 
     private void init() {
         BaseFragment.reviewPublishSubject = PublishSubject.create();
-        App.initializeFCMToken();
+        //App.initializeFCMToken();
         adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount());

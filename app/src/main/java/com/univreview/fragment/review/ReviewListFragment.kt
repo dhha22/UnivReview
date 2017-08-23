@@ -153,13 +153,13 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     override fun refresh() {
         Logger.v("refresh")
         setStatus(AbsListFragment.Status.REFRESHING)
-        presenter.loadReviewItem(type, DEFAULT_PAGE)
+       // presenter.loadReviewItem(type, DEFAULT_PAGE)
     }
 
     override fun loadMore() {
         setStatus(AbsListFragment.Status.LOADING_MORE)
         Logger.v("page: " + page)
-        presenter.loadReviewItem(type, page)
+     //   presenter.loadReviewItem(type, page)
     }
 
     override fun setFilterName(filterName: String) {

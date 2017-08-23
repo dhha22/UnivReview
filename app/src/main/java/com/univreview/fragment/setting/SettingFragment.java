@@ -103,7 +103,7 @@ public class SettingFragment extends BaseFragment {
     }
 
     private void callUserDelete(){
-        Retro.instance.userService().deleteUser(App.setAuthHeader(App.userToken))
+        Retro.instance.getLoginService().callDeleteAuth(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> Navigator.goLogin(getContext()), ErrorUtils::parseError);

@@ -26,7 +26,7 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
     // 회원 등록 과정
 
     override fun registerUser() {
-        Retro.instance.loginService().callSignUp(register)
+        Retro.instance.loginService.callSignUp(register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ this.response(it.data) }, { this.errorResponse(it) })

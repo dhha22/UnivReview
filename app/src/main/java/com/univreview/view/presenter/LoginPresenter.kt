@@ -84,7 +84,7 @@ class LoginPresenter : LoginContract {
     //api
     private fun callLoginApi(provider: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
         Logger.v("provider: $provider, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
-        Retro.instance.loginService().callSignIn(SignIn(accessToken, provider))
+        Retro.instance.loginService.callSignIn(SignIn(accessToken, provider))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
