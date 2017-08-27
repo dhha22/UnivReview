@@ -33,30 +33,30 @@ class SearchPresenter : SearchContract {
     lateinit var searchAdapterModel: SearchAdapterContract.Model
 
     override fun searchUniversity(name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callUniversityList(name), page)
+        setObservable(Retro.instance.searchService.callUniversityList(name), page)
     }
 
     override fun searchDepartment(id: Long, name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callDepartmentList(id, name), page)
+        setObservable(Retro.instance.searchService.callDepartmentList(id, name), page)
     }
 
     override fun searchMajor(id: Long, name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callMajorList(App.universityId.toLong(), id, name), page)
+        setObservable(Retro.instance.searchService.callMajorList(App.universityId.toLong(), id, name), page)
     }
 
     override fun searchProfessor(departmentId: Long?, name: String, page: Int) {
-        setObservable(Retro.instance.searchService().callProfessors(App.setHeader(), name), page)
+        setObservable(Retro.instance.searchService.callProfessors(App.setHeader(), name), page)
     }
 
     override fun searchSubject(majorId: Long?, name: String, page: Int) {
         Logger.v("university id: " + App.universityId)
         Logger.v("major id: " + majorId)
-        setObservable(Retro.instance.searchService().callSubjects(App.setHeader(), majorId, name), page)
+        setObservable(Retro.instance.searchService.callSubjects(App.setHeader(), majorId, name), page)
     }
 
     override fun searchProfFromSubj(subjectId: Long, name: String, page: Int) {
         Logger.v("subjectId: " + subjectId)
-        setObservable(Retro.instance.searchService().callCourse(App.setHeader(), subjectId), page)
+        setObservable(Retro.instance.searchService.callCourse(App.setHeader(), subjectId), page)
     }
 
     private fun <T> setObservable(observable: Observable<DataListModel<T>>, page: Int) {

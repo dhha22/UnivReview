@@ -28,8 +28,6 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
 
     lateinit var presenter: UploadReviewPresenter
 
-
-
     companion object {
         @JvmStatic
         fun getInstance(): UploadReviewFragment {
@@ -107,23 +105,22 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
                     subjectTxt.text = name
                     professorTxt.text = null
                     presenter.apply {
-                        subjectName = name
-                        professorName = null
                         review.subjectId = id
                         review.courseId = 0
                     }
                 } else if (ReviewSearchType.PROF_FROM_SUBJ == type) {
                     professorTxt.text = name
                     presenter.apply {
-                        professorName = name
                         review.courseId = id
                     }
+                    presenter.checkReviewExist()
                 }
             }
         }
     }
 
     override fun showAlertDialog() {
+        professorTxt.text = null
         AlertDialog.Builder(context, R.style.customDialog)
                 .setMessage("이미 해당 과목 리뷰를 쓰셨습니다.\n다른 과목 리뷰를 써주시길 바랍니다.")
                 .setPositiveButton("확인", null)
@@ -135,7 +132,6 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
     }
 

@@ -13,13 +13,10 @@ import rx.schedulers.Schedulers
 /**
  * Created by DavidHa on 2017. 8. 6..
  */
-class UploadReviewPresenter(val review : Review = Review()) : UploadReviewContract {
-    lateinit var view : UploadReviewContract.View
-    var subjectName:String? = null
-    var professorName:String? = null
+class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContract {
+    lateinit var view: UploadReviewContract.View
 
     override fun registerReview() {
-
         if (review.getAlertMessage() == null) {
             callPostSimpleReviewApi(review)
             view.showProgress()
@@ -36,18 +33,19 @@ class UploadReviewPresenter(val review : Review = Review()) : UploadReviewContra
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ result -> response(result.data) },{ ErrorUtils.parseError(it) })
+                .subscribe({ result -> response(result.data) }, { ErrorUtils.parseError(it) })
     }
 
     override fun checkReviewExist() {
-        Retro.instance.reviewService().getReviewExist(App.setAuthHeader(App.userToken), review.subjectId)
+        Retro.instance.reviewService().callCheckReviewForCourseId(App.setHeader(), review.courseId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (result.exist) {
+                .subscribe({
+                    if (it.isExist) {
                         view.showAlertDialog()
+                        review.courseId = 0
                     }
-                },  { ErrorUtils.parseError(it) })
+                }, { ErrorUtils.parseError(it) })
     }
 
     private fun response(review: Review) {

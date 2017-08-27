@@ -13,6 +13,7 @@ import com.univreview.model.ReviewReport;
 import com.univreview.model.ReviewSingleModel;
 import com.univreview.model.model_kotlin.Review;
 import com.univreview.model.model_kotlin.ReviewResponse;
+import com.univreview.model.model_kotlin.ReviewState;
 
 import java.util.Map;
 
@@ -39,6 +40,10 @@ public interface ReviewService {
     // 리뷰 수정 및 상세리뷰 작성
     @PUT(Retro.VERSION + "reviews/{reviewId}")
     Observable<ReviewResponse> callPutReview(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body com.univreview.model.model_kotlin.ReviewDetail body);
+
+    // 사용자가 기존에 리뷰를 썼는지 확인하는 API
+    @GET(Retro.VERSION + "courses/{courseId}/review/exists")
+    Observable<ReviewState> callCheckReviewForCourseId(@HeaderMap Map<String, String> headers, @Path("courseId") long courseId);
 
     @GET("review")
     Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);

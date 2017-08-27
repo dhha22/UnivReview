@@ -30,7 +30,7 @@ class LoginPresenter : LoginContract {
     lateinit var context: Context
 
     override fun facebookOnSuccess(loginResult: LoginResult) {
-        val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response ->
+        val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, _ ->
             Logger.v("facebook response: " + `object`.toString())
             val userId = `object`.getString("id")   //facebook user id
             val accessToken = loginResult.accessToken.token    //facebookAccessToken

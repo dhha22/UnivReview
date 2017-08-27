@@ -30,7 +30,7 @@ enum class Retro {
     private val REAL_URL = "https://api.8hakgoon.com/api/"
     private var userService: UserService
     var loginService: LoginService
-    private var searchService: SearchService
+    var searchService: SearchService
     private var reviewService: ReviewService
     private var fileService: FileService
 
@@ -80,11 +80,6 @@ enum class Retro {
 
     fun userService(): UserService {
         return userService
-    }
-
-
-    fun searchService(): SearchService {
-        return searchService
     }
 
     fun reviewService(): ReviewService {
