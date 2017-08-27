@@ -83,19 +83,13 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
 
     override fun searchProfessor(subjectId: Long) {
         Logger.v("subject id: " + subjectId)
-        Retro.instance.searchService().getProfessorFromSubject(subjectId, DEFAULT_PAGE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.searchResponse(it) },  { ErrorUtils.parseError(it) })
+
 
     }
 
     override fun searchSubject(professorId: Long) {
         Logger.v("professor id: " + professorId);
-        Retro.instance.searchService().getSubjectFromProfessor(professorId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ this.searchResponse(it) }, { ErrorUtils.parseError(it) })
+
     }
 
     private fun searchResponse(result: SearchModel) {

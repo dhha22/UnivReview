@@ -23,8 +23,7 @@ import java.util.concurrent.TimeUnit
 enum class Retro {
     instance;
     companion object {
-        @JvmField
-        val VERSION = "api/v2/"
+        const val VERSION = "api/v2/"
     }
 
     private val TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/"

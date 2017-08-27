@@ -1,3 +1,4 @@
+/*
 package com.univreview.network;
 
 import com.univreview.model.SearchModel;
@@ -17,9 +18,11 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 16..
- */
+ *//*
+
 public interface SearchService {
 
     @GET(Retro.VERSION + "universities")
@@ -40,10 +43,5 @@ public interface SearchService {
     @GET(Retro.VERSION + "subjects/{subjectId}/courses")
     Observable<DataListModel<Course>> callCourse(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId);
 
-    @GET("professorSubject")
-    Observable<SearchModel> getProfessorFromSubject(@Query("subjectId") long subjectId, @Query("page") int page);
-
-    @GET("subjectProfessor")
-    Observable<SearchModel> getSubjectFromProfessor(@Query("professorId") long professorId);
-
 }
+*/
