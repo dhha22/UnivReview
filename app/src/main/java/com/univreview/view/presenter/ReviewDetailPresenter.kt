@@ -9,7 +9,7 @@ import com.univreview.adapter.contract.ReviewDetailAdapterContract
 import com.univreview.dialog.ListDialog
 import com.univreview.listener.OnItemLongClickListener
 import com.univreview.log.Logger
-import com.univreview.model.Review
+import com.univreview.model.model_kotlin.Review
 import com.univreview.model.ReviewComment
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
@@ -35,13 +35,13 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     lateinit var adapterView: ReviewDetailAdapterContract.View
     val dialog: ListDialog by lazy {
         val dialogList = ArrayList<String>()
-        if (review.reviewDetail != null) {
+        if (review.content != null) {
             dialogList.add("리뷰수정")
         } else {
             dialogList.add("상세리뷰 쓰기")
         }
 
-        if (App.userId as Long != review.userId) {
+        if (App.userId as Long != review.user?.uid) {
             dialogList.add(0, "리뷰신고")
         }
         ListDialog(context, dialogList, dialogItemClickListener)

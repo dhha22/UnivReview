@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.upload_review_toolbar.*
 class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
 
     lateinit var presenter: UploadReviewPresenter
-    override var isReviewExist: Boolean = false
+
 
 
     companion object {
@@ -65,11 +65,7 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
         subjectTxt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT, false) }
         professorTxt.setOnClickListener {
             if (!subjectTxt.text.isEmpty()) {
-                if (!isReviewExist) { // review 를 처음 남기는 학생
-                    Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.review.subjectId, false)
-                } else {
-                    showAlertDialog()
-                }
+                Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.review.subjectId, false)
             } else {
                 Util.simpleMessageDialog(context, "과목을 입력해주세요")
             }
@@ -78,23 +74,23 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
         // rating (difficulty, assignment, attendance, grade, achievement)
         difficultyRate.setOnRatingBarChangeListener { _, rating, _ ->
             presenter.review.difficultyRate = rating
-            difficultyTxt.text = presenter.review.difficultyRateMessage
+            difficultyTxt.text = presenter.review.getDifficultyRateMessage()
         }
         assignmentRate.setOnRatingBarChangeListener { _, rating, _ ->
             presenter.review.assignmentRate = rating
-            assignmentTxt.text = presenter.review.assignmentRateMessage
+            assignmentTxt.text = presenter.review.getAssignmentRateMessage()
         }
         attendanceRate.setOnRatingBarChangeListener { _, rating, _ ->
             presenter.review.attendanceRate = rating
-            attendanceTxt.text = presenter.review.attendanceRateMessage
+            attendanceTxt.text = presenter.review.getAttendanceRateMessage()
         }
         gradeRate.setOnRatingBarChangeListener { _, rating, _ ->
             presenter.review.gradeRate = rating
-            gradeTxt.text = presenter.review.gradeRateMessage
+            gradeTxt.text = presenter.review.getGradeRateMessage()
         }
         achievementRate.setOnRatingBarChangeListener { _, rating, _ ->
             presenter.review.achievementRate = rating
-            achievementTxt.text = presenter.review.achievementRateMessage
+            achievementTxt.text = presenter.review.getAchievementRateMessage()
         }
     }
 
@@ -114,18 +110,13 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
                         subjectName = name
                         professorName = null
                         review.subjectId = id
-                        review.subjectDetailId = 0
-                        review.professorId = 0
-                        checkReviewExist()
+                        review.courseId = 0
                     }
                 } else if (ReviewSearchType.PROF_FROM_SUBJ == type) {
-                    val detailId = data.getLongExtra("detailId", 0)
-                    presenter.professorName = name
                     professorTxt.text = name
                     presenter.apply {
                         professorName = name
-                        review.subjectDetailId = detailId
-                        review.professorId = id
+                        review.courseId = id
                     }
                 }
             }
@@ -141,6 +132,11 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
 
     override fun showRecommendRvDialog() {
         RecommendRvDialog(context, presenter.review).show()
+    }
+
+    override fun onDestroy() {
+
+        super.onDestroy()
     }
 
 

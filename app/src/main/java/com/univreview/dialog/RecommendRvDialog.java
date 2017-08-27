@@ -12,7 +12,7 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
 import com.univreview.fragment.review.ReviewDetailFragment;
-import com.univreview.model.Review;
+import com.univreview.model.model_kotlin.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,13 +49,15 @@ public class RecommendRvDialog extends Dialog {
 
         // 계속해서 상세 리뷰를 남긴다 (리뷰 업로드 상세 페이지로 이동)
         goReviewDetail.setOnClickListener(view -> {
-            Navigator.goUploadReviewDetail(context, this.review);
+            dismiss();
+            Navigator.goUploadReviewDetail(context, review);
             ((Activity) context).finish();
         });
 
         // 다음에 리뷰를 남긴다 (리뷰 디테일 페이지로 이동)
         next.setOnClickListener(view -> {
-            Navigator.goReviewDetail(context, review);
+            dismiss();
+            //Navigator.goReviewDetail(context, review);
             ((BaseActivity) context).setOnBackPressedListener(null);
             ((Activity)context).onBackPressed();
         });

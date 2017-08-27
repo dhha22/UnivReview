@@ -1,14 +1,11 @@
 package com.univreview.view.presenter
 
-import android.content.Context
 import com.univreview.App
-import com.univreview.dialog.RecommendRvDialog
 import com.univreview.fragment.MypageFragment
 import com.univreview.log.Logger
-import com.univreview.model.Review
+import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
-import com.univreview.util.Util
 import com.univreview.view.contract.UploadReviewContract
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -16,35 +13,30 @@ import rx.schedulers.Schedulers
 /**
  * Created by DavidHa on 2017. 8. 6..
  */
-class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContract {
+class UploadReviewPresenter(val review : Review = Review()) : UploadReviewContract {
     lateinit var view : UploadReviewContract.View
     var subjectName:String? = null
     var professorName:String? = null
 
     override fun registerReview() {
-        review.let {
-            it.userId = App.userId
-            it.subjectDetail.subject.name = this.subjectName
-            it.subjectDetail.professor.name = this.professorName
-        }
 
-        if (review.alertMessage == null) {
+        if (review.getAlertMessage() == null) {
             callPostSimpleReviewApi(review)
             view.showProgress()
         } else {
-            view.showSimpleMsgDialog(review.alertMessage)
+            view.showSimpleMsgDialog(review.getAlertMessage().toString())
         }
     }
 
     private fun callPostSimpleReviewApi(review: Review) {
         Logger.v("post review: " + review)
-        Logger.v("prof id: " + review.professorId)
+        Logger.v("course id: " + review.courseId)
         Logger.v("subj id: " + review.subjectId)
-        Retro.instance.reviewService().postSimpleReview(App.setAuthHeader(App.userToken), review)
+        Retro.instance.reviewService().callPostReview(App.setHeader(), review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ result -> response(result.review) },{ ErrorUtils.parseError(it) })
+                .subscribe({ result -> response(result.data) },{ ErrorUtils.parseError(it) })
     }
 
     override fun checkReviewExist() {
@@ -52,7 +44,6 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    view.isReviewExist = result.exist
                     if (result.exist) {
                         view.showAlertDialog()
                     }

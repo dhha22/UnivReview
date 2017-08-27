@@ -11,7 +11,7 @@ import com.univreview.R
 import com.univreview.adapter.ReviewCommentAdapter
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
-import com.univreview.model.Review
+import com.univreview.model.model_kotlin.Review
 import com.univreview.model.ReviewComment
 import com.univreview.util.Util
 import com.univreview.view.ReviewDetailHeader
@@ -34,7 +34,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         fun getInstance(data: Review): ReviewDetailFragment {
             val fragment = ReviewDetailFragment()
             val bundle = Bundle()
-            bundle.putSerializable("review", data)
+            bundle.putParcelable("review", data)
             fragment.arguments = bundle
             return fragment
         }
@@ -68,7 +68,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     override fun onResume() {
         super.onResume()
         reviewPublishSubject.subscribe({
-            setHeaderData(it)
+            //setHeaderData(it)
             presenter.loadReviewSingle()
         }, { Logger.e(it) })
     }
@@ -91,7 +91,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     }
 
     override fun setHeaderData(review: Review) {
-        headerView.setData(review)
+        //headerView.setData(review)
     }
 
 

@@ -5,7 +5,6 @@ package com.univreview.view.contract
  */
 interface UploadReviewContract {
     interface View : BaseView{
-        var isReviewExist : Boolean
         fun showAlertDialog()
         fun showSimpleMsgDialog(msg : String)
         fun showRecommendRvDialog()

@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.App
-import com.univreview.Navigator
 import com.univreview.R
-import com.univreview.activity.BaseActivity
 import com.univreview.fragment.BaseWriteFragment
 import com.univreview.log.Logger
-import com.univreview.model.Review
-import com.univreview.model.ReviewDetail
+import com.univreview.model.model_kotlin.Review
+import com.univreview.model.model_kotlin.ReviewDetail
 import com.univreview.network.Retro
 import com.univreview.util.Util
 import com.univreview.view.ReviewItemView
@@ -29,7 +27,7 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
         fun getInstance(review: Review): UploadReviewDetailFragment {
             val fragment = UploadReviewDetailFragment()
             val bundle = Bundle()
-            bundle.putSerializable("review", review)
+            bundle.putParcelable("review", review)
             fragment.arguments = bundle
             return fragment
         }
@@ -37,11 +35,11 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
 
     private var isUpdate = false    // 리뷰 수정
     private lateinit var review: Review
-    private lateinit var reviewDetail : ReviewDetail
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        review = arguments.getSerializable("review") as Review
+        review = arguments.getParcelable("review")
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,7 +47,7 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
         val view = inflater?.inflate(R.layout.fragment_upload_review_detail, container, false)
         toolbar.setToolbarBackgroundColor(R.color.colorPrimary)
         toolbar.setBackBtnVisibility(true)
-        //toolbar.setOnConfirmListener { registerReview(review.id) }
+        toolbar.setOnConfirmListener { registerReview(review.id) }
         rootLayout.addView(view)
         return rootLayout
     }
@@ -61,10 +59,10 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
 
     private fun init() {
         setReviewData(review)
-        if (review.reviewDetail != null) {
+        if (review.content != null) {
             isUpdate = true
             toolbar.setTitleTxt("리뷰 수정")
-            inputReview.setText(review.reviewDetail.reviewDetail)
+            inputReview.setText(review.content)
             inputReview.setSelection(inputReview.text.toString().length)
         } else {
             toolbar.setTitleTxt("상세리뷰 쓰기")
@@ -78,48 +76,33 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
 
     private fun registerReview(reviewId: Long) {
         Util.hideKeyboard(context, inputReview)
-        reviewDetail = ReviewDetail()
-        reviewDetail.reviewId = reviewId
-        reviewDetail.reviewDetail = inputReview.text.toString()
-        if (reviewDetail.alertMessage == null) {
+        val reviewDetail = ReviewDetail(inputReview.text.toString().trim())
+        if (reviewDetail.getAlertMessage() == null) {
             Logger.v("review detail: " + reviewDetail)
             progressDialog.show()
-            if (isUpdate) {
-                callPutReviewDetail(review.reviewDetail.id, reviewDetail)
-            } else {
-                callPostReviewDetail(reviewDetail)
-            }
+            callPutReviewDetail(reviewId, reviewDetail)
         } else {
-            Util.simpleMessageDialog(context, reviewDetail.alertMessage)
+            Util.simpleMessageDialog(context, reviewDetail.getAlertMessage())
         }
     }
 
-    // 리뷰 작성
+    // 리뷰 작성 경로
     // UploadReview -> UploadReviewDetail -> (ReviewDetail)
     // MyReview List -> ReviewDetail -> UploadReviewDetail
-    private fun callPostReviewDetail(reviewDetail: ReviewDetail) {
-        Retro.instance.reviewService().postDetailReview(App.setAuthHeader(App.userToken), reviewDetail)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate { progressDialog.dismiss() }
-                .subscribe({
-                    review.reviewDetail = reviewDetail
-                    reviewPublishSubject.onNext(review)
-                    activity.finish()
-                }, { this.errorResponse(it) })
-    }
 
-    // 리뷰 수정
+
+    // 리뷰 수정 경로
     // MyReview List -> ReviewDetail -> UploadReviewDetail
-    private fun callPutReviewDetail(reviewDetailId: Long, reviewDetail: ReviewDetail) {
-        Logger.v("review detail id: " + reviewDetailId)
-        Retro.instance.reviewService().putReviewDetail(App.setAuthHeader(App.userToken), reviewDetailId, reviewDetail)
+
+    private fun callPutReviewDetail(reviewId: Long, reviewDetail: ReviewDetail) {
+        Logger.v("review id: " + reviewId)
+        Retro.instance.reviewService().callPutReview(App.setHeader(), reviewId, reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { progressDialog.dismiss() }
                 .subscribe({
-                    review.reviewDetail = reviewDetail
-                    reviewPublishSubject.onNext(review)
+                    //review.reviewDetail = reviewDetail
+                    //reviewPublishSubject.onNext(review)
                     activity.finish()
                 }, { this.errorResponse(it) })
     }

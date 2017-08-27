@@ -8,8 +8,10 @@ import com.univreview.adapter.contract.ReviewListAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
-import com.univreview.model.*
+import com.univreview.model.ReviewListModel
+import com.univreview.model.SearchModel
 import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.ReviewListContract
@@ -62,10 +64,10 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
             if (type != ReviewSearchType.MY_REVIEW) {
                 view.setHeaderData(reviewListModel.totalAverageRates, reviewListModel.reviewAverage)
             }
-            Observable.from<Review>(reviewListModel.reviews)
+           /* Observable.from<Review>(reviewListModel.reviews)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ result -> adapterModel.addItem(result) }, { Logger.e(it) })
+                    .subscribe({ result -> adapterModel.addItem(result) }, { Logger.e(it) })*/
 
         }
     }

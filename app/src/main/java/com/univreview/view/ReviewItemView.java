@@ -19,7 +19,7 @@ import com.univreview.R;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.log.Logger;
-import com.univreview.model.Review;
+import com.univreview.model.model_kotlin.Review;
 import com.univreview.model.ReviewLike;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
@@ -88,34 +88,31 @@ public class ReviewItemView extends FrameLayout {
             this.data = review;
             Logger.v("review: " + review);
             setVisibility(VISIBLE);
-            if (review.user != null) {
-                nameTxt.setText(review.user.name);
-                if (review.user.authenticated != null) {
-                    if (review.user.authenticated) {
-                        authMarkTxt.setVisibility(VISIBLE);
-                    } else {
-                        authMarkTxt.setVisibility(GONE);
-                    }
-                }else{
+            if (review.getUser() != null) {
+                nameTxt.setText(review.getUser().getName());
+
+                if (review.getUser().getAuthenticated()) {
+                    authMarkTxt.setVisibility(VISIBLE);
+                } else {
                     authMarkTxt.setVisibility(GONE);
                 }
             }
 
-            likeImg.setSelected(review.likes);
-            likeCntTxt.setText(review.likeCount+"명");
-            commentCntTxt.setText(review.commentCount+"명");
+            //likeImg.setSelected(review.isLike);
+            likeCntTxt.setText(review.getLikeCount()+"명");
+            commentCntTxt.setText(review.getCommentCount()+"명");
             likeLayout.setOnClickListener(v -> {
-                callReviewLike(review.rid);
+               /* callReviewLike(review.rid);
                 if (likeImg.isSelected()) {
                     likeImg.setSelected(false);
                 } else {
                     likeImg.setSelected(true);
-                }
+                }*/
             });
 
-            if (review.reviewDetail != null) {
+            if (review.getContent() != null) {
                 reviewTxt.setVisibility(VISIBLE);
-                reviewTxt.setText(review.reviewDetail.reviewDetail);
+                reviewTxt.setText(review.getContent());
             }else{
                 reviewTxt.setVisibility(GONE);
             }
@@ -123,7 +120,7 @@ public class ReviewItemView extends FrameLayout {
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
             int index = 0;
-            if (review.subjectDetail.subject != null) {
+            /*if (review.subjectDetail.subject != null) {
                 builder.append(review.subjectDetail.subject.getName() + " ");
             }
             Util.addColorSpan(context, builder, index, R.color.colorPrimary);
@@ -143,18 +140,18 @@ public class ReviewItemView extends FrameLayout {
             if (review.subjectDetail.professor != null) {
                 professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
 
-            }
+            }*/
 
             difficultyTxt.setText(review.getDifficultyRateMessage());
             assignmentTxt.setText(review.getAssignmentRateMessage());
             attendanceTxt.setText(review.getAttendanceRateMessage());
             gradeTxt.setText(review.getGradeRateMessage());
             achievementTxt.setText(review.getAchievementRateMessage());
-            difficultyRate.setRating(review.difficultyRate);
-            assignmentRate.setRating(review.assignmentRate);
-            attendanceRate.setRating(review.attendanceRate);
-            gradeRate.setRating(review.gradeRate);
-            achievementRate.setRating(review.achievementRate);
+            difficultyRate.setRating(review.getDifficultyRate());
+            assignmentRate.setRating(review.getAssignmentRate());
+            attendanceRate.setRating(review.getAttendanceRate());
+            gradeRate.setRating(review.getGradeRate());
+            achievementRate.setRating(review.getAchievementRate());
             /*setOnClickListener(v -> {
                 if (Status.MY_REVIEW.equals(status) || Status.READ_REVIEW.equals(status)) {
                     *//*ReviewListFragment.reviewSingleId = review.id;
@@ -162,7 +159,7 @@ public class ReviewItemView extends FrameLayout {
                     Navigator.goReviewDetail(context, review, layout);
                 }
             });*/
-            likeLayout.setOnClickListener(v -> callReviewLike(review.rid));
+            //likeLayout.setOnClickListener(v -> callReviewLike(review.rid));
         } else {
             setVisibility(INVISIBLE);
         }
@@ -222,13 +219,13 @@ public class ReviewItemView extends FrameLayout {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (data.likes) {
-                        data.likes = false;
+                   /* if (data.isLike) {
+                        data.isLike = false;
                         data.likeCount--;
                     } else {
-                        data.likes = true;
+                        data.isLike = true;
                         data.likeCount++;
-                    }
+                    }*/
                     setData(data);
                 }, ErrorUtils::parseError);
     }

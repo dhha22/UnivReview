@@ -56,7 +56,7 @@ class SearchPresenter : SearchContract {
 
     override fun searchProfFromSubj(subjectId: Long, name: String, page: Int) {
         Logger.v("subjectId: " + subjectId)
-        //setObservable(Retro.instance.searchService().getProfessorFromSubject(subjectId, page), page)
+        setObservable(Retro.instance.searchService().callCourse(App.setHeader(), subjectId), page)
     }
 
     private fun <T> setObservable(observable: Observable<DataListModel<T>>, page: Int) {

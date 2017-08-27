@@ -59,7 +59,7 @@ public class RecentReviewItemView extends FrameLayout {
             reviewTxt.setText(review.reviewDetail);
             Review data = new Review();
             data.rid = review.id;
-            setOnClickListener(v -> Navigator.goReviewDetail(context, data));
+            //setOnClickListener(v -> Navigator.goReviewDetail(context, data));
         }
     }
 }

@@ -17,7 +17,8 @@ data class User(var provider: String, // facebook, kakao
                 var client: String? = null,
                 var universityId: Long? = null,
                 var departmentId: Long? = null,
-                var majorId: Long? = null) : Parcelable {
+                var majorId: Long? = null,
+                val authenticated : Boolean = false) : Parcelable {
 
 
     constructor(source: Parcel) : this(
@@ -31,7 +32,8 @@ data class User(var provider: String, // facebook, kakao
             source.readString(),
             source.readLong(),
             source.readLong(),
-            source.readLong()
+            source.readLong(),
+            source.readInt() != 0
     )
 
     override fun describeContents() = 0
@@ -48,6 +50,7 @@ data class User(var provider: String, // facebook, kakao
         writeLong(universityId ?: 0)
         writeLong(departmentId ?: 0)
         writeLong(majorId ?: 0)
+        dest.writeInt(if(authenticated) 1 else 0)  // true = 1, false 0
     }
 
     companion object {

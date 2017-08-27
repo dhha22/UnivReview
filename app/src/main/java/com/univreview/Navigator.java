@@ -18,15 +18,14 @@ import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.login.UserAuthCompletedFragment;
 import com.univreview.fragment.mypage.PointListFragment;
-import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.review.ReviewReportFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
-import com.univreview.model.Review;
 import com.univreview.model.enumeration.ReviewSearchType;
+import com.univreview.model.model_kotlin.Review;
 import com.univreview.model.model_kotlin.User;
 import com.univreview.util.ImageUtil;
 import com.univreview.util.Util;
@@ -135,13 +134,13 @@ public class Navigator {
 
     public static void goReviewDetail(Context context, Review data) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
+        //NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
         (context).startActivity(intent);
     }
 
     public static void goReviewDetail(Context context, Review data, View sharedView) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
+       // NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
         Util.sharedElement(context, intent, sharedView, "title");
     }
 

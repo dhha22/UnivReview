@@ -1,6 +1,7 @@
 package com.univreview.network;
 
 import com.univreview.model.SearchModel;
+import com.univreview.model.model_kotlin.Course;
 import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.Department;
 import com.univreview.model.model_kotlin.Major;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -35,6 +37,8 @@ public interface SearchService {
     @GET(Retro.VERSION +"professors")
     Observable<DataListModel<Professor>> callProfessors(@HeaderMap Map<String, String> headers, @Query("name") String name);
 
+    @GET(Retro.VERSION + "subjects/{subjectId}/courses")
+    Observable<DataListModel<Course>> callCourse(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId);
 
     @GET("professorSubject")
     Observable<SearchModel> getProfessorFromSubject(@Query("subjectId") long subjectId, @Query("page") int page);

@@ -2,7 +2,6 @@ package com.univreview.network;
 
 import com.univreview.model.LikeResponse;
 import com.univreview.model.RecentReviewModel;
-import com.univreview.model.Review;
 import com.univreview.model.ReviewComment;
 import com.univreview.model.ReviewCommentListModel;
 import com.univreview.model.ReviewDetail;
@@ -12,8 +11,8 @@ import com.univreview.model.ReviewListModel;
 import com.univreview.model.ReviewModel;
 import com.univreview.model.ReviewReport;
 import com.univreview.model.ReviewSingleModel;
-import com.univreview.model.model_kotlin.DataListModel;
-import com.univreview.model.model_kotlin.Professor;
+import com.univreview.model.model_kotlin.Review;
+import com.univreview.model.model_kotlin.ReviewResponse;
 
 import java.util.Map;
 
@@ -33,10 +32,13 @@ import rx.Observable;
  */
 public interface ReviewService {
 
-    // 신규 api
-    @GET("reviews")
-    Observable<DataListModel<Professor>> callProfNameFromSubject();
+    // 리뷰 작성 (간편 리뷰)
+    @POST(Retro.VERSION + "reviews")
+    Observable<ReviewResponse> callPostReview(@HeaderMap Map<String, String> headers, @Body Review review);
 
+    // 리뷰 수정 및 상세리뷰 작성
+    @PUT(Retro.VERSION + "reviews/{reviewId}")
+    Observable<ReviewResponse> callPutReview(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body com.univreview.model.model_kotlin.ReviewDetail body);
 
     @GET("review")
     Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
@@ -44,8 +46,7 @@ public interface ReviewService {
     @GET("review/{id}")
     Observable<ReviewModel> getReview(@HeaderMap Map<String, String> headers, @Path("id") long reviewId);
 
-    @POST("review")
-    Observable<ReviewSingleModel> postSimpleReview(@HeaderMap Map<String, String> headers, @Body Review body);
+
 
     @POST("reviewDetail")
     Observable<ReviewSingleModel> postDetailReview(@HeaderMap Map<String, String> headers, @Body ReviewDetail body);
