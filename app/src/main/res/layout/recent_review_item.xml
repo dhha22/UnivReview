@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="190dp"
+    android:layout_height="200dp"
     android:layout_marginLeft="6dp"
     app:cardUseCompatPadding="true">
 
@@ -19,11 +19,14 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:background="@color/reviewDimColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="6dp"
             android:paddingLeft="10dp"
@@ -31,7 +34,7 @@
             android:paddingTop="6dp">
 
             <TextView
-                android:id="@+id/subject_txt"
+                android:id="@+id/subjectTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
@@ -40,12 +43,15 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/professor_txt"
+                android:id="@+id/professorTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxEms="12"
+                android:maxLines="1"
                 android:text="professor name"
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="12dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -54,13 +60,201 @@
                 android:layout_marginTop="6dp"
                 android:background="@color/white" />
 
-            <TextView
-                android:id="@+id/review_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="review"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/difficultyInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginRight="16dp"
+                    android:text="난이도"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/difficultyRatingBar"
+                    style="@style/reviewRatingLineSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/difficultyInfo"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="6dp"
+                    android:layout_toRightOf="@id/difficultyInfo"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:paddingBottom="6dp"
+                    android:stepSize="1" />
+
+                <TextView
+                    android:id="@+id/difficultyTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/difficultyRatingBar"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/difficultyRatingBar"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/assignmentInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/difficultyInfo"
+                    android:layout_marginBottom="4dp"
+                    android:text="과제량"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/assignmentRatingBar"
+                    style="@style/reviewRatingLineSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/assignmentInfo"
+                    android:layout_alignLeft="@id/difficultyRatingBar"
+                    android:layout_below="@id/difficultyInfo"
+                    android:layout_marginRight="6dp"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+                <TextView
+                    android:id="@+id/assignmentTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/assignmentRatingBar"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@id/assignmentRatingBar"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/attendanceInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/assignmentInfo"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="4dp"
+                    android:text="출석체크"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/attendanceRatingBar"
+                    style="@style/reviewRatingLineSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/attendanceInfo"
+                    android:layout_alignLeft="@id/assignmentRatingBar"
+                    android:layout_below="@id/assignmentInfo"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="6dp"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+                <TextView
+                    android:id="@+id/attendanceTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/attendanceRatingBar"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/attendanceRatingBar"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/gradeInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/attendanceInfo"
+                    android:layout_marginBottom="4dp"
+                    android:text="학점"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/gradeRatingBar"
+                    style="@style/reviewRatingLineSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/gradeInfo"
+                    android:layout_alignLeft="@id/difficultyRatingBar"
+                    android:layout_below="@id/attendanceInfo"
+                    android:layout_marginRight="6dp"
+                    android:numStars="5"
+                    android:stepSize="1" />
+
+
+                <TextView
+                    android:id="@+id/gradeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/gradeRatingBar"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/gradeRatingBar"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/achievementInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/gradeInfo"
+                    android:text="성취감"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/achievementRatingBar"
+                    style="@style/reviewRatingLineSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/achievementInfo"
+                    android:layout_alignLeft="@id/difficultyRatingBar"
+                    android:layout_marginRight="6dp"
+                    android:numStars="5"
+                    android:paddingBottom="6dp"
+                    android:stepSize="1" />
+
+                <TextView
+                    android:id="@+id/achievementTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/achievementRatingBar"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/achievementRatingBar"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+
+            <!-- <TextView
+                 android:id="@+id/content"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="review content"
+                 android:textColor="@color/white"
+                 android:textSize="12dp" />-->
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

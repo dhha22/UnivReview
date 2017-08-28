@@ -122,7 +122,7 @@ public class MypageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         if(isRefresh) {
-            callProfileApi(userId);
+           // callProfileApi(userId);
         }
     }
 

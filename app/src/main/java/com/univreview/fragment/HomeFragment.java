@@ -1,6 +1,5 @@
 package com.univreview.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -16,15 +15,12 @@ import android.widget.TextView;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.adapter.CustomAdapter;
+import com.univreview.adapter.RecentRvAdapter;
 import com.univreview.log.Logger;
-import com.univreview.model.model_kotlin.AbstractDataProvider;
-import com.univreview.model.RecentReview;
-import com.univreview.model.Review;
 import com.univreview.model.enumeration.ReviewSearchType;
+import com.univreview.model.model_kotlin.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
-import com.univreview.view.RecentReviewItemView;
 
 import java.util.List;
 
@@ -46,8 +42,8 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.professor_txt) TextView professorTxt;
     @BindView(R.id.latest_culture_recycler_view) RecyclerView latestCultureRecyclerView;
     @BindView(R.id.latest_major_recycler_view) RecyclerView latestMajorRecyclerView;
-    private LatestReviewAdapter cultureAdapter;
-    private LatestReviewAdapter majorAdapter;
+    private RecentRvAdapter cultureAdapter;
+    private RecentRvAdapter majorAdapter;
     private boolean isExpand = DEFAULT_EXPAND_STATE;
 
     public static HomeFragment newInstance(){
@@ -101,8 +97,8 @@ public class HomeFragment extends BaseFragment {
         cultureLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         LinearLayoutManager majorLayoutManager = new LinearLayoutManager(getContext());
         majorLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        cultureAdapter = new LatestReviewAdapter(getContext());
-        majorAdapter = new LatestReviewAdapter(getContext());
+        cultureAdapter = new RecentRvAdapter(getContext());
+        majorAdapter = new RecentRvAdapter(getContext());
         latestCultureRecyclerView.setLayoutManager(cultureLayoutManager);
         latestMajorRecyclerView.setLayoutManager(majorLayoutManager);
         latestCultureRecyclerView.setAdapter(cultureAdapter);
@@ -149,59 +145,19 @@ public class HomeFragment extends BaseFragment {
         callRecentReviewApi();
     }
 
-    public class LatestReviewAdapter extends CustomAdapter {
-
-        public LatestReviewAdapter(Context context) {
-            super(context);
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(new RecentReviewItemView(context));
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((ViewHolder) holder).v.setData((RecentReview) list.get(position));
-        }
-
-        @Override
-        public Review getItem(int position) {
-            return (Review)list.get(position);
-        }
-
-        @Override
-        public void addItem(AbstractDataProvider item) {
-            list.add(item);
-            notifyDataSetChanged();
-        }
-
-
-        protected class ViewHolder extends RecyclerView.ViewHolder{
-            final RecentReviewItemView v;
-            public ViewHolder(View itemView) {
-                super(itemView);
-                v = (RecentReviewItemView)itemView;
-            }
-        }
-    }
 
     private void callRecentReviewApi() {
-        Retro.instance.reviewService().getRecentReview(App.setAuthHeader(App.userToken))
+        Retro.instance.reviewService().callRecentReview(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> cultureResponse(result.cultures, result.majors), Logger::e,
-                        () -> { cultureAdapter.clear(); majorAdapter.clear();});
+                .subscribe(result -> cultureResponse(result.getData().getGeneralReviews(),
+                        result.getData().getMasterReviews()), Logger::e);
     }
 
-    private void cultureResponse(List<RecentReview> cultures, List<RecentReview> majors) {
+    private void cultureResponse(List<Review> cultures, List<Review> majors) {
         Observable.from(cultures)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> cultureAdapter.addItem(result), ErrorUtils::parseError);
         Observable.from(majors)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> majorAdapter.addItem(result), ErrorUtils::parseError);
     }
 

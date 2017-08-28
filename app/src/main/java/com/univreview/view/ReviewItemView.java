@@ -1,3 +1,4 @@
+/*
 package com.univreview.view;
 
 import android.content.Context;
@@ -30,9 +31,11 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 23..
- */
+ *//*
+
 public class ReviewItemView extends FrameLayout {
     @BindView(R.id.layout) LinearLayout layout;
     @BindView(R.id.user_layout) LinearLayout userLayout;
@@ -102,12 +105,14 @@ public class ReviewItemView extends FrameLayout {
             likeCntTxt.setText(review.getLikeCount()+"명");
             commentCntTxt.setText(review.getCommentCount()+"명");
             likeLayout.setOnClickListener(v -> {
-               /* callReviewLike(review.rid);
+               */
+/* callReviewLike(review.rid);
                 if (likeImg.isSelected()) {
                     likeImg.setSelected(false);
                 } else {
                     likeImg.setSelected(true);
-                }*/
+                }*//*
+
             });
 
             if (review.getContent() != null) {
@@ -120,7 +125,8 @@ public class ReviewItemView extends FrameLayout {
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
             int index = 0;
-            /*if (review.subjectDetail.subject != null) {
+            */
+/*if (review.subjectDetail.subject != null) {
                 builder.append(review.subjectDetail.subject.getName() + " ");
             }
             Util.addColorSpan(context, builder, index, R.color.colorPrimary);
@@ -140,7 +146,8 @@ public class ReviewItemView extends FrameLayout {
             if (review.subjectDetail.professor != null) {
                 professorTxt.setText(review.subjectDetail.professor.getName() + " 교수님");
 
-            }*/
+            }*//*
+
 
             difficultyTxt.setText(review.getDifficultyRateMessage());
             assignmentTxt.setText(review.getAssignmentRateMessage());
@@ -152,13 +159,19 @@ public class ReviewItemView extends FrameLayout {
             attendanceRate.setRating(review.getAttendanceRate());
             gradeRate.setRating(review.getGradeRate());
             achievementRate.setRating(review.getAchievementRate());
-            /*setOnClickListener(v -> {
+            */
+/*setOnClickListener(v -> {
                 if (Status.MY_REVIEW.equals(status) || Status.READ_REVIEW.equals(status)) {
-                    *//*ReviewListFragment.reviewSingleId = review.id;
+                    *//*
+*/
+/*ReviewListFragment.reviewSingleId = review.id;
                     ReviewListFragment.reviewItemRefreshPosition = position;*//*
+*/
+/*
                     Navigator.goReviewDetail(context, review, layout);
                 }
-            });*/
+            });*//*
+
             //likeLayout.setOnClickListener(v -> callReviewLike(review.rid));
         } else {
             setVisibility(INVISIBLE);
@@ -219,14 +232,17 @@ public class ReviewItemView extends FrameLayout {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                   /* if (data.isLike) {
+                   */
+/* if (data.isLike) {
                         data.isLike = false;
                         data.likeCount--;
                     } else {
                         data.isLike = true;
                         data.likeCount++;
-                    }*/
+                    }*//*
+
                     setData(data);
                 }, ErrorUtils::parseError);
     }
 }
+*/

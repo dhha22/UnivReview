@@ -16,7 +16,7 @@
         android:layout_marginRight="14dp">
 
         <TextView
-            android:id="@+id/subject_txt"
+            android:id="@+id/subjectTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -28,12 +28,12 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/professor_txt"
+            android:id="@+id/professorTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/subject_txt"
+            android:layout_alignBottom="@id/subjectTxt"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/subject_txt"
+            android:layout_toRightOf="@id/subjectTxt"
             android:ellipsize="end"
             android:maxEms="8"
             android:maxLines="1"
@@ -42,7 +42,7 @@
             android:textSize="12dp" />
 
         <TextView
-            android:id="@+id/subject_professor"
+            android:id="@+id/subjectProfessorTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -53,7 +53,7 @@
 
 
         <ImageButton
-            android:id="@+id/more_btn"
+            android:id="@+id/moreBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
@@ -73,7 +73,7 @@
 
 
     <LinearLayout
-        android:id="@+id/user_layout"
+        android:id="@+id/userLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
@@ -82,7 +82,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/name_txt"
+            android:id="@+id/nameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -90,7 +90,7 @@
             android:textSize="14dp" />
 
         <TextView
-            android:id="@+id/auth_mark"
+            android:id="@+id/authMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -128,7 +128,7 @@
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/difficulty_txt"
+                android:id="@+id/difficultyTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -137,7 +137,7 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/difficulty_rate"
+                android:id="@+id/difficultyRatingBar"
                 style="@style/reviewRatingLineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/assignment_txt"
+                android:id="@+id/assignmentTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -174,7 +174,7 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/assignment_rate"
+                android:id="@+id/assignmentRatingBar"
                 style="@style/reviewRatingLineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/attendance_txt"
+                android:id="@+id/attendanceTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -209,7 +209,7 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/attendance_rate"
+                android:id="@+id/attendanceRatingBar"
                 style="@style/reviewRatingLineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/grade_txt"
+                android:id="@+id/gradeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -245,7 +245,7 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/grade_rate"
+                android:id="@+id/gradeRatingBar"
                 style="@style/reviewRatingLineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/achievement_txt"
+                android:id="@+id/achievementTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -280,7 +280,7 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/achievement_rate"
+                android:id="@+id/achievementRatingBar"
                 style="@style/reviewRatingLineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -293,7 +293,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/review_txt"
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

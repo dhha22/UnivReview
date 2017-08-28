@@ -20,6 +20,7 @@ data class Review(override var id: Long = 0,
                   val reported: Boolean = false,
                   val createdAt: String? = null,
                   val user: User? = null,
+                  val subject : Subject? = null,
                   val professor: Professor? = null,
                   var isLike: Boolean = false) : AbstractDataProvider(), Parcelable {
     override var name: String
@@ -117,6 +118,7 @@ data class Review(override var id: Long = 0,
             1 == source.readInt(),
             source.readString(),
             source.readParcelable<User>(User::class.java.classLoader),
+            source.readParcelable<Subject>(Subject::class.java.classLoader),
             source.readParcelable<Professor>(Professor::class.java.classLoader),
             source.readInt() != 0
     )
@@ -138,6 +140,7 @@ data class Review(override var id: Long = 0,
         writeInt((if (reported) 1 else 0))
         writeString(createdAt)
         writeParcelable(user, 0)
+        writeParcelable(subject, 0)
         writeParcelable(professor, 0)
         writeInt(if(isLike) 1 else 0)    // true = 1, false = 0
     }

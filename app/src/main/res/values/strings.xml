@@ -8,4 +8,5 @@
     <string name="main_user_auth">지금 학생증을 찍어 학생을 인증하면\n피곤한 과제!시험!에 찌든 여러분들을 위한\n스타벅스 기프티콘을 드려요:)</string>
     <string name="review_like_txt">공감해요</string>
     <string name="review_comment_txt">의견있어요</string>
+    <string name="people_cnt">%d명</string>
 </resources>

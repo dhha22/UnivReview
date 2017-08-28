@@ -11,6 +11,9 @@ import com.univreview.model.ReviewListModel;
 import com.univreview.model.ReviewModel;
 import com.univreview.model.ReviewReport;
 import com.univreview.model.ReviewSingleModel;
+import com.univreview.model.model_kotlin.DataModel;
+import com.univreview.model.model_kotlin.RecentRvListModel;
+import com.univreview.model.model_kotlin.ResultModel;
 import com.univreview.model.model_kotlin.Review;
 import com.univreview.model.model_kotlin.ReviewResponse;
 import com.univreview.model.model_kotlin.ReviewState;
@@ -33,6 +36,10 @@ import rx.Observable;
  */
 public interface ReviewService {
 
+    // 메인 최신 리뷰
+    @GET(Retro.VERSION + "reviews/recent")
+    Observable<DataModel<RecentRvListModel>> callRecentReview(@HeaderMap Map<String, String> headers);
+
     // 리뷰 작성 (간편 리뷰)
     @POST(Retro.VERSION + "reviews")
     Observable<ReviewResponse> callPostReview(@HeaderMap Map<String, String> headers, @Body Review review);
@@ -44,6 +51,13 @@ public interface ReviewService {
     // 사용자가 기존에 리뷰를 썼는지 확인하는 API
     @GET(Retro.VERSION + "courses/{courseId}/review/exists")
     Observable<ReviewState> callCheckReviewForCourseId(@HeaderMap Map<String, String> headers, @Path("courseId") long courseId);
+
+    // 리뷰 좋아요
+    @POST(Retro.VERSION + "reviews/{reviewId}/likes")
+    Observable<ResultModel> callReviewLike(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+
+
+
 
     @GET("review")
     Observable<ReviewListModel> getReviews(@HeaderMap Map<String, String> headers, @Query("subjectId") Long subjectId, @Query("professorId") Long professorId, @Query("userId") Long userId, @Query("page") int page);
