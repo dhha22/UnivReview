@@ -7,6 +7,8 @@ import com.univreview.model.User;
 import com.univreview.model.UserModel;
 import com.univreview.model.UserTicket;
 import com.univreview.model.UserTicketModel;
+import com.univreview.model.model_kotlin.DataListModel;
+import com.univreview.model.model_kotlin.RvPoint;
 
 import java.util.Map;
 
@@ -49,5 +51,9 @@ public interface UserService {
     //user delete
     @POST("deleteAccount")
     Observable<ResultMessage> deleteUser(@HeaderMap Map<String, String> headers);
+
+    // review point
+    @GET(Retro.VERSION + "point_histories")
+    Observable<DataListModel<RvPoint>> callPointHistroies(@HeaderMap Map<String, String> headers);
 
 }

@@ -5,7 +5,7 @@
     android:layout_height="100dp">
 
     <TextView
-        android:id="@+id/time_txt"
+        android:id="@+id/timeTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="28dp"
@@ -15,12 +15,12 @@
         android:textSize="12dp" />
 
     <TextView
-        android:id="@+id/message_txt"
+        android:id="@+id/messageTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/time_txt"
+        android:layout_alignLeft="@id/timeTxt"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/point_txt"
+        android:layout_toLeftOf="@+id/pointTxt"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="28dp"
         android:maxLines="1"
@@ -29,10 +29,10 @@
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/point_txt"
+        android:id="@+id/pointTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/message_txt"
+        android:layout_alignBottom="@id/messageTxt"
         android:layout_alignParentRight="true"
         android:layout_marginRight="28dp"
         android:text="+200P"

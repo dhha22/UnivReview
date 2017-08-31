@@ -12,12 +12,12 @@ import com.univreview.activity.LoginActivity;
 import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.activity.PermissionCheckerActivity;
+import com.univreview.fragment.PointListFragment;
 import com.univreview.fragment.login.CheckUserPhotoFragment;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.login.UserAuthCompletedFragment;
-import com.univreview.fragment.mypage.PointListFragment;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.review.ReviewReportFragment;
 import com.univreview.fragment.search.SearchFragment;
@@ -179,7 +179,7 @@ public class Navigator {
     //mypage
     public static void goPointList(Context context, int point) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(PointListFragment.newInstance(point));
+        NavigationActivity.setFragment(PointListFragment.getInstance(point));
         context.startActivity(intent);
     }
 

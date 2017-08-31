@@ -78,7 +78,7 @@ public class SettingFragment extends BaseFragment {
                 .map(setting -> {
                     switch ((int)setting.getId()){
                         case VERSION:
-                            setting.previewStr = getActivity().getResources().getString(R.string.app_version);
+                            setting.setPreviewStr(getActivity().getResources().getString(R.string.app_version));
                             break;
                         /*case NOTIFICATION:
                             break;*/
@@ -126,7 +126,7 @@ public class SettingFragment extends BaseFragment {
                 ((ViewHolder) holder).v.setNextImgVisibility(false);
             }
             ((ViewHolder) holder).v.setTitle(list.get(position).getName());
-            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
+            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).getPreviewStr());
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment.mypage;
 
 import android.content.Context;
@@ -35,9 +36,11 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 2. 17..
- */
+ *//*
+
 public class PointListFragment extends AbsListFragment {
     private UnivReviewRecyclerView recyclerView;
     private int point;
@@ -210,3 +213,4 @@ public class PointListFragment extends AbsListFragment {
     }
 
 }
+*/

@@ -106,7 +106,13 @@ public class MypageFragment extends BaseFragment {
                     if (adapter.getItem(position) != null) {
                         String name = ((Setting) adapter.getItem(position)).getPreviewStr();
                         int index = name.indexOf("point") - 1;
-                        Navigator.goPointList(getContext(), Integer.parseInt(name.substring(0, index)));
+                        int point;
+                        if (index == -2) {
+                            point = 0;
+                        } else {
+                            point = Integer.parseInt(name.substring(0, index));
+                        }
+                        Navigator.goPointList(getContext(), point);
                     } else {
                         Navigator.goPointList(getContext(), 0);
                     }
@@ -141,10 +147,10 @@ public class MypageFragment extends BaseFragment {
                 .map(setting -> {
                     switch ((int) setting.getId()) {
                         case 0:
-                            setting.previewStr = userModel.review + "개";
+                            setting.setPreviewStr(userModel.review + "개");
                             break;
                         case 1:
-                            setting.previewStr = userModel.user.point + " point";
+                            setting.setPreviewStr( userModel.user.point + " point");
                             break;
                     }
                     return setting;
@@ -168,7 +174,7 @@ public class MypageFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ((ViewHolder) holder).v.setTitle(list.get(position).getName());
-            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).previewStr);
+            ((ViewHolder) holder).v.setPreviewTxt(((Setting) list.get(position)).getPreviewStr());
         }
 
         protected class ViewHolder extends RecyclerView.ViewHolder {

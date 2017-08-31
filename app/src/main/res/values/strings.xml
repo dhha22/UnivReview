@@ -9,4 +9,5 @@
     <string name="review_like_txt">공감해요</string>
     <string name="review_comment_txt">의견있어요</string>
     <string name="people_cnt">%d명</string>
+    <string name="point">%dp</string>
 </resources>

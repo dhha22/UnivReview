@@ -1,3 +1,4 @@
+/*
 package com.univreview.view;
 
 import android.content.Context;
@@ -16,9 +17,11 @@ import com.univreview.util.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by DavidHa on 2017. 2. 17..
- */
+ *//*
+
 public class PointItemView extends FrameLayout {
     @BindView(R.id.time_txt) TextView timeTxt;
     @BindView(R.id.message_txt) TextView messageTxt;
@@ -56,3 +59,4 @@ public class PointItemView extends FrameLayout {
         }
     }
 }
+*/
