@@ -62,7 +62,7 @@ class SearchPresenter : SearchContract {
     private fun <T> setObservable(observable: Observable<DataListModel<T>>, page: Int) {
         subscription.add( observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate { if (page == DEFAULT_PAGE) searchAdapterModel.clear() }
+                .doAfterTerminate { if (page == DEFAULT_PAGE) searchAdapterModel.clearItem() }
                 .subscribe({
                     @Suppress("UNCHECKED_CAST")
                     response(it.data as List<AbstractDataProvider>)

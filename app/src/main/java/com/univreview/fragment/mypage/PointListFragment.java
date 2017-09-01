@@ -36,10 +36,9 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-*/
-/**
+*
  * Created by DavidHa on 2017. 2. 17..
- *//*
+
 
 public class PointListFragment extends AbsListFragment {
     private UnivReviewRecyclerView recyclerView;
@@ -147,6 +146,8 @@ public class PointListFragment extends AbsListFragment {
             }
         }
     }
+
+
 
 
     //api

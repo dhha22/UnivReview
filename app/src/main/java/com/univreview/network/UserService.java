@@ -8,7 +8,9 @@ import com.univreview.model.UserModel;
 import com.univreview.model.UserTicket;
 import com.univreview.model.UserTicketModel;
 import com.univreview.model.model_kotlin.DataListModel;
+import com.univreview.model.model_kotlin.DataModel;
 import com.univreview.model.model_kotlin.RvPoint;
+import com.univreview.model.model_kotlin.Ticket;
 
 import java.util.Map;
 
@@ -36,24 +38,18 @@ public interface UserService {
     //push 등록
     @POST("push/id")
     Observable<ResponseBody> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
+    
 
-    //point
-    @GET("pointHistory/{userId}")
-    Observable<PointHistoryModel> getPoint(@HeaderMap Map<String, String> headers, @Path("userId") long userId, @Query("page") int page);
 
-    //user id 제외
-    @GET("userTicket/{userId}")
-    Observable<UserTicketModel> getUserTicket(@HeaderMap Map<String, String> headers, @Path("userId") long userId);
-
-    @POST("userTicket")
-    Observable<UserTicket> postUserTicket(@HeaderMap Map<String, String> headers, @Body UserTicket body);
-
-    //user delete
-    @POST("deleteAccount")
-    Observable<ResultMessage> deleteUser(@HeaderMap Map<String, String> headers);
-
-    // review point
+    // user review point
     @GET(Retro.VERSION + "point_histories")
-    Observable<DataListModel<RvPoint>> callPointHistroies(@HeaderMap Map<String, String> headers);
+    Observable<DataListModel<RvPoint>> callPointHistories(@HeaderMap Map<String, String> headers);
+
+    // user review ticket
+    @GET(Retro.VERSION + "tickets")
+    Observable<DataListModel<Ticket>> callTicket(@HeaderMap Map<String, String> headers);
+
+    @GET(Retro.VERSION + "tickets")
+    Observable<DataListModel<Ticket>> buyReviewTicket(@HeaderMap Map<String, String> headers);
 
 }

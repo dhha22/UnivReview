@@ -1,6 +1,8 @@
 package com.univreview.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +12,16 @@ import com.univreview.App
 import com.univreview.R
 import com.univreview.adapter.PointAdapter
 import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.DataListModel
 import com.univreview.model.model_kotlin.RvPoint
+import com.univreview.model.model_kotlin.Ticket
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
 import com.univreview.view.PointListHeaderView
 import com.univreview.view.UnivReviewRecyclerView
+import com.univreview.view.contract.PointListContract
+import com.univreview.view.presenter.PointListPresenter
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -25,10 +29,11 @@ import rx.schedulers.Schedulers
 /**
  * Created by DavidHa on 2017. 8. 19..
  */
-class PointListFragment : AbsListFragment() {
+class PointListFragment : AbsListFragment(), PointListContract.View {
     private lateinit var recyclerView: UnivReviewRecyclerView
     private lateinit var headerView: PointListHeaderView
     private lateinit var adapter: PointAdapter
+    private lateinit var presenter: PointListPresenter
 
     companion object {
         @JvmStatic
@@ -44,8 +49,14 @@ class PointListFragment : AbsListFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val point = arguments.getInt("point")
-        headerView = PointListHeaderView(context)
-        headerView.setPoint(point)
+        headerView = PointListHeaderView(context).apply {
+            setPoint(point)
+            setBuyTicketListener(buyTicketListener)
+        }
+        presenter = PointListPresenter().apply {
+            view = this@PointListFragment
+            callReviewTickets()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,6 +76,7 @@ class PointListFragment : AbsListFragment() {
         recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
         recyclerView.setLayoutManager(LinearLayoutManager(context))
         recyclerView.setAdapter(adapter)
+        presenter.adapterModel = adapter
     }
 
     override fun loadMore() {
@@ -73,27 +85,24 @@ class PointListFragment : AbsListFragment() {
 
     override fun refresh() {
         setStatus(Status.REFRESHING)
-        callPointHistories()
+        presenter.callPointHistories(page)
     }
 
     override fun getRecyclerView(): AbsRecyclerView? {
         return recyclerView
     }
 
-    fun callPointHistories() {
-        Retro.instance.userService().callPointHistroies(App.setHeader())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ pointResponse(it.data) }, {
-                    setStatus(Status.ERROR)
-                    ErrorUtils.parseError(it)
-                })
+    override fun setUserTicket(tickets: List<Ticket>) {
+        headerView.setUserTicket(tickets)
     }
 
-    fun pointResponse(pointHistories: List<RvPoint>) {
-        if(page == DEFAULT_PAGE) adapter.clear()
-        setStatus(Status.IDLE)
-        Observable.from(pointHistories)
-                .subscribe({ adapter.addItem(it) }, { Logger.e(it) })
+
+    private val buyTicketListener = View.OnClickListener {
+        _ -> AlertDialog.Builder(context)
+                .setMessage("티켓을 구매하시겠습니까?")
+                .setPositiveButton("예", { _, _ -> presenter.buyReviewTicket() })
+                .setNegativeButton("아니오", null)
+                .show()
+
     }
 }

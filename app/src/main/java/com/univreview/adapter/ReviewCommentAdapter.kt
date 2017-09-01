@@ -27,7 +27,7 @@ class ReviewCommentAdapter(context: Context, headerView: View)
         }
     }
 
-    override fun addItem(item: AbstractDataProvider?) {
+    override fun addItem(item: AbstractDataProvider) {
         list.add(0, item)
         notifyDataSetChanged()
     }

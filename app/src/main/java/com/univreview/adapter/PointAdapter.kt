@@ -4,13 +4,14 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.univreview.adapter.contract.PointAdapterContract
 import com.univreview.model.model_kotlin.RvPoint
 import com.univreview.view.PointItemView
 
 /**
  * Created by DavidHa on 2017. 8. 30..
  */
-class PointAdapter(context: Context, headerView: View) : CustomAdapter(context, headerView) {
+class PointAdapter(context: Context, headerView: View) : CustomAdapter(context, headerView), PointAdapterContract.Model {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == CONTENT) {
             return ViewHolder(PointItemView(context))

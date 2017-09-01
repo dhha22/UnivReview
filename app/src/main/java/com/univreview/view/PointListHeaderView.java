@@ -1,3 +1,4 @@
+/*
 package com.univreview.view;
 
 import android.content.Context;
@@ -16,6 +17,7 @@ import com.univreview.R;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.UserTicket;
+import com.univreview.model.model_kotlin.Ticket;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
 import com.univreview.util.TimeUtil;
@@ -25,9 +27,11 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 2. 27..
- */
+ *//*
+
 public class PointListHeaderView extends CardView {
     @BindView(R.id.total_point_txt) TextView totalPointTxt;
     @BindView(R.id.buy_ticket_btn) Button buyTicketBtn;
@@ -59,7 +63,7 @@ public class PointListHeaderView extends CardView {
         totalPointTxt.setText(totalPoint+"P");
     }
 
-    public void setUserTicket(UserTicket userTicket){
+    public void setUserTicket(Ticket ticket){
         Logger.v("user ticket: " + userTicket);
         if(userTicket != null){
             TimeUtil timeUtil = new TimeUtil();
@@ -75,3 +79,4 @@ public class PointListHeaderView extends CardView {
     }
 
 }
+*/

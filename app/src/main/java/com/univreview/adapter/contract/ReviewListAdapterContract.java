@@ -1,11 +1,14 @@
+/*
 package com.univreview.adapter.contract;
 
 import com.univreview.listener.OnItemClickListener;
 import com.univreview.model.model_kotlin.AbstractDataProvider;
 
+*/
 /**
  * Created by DavidHa on 2017. 7. 14..
- */
+ *//*
+
 
 public interface ReviewListAdapterContract {
     interface View{
@@ -18,3 +21,4 @@ public interface ReviewListAdapterContract {
         AbstractDataProvider getItem(int position);
     }
 }
+*/
