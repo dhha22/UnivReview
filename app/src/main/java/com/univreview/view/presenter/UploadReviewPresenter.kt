@@ -1,7 +1,6 @@
 package com.univreview.view.presenter
 
 import com.univreview.App
-import com.univreview.fragment.MypageFragment
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
@@ -50,7 +49,6 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
 
     private fun response(review: Review) {
         Logger.v("response review: " + review)
-        MypageFragment.isRefresh = true
         this.review.id = review.id
         view.showRecommendRvDialog()
     }

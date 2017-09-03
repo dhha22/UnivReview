@@ -1,9 +1,9 @@
 package com.univreview.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,7 +15,7 @@ import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.HomeFragment;
-import com.univreview.fragment.MypageFragment;
+import com.univreview.fragment.MyPageFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.BusProvider;
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity {
 
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
-        private List<Fragment> fragmentList = Arrays.asList(HomeFragment.newInstance(), MypageFragment.newInstance(App.userId));
+        private List<Fragment> fragmentList = Arrays.asList(HomeFragment.newInstance(), MyPageFragment.getInstance());
 
         private PagerAdapter(FragmentManager fm) {
             super(fm);

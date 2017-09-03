@@ -1,3 +1,4 @@
+/*
 package com.univreview.fragment;
 
 import android.content.Context;
@@ -40,9 +41,11 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 1. 8..
- */
+ *//*
+
 public class MypageFragment extends BaseFragment {
     private static final int MY_REVIEW = 0;
     private static final int POINT = 1;
@@ -238,3 +241,4 @@ public class MypageFragment extends BaseFragment {
         isRefresh = true;
     }
 }
+*/

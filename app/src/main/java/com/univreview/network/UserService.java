@@ -38,7 +38,7 @@ public interface UserService {
     //push 등록
     @POST("push/id")
     Observable<ResponseBody> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
-    
+
 
 
     // user review point

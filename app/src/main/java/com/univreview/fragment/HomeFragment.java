@@ -155,6 +155,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void cultureResponse(List<Review> cultures, List<Review> majors) {
+        cultureAdapter.clear();
+        majorAdapter.clear();
         Observable.from(cultures)
                 .subscribe(result -> cultureAdapter.addItem(result), ErrorUtils::parseError);
         Observable.from(majors)

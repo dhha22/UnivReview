@@ -7,9 +7,7 @@ import com.univreview.model.model_kotlin.AbstractDataProvider
  * Created by DavidHa on 2017. 9. 1..
  */
 interface ReviewDetailAdapterContract {
-    interface View {
-        fun setOnItemLongClickListener(clickListener:OnItemLongClickListener)
-    }
+    interface View :BaseView
 
     interface Model : BaseModel {
         fun addLastItem(item : AbstractDataProvider)

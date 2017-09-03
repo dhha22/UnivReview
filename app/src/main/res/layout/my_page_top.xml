@@ -10,7 +10,7 @@
         android:background="@color/colorPrimaryLight" />
 
     <ImageButton
-        android:id="@+id/setting_btn"
+        android:id="@+id/settingBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
@@ -18,7 +18,7 @@
         android:background="@drawable/ic_profile_setting" />
 
     <RelativeLayout
-        android:id="@+id/profile_image_layout"
+        android:id="@+id/profileImageLayout"
         android:layout_width="124dp"
         android:layout_height="124dp"
         android:layout_centerHorizontal="true"
@@ -26,7 +26,7 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
+            android:id="@+id/profileImage"
             android:layout_width="124dp"
             android:layout_height="124dp"
             android:layout_gravity="center"
@@ -44,10 +44,10 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/name_txt"
+        android:id="@+id/nameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_image_layout"
+        android:layout_below="@+id/profileImageLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="이름"
@@ -57,12 +57,12 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name_txt"
+        android:layout_below="@id/nameTxt"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp">
 
         <TextView
-            android:id="@+id/department_txt"
+            android:id="@+id/departmentTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
@@ -71,7 +71,7 @@
             android:textSize="14dp" />
 
         <TextView
-            android:id="@+id/major_txt"
+            android:id="@+id/majorTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
