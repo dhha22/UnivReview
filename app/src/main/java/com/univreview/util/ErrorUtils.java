@@ -19,6 +19,7 @@ import retrofit2.adapter.rxjava.HttpException;
  * Created by DavidHa on 2016. 9. 7..
  */
 public class ErrorUtils {
+    public static final int ERROR_401 = 401;
     public static final int ERROR_400 = 400;
     public static final int ERROR_404 = 404;
 
@@ -32,8 +33,6 @@ public class ErrorUtils {
                 //Logger.e(responseBody);
                 if (response.code() == 500) {
                     Util.toast("서버 에러");
-                }else if(response.code() == 401){
-                    App.setUserToken(null);
                 }else if(response.code() == 412){   // 강제 업데이트
                     if(App.getCurrentActivity() instanceof LoginActivity){
                         new AlertDialog.Builder(App.getCurrentActivity())

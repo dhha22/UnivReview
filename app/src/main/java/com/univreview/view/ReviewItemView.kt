@@ -3,6 +3,7 @@ package com.univreview.view
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.univreview.App
 import com.univreview.R
@@ -17,12 +18,13 @@ import java.lang.StringBuilder
 /**
  * Created by DavidHa on 2017. 8. 28..
  */
-class ReviewItemView(context: Context?) : FrameLayout(context) {
+class ReviewItemView(context: Context) : FrameLayout(context) {
 
     private lateinit var review: Review
 
     init {
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true)
+        layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
     }
 
@@ -38,8 +40,18 @@ class ReviewItemView(context: Context?) : FrameLayout(context) {
                 }
             }
 
-            like_cnt.text = String.format(context.getString(R.string.people_cnt), likeCount)
-            comment_cnt.text = String.format(context.getString(R.string.people_cnt), commentCount)
+            subjectTxt.text = subject?.name
+            professorTxt.text = professor?.name
+
+            if (content == null) {  // review 내용
+                contentTxt.visibility = View.GONE
+            } else {
+                contentTxt.visibility = View.VISIBLE
+                contentTxt.text = content
+            }
+
+            likeCnt.text = String.format(context.getString(R.string.people_cnt), likeCount)
+            commentCnt.text = String.format(context.getString(R.string.people_cnt), commentCount)
 
             difficultyTxt.text = getDifficultyRateMessage()
             assignmentTxt.text = getAssignmentRateMessage()
@@ -67,7 +79,7 @@ class ReviewItemView(context: Context?) : FrameLayout(context) {
                 professorTxt.visibility = View.GONE
                 subjectProfessorTxt.visibility = View.VISIBLE
                 userLayout.visibility = View.GONE
-                content.visibility = View.GONE
+                contentTxt.visibility = View.GONE
                 moreBtn.visibility = View.GONE
                 bottom_line.visibility = View.GONE
                 bottom_layout.visibility = View.GONE

@@ -16,6 +16,7 @@ import com.univreview.model.RandomImageModel
 import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.util.AnimationUtils
+import com.univreview.util.SimpleDividerItemDecoration
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
 import com.univreview.view.ReviewTotalScoreView
@@ -35,7 +36,6 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     lateinit var name: String
     lateinit var presenter: ReviewListPresenter
 
-
     val randomImageModel = RandomImageModel()
 
     companion object {
@@ -54,20 +54,19 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         type = arguments.getSerializable("type") as ReviewSearchType
-        val id = arguments.getLong("id")
         name = arguments.getString("name")
-
+        val id = arguments.getLong("id")
         Logger.v("type: $type , id: $id, name: $name")
         presenter = ReviewListPresenter()
         presenter.apply {
             view = this@ReviewListFragment
             context = getContext()
-            when (type) {
-                ReviewSearchType.SUBJECT -> subjectId = id
-                ReviewSearchType.PROFESSOR -> professorId = id
+            when(type){
+                ReviewSearchType.SUBJECT -> presenter.sbjId = id
+                ReviewSearchType.PROFESSOR -> presenter.profId = id
             }
-        }
 
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,19 +83,18 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     }
 
     private fun init() {
-        App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
         when (type) {
-
         // My Review
             ReviewSearchType.MY_REVIEW -> {
                 adapter = ReviewListAdapter(context, type)
                 smooth_app_bar_layout.visibility = View.GONE
                 toolbar.setBackBtnVisibility(true)
-                reviewTitleTxt.text = name
+                toolbar.setTitleTxt(name)
             }
 
         // Subject List, Professor List
             ReviewSearchType.SUBJECT, ReviewSearchType.PROFESSOR -> {
+                App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 headerView = ReviewTotalScoreView(context)
                 adapter = ReviewListAdapter(context, type, headerView)
                 toolbar.visibility = View.GONE
@@ -131,15 +129,14 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     private fun setRecyclerView() {
         list.setMode(UnivReviewRecyclerView.Mode.DISABLED)
         list.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
-        val layoutManager = PreCachingLayoutManager(context)
-        layoutManager.setExtraLayoutSpace(App.SCREEN_HEIGHT)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        list.setLayoutManager(layoutManager)
+        list.setLayoutManager(LinearLayoutManager(context))
         list.setAdapter(adapter)
+        list.addItemDecoration(SimpleDividerItemDecoration(context))
         presenter.let {
             it.adapterModel = adapter
             it.adapterView = adapter
         }
+        Logger.v("set recycler view")
         /*list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)
@@ -156,8 +153,8 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
     override fun refresh() {
         Logger.v("refresh")
-        //setStatus(AbsListFragment.Status.REFRESHING)
-       // presenter.loadReviewItem(type, DEFAULT_PAGE)
+        setStatus(AbsListFragment.Status.REFRESHING)
+        presenter.loadReviewItem(type, DEFAULT_PAGE)
     }
 
     override fun loadMore() {

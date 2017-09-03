@@ -9,4 +9,5 @@ interface BaseModel {
     fun addItem(item: AbstractDataProvider)
     fun clearItem()
     fun getItem(position: Int): AbstractDataProvider
+    fun getItemCount():Int
 }

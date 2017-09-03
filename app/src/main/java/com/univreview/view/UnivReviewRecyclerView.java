@@ -44,6 +44,9 @@ public class UnivReviewRecyclerView extends SwipeRefreshLayout implements AbsRec
         recyclerview.addOnScrollListener(scrollListener);
     }
 
+    public void addItemDecoration(RecyclerView.ItemDecoration decoration){
+        recyclerview.addItemDecoration(decoration);
+    }
 
     public void setAdapter(RecyclerView.Adapter adapter) {
         this.recyclerview.setAdapter(adapter);

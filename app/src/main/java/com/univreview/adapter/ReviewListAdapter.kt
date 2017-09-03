@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.adapter.contract.ReviewListAdapterContract
+import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.view.ReviewItemView
@@ -16,6 +17,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
     : CustomAdapter(context, headerView), ReviewListAdapterContract.Model, ReviewListAdapterContract.View {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
+        Logger.v("on Create View Holder")
         if (viewType == CONTENT) {
             return ViewHolder(ReviewItemView(context))
         }
@@ -23,6 +25,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        Logger.v("on Bind View Holder")
         if (getItemViewType(position) == CONTENT) {
             (holder as ViewHolder).v.setData(list[position] as Review)
         }
@@ -43,7 +46,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
         return super.getItemViewType(position)
     }
 
-    private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val v : ReviewItemView by lazy { itemView as ReviewItemView }
 
         init {
