@@ -10,6 +10,7 @@ import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
+import com.univreview.util.Util
 import kotlinx.android.synthetic.main.review_item.view.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -21,15 +22,18 @@ import java.lang.StringBuilder
 class ReviewItemView(context: Context) : FrameLayout(context) {
 
     private lateinit var review: Review
+    private var id: Long = 0L
 
     init {
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true)
         layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        likeLayout.setOnClickListener { callReviewLike() }
 
     }
 
     fun setData(review: Review) {
         Logger.v("review: $review")
+        this.id = review.id
         this.review = review.apply {
             user?.let {
                 nameTxt.text = it.name
@@ -50,6 +54,7 @@ class ReviewItemView(context: Context) : FrameLayout(context) {
                 contentTxt.text = content
             }
 
+            likeImg.isSelected = isLike
             likeCnt.text = String.format(context.getString(R.string.people_cnt), likeCount)
             commentCnt.text = String.format(context.getString(R.string.people_cnt), commentCount)
 
@@ -93,15 +98,38 @@ class ReviewItemView(context: Context) : FrameLayout(context) {
         }
     }
 
-    private fun callReviewLike(id: Long) {
-        Retro.instance.reviewService().callReviewLike(App.setHeader(), id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+    private fun callReviewLike() {
+        setLikeState(likeImg.isSelected)
+        if (id != 0L) {
+            Retro.instance.reviewService().callReviewLike(App.setHeader(), review.id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({    // 좋아요 성공했을 경우
+                        review.isLike = likeImg.isSelected
+                        if (review.isLike) {
+                            review.likeCount++
+                        } else {
+                            review.likeCount--
+                        }
+                    }, { setLikeState(likeImg.isSelected) })
+        } else {
+            setLikeState(likeImg.isSelected)
+            Util.toast("네트워크 설정을 확인해주세요.")
+        }
+    }
 
-                }, {
+    private fun setLikeState(isLike: Boolean) {
+        val index = likeCnt.text.indexOf("명")
+        var count = likeCnt.text.substring(0, index).toInt()
+        if (isLike) { // 좋아요가 눌린 상태
+            count--
+            likeImg.isSelected = false
+        } else {  // 좋아요를 누르기 전 상태
+            count++
+            likeImg.isSelected = true
+        }
+        likeCnt.text = String.format(context.getString(R.string.people_cnt), count)
 
-                })
     }
 
 }

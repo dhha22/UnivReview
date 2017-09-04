@@ -317,7 +317,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/like_layout"
+            android:id="@+id/likeLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="24dp"
@@ -326,7 +326,7 @@
             android:paddingLeft="14dp">
 
             <ImageView
-                android:id="@+id/like_img"
+                android:id="@+id/likeImg"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_gravity="center"
