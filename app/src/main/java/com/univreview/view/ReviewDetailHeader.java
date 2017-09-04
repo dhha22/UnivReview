@@ -1,3 +1,4 @@
+/*
 package com.univreview.view;
 
 import android.content.Context;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 
 import com.univreview.App;
 import com.univreview.R;
-import com.univreview.model.Review;
+import com.univreview.model.model_kotlin.Review;
 import com.univreview.model.ReviewLike;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
@@ -28,9 +29,11 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+*/
 /**
  * Created by DavidHa on 2017. 6. 18..
- */
+ *//*
+
 
 public class ReviewDetailHeader extends FrameLayout {
     @BindView(R.id.subject_professor) TextView subjectProfessorTxt;
@@ -149,3 +152,4 @@ public class ReviewDetailHeader extends FrameLayout {
                 }, ErrorUtils::parseError);
     }
 }
+*/

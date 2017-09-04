@@ -49,7 +49,7 @@ public class ReviewTotalScoreView extends CardView {
             setVisibility(VISIBLE);
             averageScoreTxt.setText(String.valueOf(averageScore));
             averageIndicator.setRating(averageScore);
-            reviewRatingIndicatorView.setData(review);
+           // reviewRatingIndicatorView.setData(review);
         } else {
             setVisibility(GONE);
         }

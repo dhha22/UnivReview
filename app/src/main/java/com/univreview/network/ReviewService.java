@@ -4,6 +4,7 @@ import com.univreview.model.LikeResponse;
 import com.univreview.model.ReviewComment;
 import com.univreview.model.ReviewLike;
 import com.univreview.model.ReviewReport;
+import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.DataModel;
 import com.univreview.model.model_kotlin.RecentRvListModel;
 import com.univreview.model.model_kotlin.ResultModel;
@@ -65,6 +66,21 @@ public interface ReviewService {
     @GET(Retro.VERSION + "subjects/{subjectId}/professors/{professorId}/reviews")
     Observable<DataModel<ReviewListModel>> callReviewListBySubjAndProf(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId, @Path("professorId") long professorId);
 
+    // 리뷰 단일 조회
+
+    @GET(Retro.VERSION + "reviews/{reviewId}")
+    Observable<DataModel<Review>> callReviewSingle(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+
+    // 리뷰 댓글 조회
+    @GET(Retro.VERSION + "reviews/{reviewId}/review_comments")
+    Observable<DataListModel> callReviewComments(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+
+    // 리뷰 댓글 등록
+    @POST(Retro.VERSION + "reviews/{reviewId}/review_comments")
+    Observable<DataModel> postReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+
+    
+
     @POST("report")
     Observable<ReviewReport> postReviewReport(@HeaderMap Map<String, String> headers, @Body ReviewReport body);
 
@@ -75,8 +91,5 @@ public interface ReviewService {
     @DELETE("comment/review/{commentId}")
     Observable<ResponseBody> deleteComment(@HeaderMap Map<String, String> headers, @Path("commentId") long id);
 
-    // 리뷰 좋아요
-    @POST("like/review")
-    Observable<LikeResponse> likeReview(@HeaderMap Map<String, String> headers, @Body ReviewLike body);
 
 }

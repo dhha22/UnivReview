@@ -44,7 +44,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         super.onCreate(savedInstanceState)
         presenter = ReviewDetailPresenter().apply {
             view = this@ReviewDetailFragment
-            review = arguments.getSerializable("review") as Review
+            review = arguments.getParcelable<Review>("review")
             context = getContext()
         }
 
@@ -75,8 +75,8 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
 
     private fun init() {
         headerView = ReviewDetailHeader(context).apply {
-            setCommentMoreBtnListener { presenter.loadCommentItem() }
-            setEtcBtnClickListener { presenter.dialog.show() }
+            //setCommentMoreBtnListener { presenter.loadCommentItem() }
+            //setEtcBtnClickListener { presenter.dialog.show() }
 
         }
         setHeaderData(presenter.review)
@@ -91,7 +91,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     }
 
     override fun setHeaderData(review: Review) {
-        //headerView.setData(review)
+        headerView.setData(review)
     }
 
 
@@ -117,7 +117,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     }
 
     override fun setCommentMoreBtn(hasMore: Boolean) {
-        headerView.setCommentMoreBtn(hasMore)
+        //headerView.setCommentMoreBtn(hasMore)
     }
 
 

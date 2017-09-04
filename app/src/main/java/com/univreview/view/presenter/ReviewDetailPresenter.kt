@@ -28,8 +28,8 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
 
     var page = DEFAULT_PAGE
-    lateinit var context:Context
-    lateinit var review : Review
+    lateinit var context: Context
+    lateinit var review: Review
     lateinit var view: ReviewDetailContract.View
     lateinit var adapterModel: ReviewDetailAdapterContract.Model
     lateinit var adapterView: ReviewDetailAdapterContract.View
@@ -49,40 +49,35 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
     override fun loadReviewSingle() {
         // review single api 호출
-      /*  Retro.instance.reviewService().getReview(App.setAuthHeader(App.userToken), review.id)
+        Retro.instance.reviewService().callReviewSingle(App.setHeader(), review.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    val review = result.review.apply {
-                        subjectDetail.subject.name = subjectName
-                        subjectDetail.professor.name = professorName
-                        user.name = userName
-                        user.authenticated = authenticated
-                    }
-                    view.setHeaderData(review)    // review 동기화
-                }, { ErrorUtils.parseError(it) })*/
+                .subscribe({
+                    review = it.data
+                    view.setHeaderData(it.data)
+                }, { ErrorUtils.parseError(it) })
     }
 
     override fun loadCommentItem() {
         // 가장 최신에 달린 댓글이 list 하단에 존재
-       /* Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), review.id, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    if (page == DEFAULT_PAGE) {
-                        adapterModel.clearItem()
-                    }
-                    // 댓글 개수가 5개 이상이면 더보기 버튼 표시
-                   // view.setCommentMoreBtn(result.comments.size == 5)
-                    page.inc()
+        /* Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), review.id, page)
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe({ result ->
+                     if (page == DEFAULT_PAGE) {
+                         adapterModel.clearItem()
+                     }
+                     // 댓글 개수가 5개 이상이면 더보기 버튼 표시
+                    // view.setCommentMoreBtn(result.comments.size == 5)
+                     page.inc()
 
-                    Logger.v("comment result: " + result.toString())
-                    Observable.from(result.comments)
-                           // .subscribe({ data -> adapterModel.addItem(data) }, { Logger.e(it) })
-                }) { error ->
-                    this.page = DEFAULT_PAGE
-                    ErrorUtils.parseError(error)
-                }*/
+                     Logger.v("comment result: " + result.toString())
+                     Observable.from(result.comments)
+                            // .subscribe({ data -> adapterModel.addItem(data) }, { Logger.e(it) })
+                 }) { error ->
+                     this.page = DEFAULT_PAGE
+                     ErrorUtils.parseError(error)
+                 }*/
     }
 
     override fun postComment(body: ReviewComment) {
@@ -90,7 +85,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                //.subscribe({ result -> adapterModel.addLastItem(result) }, { ErrorUtils.parseError(it) })
+        //.subscribe({ result -> adapterModel.addLastItem(result) }, { ErrorUtils.parseError(it) })
 
     }
 
@@ -107,11 +102,10 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     }
 
 
-
     private val dialogItemClickListener = { _: View, position: Int ->
         when (position) {
             0 -> Navigator.goUploadReviewDetail(context, review)    // 리뷰 수정 or 상세리뷰 쓰기
-            //1 -> Navigator.goReviewReport(context, review.id)   //리뷰 신고
+        //1 -> Navigator.goReviewReport(context, review.id)   //리뷰 신고
         }
     }
 }

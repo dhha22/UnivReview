@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.univreview.R;
 import com.univreview.log.Logger;
-import com.univreview.model.Review;
+import com.univreview.model.model_kotlin.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,11 +45,11 @@ public class ReviewRatingIndicatorView extends FrameLayout {
 
     public void setData(Review review){
         Logger.v("review rating: " + review);
-        difficultyRate.setRating(review.difficultyRate);
-        assignmentRate.setRating(review.assignmentRate);
-        attendanceRate.setRating(review.attendanceRate);
-        gradeRate.setRating(review.gradeRate);
-        achievementRate.setRating(review.achievementRate);
+        difficultyRate.setRating(review.getDifficultyRate());
+        assignmentRate.setRating(review.getAssignmentRate());
+        attendanceRate.setRating(review.getAttendanceRate());
+        gradeRate.setRating(review.getGradeRate());
+        achievementRate.setRating(review.getAchievementRate());
         difficultyTxt.setText(review.getDifficultyRateMessage());
         assignmentTxt.setText(review.getAssignmentRateMessage());
         attendaceTxt.setText(review.getAttendanceRateMessage());

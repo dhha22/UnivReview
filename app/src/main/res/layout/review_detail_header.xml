@@ -13,7 +13,7 @@
         android:paddingTop="16dp">
 
         <TextView
-            android:id="@+id/subject_professor"
+            android:id="@+id/subjectProfessorTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -25,7 +25,7 @@
 
 
     <LinearLayout
-        android:id="@+id/user_layout"
+        android:id="@+id/userLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -34,7 +34,7 @@
         android:paddingRight="16dp">
 
         <TextView
-            android:id="@+id/name_txt"
+            android:id="@+id/nameTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,7 +42,7 @@
             android:textSize="14dp" />
 
         <TextView
-            android:id="@+id/auth_mark"
+            android:id="@+id/authMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -58,7 +58,7 @@
 
 
         <TextView
-            android:id="@+id/time_txt"
+            android:id="@+id/timeTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -73,7 +73,7 @@
             android:layout_weight="1" />
 
         <ImageButton
-            android:id="@+id/etc_btn"
+            android:id="@+id/etcBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
@@ -95,12 +95,12 @@
     </LinearLayout>
 
     <com.univreview.view.ReviewRatingIndicatorView
-        android:id="@+id/review_rating_indicator_view"
+        android:id="@+id/reviewRatingIndicatorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:id="@+id/review_detail_layout"
+        android:id="@+id/reviewDetailLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -118,7 +118,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/review_detail_txt"
+            android:id="@+id/contentTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -132,14 +132,14 @@
         android:background="@color/rowColor" />
 
     <LinearLayout
-        android:id="@+id/bottom_layout"
+        android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/like_layout"
+            android:id="@+id/likeLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="24dp"
@@ -148,7 +148,7 @@
             android:paddingLeft="14dp">
 
             <ImageView
-                android:id="@+id/like_img"
+                android:id="@+id/likeImg"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_gravity="center"
@@ -156,7 +156,7 @@
                 android:src="@drawable/like_selector" />
 
             <TextView
-                android:id="@+id/like_cnt"
+                android:id="@+id/likeCnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
@@ -165,7 +165,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/like_txt"
+                android:id="@+id/likeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/review_like_txt"
@@ -173,14 +173,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/comment_layout"
+            android:id="@+id/commentLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="18dp">
 
             <ImageView
-                android:id="@+id/comment_img"
+                android:id="@+id/commentImg"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_gravity="center"
@@ -188,7 +188,7 @@
                 android:src="@drawable/ic_review_comment" />
 
             <TextView
-                android:id="@+id/comment_cnt"
+                android:id="@+id/commentCnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
@@ -197,7 +197,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/comment_txt"
+                android:id="@+id/commentTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/review_comment_txt"
@@ -209,7 +209,7 @@
         android:layout_height="1dp"
         android:background="@color/rowColor"/>
     <TextView
-        android:id="@+id/comment_more"
+        android:id="@+id/commentMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
