@@ -1,12 +1,8 @@
 package com.univreview.network;
 
-import com.univreview.model.PointHistoryModel;
 import com.univreview.model.PushId;
-import com.univreview.model.ResultMessage;
-import com.univreview.model.User;
+import com.univreview.model.model_kotlin.User;
 import com.univreview.model.UserModel;
-import com.univreview.model.UserTicket;
-import com.univreview.model.UserTicketModel;
 import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.DataModel;
 import com.univreview.model.model_kotlin.RvPoint;
@@ -20,7 +16,6 @@ import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -40,6 +35,8 @@ public interface UserService {
     Observable<ResponseBody> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
 
 
+    @GET(Retro.VERSION + "users/profile")
+    Observable<DataModel<User>> callUserProfile(@HeaderMap Map<String, String> headers);
 
     // user review point
     @GET(Retro.VERSION + "point_histories")

@@ -8,7 +8,11 @@ import com.univreview.adapter.contract.MyPageAdapterContract
 import com.univreview.listener.OnItemClickListener
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.model_kotlin.Setting
+import com.univreview.network.Retro
+import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.MyPageContract
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * Created by DavidHa on 2017. 9. 2..
@@ -36,5 +40,12 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
             }
             USER_IDENTIFY -> Navigator.goRegisterUserIdentity(context)
         }
+    }
+
+    override fun callUserProfile() {
+        Retro.instance.userService().callUserProfile(App.setHeader())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({view.setUserData(it.data)}, { ErrorUtils.parseError(it) })
     }
 }

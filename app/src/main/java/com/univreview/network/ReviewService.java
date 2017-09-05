@@ -1,8 +1,6 @@
 package com.univreview.network;
 
-import com.univreview.model.LikeResponse;
 import com.univreview.model.ReviewComment;
-import com.univreview.model.ReviewLike;
 import com.univreview.model.ReviewReport;
 import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.DataModel;
@@ -67,7 +65,6 @@ public interface ReviewService {
     Observable<DataModel<ReviewListModel>> callReviewListBySubjAndProf(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId, @Path("professorId") long professorId);
 
     // 리뷰 단일 조회
-
     @GET(Retro.VERSION + "reviews/{reviewId}")
     Observable<DataModel<Review>> callReviewSingle(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
 
@@ -79,7 +76,7 @@ public interface ReviewService {
     @POST(Retro.VERSION + "reviews/{reviewId}/review_comments")
     Observable<DataModel> postReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
 
-    
+
 
     @POST("report")
     Observable<ReviewReport> postReviewReport(@HeaderMap Map<String, String> headers, @Body ReviewReport body);

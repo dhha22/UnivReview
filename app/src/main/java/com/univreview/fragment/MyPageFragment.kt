@@ -65,6 +65,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        presenter.callUserProfile()
     }
 
     private fun init() {
@@ -82,15 +83,15 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
 
     override fun setUserData(data: User) {
         nameTxt.text = data.name
-        //departmentTxt.text
-        //majorTxt.text
+        departmentTxt.text = data.departmentName
+        majorTxt.text = data.majorName
         Util.setProfileImage(data.profileImageUrl, profileImage)
         adapter.clear()
         Observable.from(settings)
                 .map {
                     when (it.id) {
-                        0L -> it.previewStr = StringBuilder("개").toString()
-                        1L -> it.previewStr = StringBuilder(" point").toString()
+                        0L -> it.previewStr = StringBuilder(data.reviewCount.toString() + "개").toString()
+                        1L -> it.previewStr = StringBuilder(data.point.toString() + " point").toString()
                     }
                     it
                 }.subscribe({ adapter.addItem(it) }, { Logger.e(it) })

@@ -10,4 +10,5 @@ interface MyPageContract {
         fun setUserData(data : User)
     }
 
+    fun callUserProfile();
 }

@@ -18,7 +18,11 @@ data class User(var provider: String, // facebook, kakao
                 var universityId: Long? = null,
                 var departmentId: Long? = null,
                 var majorId: Long? = null,
-                val authenticated : Boolean = false) : Parcelable {
+                val authenticated : Boolean = false,
+                val departmentName : String? = null,
+                val majorName : String? = null,
+                val point:Int = 0,
+                val reviewCount:Int = 0) : Parcelable {
 
 
     constructor(source: Parcel) : this(
@@ -33,7 +37,11 @@ data class User(var provider: String, // facebook, kakao
             source.readLong(),
             source.readLong(),
             source.readLong(),
-            source.readInt() != 0
+            source.readInt() != 0,
+            source.readString(),
+            source.readString(),
+            source.readInt(),
+            source.readInt()
     )
 
     override fun describeContents() = 0
@@ -51,6 +59,10 @@ data class User(var provider: String, // facebook, kakao
         writeLong(departmentId ?: 0)
         writeLong(majorId ?: 0)
         dest.writeInt(if(authenticated) 1 else 0)  // true = 1, false 0
+        writeString(departmentName)
+        writeString(majorName)
+        writeInt(point)
+        writeInt(reviewCount)
     }
 
     companion object {

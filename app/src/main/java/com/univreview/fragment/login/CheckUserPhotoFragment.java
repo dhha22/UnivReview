@@ -87,7 +87,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
                     Logger.v("result: " + result);
                     User user = new User();
                     user.studentImageUrl = result.fileLocation;
-                    Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
+                    /*Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate(() -> {
@@ -95,7 +95,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
                                 Navigator.goUserAuthCompleted(getContext());
                                 getActivity().finish();
                             })
-                            .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);
+                            .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);*/
                 }, error -> {
                     progressDialog.dismiss();
                     ErrorUtils.parseError(error);
