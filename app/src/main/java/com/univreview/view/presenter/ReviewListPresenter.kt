@@ -5,6 +5,7 @@ import android.view.View
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewListAdapterContract
+import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
@@ -33,6 +34,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     lateinit var adapterModel: ReviewListAdapterContract.Model
     var adapterView: ReviewListAdapterContract.View? = null
         set(value) {
+            value?.setMoreItemClickListener(moreBtnItemClickListener)
             value?.setOnItemClickListener(this)
         }
 
@@ -105,14 +107,28 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         } else if (result.professors != null) {
             observable = Observable.from(result.professors).map { it.getName() }
         }
-        observable?.toList()?.subscribe({ name -> view.setDialog(name) }, { Logger.e(it) })
+        //observable?.toList()?.subscribe({ name -> view.setDialog(name) }, { Logger.e(it) })
     }
 
 
+    // Review List 더보기 이벤트 (1. 수정, 2. 신고...)
+    private val moreBtnItemClickListener = OnItemClickListener { _, position ->
+        Logger.v("more btn click")
+        //  본인의 review item을 클릭했을 경우
+        val review = adapterModel.getItem(position) as Review
+        if (review.user?.uid == App.userId) {
+            view.setDialog(arrayListOf("수정하기"),
+                    OnItemClickListener { _, _ -> Navigator.goReviewDetail(context, review) })
+        } else {
+            view.setDialog(arrayListOf("신고하기"),
+                    OnItemClickListener { _, _ -> Navigator.goReviewReport(context, review.id) })
+        }
+    }
 
     // Review List Item
     override fun onItemClick(view: View, position: Int) {
         Logger.v("review list item click position: " + position)
         Navigator.goReviewDetail(context, adapterModel.getItem(position) as Review)
     }
+
 }

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.adapter.contract.ReviewListAdapterContract
+import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.model.enumeration.ReviewSearchType
@@ -15,6 +16,7 @@ import com.univreview.view.ReviewItemView
  */
 class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView: View? = null)
     : CustomAdapter(context, headerView), ReviewListAdapterContract.Model, ReviewListAdapterContract.View {
+    lateinit var moreBtnClickListener: OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         Logger.v("on Create View Holder")
@@ -46,8 +48,12 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
         return super.getItemViewType(position)
     }
 
-     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val v : ReviewItemView by lazy { itemView as ReviewItemView }
+    override fun setMoreItemClickListener(itemClickListener: OnItemClickListener) {
+        moreBtnClickListener = itemClickListener
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val v: ReviewItemView by lazy { itemView as ReviewItemView }
 
         init {
             if (type == ReviewSearchType.MY_REVIEW) {
@@ -56,6 +62,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
                 v.setMode(ReviewItemView.Status.READ_REVIEW)
             }
             v.setOnClickListener { itemClickListener.onItemClick(it, adapterPosition) }
+            v.moreBtnSetOnClickListener { moreBtnClickListener.onItemClick(it, adapterPosition) }
         }
     }
 }

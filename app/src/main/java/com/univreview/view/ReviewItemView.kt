@@ -1,6 +1,7 @@
 package com.univreview.view
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,12 @@ import kotlinx.android.synthetic.main.review_item.view.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.lang.StringBuilder
+import java.util.jar.Attributes
 
 /**
  * Created by DavidHa on 2017. 8. 28..
  */
-class ReviewItemView(context: Context) : FrameLayout(context) {
+class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : FrameLayout(context, attributeSet) {
 
     private lateinit var review: Review
     private var id: Long = 0L
@@ -73,6 +75,10 @@ class ReviewItemView(context: Context) : FrameLayout(context) {
 
     }
 
+    fun moreBtnSetOnClickListener(click: (view: View) -> Unit) {
+        moreBtn.setOnClickListener { click.invoke(this) }
+    }
+
     enum class Status {
         WRITE_REVIEW, MY_REVIEW, READ_REVIEW
     }
@@ -104,7 +110,8 @@ class ReviewItemView(context: Context) : FrameLayout(context) {
             Retro.instance.reviewService().callReviewLike(App.setHeader(), review.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({    // 좋아요 성공했을 경우
+                    .subscribe({
+                        // 좋아요 성공했을 경우
                         review.isLike = likeImg.isSelected
                         if (review.isLike) {
                             review.likeCount++

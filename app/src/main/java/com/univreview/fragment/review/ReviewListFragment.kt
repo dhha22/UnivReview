@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import com.univreview.App
 import com.univreview.R
 import com.univreview.adapter.ReviewListAdapter
+import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.EndlessRecyclerViewScrollListener
+import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.RandomImageModel
 import com.univreview.model.Review
@@ -25,6 +27,7 @@ import com.univreview.view.contract.ReviewListContract
 import com.univreview.view.presenter.ReviewListPresenter
 import com.univreview.widget.PreCachingLayoutManager
 import kotlinx.android.synthetic.main.fragment_review_list.*
+import kotlinx.android.synthetic.main.review_item.*
 
 /**
  * Created by DavidHa on 2017. 8. 7..
@@ -35,7 +38,6 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     lateinit var type: ReviewSearchType
     lateinit var name: String
     lateinit var presenter: ReviewListPresenter
-
     val randomImageModel = RandomImageModel()
 
     companion object {
@@ -61,11 +63,10 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         presenter.apply {
             view = this@ReviewListFragment
             context = getContext()
-            when(type){
+            when (type) {
                 ReviewSearchType.SUBJECT -> presenter.sbjId = id
                 ReviewSearchType.PROFESSOR -> presenter.profId = id
             }
-
         }
     }
 
@@ -73,7 +74,6 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_review_list, container, false)
         rootLayout.addView(view)
-
         return rootLayout
     }
 
@@ -136,7 +136,6 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
             it.adapterModel = adapter
             it.adapterView = adapter
         }
-        Logger.v("set recycler view")
         /*list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)
@@ -160,7 +159,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     override fun loadMore() {
         //setStatus(AbsListFragment.Status.LOADING_MORE)
         //Logger.v("page: " + page)
-     //   presenter.loadReviewItem(type, page)
+        //   presenter.loadReviewItem(type, page)
     }
 
     override fun setFilterName(filterName: String) {
@@ -168,8 +167,8 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         toolbar_subtitle_txt.text = filterName
     }
 
-    override fun setDialog(list: List<String>) {
-
+    override fun setDialog(list: List<String>, itemClickListener: OnItemClickListener) {
+        ListDialog(context, list, itemClickListener).show()
     }
 
     override fun setHeaderData(rate: Float, review: Review) {

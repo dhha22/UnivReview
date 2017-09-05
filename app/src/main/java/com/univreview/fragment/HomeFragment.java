@@ -3,6 +3,7 @@ package com.univreview.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,7 @@ import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.model.model_kotlin.Review;
 import com.univreview.network.Retro;
 import com.univreview.util.ErrorUtils;
+import com.univreview.view.RecyclerViewCustom;
 
 import java.util.List;
 
@@ -37,11 +39,12 @@ public class HomeFragment extends BaseFragment {
     private static final boolean DEFAULT_EXPAND_STATE = false;
     @BindView(R.id.app_bar_layout) AppBarLayout appBarLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.scrollView) NestedScrollView scrollView;
     @BindView(R.id.collapse_btn) ImageButton collapseBtn;
     @BindView(R.id.subject_txt) TextView subjectTxt;
     @BindView(R.id.professor_txt) TextView professorTxt;
-    @BindView(R.id.latest_culture_recycler_view) RecyclerView latestCultureRecyclerView;
-    @BindView(R.id.latest_major_recycler_view) RecyclerView latestMajorRecyclerView;
+    @BindView(R.id.latest_culture_recycler_view) RecyclerViewCustom latestCultureRecyclerView;
+    @BindView(R.id.latest_major_recycler_view) RecyclerViewCustom latestMajorRecyclerView;
     private RecentRvAdapter cultureAdapter;
     private RecentRvAdapter majorAdapter;
     private boolean isExpand = DEFAULT_EXPAND_STATE;
@@ -103,6 +106,7 @@ public class HomeFragment extends BaseFragment {
         latestMajorRecyclerView.setLayoutManager(majorLayoutManager);
         latestCultureRecyclerView.setAdapter(cultureAdapter);
         latestMajorRecyclerView.setAdapter(majorAdapter);
+        scrollView.setSmoothScrollingEnabled(true);
         latestCultureRecyclerView.setNestedScrollingEnabled(false);
         latestMajorRecyclerView.setNestedScrollingEnabled(false);
 

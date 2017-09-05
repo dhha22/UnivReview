@@ -1,6 +1,7 @@
 package com.univreview.view.contract
 
 import com.univreview.fragment.AbsListFragment
+import com.univreview.listener.OnItemClickListener
 import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.view.ReviewTotalScoreView
@@ -10,7 +11,7 @@ import com.univreview.view.ReviewTotalScoreView
  */
 interface ReviewListContract {
     interface View : BaseView{
-        fun setDialog(list: List<String>)
+        fun setDialog(list: List<String>, itemClickListener: OnItemClickListener)
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
         fun setHeaderData(rate : Float, review : Review)

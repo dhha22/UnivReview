@@ -8,6 +8,7 @@ import com.univreview.listener.OnItemClickListener
 interface ReviewListAdapterContract {
     interface View {
         fun setOnItemClickListener(itemClickListener: OnItemClickListener)
+        fun setMoreItemClickListener(itemClickListener: OnItemClickListener)
     }
 
     interface Model : BaseModel
