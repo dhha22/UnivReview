@@ -71,7 +71,8 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
             Retro.instance.reviewService().callReviewLike(App.setHeader(), review.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({    // 좋아요 성공했을 경우
+                    .subscribe({
+                        // 좋아요 성공했을 경우
                         review.isLike = likeImg.isSelected
                         if (review.isLike) {
                             review.likeCount++
@@ -96,6 +97,9 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
             likeImg.isSelected = true
         }
         likeCnt.text = String.format(context.getString(R.string.people_cnt), count)
+    }
 
+    fun setEtcBtnClickListener(clickListener: OnClickListener) {
+        etcBtn.setOnClickListener (clickListener)
     }
 }

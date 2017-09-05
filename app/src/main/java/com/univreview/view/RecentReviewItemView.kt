@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 
 import com.univreview.App
+import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.RandomImageModel
@@ -42,5 +43,6 @@ class RecentReviewItemView(context: Context?) : FrameLayout(context) {
             gradeRatingBar.rating = it.gradeRate
             achievementRatingBar.rating = it.achievementRate
         }
+        setOnClickListener { Navigator.goReviewDetail(context, review) }
     }
 }

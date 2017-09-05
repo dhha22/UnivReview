@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.univreview.R
 import com.univreview.adapter.ReviewCommentAdapter
+import com.univreview.dialog.ListDialog
 import com.univreview.fragment.BaseFragment
+import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.model.ReviewComment
@@ -18,7 +20,6 @@ import com.univreview.view.ReviewDetailHeader
 import com.univreview.view.contract.ReviewDetailContract
 import com.univreview.view.presenter.ReviewDetailPresenter
 import kotlinx.android.synthetic.main.fragment_review_detail.*
-import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 8..
@@ -76,7 +77,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     private fun init() {
         headerView = ReviewDetailHeader(context).apply {
             //setCommentMoreBtnListener { presenter.loadCommentItem() }
-            //setEtcBtnClickListener { presenter.dialog.show() }
+            setEtcBtnClickListener (presenter.etcBtnClickListener)
 
         }
         setHeaderData(presenter.review)
@@ -114,6 +115,10 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
                 .setPositiveButton("확인", clickListener)
                 .setNegativeButton("취소", null)
                 .show()
+    }
+
+    override fun setDialog(list: List<String>, itemClickListener: OnItemClickListener) {
+        ListDialog(context, list, itemClickListener).show()
     }
 
     override fun setCommentMoreBtn(hasMore: Boolean) {
