@@ -10,16 +10,16 @@ import com.univreview.view.ReviewTotalScoreView
  * Created by DavidHa on 2017. 8. 6..
  */
 interface ReviewListContract {
-    interface View : BaseView{
+    interface View : BaseView {
         fun setDialog(list: List<String>, itemClickListener: OnItemClickListener)
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
-        fun setHeaderData(rate : Float, review : Review)
+        fun setHeaderData(difficultyRateAvg: Float, assignmentRateAvg: Float, attendanceRateAvg: Float, gradeRate: Float, achievementRate: Float)
         fun setHeaderViewVisibility(isVisibility: Boolean)
         fun setFilterName(filterName: String)
     }
 
-     fun loadReviewItem(type: ReviewSearchType, page: Int)
-     fun searchProfessor(subjectId: Long)
-     fun searchSubject(professorId: Long)
+    fun loadReviewItem(type: ReviewSearchType, page: Int)
+    fun searchProfessor(subjectId: Long)
+    fun searchSubject(professorId: Long)
 }

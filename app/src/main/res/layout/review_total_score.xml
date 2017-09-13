@@ -20,7 +20,7 @@
             android:textSize="24dp" />
 
         <TextView
-            android:id="@+id/average_score_txt"
+            android:id="@+id/averageScoreTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatRatingBar
-        android:id="@+id/average_indicator"
+        android:id="@+id/averageIndicator"
         style="@style/reviewRatingIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:isIndicator="true" />
 
     <com.univreview.view.ReviewRatingIndicatorView
-        android:id="@+id/review_rating_indicator_view"
+        android:id="@+id/reviewRatingIndicatorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers
 class PointListPresenter : PointListContract {
     private val DEFAULT_PAGE = 1
     lateinit var view: PointListContract.View
-    lateinit var adapterModel : PointAdapterContract.Model
+    lateinit var adapterModel: PointAdapterContract.Model
 
 
     override fun callPointHistories(page: Int) {
@@ -32,10 +32,12 @@ class PointListPresenter : PointListContract {
     }
 
     private fun pointResponse(pointHistories: List<RvPoint>, page: Int) {
-        if (page == AbsListFragment.DEFAULT_PAGE) adapterModel.clearItem()
-        view.setStatus(AbsListFragment.Status.IDLE)
-        Observable.from(pointHistories)
-                .subscribe({ adapterModel.addItem(it) }, { Logger.e(it) })
+        if (pointHistories.isNotEmpty()) {
+            if (page == AbsListFragment.DEFAULT_PAGE) adapterModel.clearItem()
+            view.setStatus(AbsListFragment.Status.IDLE)
+            Observable.from(pointHistories)
+                    .subscribe({ adapterModel.addItem(it) }, { Logger.e(it) })
+        }
     }
 
     override fun callReviewTickets() {
@@ -44,14 +46,14 @@ class PointListPresenter : PointListContract {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     view.setUserTicket(it.data)
-                }, {ErrorUtils.parseError(it)})
+                }, { ErrorUtils.parseError(it) })
     }
 
     override fun buyReviewTicket() {
         Retro.instance.userService().buyReviewTicket(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({callPointHistories(DEFAULT_PAGE)},{ErrorUtils.parseError(it)})
+                .subscribe({ callPointHistories(DEFAULT_PAGE) }, { ErrorUtils.parseError(it) })
     }
 
 }

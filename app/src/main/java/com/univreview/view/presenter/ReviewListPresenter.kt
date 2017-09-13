@@ -5,7 +5,6 @@ import android.view.View
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewListAdapterContract
-import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
@@ -46,13 +45,13 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         var observable: Observable<DataModel<ReviewListModel>>? = null
 
         when (type) {
-            ReviewSearchType.MY_REVIEW -> observable = Retro.instance.reviewService().callMyReview(App.setHeader())
-            ReviewSearchType.PROFESSOR -> observable = Retro.instance.reviewService().callReviewListByProfessor(App.setHeader(), profId)
-            ReviewSearchType.SUBJECT -> observable = Retro.instance.reviewService().callReviewListBySubject(App.setHeader(), sbjId)
+            ReviewSearchType.MY_REVIEW -> observable = Retro.instance.reviewService().callMyReview(App.setHeader(), page)
+            ReviewSearchType.PROFESSOR -> observable = Retro.instance.reviewService().callReviewListByProfessor(App.setHeader(), profId, page)
+            ReviewSearchType.SUBJECT -> observable = Retro.instance.reviewService().callReviewListBySubject(App.setHeader(), sbjId, page)
         }
 
         if (sbjId != 0L && profId != 0L) {
-            observable = Retro.instance.reviewService().callReviewListBySubjAndProf(App.setHeader(), sbjId, profId)
+            observable = Retro.instance.reviewService().callReviewListBySubjAndProf(App.setHeader(), sbjId, profId, page)
         }
 
         observable?.let {
@@ -63,18 +62,17 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         }
     }
 
-    private fun response(type: ReviewSearchType, page: Int, reviewListModel: ReviewListModel) {
-        view.setResult(page)
-        view.setStatus(AbsListFragment.Status.IDLE)
-        reviewListModel.let {
+    private fun response(type: ReviewSearchType, page: Int, rvListModel: ReviewListModel) {
+        if (rvListModel.reviews.isNotEmpty()) {
+            view.setResult(page)
+            view.setStatus(AbsListFragment.Status.IDLE)
+
             if (type != ReviewSearchType.MY_REVIEW) {
-                //view.setHeaderData(reviewListModel.totalAverageRates, reviewListModel.reviewAverage)
+                view.setHeaderData(rvListModel.difficultyRateAvg, rvListModel.assignmentRateAvg,
+                        rvListModel.attendanceRateAvg, rvListModel.gradeRateAvg, rvListModel.achievementRateAvg)
             }
-            Observable.from<Review>(reviewListModel.reviews)
-                    .subscribe({
-                        Logger.v("add item: $it")
-                        adapterModel.addItem(it)
-                    }, { Logger.e(it) })
+            Observable.from<Review>(rvListModel.reviews)
+                    .subscribe { adapterModel.addItem(it) }
 
         }
     }
@@ -111,7 +109,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     }
 
 
-    // Review List 더보기 이벤트 (1. 수정, 2. 신고...)
+    // Review List 더보기 이벤트 (1. 수정하기, 2. 신고하기)
     private val moreBtnItemClickListener = OnItemClickListener { _, position ->
         Logger.v("more btn click")
         //  본인의 review item을 클릭했을 경우

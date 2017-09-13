@@ -49,9 +49,9 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 }, { onErrorReview(it) })
     }
 
-    fun onErrorReview(throwable: Throwable){
+    fun onErrorReview(throwable: Throwable) {
         Logger.e("error")
-        if(ErrorUtils.ERROR_401 == ErrorUtils.parseError(throwable)){
+        if (ErrorUtils.ERROR_401 == ErrorUtils.parseError(throwable)) {
             view.showTicketDialog()
         }
     }
@@ -65,6 +65,14 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribe({ onSuccessComment(it) }, { ErrorUtils.parseError(it) })
     }
 
+    // 리뷰 댓글 추가
+    fun onSuccessComment(result: DataListModel<RvComment>) {
+        view.hasMoreComment(result.pagination?.nextPage != 0)
+        if (result.data.isNotEmpty()) {
+            Observable.from(result.data).subscribe { adapterModel.addLastItem(it) }
+        }
+    }
+
     // 리뷰 댓글 쓰기
     override fun postComment(body: RvComment) {
         Retro.instance.reviewService().postReviewComment(App.setHeader(), review.id, body)
@@ -74,28 +82,20 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribe({ adapterModel.addLastItem(it.data) }, { ErrorUtils.parseError(it) })
     }
 
-    // 리뷰 댓글 추가
-    fun onSuccessComment(result: DataListModel<RvComment>) {
-        view.hasMoreComment(result.pagination?.nextPage != 0)
-        Observable.from(result.data).subscribe { adapterModel.addLastItem(it) }
-    }
-
-
-
 
     // 리뷰 댓글 삭제
     override fun onLongClick(view: View, position: Int): Boolean {
         val comment = adapterModel.getItem(position - 1) as RvComment
         Logger.v("delete comment item: $comment")
         // 본인 댓글일 경우
-         if(App.userId == (comment.userId)) {
-             this.view.showCommentDeleteDialog(DialogInterface.OnClickListener { _, _ ->
-                 Retro.instance.reviewService().deleteReviewComment(App.setHeader(), comment.id)
-                         .subscribeOn(Schedulers.io())
-                         .observeOn(AndroidSchedulers.mainThread())
-                         .subscribe({ adapterModel.removeItem(position) }, { ErrorUtils.parseError(it) })
-             })
-         }
+        if (App.userId == (comment.userId)) {
+            this.view.showCommentDeleteDialog(DialogInterface.OnClickListener { _, _ ->
+                Retro.instance.reviewService().deleteReviewComment(App.setHeader(), comment.id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ adapterModel.removeItem(position) }, { ErrorUtils.parseError(it) })
+            })
+        }
         return true
     }
 

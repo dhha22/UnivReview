@@ -1,3 +1,4 @@
+/*
 package com.univreview.view;
 
 import android.content.Context;
@@ -17,9 +18,11 @@ import com.univreview.util.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by DavidHa on 2017. 2. 20..
- */
+ *//*
+
 public class ReviewTotalScoreView extends CardView {
     @BindView(R.id.average_score_txt) TextView averageScoreTxt;
     @BindView(R.id.average_indicator) AppCompatRatingBar averageIndicator;
@@ -42,7 +45,7 @@ public class ReviewTotalScoreView extends CardView {
         setLayoutParams(params);
     }
 
-    public void setData(float rate, Review review) {
+    public void setData(difficultyRateAvg:Float, assignmentRateAvg:Float, attendanceRateAvg:Float, gradeRate:Float, achievementRate:Float) {
         float averageScore = Math.round(rate * 100f) / 100f;
         Logger.v("rate: " + rate);
         if (rate != 0) {
@@ -55,3 +58,4 @@ public class ReviewTotalScoreView extends CardView {
         }
     }
 }
+*/

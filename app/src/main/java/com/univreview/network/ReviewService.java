@@ -50,19 +50,19 @@ public interface ReviewService {
 
     // 내 리뷰 리스트
     @GET(Retro.VERSION + "reviews/mine")
-    Observable<DataModel<ReviewListModel>> callMyReview(@HeaderMap Map<String, String> headers);
+    Observable<DataModel<ReviewListModel>> callMyReview(@HeaderMap Map<String, String> headers, @Query("page") int page);
 
     // 교수에 관한 리뷰 리스트
     @GET(Retro.VERSION + "professors/{professorId}/reviews")
-    Observable<DataModel<ReviewListModel>> callReviewListByProfessor(@HeaderMap Map<String, String> headers, @Path("professorId") long professorId);
+    Observable<DataModel<ReviewListModel>> callReviewListByProfessor(@HeaderMap Map<String, String> headers, @Path("professorId") long professorId, @Query("page") int page);
 
     // 과목에 관한 리뷰 리스트
     @GET(Retro.VERSION + "subjects/{subjectId}/reviews")
-    Observable<DataModel<ReviewListModel>> callReviewListBySubject(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId);
+    Observable<DataModel<ReviewListModel>> callReviewListBySubject(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId, @Query("page") int page);
 
     // 과목, 교수에 관한 리뷰 리스트
     @GET(Retro.VERSION + "subjects/{subjectId}/professors/{professorId}/reviews")
-    Observable<DataModel<ReviewListModel>> callReviewListBySubjAndProf(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId, @Path("professorId") long professorId);
+    Observable<DataModel<ReviewListModel>> callReviewListBySubjAndProf(@HeaderMap Map<String, String> headers, @Path("subjectId") long subjectId, @Path("professorId") long professorId, @Query("page") int page);
 
     // 리뷰 단일 조회
     @GET(Retro.VERSION + "reviews/{reviewId}")

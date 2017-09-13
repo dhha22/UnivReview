@@ -20,12 +20,23 @@ data class Review(override var id: Long = 0,
                   val reported: Boolean = false,
                   val createdAt: String? = null,
                   val user: User? = null,
-                  val subject : Subject? = null,
+                  val subject: Subject? = null,
                   val professor: Professor? = null,
                   var isLike: Boolean = false) : AbstractDataProvider(), Parcelable {
+
+    constructor(difficultyRate: Float,
+                assignmentRate: Float,
+                attendanceRate: Float,
+                gradeRate: Float,
+                achievementRate: Float) : this(0, difficultyRate, assignmentRate, attendanceRate, gradeRate, achievementRate)
+
     override var name: String
         get() = ""
         set(value) {}
+
+    fun getAverageRate(): Float {
+        return Math.round(((difficultyRate + assignmentRate + attendanceRate + gradeRate + achievementRate) / 5F) * 100f) / 100f
+    }
 
     fun getDifficultyRateMessage(): String {
         when (Math.round(difficultyRate)) {
@@ -142,7 +153,7 @@ data class Review(override var id: Long = 0,
         writeParcelable(user, 0)
         writeParcelable(subject, 0)
         writeParcelable(professor, 0)
-        writeInt(if(isLike) 1 else 0)    // true = 1, false = 0
+        writeInt(if (isLike) 1 else 0)    // true = 1, false = 0
     }
 
     companion object {

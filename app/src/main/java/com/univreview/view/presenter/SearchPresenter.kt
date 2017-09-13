@@ -77,12 +77,14 @@ class SearchPresenter : SearchContract {
 
 
     private fun response(result: List<AbstractDataProvider>) {
-        view.setResult(page)
-        view.setStatus(AbsListFragment.Status.IDLE)
-        Observable.from(result)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ data -> searchAdapterModel.addItem(data) }, { Logger.e(it) })
+        if (result.isNotEmpty()) {
+            view.setResult(page)
+            view.setStatus(AbsListFragment.Status.IDLE)
+            Observable.from(result)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ data -> searchAdapterModel.addItem(data) }, { Logger.e(it) })
+        }
     }
 
 

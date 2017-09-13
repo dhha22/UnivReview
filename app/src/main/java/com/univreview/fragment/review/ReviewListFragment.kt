@@ -128,23 +128,24 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     }
 
     private fun setRecyclerView() {
+        val layoutManager = LinearLayoutManager(context)
         list.setMode(UnivReviewRecyclerView.Mode.DISABLED)
         list.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
-        list.setLayoutManager(LinearLayoutManager(context))
+        list.setLayoutManager(layoutManager)
         list.setAdapter(adapter)
         list.addItemDecoration(SimpleDividerItemDecoration(context))
         presenter.let {
             it.adapterModel = adapter
             it.adapterView = adapter
         }
-        /*list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)
                 if (lastVisibleItemPosition == totalItemCount - 1) {
                     lastItemExposed()
                 }
             }
-        })*/
+        })
     }
 
     override fun getRecyclerView(): AbsRecyclerView? {
@@ -172,8 +173,8 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         ListDialog(context, list, itemClickListener).show()
     }
 
-    override fun setHeaderData(rate: Float, review: Review) {
-        headerView.setData(rate, review)
+    override fun setHeaderData(difficultyRateAvg: Float, assignmentRateAvg: Float, attendanceRateAvg: Float, gradeRate: Float, achievementRate: Float) {
+        headerView.setData(difficultyRateAvg, assignmentRateAvg, attendanceRateAvg, gradeRate, achievementRate)
     }
 
     override fun setHeaderViewVisibility(isVisibility: Boolean) {
