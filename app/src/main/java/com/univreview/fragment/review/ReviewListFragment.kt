@@ -83,6 +83,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     }
 
     private fun init() {
+
         when (type) {
         // My Review
             ReviewSearchType.MY_REVIEW -> {
@@ -94,9 +95,9 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
         // Subject List, Professor List
             ReviewSearchType.SUBJECT, ReviewSearchType.PROFESSOR -> {
-                App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 headerView = ReviewTotalScoreView(context)
                 adapter = ReviewListAdapter(context, type, headerView)
+                App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 toolbar.visibility = View.GONE
                 list.setPadding(0, Util.dpToPx(context, 38), 0, 0)
                 smooth_app_bar_layout.addOnOffsetChangedListener { appBarLayout, _ ->
@@ -152,14 +153,14 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
     override fun refresh() {
         Logger.v("refresh")
-        setStatus(AbsListFragment.Status.REFRESHING)
+        setStatus(Status.REFRESHING)
         presenter.loadReviewItem(type, DEFAULT_PAGE)
     }
 
     override fun loadMore() {
-        //setStatus(AbsListFragment.Status.LOADING_MORE)
-        //Logger.v("page: " + page)
-        //   presenter.loadReviewItem(type, page)
+        setStatus(Status.LOADING_MORE)
+        Logger.v("page: " + page)
+        presenter.loadReviewItem(type, page)
     }
 
     override fun setFilterName(filterName: String) {
