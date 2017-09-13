@@ -10,6 +10,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeResponseCallback
 import com.kakao.usermgmt.response.model.UserProfile
 import com.univreview.App
+import com.univreview.BuildConfig
 import com.univreview.Navigator
 import com.univreview.log.Logger
 import com.univreview.model.SignIn
@@ -84,7 +85,7 @@ class LoginPresenter : LoginContract {
     //api
     private fun callLoginApi(provider: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
         Logger.v("provider: $provider, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
-        Retro.instance.loginService.callSignIn(SignIn(accessToken, provider))
+        Retro.instance.loginService.signIn(SignIn(accessToken, provider))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
@@ -99,7 +100,8 @@ class LoginPresenter : LoginContract {
                     .observeOn(Schedulers.newThread())
                     .subscribe {
                         App.setUniversityId(it.universityId!!)
-                        App.setUserId(it.uid)
+                        App.setUserId(it.id)
+                        App.setUid(it.uid)
                         App.setUserToken(it.accessToken)
                         App.setClient(it.client)
                     }
@@ -112,6 +114,9 @@ class LoginPresenter : LoginContract {
         if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_404) {   //신규회원
            // Navigator.goRegisterUserInfo(context, register)
         } else {
+            if(BuildConfig.DEBUG){
+                Navigator.goMain(context)
+            }
             Util.toast("서버 오류입니다.")
         }
     }

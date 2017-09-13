@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
+import com.univreview.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +41,7 @@ public class CommentInput extends FrameLayout {
     public String getInputMsg() {
         String inputStr = input.getText().toString();
         input.setText(null);
+        Util.hideKeyboard(getContext(), input);
         return inputStr.length() > 0 ? inputStr : null;
     }
 

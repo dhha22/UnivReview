@@ -50,7 +50,7 @@ public class ReviewDetailPresenter implements ReviewDetailContract, OnItemLongCl
     }
 
     @Override
-    public void loadCommentItem(int page) {
+    public void loadComments(int page) {
         // 가장 최신에 달린 댓글이 list 하단에 존재
         Retro.instance.reviewService().getReviewComment(App.setAuthHeader(App.userToken), view.getReviewId(), page)
                 .subscribeOn(Schedulers.io())
@@ -59,7 +59,7 @@ public class ReviewDetailPresenter implements ReviewDetailContract, OnItemLongCl
                     if (page == DEFAULT_PAGE) {
                         adapterModel.clearItem();
                     }
-                    view.setCommentMoreBtn(result.comments.size() == 5);
+                    view.hasMoreComment(result.comments.size() == 5);
                     view.setPage(page + 1);
 
                     Logger.v("comment result: " + result.toString());

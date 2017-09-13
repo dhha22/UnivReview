@@ -100,6 +100,18 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
     }
 
     fun setEtcBtnClickListener(clickListener: OnClickListener) {
-        etcBtn.setOnClickListener (clickListener)
+        etcBtn.setOnClickListener(clickListener)
+    }
+
+    fun setCommentMoreBtnListener(click: () -> Unit) {
+        commentMore.setOnClickListener { click.invoke() }
+    }
+
+    fun setCommentMoreBtn(hasMore: Boolean) {
+        if (hasMore) {
+            commentMore.visibility = View.VISIBLE
+        } else {
+            commentMore.visibility = View.GONE
+        }
     }
 }

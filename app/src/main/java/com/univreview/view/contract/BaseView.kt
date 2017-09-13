@@ -6,4 +6,5 @@ package com.univreview.view.contract
 interface BaseView {
     fun showProgress()
     fun dismissProgress()
+    fun showTicketDialog()
 }

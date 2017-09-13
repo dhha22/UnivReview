@@ -14,7 +14,7 @@ import com.univreview.fragment.BaseFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
-import com.univreview.model.ReviewComment
+import com.univreview.model.model_kotlin.RvComment
 import com.univreview.util.Util
 import com.univreview.view.ReviewDetailHeader
 import com.univreview.view.contract.ReviewDetailContract
@@ -76,18 +76,19 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
 
     private fun init() {
         headerView = ReviewDetailHeader(context).apply {
-            //setCommentMoreBtnListener { presenter.loadCommentItem() }
-            setEtcBtnClickListener (presenter.etcBtnClickListener)
+            setCommentMoreBtnListener { presenter.loadComments() }
+            setEtcBtnClickListener(presenter.etcBtnClickListener)
 
         }
         setHeaderData(presenter.review)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = ReviewCommentAdapter(context, headerView)
         recyclerView.adapter = adapter
-        commentInput.setSendListener { postReviewComment(presenter.review.id, commentInput.inputMsg) }
+        commentInput.setSendListener { postReviewComment(commentInput.inputMsg) }
         presenter.adapterModel = adapter
         presenter.adapterView = adapter
         presenter.loadReviewSingle()
+        presenter.loadComments()
 
     }
 
@@ -96,14 +97,11 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     }
 
 
-    private fun postReviewComment(id: Long, message: String?) {
+    private fun postReviewComment(message: String?) {
         if (message != null) {
             showProgress()
-            val body = ReviewComment()
-            body.reviewId = id
-            body.commentDetail = message
             recyclerView.smoothScrollToPosition(adapter.itemCount)
-            presenter.postComment(body)
+            presenter.postComment(RvComment(message))
         } else {
             Util.toast("메세지를 입력해주세요")
         }
@@ -121,9 +119,11 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         ListDialog(context, list, itemClickListener).show()
     }
 
-    override fun setCommentMoreBtn(hasMore: Boolean) {
-        //headerView.setCommentMoreBtn(hasMore)
+    override fun hasMoreComment(hasMore: Boolean) {
+        headerView.setCommentMoreBtn(hasMore)
     }
+
+
 
 
 }

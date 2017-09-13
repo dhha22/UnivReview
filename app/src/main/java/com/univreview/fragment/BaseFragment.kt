@@ -1,12 +1,15 @@
 package com.univreview.fragment
 
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.BusProvider
@@ -19,10 +22,10 @@ import rx.subjects.PublishSubject
  * Created by DavidHa on 2017. 8. 4..
  */
 open class BaseFragment : Fragment() {
-     companion object {
+    companion object {
         private val HOME_FRAGMENT = "com.univreview.fragment.HomeFragment"
-         @JvmField
-         var reviewPublishSubject : PublishSubject<Review> = PublishSubject.create()
+        @JvmField
+        var reviewPublishSubject: PublishSubject<Review> = PublishSubject.create()
     }
 
     protected lateinit var rootLayout: LinearLayout
@@ -75,7 +78,19 @@ open class BaseFragment : Fragment() {
         progressDialog.dismiss()
     }
 
-    fun showSimpleMsgDialog(msg : String){
+    fun showSimpleMsgDialog(msg: String) {
         Util.simpleMessageDialog(context, msg)
+    }
+
+    fun showTicketDialog() {
+        AlertDialog.Builder(context)
+                .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
+                .setPositiveButton("구매하기", { _, _ ->
+                    activity.finish()
+                    Navigator.goPointList(context, 0)
+                })
+                .setNegativeButton("취소", { _, _ -> activity.finish() })
+                .setCancelable(false)
+                .show()
     }
 }

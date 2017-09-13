@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.univreview.adapter.contract.ReviewDetailAdapterContract
 import com.univreview.model.model_kotlin.AbstractDataProvider
-import com.univreview.model.ReviewComment
+import com.univreview.model.model_kotlin.RvComment
 import com.univreview.view.CommentItemView
 
 /**
@@ -23,7 +23,7 @@ class ReviewCommentAdapter(context: Context, headerView: View)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         if (getItemViewType(position) == CONTENT) {
-            (holder as ViewHolder).v.setData(list[position - 1] as ReviewComment)
+            (holder as ViewHolder).v.setData(list[position - 1] as RvComment)
         }
     }
 

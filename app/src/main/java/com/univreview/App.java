@@ -54,6 +54,7 @@ public class App extends MultiDexApplication {
     public static final Gson gson = new Gson();
     public static Picasso picasso;
     public static Long universityId;
+    public static Long uid;
     public static Long userId;
     public static String userToken;
     public static String client;
@@ -112,6 +113,12 @@ public class App extends MultiDexApplication {
         pref.savePreferences("userToken", token);
     }
 
+    public static void setUid(long uid) {
+        Logger.v("set uid: " + uid);
+        App.uid = uid;
+        pref.savePreferences("uid", uid);
+    }
+
     public static void setUserId(long userId){
         Logger.v("set user id: " + userId);
         App.userId = userId;
@@ -133,16 +140,19 @@ public class App extends MultiDexApplication {
     public static void init() {
         userToken = pref.getPreferences("userToken", null);
         userId = pref.getPreferences("userId", 0l);
+        uid = pref.getPreferences("uid", 0l);
         universityId = pref.getPreferences("universityId", 0l);
         client = pref.getPreferences("client", null);
         Logger.v("user token: " + userToken);
         Logger.v("user id: " + userId);
+        Logger.v("uid: " + uid);
         Logger.v("university id: " + universityId);
         Logger.v("client: " + client);
     }
 
     public static void userLogout() {
         setUserId(0);
+        setUid(0);
         setFCMToken(null);
         setUserToken(null);
         setUniversityId(0);
@@ -174,7 +184,7 @@ public class App extends MultiDexApplication {
 
     public static Map<String, String> setHeader(){
         Map<String, String> map = new HashMap<>();
-        map.put("uid", String.valueOf(App.userId));
+        map.put("uid", String.valueOf(App.uid));
         map.put("client", App.client);
         map.put("access-token", App.userToken);
         return map;

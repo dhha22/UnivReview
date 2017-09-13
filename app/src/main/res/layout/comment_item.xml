@@ -6,25 +6,12 @@
     android:paddingLeft="14dp"
     android:paddingRight="14dp">
 
-    <ImageView
-        android:id="@+id/reply_img"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginTop="14dp"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="4dp"
-        android:layout_alignBottom="@+id/name_txt"
-        android:paddingBottom="4dp"
-        android:visibility="gone"
-        android:src="@drawable/ic_reply_line" />
-
     <TextView
         android:id="@+id/name_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
         android:layout_marginTop="14dp"
-        android:layout_toRightOf="@id/reply_img"
         android:text="name"
         android:textColor="@color/reviewSecondTxtColor"
         android:textSize="14dp"
@@ -41,26 +28,13 @@
         android:textSize="14dp" />
 
     <TextView
-        android:id="@+id/reply_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name_txt"
-        android:textColor="@color/timeColor"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="12dp"
-        android:textStyle="bold"
-        android:text="답글달기"
-        android:textSize="12dp" />
-
-    <TextView
         android:id="@+id/time_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name_txt"
-        android:textColor="@color/timeColor"
         android:layout_marginTop="6dp"
-        android:layout_toRightOf="@id/reply_txt"
         android:text="time"
+        android:textColor="@color/timeColor"
         android:textSize="12dp" />
 
     <View

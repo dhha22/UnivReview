@@ -1,6 +1,5 @@
 package com.univreview.network;
 
-import com.univreview.model.ReviewComment;
 import com.univreview.model.ReviewReport;
 import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.DataModel;
@@ -10,10 +9,10 @@ import com.univreview.model.model_kotlin.Review;
 import com.univreview.model.model_kotlin.ReviewListModel;
 import com.univreview.model.model_kotlin.ReviewResponse;
 import com.univreview.model.model_kotlin.ReviewState;
+import com.univreview.model.model_kotlin.RvComment;
 
 import java.util.Map;
 
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -21,6 +20,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -69,15 +69,15 @@ public interface ReviewService {
     Observable<DataModel<Review>> callReviewSingle(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
 
     // 리뷰 댓글 조회
-    @GET(Retro.VERSION + "reviews/{reviewId}/review_comments")
-    Observable<DataListModel> callReviewComments(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+    @GET(Retro.VERSION + "reviews/{reviewId}/comments")
+    Observable<DataListModel<RvComment>> callReviewComments(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Query("page") int page);
 
     // 리뷰 댓글 등록
-    @POST(Retro.VERSION + "reviews/{reviewId}/review_comments")
-    Observable<DataModel> postReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+    @POST(Retro.VERSION + "reviews/{reviewId}/comments")
+    Observable<DataModel<RvComment>> postReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body RvComment body);
 
     // 리뷰 댓글 삭제
-    @DELETE(Retro.VERSION + "reviews/{reviewId}/review_comments")
+    @DELETE(Retro.VERSION + "reviews/{reviewId}/comments")
     Observable<DataModel> deleteReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
 
     @POST("report")

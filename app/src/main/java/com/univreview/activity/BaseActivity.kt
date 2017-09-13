@@ -2,7 +2,9 @@ package com.univreview.activity
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.listener.OnBackPressedListener
 import com.univreview.util.Util
@@ -47,5 +49,16 @@ open class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         progressDialog.dismiss()
+    }
+
+    fun showTicketDialog() {
+        AlertDialog.Builder(this)
+                .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
+                .setPositiveButton("구매하기", { _, _ ->
+                    this.finish()
+                    Navigator.goPointList(this, 0) })
+                .setNegativeButton("취소", { _, _ -> this.finish() })
+                .setCancelable(false)
+                .show()
     }
 }

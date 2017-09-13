@@ -24,9 +24,8 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
 
 
     // 회원 등록 과정
-
     override fun registerUser() {
-        Retro.instance.loginService.callSignUp(register)
+        Retro.instance.loginService.signUp(register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ this.response(it.data) }, { this.errorResponse(it) })
@@ -38,7 +37,8 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
                 .observeOn(Schedulers.newThread())
                 .subscribe {
                     App.setUniversityId(it.universityId!!)
-                    App.setUserId(it.uid)
+                    App.setUserId(it.id)
+                    App.setUid(it.uid)
                     App.setUserToken(it.accessToken)
                     App.setClient(it.client)
                 }

@@ -8,7 +8,8 @@ import android.os.Parcelable
  * Created by DavidHa on 2017. 8. 19..
  */
 data class User(var provider: String, // facebook, kakao
-                var uid: Long,
+                var uid: Long, // sns id
+                var id: Long, // user id
                 var name: String,
                 var email: String?,
                 var profileImageUrl: String?,
@@ -18,15 +19,22 @@ data class User(var provider: String, // facebook, kakao
                 var universityId: Long? = null,
                 var departmentId: Long? = null,
                 var majorId: Long? = null,
-                val authenticated : Boolean = false,
-                val departmentName : String? = null,
-                val majorName : String? = null,
-                val point:Int = 0,
-                val reviewCount:Int = 0) : Parcelable {
+                val authenticated: Boolean = false,
+                val departmentName: String? = null,
+                val majorName: String? = null,
+                val point: Int = 0,
+                val reviewCount: Int = 0) : Parcelable {
 
+    constructor(provider: String,
+                uid: Long,
+                name: String,
+                email: String?,
+                profileImageUrl: String?,
+                accessToken: String) : this(provider, uid, 0, name, email, profileImageUrl, accessToken)
 
     constructor(source: Parcel) : this(
             source.readString(),
+            source.readLong(),
             source.readLong(),
             source.readString(),
             source.readString(),
@@ -49,6 +57,7 @@ data class User(var provider: String, // facebook, kakao
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(provider)
         writeLong(uid)
+        writeLong(id)
         writeString(name)
         writeString(email)
         writeString(profileImageUrl)
@@ -58,7 +67,7 @@ data class User(var provider: String, // facebook, kakao
         writeLong(universityId ?: 0)
         writeLong(departmentId ?: 0)
         writeLong(majorId ?: 0)
-        dest.writeInt(if(authenticated) 1 else 0)  // true = 1, false 0
+        dest.writeInt(if (authenticated) 1 else 0)  // true = 1, false 0
         writeString(departmentName)
         writeString(majorName)
         writeInt(point)
