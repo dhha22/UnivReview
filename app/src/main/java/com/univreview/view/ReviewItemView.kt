@@ -1,6 +1,7 @@
 package com.univreview.view
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -46,8 +47,24 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
                 }
             }
 
-            subjectTxt.text = subject?.name
-            professorTxt.text = professor?.name
+            // subject professor 이름 설정
+            if (subjectProfessorTxt.visibility == View.VISIBLE) {
+                Logger.v("subjectProfessor")
+                val builder = SpannableStringBuilder()
+                var index = 0
+                builder.append(subject?.name + " ")
+                Util.addSizeSpan(builder, index, Util.dpToPx(context, 16))
+                Util.addColorSpan(context, builder, index, R.color.colorPrimary)
+                index = builder.length
+                builder.append(professor?.name + " 교수님")
+                Util.addSizeSpan(builder, index, Util.dpToPx(context, 14))
+                Util.addColorSpan(context, builder, index, R.color.professorTxtColor)
+                subjectProfessorTxt.text = builder
+            } else {
+                subjectTxt.text = subject?.name
+                professorTxt.text = professor?.name
+            }
+
 
             if (content == null) {  // review 내용
                 contentTxt.visibility = View.GONE

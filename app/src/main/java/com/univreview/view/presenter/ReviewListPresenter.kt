@@ -116,9 +116,9 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         Logger.v("more btn click")
         //  본인의 review item을 클릭했을 경우
         val review = adapterModel.getItem(position) as Review
-        if (review.user?.uid == App.userId) {
+        if (review.user?.id == App.userId) {
             view.setDialog(arrayListOf("수정하기"),
-                    OnItemClickListener { _, _ -> Navigator.goReviewDetail(context, review) })
+                    OnItemClickListener { _, _ -> Navigator.goUploadReviewDetail(context, review) })
         } else {
             view.setDialog(arrayListOf("신고하기"),
                     OnItemClickListener { _, _ -> Navigator.goReviewReport(context, review.id) })

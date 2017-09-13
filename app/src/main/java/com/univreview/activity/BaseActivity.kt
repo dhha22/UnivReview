@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.listener.OnBackPressedListener
@@ -35,7 +36,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         onBackPressedListener?.doBack()
-        onBackPressedListener?:super.onBackPressed()
+        onBackPressedListener ?: super.onBackPressed()
     }
 
     fun showProgress() {
@@ -56,7 +57,8 @@ open class BaseActivity : AppCompatActivity() {
                 .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
                 .setPositiveButton("구매하기", { _, _ ->
                     this.finish()
-                    Navigator.goPointList(this, 0) })
+                    Navigator.goPointList(this, App.point)
+                })
                 .setNegativeButton("취소", { _, _ -> this.finish() })
                 .setCancelable(false)
                 .show()

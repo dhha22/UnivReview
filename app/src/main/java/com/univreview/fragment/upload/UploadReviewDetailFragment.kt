@@ -70,8 +70,8 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
     }
 
     private fun setReviewData(review: Review) {
-        reviewItem.setData(review)
         reviewItem.setMode(ReviewItemView.Status.WRITE_REVIEW)
+        reviewItem.setData(review)
     }
 
     private fun registerReview(reviewId: Long) {

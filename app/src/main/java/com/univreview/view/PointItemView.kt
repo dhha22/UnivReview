@@ -23,7 +23,6 @@ class PointItemView(context: Context?) : FrameLayout(context) {
             builder.insert(0, "+")
             pointTxt.setTextColor(Util.getColor(context, R.color.colorPrimary))
         }else{      // point 감소
-            builder.insert(0, "-")
             pointTxt.setTextColor(Util.getColor(context, R.color.pointSubtractColor))
         }
         pointTxt.text = builder.toString()

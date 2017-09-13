@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.univreview.App
 import com.univreview.R
+import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
 import com.univreview.util.TimeUtil
@@ -21,7 +22,6 @@ import rx.schedulers.Schedulers
  */
 class ReviewDetailHeader(context: Context) : FrameLayout(context) {
     private lateinit var review: Review
-    private var id: Long = 0L
 
     init {
         LayoutInflater.from(context).inflate(R.layout.review_detail_header, this, true)
@@ -67,7 +67,7 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
 
     private fun callReviewLike() {
         setLikeState(likeImg.isSelected)
-        if (id != 0L) {
+        if (review.id != 0L) {
             Retro.instance.reviewService().callReviewLike(App.setHeader(), review.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

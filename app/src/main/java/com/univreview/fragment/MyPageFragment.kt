@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.squareup.otto.Subscribe
+import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.adapter.MyPageAdapter
@@ -85,6 +86,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
         nameTxt.text = data.name
         departmentTxt.text = data.departmentName
         majorTxt.text = data.majorName
+        App.setPoint(data.point)
         Util.setProfileImage(data.profileImageUrl, profileImage)
         adapter.clear()
         Observable.from(settings)

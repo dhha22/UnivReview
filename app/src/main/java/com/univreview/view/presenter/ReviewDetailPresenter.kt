@@ -105,7 +105,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         //  본인이 더보기 버튼을 클릭했을 경우
         if (review.user?.id == App.userId) {
             view.setDialog(arrayListOf("수정하기"),
-                    OnItemClickListener { _, _ -> Navigator.goReviewDetail(context, review) })
+                    OnItemClickListener { _, _ -> Navigator.goUploadReviewDetail(context, review) })
         } else {
             view.setDialog(arrayListOf("신고하기"),
                     OnItemClickListener { _, _ -> Navigator.goReviewReport(context, review.id) })

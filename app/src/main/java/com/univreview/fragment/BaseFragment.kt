@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.log.Logger
@@ -87,7 +88,7 @@ open class BaseFragment : Fragment() {
                 .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
                 .setPositiveButton("구매하기", { _, _ ->
                     activity.finish()
-                    Navigator.goPointList(context, 0)
+                    Navigator.goPointList(context, App.point)
                 })
                 .setNegativeButton("취소", { _, _ -> activity.finish() })
                 .setCancelable(false)

@@ -46,7 +46,7 @@ public interface UserService {
     @GET(Retro.VERSION + "tickets")
     Observable<DataListModel<Ticket>> callTicket(@HeaderMap Map<String, String> headers);
 
-    @GET(Retro.VERSION + "tickets")
-    Observable<DataListModel<Ticket>> buyReviewTicket(@HeaderMap Map<String, String> headers);
+    @POST(Retro.VERSION + "tickets")
+    Observable<DataModel<Ticket>> buyReviewTicket(@HeaderMap Map<String, String> headers);
 
 }
