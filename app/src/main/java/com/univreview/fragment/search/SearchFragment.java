@@ -110,8 +110,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        // pagination 추후 적용
-        /*recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onScrolled(RecyclerView view, int dx, int dy) {
                 super.onScrolled(view, dx, dy);
@@ -119,7 +118,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
                     lastItemExposed();
                 }
             }
-        });*/
+        });
+
         presenter.setSearchAdapterModel(adapter);
         adapter.setOnItemClickListener((view, position) -> {
             Logger.v("search position: " + position);
@@ -232,10 +232,10 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
 
     @Override
     public void loadMore() {
-       /* Logger.v("load more");
+        Logger.v("load more");
         Logger.v("page: " + getPage());
         setStatus(Status.LOADING_MORE);
-        callSearchApi(id, type, input.getText().toString(), getPage());*/
+        callSearchApi(id, type, input.getText().toString(), getPage());
     }
 
 

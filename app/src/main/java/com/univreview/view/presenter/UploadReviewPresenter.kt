@@ -49,8 +49,7 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
 
     private fun response(review: Review) {
         Logger.v("response review: " + review)
-        this.review.id = review.id
-        view.showRecommendRvDialog()
+        view.showRecommendRvDialog(review)
     }
 
 }

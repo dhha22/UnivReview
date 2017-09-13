@@ -14,6 +14,7 @@ import com.univreview.fragment.BaseWriteFragment
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
 import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.model_kotlin.Review
 import com.univreview.util.Util
 import com.univreview.view.contract.UploadReviewContract
 import com.univreview.view.presenter.UploadReviewPresenter
@@ -127,8 +128,8 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
                 .show()
     }
 
-    override fun showRecommendRvDialog() {
-        RecommendRvDialog(context, presenter.review).show()
+    override fun showRecommendRvDialog(review : Review) {
+        RecommendRvDialog(context, review).show()
     }
 
     override fun onDestroy() {
