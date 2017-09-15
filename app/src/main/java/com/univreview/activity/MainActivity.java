@@ -16,6 +16,7 @@ import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.fragment.HomeFragment;
 import com.univreview.fragment.MyPageFragment;
+import com.univreview.fragment.NewHomeFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.BusProvider;
@@ -129,7 +130,7 @@ public class MainActivity extends BaseActivity {
 
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
-        private List<Fragment> fragmentList = Arrays.asList(HomeFragment.newInstance(), MyPageFragment.getInstance());
+        private List<Fragment> fragmentList = Arrays.asList(NewHomeFragment.getInstance(), MyPageFragment.getInstance());
 
         private PagerAdapter(FragmentManager fm) {
             super(fm);

@@ -5,7 +5,7 @@
         icon="@drawable/ic_navi_home"
         inActiveColor="@color/iconDisable"
         activeColor="@color/iconEnable"
-        title="홈" />
+        title="리뷰검색" />
     <tab
         id="@+id/tab_upload"
         icon="@drawable/ic_navi_write"
