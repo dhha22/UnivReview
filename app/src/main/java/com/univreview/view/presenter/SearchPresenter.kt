@@ -48,22 +48,30 @@ class SearchPresenter : SearchContract {
         setObservable(Retro.instance.searchService.callMajorList(App.universityId.toLong(), id, name, page), page)
     }
 
-    // 교수 검색 (리뷰)
+    // 교수 검색 (리뷰 검색)
     override fun searchProfessor(departmentId: Long?, name: String, page: Int) {
         setObservable(Retro.instance.searchService.callProfessors(App.setHeader(), name, page), page)
     }
 
-    // 과목 검색 (리뷰)
+    // 과목 검색 (리뷰 검색)
     override fun searchSubject(majorId: Long?, name: String, page: Int) {
         Logger.v("university id: " + App.universityId)
         Logger.v("major id: " + majorId)
         setObservable(Retro.instance.searchService.callSubjects(App.setHeader(), majorId, name, page), page)
     }
 
+    // 과목에 속한 교수 검색 (리뷰 쓰기)
     override fun searchProfFromSubj(subjectId: Long, name: String, page: Int) {
         Logger.v("subjectId: " + subjectId)
         setObservable(Retro.instance.searchService.callCourse(App.setHeader(), subjectId, page), page)
     }
+
+    // 교수에 속한 과목 검색 (리뷰 필터 리스트)
+    override fun searchSubjFromProf(profId: Long, page: Int) {
+        Logger.v("profId: $profId")
+        setObservable(Retro.instance.searchService.callSubjectsFilter(App.setHeader(), profId, page), page)
+    }
+
 
     private fun <T> setObservable(observable: Observable<DataListModel<T>>, page: Int) {
         subscription.add(observable.subscribeOn(Schedulers.io())

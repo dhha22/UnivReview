@@ -11,5 +11,7 @@ interface ReviewListAdapterContract {
         fun setMoreItemClickListener(itemClickListener: OnItemClickListener)
     }
 
-    interface Model : BaseModel
+    interface Model : BaseModel {
+        fun getPosition(position:Int):Int
+    }
 }

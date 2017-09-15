@@ -17,5 +17,6 @@ interface SearchContract {
     fun searchProfessor(departmentId: Long?, name: String, page: Int)
     fun searchSubject(majorId: Long?, name: String, page: Int)
     fun searchProfFromSubj(subjectId: Long, name: String, page: Int)
+    fun searchSubjFromProf(profId: Long, page: Int)
     fun stopSearch()
 }

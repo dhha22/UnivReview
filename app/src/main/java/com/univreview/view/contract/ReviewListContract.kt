@@ -20,6 +20,5 @@ interface ReviewListContract {
     }
 
     fun loadReviewItem(type: ReviewSearchType, page: Int)
-    fun searchProfessor(subjectId: Long)
-    fun searchSubject(professorId: Long)
+    fun loadFilterList()
 }

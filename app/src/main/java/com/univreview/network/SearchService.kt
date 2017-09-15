@@ -28,4 +28,10 @@ interface SearchService {
 
     @GET(Retro.VERSION + "subjects/{subjectId}/courses")
     fun callCourse(@HeaderMap headers: Map<String, String>, @Path("subjectId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Course>>
+
+    @GET(Retro.VERSION + "professors")
+    fun callProfessorsFilter(@HeaderMap headers: Map<String, String>, @Query("subjectId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Professor>>
+
+    @GET(Retro.VERSION + "subjects")
+    fun callSubjectsFilter(@HeaderMap headers: Map<String, String>, @Query("professorId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Subject>>
 }

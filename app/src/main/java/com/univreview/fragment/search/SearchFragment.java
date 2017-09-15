@@ -43,9 +43,12 @@ import static android.app.Activity.RESULT_OK;
  */
 public class SearchFragment extends AbsListFragment implements SearchContract.View {
 
-    @BindView(R.id.input) EditText input;
-    @BindView(R.id.delete_btn) ImageButton deleteBtn;
-    @BindView(R.id.recycler_view) UnivReviewRecyclerView recyclerView;
+    @BindView(R.id.input)
+    EditText input;
+    @BindView(R.id.delete_btn)
+    ImageButton deleteBtn;
+    @BindView(R.id.recycler_view)
+    UnivReviewRecyclerView recyclerView;
     private ReviewSearchType type;
     private SearchAdapter adapter;
     private Long id;
@@ -68,7 +71,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         super.onCreate(savedInstanceState);
         type = (ReviewSearchType) getArguments().getSerializable("type");
         id = getArguments().getLong("id");
-        if(id == 0) id = null;
+        if (id == 0) id = null;
         isReviewSearch = getArguments().getBoolean("isReviewSearch");
         presenter = new SearchPresenter();
         presenter.view = this;
@@ -102,7 +105,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         setRecyclerView();
     }
 
-    private void setRecyclerView(){
+    private void setRecyclerView() {
         //recycler view
         adapter = new SearchAdapter(getContext());
         PreCachingLayoutManager layoutManager = new PreCachingLayoutManager(getContext());
@@ -151,7 +154,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(timer != null){
+            if (timer != null) {
                 timer.cancel();
             }
         }
@@ -159,9 +162,9 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         @Override
         public void afterTextChanged(Editable s) {
             Logger.v("search str: " + s.toString());
-            if(s.length()>0){
+            if (s.length() > 0) {
                 deleteBtn.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 deleteBtn.setVisibility(View.INVISIBLE);
             }
             setPage(getDEFAULT_PAGE());
@@ -196,6 +199,9 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             case PROF_FROM_SUBJ:
                 presenter.searchProfFromSubj(id, name, page);
                 break;
+            case SUBJ_FROM_PROF:
+                presenter.searchSubjFromProf(id, page);
+                break;
         }
     }
 
@@ -208,9 +214,9 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             case MAJOR:
                 return "학과를 입력해주세요";
             case SUBJECT:
+            case SUBJ_FROM_PROF:
                 return "과목을 입력해주세요";
             case PROFESSOR:
-                return "교수명을 입력해주세요";
             case PROF_FROM_SUBJ:
                 return "교수명을 입력해주세요";
             default:
@@ -237,7 +243,6 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         setStatus(Status.LOADING_MORE);
         callSearchApi(id, type, input.getText().toString(), getPage());
     }
-
 
 
     @Override

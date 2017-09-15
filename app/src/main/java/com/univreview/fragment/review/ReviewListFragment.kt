@@ -107,14 +107,14 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                     if (height == 0) {
                         AnimationUtils.fadeOut(context, toolbar_title_layout)
                         AnimationUtils.fadeIn(context, reviewTitleTxt)
-                        AnimationUtils.fadeIn(context, filter_layout)
+                        AnimationUtils.fadeIn(context, filterLayout)
                     } else if (height >= innerToolbar.height * 1.02) {
                         AnimationUtils.fadeIn(context, toolbar_title_layout)
                         AnimationUtils.fadeOut(context, reviewTitleTxt)
                     } else {
                         AnimationUtils.fadeOut(context, toolbar_title_layout)
                         AnimationUtils.fadeIn(context, reviewTitleTxt)
-                        AnimationUtils.fadeOut(context, filter_layout)
+                        AnimationUtils.fadeOut(context, filterLayout)
                     }
                 }
 
@@ -122,6 +122,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                 reviewTitleTxt.text = name
                 toolbar_title_txt.text = name
                 toolbar_subtitle_txt.text = "전체"
+                filterLayout.setOnClickListener { presenter.loadFilterList() }
             }
         }
         setRecyclerView()

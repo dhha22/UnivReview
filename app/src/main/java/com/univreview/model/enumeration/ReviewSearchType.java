@@ -14,7 +14,6 @@ public enum ReviewSearchType {
     PROF_FROM_SUBJ("profFromSubj"),
     SUBJ_FROM_PROF("subjFromProf");
 
-
     private String typeName;
 
     ReviewSearchType(String typeName) {

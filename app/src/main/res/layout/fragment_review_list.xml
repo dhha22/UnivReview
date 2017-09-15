@@ -52,7 +52,7 @@
                         android:textSize="20dp" />
 
                     <LinearLayout
-                        android:id="@+id/filter_layout"
+                        android:id="@+id/filterLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="34dp"
                         android:layout_gravity="center"

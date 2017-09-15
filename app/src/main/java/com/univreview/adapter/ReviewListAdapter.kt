@@ -26,17 +26,21 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
         return super.onCreateViewHolder(parent, viewType)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, pos: Int) {
         Logger.v("on Bind View Holder")
-        if (getItemViewType(position) == CONTENT) {
-            val pos: Int
-            if (headerView == null) {
-                pos = position
-            } else {
-                pos = position - 1
-            }
-            (holder as ViewHolder).v.setData(list[pos] as Review)
+        if (getItemViewType(pos) == CONTENT) {
+            (holder as ViewHolder).v.setData(list[getPosition(pos)] as Review)
         }
+    }
+
+    override fun getPosition(position: Int): Int {
+        val pos: Int
+        if (headerView == null) {
+            pos = position
+        } else {
+            pos = position - 1
+        }
+        return pos
     }
 
     override fun getItemCount(): Int {

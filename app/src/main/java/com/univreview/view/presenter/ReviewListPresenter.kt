@@ -86,26 +86,12 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         ErrorUtils.parseError(e)
     }
 
-    override fun searchProfessor(subjectId: Long) {
-        Logger.v("subject id: " + subjectId)
-
-
-    }
-
-    override fun searchSubject(professorId: Long) {
-        Logger.v("professor id: " + professorId);
-
-    }
-
-    private fun searchResponse(result: SearchModel) {
-        this.searchModel = result
-        var observable: Observable<String>? = null
-        if (result.subjects != null) {
-            observable = Observable.from(result.subjects).map { it.getName() }
-        } else if (result.professors != null) {
-            observable = Observable.from(result.professors).map { it.getName() }
+    override fun loadFilterList() {
+        if (sbjId == 0L) {  // subject filter list
+            Navigator.goSearch(context, ReviewSearchType.SUBJ_FROM_PROF, profId, false)
+        } else if (profId == 0L) {  // professor filter list
+            Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, sbjId, false)
         }
-        //observable?.toList()?.subscribe({ name -> view.setDialog(name) }, { Logger.e(it) })
     }
 
 
@@ -126,7 +112,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     // Review List Item
     override fun onItemClick(view: View, position: Int) {
         Logger.v("review list item click position: " + position)
-        Navigator.goReviewDetail(context, adapterModel.getItem(position) as Review)
+        Navigator.goReviewDetail(context, adapterModel.getItem(adapterModel.getPosition(position)) as Review)
     }
 
 }
