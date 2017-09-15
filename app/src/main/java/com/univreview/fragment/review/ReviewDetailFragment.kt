@@ -123,7 +123,9 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         headerView.setCommentMoreBtn(hasMore)
     }
 
-
+    override fun increaseCommentCnt(isIncrease: Boolean) {
+        headerView.increaseCommentCnt(isIncrease)
+    }
 
 
 }

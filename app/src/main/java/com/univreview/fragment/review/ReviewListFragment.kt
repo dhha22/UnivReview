@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.review_item.*
  * Created by DavidHa on 2017. 8. 7..
  */
 class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
-    lateinit var headerView: ReviewTotalScoreView
+    //lateinit var headerView: ReviewTotalScoreView
     lateinit var adapter: ReviewListAdapter
     lateinit var type: ReviewSearchType
     lateinit var name: String
@@ -88,19 +88,19 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         // My Review
             ReviewSearchType.MY_REVIEW -> {
                 adapter = ReviewListAdapter(context, type)
-                smooth_app_bar_layout.visibility = View.GONE
+                appBarLayout.visibility = View.GONE
                 toolbar.setBackBtnVisibility(true)
                 toolbar.setTitleTxt(name)
             }
 
         // Subject List, Professor List
             ReviewSearchType.SUBJECT, ReviewSearchType.PROFESSOR -> {
-                headerView = ReviewTotalScoreView(context)
-                adapter = ReviewListAdapter(context, type, headerView)
+                adapter = ReviewListAdapter(context, type)
+                // headerView = ReviewTotalScoreView(context)
+                // adapter = ReviewListAdapter(context, type, headerView)
                 App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 toolbar.visibility = View.GONE
-                list.setPadding(0, Util.dpToPx(context, 38), 0, 0)
-                smooth_app_bar_layout.addOnOffsetChangedListener { appBarLayout, _ ->
+                appBarLayout.addOnOffsetChangedListener { appBarLayout, _ ->
                     val height = appBarLayout.height - appBarLayout.bottom
                     val value = appBarLayout.bottom.toFloat() / appBarLayout.height
                     AnimationUtils.setScale(reviewTitleTxt, value)
@@ -130,16 +130,16 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
     private fun setRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
-        list.setMode(UnivReviewRecyclerView.Mode.DISABLED)
-        list.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
-        list.setLayoutManager(layoutManager)
-        list.setAdapter(adapter)
-        list.addItemDecoration(SimpleDividerItemDecoration(context))
+        recyclerView.setMode(UnivReviewRecyclerView.Mode.DISABLED)
+        recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
+        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.setAdapter(adapter)
+        recyclerView.addItemDecoration(SimpleDividerItemDecoration(context))
         presenter.let {
             it.adapterModel = adapter
             it.adapterView = adapter
         }
-        list.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        recyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)
                 if (lastVisibleItemPosition == totalItemCount - 1) {
@@ -150,7 +150,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     }
 
     override fun getRecyclerView(): AbsRecyclerView? {
-        return list
+        return recyclerView
     }
 
     override fun refresh() {
@@ -175,14 +175,14 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     }
 
     override fun setHeaderData(difficultyRateAvg: Float, assignmentRateAvg: Float, attendanceRateAvg: Float, gradeRate: Float, achievementRate: Float) {
-        headerView.setData(difficultyRateAvg, assignmentRateAvg, attendanceRateAvg, gradeRate, achievementRate)
+        // headerView.setData(difficultyRateAvg, assignmentRateAvg, attendanceRateAvg, gradeRate, achievementRate)
     }
 
     override fun setHeaderViewVisibility(isVisibility: Boolean) {
-        if (isVisibility) {
+        /*if (isVisibility) {
             headerView.visibility = View.VISIBLE
         } else {
             headerView.visibility = View.GONE
-        }
+        }*/
     }
 }

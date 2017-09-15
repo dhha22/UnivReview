@@ -16,6 +16,8 @@ import com.univreview.model.model_kotlin.AbstractDataProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.subjects.PublishSubject;
+
 /**
  * Created by DavidHa on 2017. 1. 13..
  */
@@ -27,6 +29,7 @@ public abstract class CustomAdapter extends RecyclerView.Adapter{
     protected final int FOOTER= 246;
     protected final int CONTENT = 100;
     private boolean hasFooterView = false;
+    private PublishSubject<AbstractDataProvider> publishSubject = PublishSubject.create();
 
     public CustomAdapter(Context context) {
         this.context = context;
@@ -91,6 +94,7 @@ public abstract class CustomAdapter extends RecyclerView.Adapter{
         list.add(list.size(), item);
         notifyItemInserted(list.size());
     }
+
 
     public void setItem(int position, AbstractDataProvider item) {
         list.set(position, item);

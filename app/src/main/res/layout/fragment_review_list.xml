@@ -4,12 +4,13 @@
     android:layout_height="match_parent">
 
     <com.univreview.view.UnivReviewRecyclerView
-        android:id="@android:id/list"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <me.henrytao.smoothappbarlayout.SmoothAppBarLayout
-        android:id="@+id/smooth_app_bar_layout"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="180dp">
 
@@ -122,9 +123,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
                             android:layout_weight="1"
-                            android:maxEms="15"
                             android:ellipsize="end"
                             android:gravity="center"
+                            android:maxEms="15"
                             android:text="title"
                             android:textColor="@color/white"
                             android:textSize="14dp" />
@@ -141,6 +142,6 @@
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
-    </me.henrytao.smoothappbarlayout.SmoothAppBarLayout>
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

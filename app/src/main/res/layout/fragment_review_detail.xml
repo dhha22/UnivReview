@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
+    android:orientation="vertical"
     android:transitionName="title">
 
     <com.univreview.view.RecyclerViewCustom
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <com.univreview.view.CommentInput
         android:id="@+id/commentInput"
@@ -16,4 +18,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom" />
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

@@ -2,6 +2,8 @@ package com.univreview.model.model_kotlin
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.univreview.log.Logger
+import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 27..
@@ -33,6 +35,12 @@ data class Review(override var id: Long = 0,
     override var name: String
         get() = ""
         set(value) {}
+
+    val updateNotificationPublisher:PublishSubject<Review> = PublishSubject.create()
+
+    fun notifyUpdate(review: Review = this){
+        updateNotificationPublisher.onNext(review)
+    }
 
     fun getAverageRate(): Float {
         return Math.round(((difficultyRate + assignmentRate + attendanceRate + gradeRate + achievementRate) / 5F) * 100f) / 100f

@@ -30,6 +30,7 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
 
     fun setData(review: Review) {
         this.review = review.apply {
+            Logger.v("set detail header item: $updateNotificationPublisher")
             user?.let {
                 nameTxt.text = it.name
                 if (it.authenticated) {
@@ -63,6 +64,7 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
             timeTxt.text = TimeUtil().getPointFormat(createdAt)
             reviewRatingIndicatorView.setData(this)
         }
+        Logger.v("set detail header new item: " + this.review.updateNotificationPublisher)
     }
 
     private fun callReviewLike() {
@@ -71,6 +73,7 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
             Retro.instance.reviewService().callReviewLike(App.setHeader(), review.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doAfterTerminate { review.notifyUpdate() }
                     .subscribe({
                         // 좋아요 성공했을 경우
                         review.isLike = likeImg.isSelected
@@ -113,5 +116,17 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
         } else {
             commentMore.visibility = View.GONE
         }
+    }
+
+    fun increaseCommentCnt(isIncrease: Boolean) {
+        val index = commentCnt.text.indexOf("명")
+        val count = commentCnt.text.substring(0, index).toLong()
+        if (isIncrease) {
+            review.commentCount = count + 1
+        } else {
+            review.commentCount = count - 1
+        }
+        commentCnt.text = String.format(context.getString(R.string.people_cnt), review.commentCount)
+        review.notifyUpdate()
     }
 }

@@ -14,6 +14,7 @@ interface ReviewDetailContract {
         fun showCommentDeleteDialog(clickListener: DialogInterface.OnClickListener)
         fun hasMoreComment(hasMore: Boolean)
         fun setDialog(list: List<String>, itemClickListener: OnItemClickListener)
+        fun increaseCommentCnt(isIncrease : Boolean)
     }
 
     fun loadReviewSingle()

@@ -9,28 +9,38 @@ import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.model_kotlin.AbstractDataProvider
 import com.univreview.view.ReviewItemView
+import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 7..
  */
-class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView: View? = null)
-    : CustomAdapter(context, headerView), ReviewListAdapterContract.Model, ReviewListAdapterContract.View {
+class ReviewListAdapter(context: Context, val type: ReviewSearchType) : CustomAdapter(context),
+        ReviewListAdapterContract.Model, ReviewListAdapterContract.View {
     lateinit var moreBtnClickListener: OnItemClickListener
+
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         Logger.v("on Create View Holder")
-        if (viewType == CONTENT) {
-            return ViewHolder(ReviewItemView(context))
-        }
-        return super.onCreateViewHolder(parent, viewType)
+        return ViewHolder(ReviewItemView(context))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, pos: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         Logger.v("on Bind View Holder")
-        if (getItemViewType(pos) == CONTENT) {
-            (holder as ViewHolder).v.setData(list[getPosition(pos)] as Review)
-        }
+        (holder as ViewHolder).v.setData(list[position] as Review)
+    }
+
+    override fun addItem(item: AbstractDataProvider) {
+        val position = itemCount
+        (item as Review).updateNotificationPublisher.subscribe { setItem(position, it) }
+        super.addItem(item)
+    }
+
+    private fun setItem(position: Int, review: Review) {
+        review.updateNotificationPublisher.subscribe { setItem(position, it) }
+        list[position] = review
+        notifyItemChanged(position)
     }
 
     override fun getPosition(position: Int): Int {
@@ -43,21 +53,21 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType, headerView
         return pos
     }
 
-    override fun getItemCount(): Int {
+    /*override fun getItemCount(): Int {
         if (type != ReviewSearchType.MY_REVIEW) {
             return list.size + HEADER
         }
         return super.getItemCount()
-    }
+    }*/
 
-    override fun getItemViewType(position: Int): Int {
+    /*override fun getItemViewType(position: Int): Int {
         // My Review에는 Header가 존재하지 않음
         if (type != ReviewSearchType.MY_REVIEW && position == 0) {
             return HEADER
         }
         return super.getItemViewType(position)
     }
-
+*/
     override fun setMoreItemClickListener(itemClickListener: OnItemClickListener) {
         moreBtnClickListener = itemClickListener
     }

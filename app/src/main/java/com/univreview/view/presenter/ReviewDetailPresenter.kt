@@ -44,7 +44,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    review = it.data
+                    review.notifyUpdate(it.data)
                     view.setHeaderData(it.data)
                 }, { onErrorReview(it) })
     }
@@ -79,7 +79,10 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ adapterModel.addLastItem(it.data) }, { ErrorUtils.parseError(it) })
+                .subscribe({
+                    adapterModel.addLastItem(it.data)
+                    view.increaseCommentCnt(true)
+                }, { ErrorUtils.parseError(it) })
     }
 
 
@@ -93,7 +96,10 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 Retro.instance.reviewService().deleteReviewComment(App.setHeader(), comment.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ adapterModel.removeItem(position) }, { ErrorUtils.parseError(it) })
+                        .subscribe({
+                            adapterModel.removeItem(position)
+                            this.view.increaseCommentCnt(false)
+                        }, { ErrorUtils.parseError(it) })
             })
         }
         return true
