@@ -32,7 +32,7 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ result -> response(result.data) }, { ErrorUtils.parseError(it) })
+                .subscribe({ response(it.data) }, { ErrorUtils.parseError(it) })
     }
 
     override fun checkReviewExist() {

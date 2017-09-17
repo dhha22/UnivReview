@@ -1,90 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/universityTxt"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:hint="대학교"
-        android:padding="8dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="18dp" />
+        android:orientation="vertical">
 
-    <View
-        android:id="@+id/universityLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="38dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:background="@color/lineDisableColor" />
+        <TextView
+            android:id="@+id/universityTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:gravity="center"
+            android:hint="대학교"
+            android:padding="8dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/timeColor"
+            android:textSize="18dp" />
 
-    <TextView
-        android:id="@+id/departmentTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:gravity="center"
-        android:hint="학과군"
-        android:padding="8dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="18dp" />
-
-    <View
-        android:id="@+id/departmentLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="38dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:background="@color/lineDisableColor" />
+        <View
+            android:id="@+id/universityLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="38dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/black" />
 
 
-    <TextView
-        android:id="@+id/majorTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:gravity="center"
-        android:hint="전공"
-        android:padding="8dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="18dp" />
 
-    <View
-        android:id="@+id/majorLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:background="@color/lineDisableColor" />
+        <TextView
+            android:id="@+id/majorTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:gravity="center"
+            android:hint="전공"
+            android:padding="8dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/timeColor"
+            android:textSize="18dp" />
 
+        <View
+            android:id="@+id/majorLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@color/black" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:background="@drawable/login_next_btn_selector"
-        android:text="확인"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:padding="18dp"
+        android:text="대학리뷰 시작하기"
         android:textColor="@color/white"
-        android:textSize="18dp" />
+        android:textSize="20dp" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -35,9 +35,8 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
 
     companion object {
         private val UNIVERSITY = 0
-        private val DEPARTMENT = 1
-        private val MAJOR = 2
-        private val NEXT = 3
+        private val MAJOR = 1
+        private val NEXT = 2
 
         @JvmStatic
         fun getInstance(register: User): RegisterUnivInfoFragment {
@@ -62,9 +61,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_register_univ_info, container, false)
-        rootLayout.background = Util.getDrawable(context, R.drawable.cr_login_bg)
-        setToolbarTransparent()
-        toolbar.setBackBtnVisibility(true)
+        toolbar.setLoginToolbarStyle()
         rootLayout.addView(view)
         return rootLayout
     }
@@ -82,11 +79,6 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
             }
         }
 
-        departmentTxt.setOnClickListener {
-            if (formVerification(DEPARTMENT)) {
-                Navigator.goSearch(context, ReviewSearchType.DEPARTMENT, presenter.register.universityId, false)
-            }
-        }
 
         majorTxt.setOnClickListener {
             if (formVerification(MAJOR)) {
@@ -103,8 +95,6 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
     private fun formVerification(clickPosition: Int): Boolean {
         if (universityTxt.text.isEmpty()) {
             return showAlertDialog(clickPosition, UNIVERSITY)
-        } else if (departmentTxt.text.isEmpty()) {
-            return showAlertDialog(clickPosition, DEPARTMENT)
         } else if (majorTxt.text.isEmpty()) {
             return showAlertDialog(clickPosition, MAJOR)
         } else {
@@ -118,9 +108,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         } else {
             if (position == UNIVERSITY) {
                 Util.simpleMessageDialog(context, "대학을 선택해주세요.")
-            } else if (position == DEPARTMENT) {
-                Util.simpleMessageDialog(context, "학과군을 선택해주세요.")
-            } else if (position == MAJOR) {
+            }  else if (position == MAJOR) {
                 Util.simpleMessageDialog(context, "전공을 선택해주세요.")
             }
             return false
@@ -145,44 +133,20 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         when (type) {
             ReviewSearchType.UNIVERSITY -> {
                 universityTxt.text = name
-                departmentTxt.text = null
                 majorTxt.text = null
                 App.universityId = id
                 presenter.register.apply {
                     universityId = id
-                    departmentId = null
                     majorId = null
                 }
-                setLineState(universityLine, true)
-                setLineState(departmentLine, false)
-                setLineState(majorLine, false)
                 nextBtn.isSelected = false
             }
-            ReviewSearchType.DEPARTMENT -> {
-                departmentTxt.text = name
-                majorTxt.text = null
-                presenter.register.apply {
-                    departmentId = id
-                    majorId = null
-                }
-                setLineState(departmentLine, true)
-                setLineState(majorLine, false)
-                nextBtn.isSelected = false
-            }
+
             ReviewSearchType.MAJOR -> {
                 majorTxt.text = name
                 presenter.register.majorId = id
-                setLineState(majorLine, true)
                 nextBtn.isSelected = true
             }
-        }
-    }
-
-    private fun setLineState(line: View, isSelected: Boolean) {
-        if (isSelected) {
-            line.setBackgroundColor(Util.getColor(context, R.color.white))
-        } else {
-            line.setBackgroundColor(Util.getColor(context, R.color.lineDisableColor))
         }
     }
 

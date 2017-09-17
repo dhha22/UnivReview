@@ -33,10 +33,13 @@ open class BaseFragment : Fragment() {
     protected lateinit var toolbar: Toolbar
     protected lateinit var progressDialog: ProgressDialog
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        progressDialog = ProgressDialog(context)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Logger.v("on create view: " + this.javaClass.name)
-        progressDialog = ProgressDialog(context)
-
         rootLayout = LinearLayout(context)
         rootLayout.orientation = LinearLayout.VERTICAL
         toolbar = Toolbar(context)
@@ -66,9 +69,9 @@ open class BaseFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         progressDialog.dismiss()
         Logger.v("on destroy: " + this.javaClass.name)
+        super.onDestroy()
     }
 
     fun showProgress() {

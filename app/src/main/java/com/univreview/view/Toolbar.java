@@ -2,11 +2,15 @@ package com.univreview.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
@@ -19,11 +23,18 @@ import butterknife.ButterKnife;
  * Created by DavidHa on 2017. 2. 1..
  */
 public class Toolbar extends FrameLayout {
-    @BindView(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
-    @BindView(R.id.back_btn) ImageButton backBtn;
-    @BindView(R.id.title_txt) TextView titleTxt;
-    @BindView(R.id.ok_btn) TextView okBtn;
-    @BindView(R.id.cancel_btn) ImageButton cancelBtn;
+    @BindView(R.id.toolbar)
+    RelativeLayout toolbar;
+    @BindView(R.id.back_btn)
+    ImageButton backBtn;
+    @BindView(R.id.title_txt)
+    TextView titleTxt;
+    @BindView(R.id.ok_btn)
+    TextView okBtn;
+    @BindView(R.id.cancel_btn)
+    ImageButton cancelBtn;
+    @BindView(R.id.line)
+    View line;
     private Context context;
 
     public Toolbar(Context context) {
@@ -41,15 +52,15 @@ public class Toolbar extends FrameLayout {
         this.context = context;
     }
 
-    public void setToolbarBackgroundColor(int colorId){
+    public void setToolbarBackgroundColor(int colorId) {
         toolbar.setBackgroundColor(getResources().getColor(colorId));
     }
 
-    public void setOnConfirmListener(OnClickListener clickListener){
+    public void setOnConfirmListener(OnClickListener clickListener) {
         okBtn.setOnClickListener(clickListener);
-        if(clickListener != null){
+        if (clickListener != null) {
             okBtn.setVisibility(VISIBLE);
-        }else{
+        } else {
             okBtn.setVisibility(GONE);
         }
     }
@@ -63,11 +74,31 @@ public class Toolbar extends FrameLayout {
         }
     }
 
-    public void setTitleTxt(String title){
+    public void setLoginToolbarStyle() {
+        backBtn.setVisibility(VISIBLE);
+        toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
+        ViewCompat.setBackgroundTintList(backBtn, (ContextCompat.getColorStateList(context, R.color.black)));
+        backBtn.setOnClickListener(v -> ((Activity) context).finish());
+    }
+
+    public void setSearchToolbarStyle() {
+        backBtn.setVisibility(VISIBLE);
+        line.setVisibility(GONE);
+    }
+
+    public void setCancelToolbarStyle() {
+        cancelBtn.setVisibility(VISIBLE);
+        toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
+        ViewCompat.setBackgroundTintList(cancelBtn, (ContextCompat.getColorStateList(context, R.color.black)));
+        cancelBtn.setOnClickListener(v -> ((Activity) context).onBackPressed());
+        setTitleColor(R.color.black);
+    }
+
+    public void setTitleTxt(String title) {
         titleTxt.setText(title);
     }
 
-    public void setTitleColor(int id){
+    public void setTitleColor(int id) {
         titleTxt.setTextColor(Util.getColor(context, id));
     }
 
@@ -80,9 +111,5 @@ public class Toolbar extends FrameLayout {
         }
     }
 
-    public void setCancelBtnListener(OnClickListener clickListener){
-        cancelBtn.setVisibility(VISIBLE);
-        cancelBtn.setOnClickListener(clickListener);
-    }
 
 }

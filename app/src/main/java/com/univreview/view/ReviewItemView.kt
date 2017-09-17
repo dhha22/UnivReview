@@ -35,7 +35,6 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
     }
 
     fun setData(review: Review) {
-        Logger.v("review: $review")
         this.id = review.id
         this.review = review.apply {
             user?.let {

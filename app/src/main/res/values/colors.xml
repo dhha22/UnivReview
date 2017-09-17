@@ -43,4 +43,9 @@
     <!-- icon -->
     <color name="iconEnable">#327afd</color>
     <color name="iconDisable">#6d6d6d</color>
+
+    <!-- toolbar -->
+    <color name="toolbarRowColor">#cccccc</color>
+    
+    <color name="retakeTxtColor">#009688</color>
 </resources>

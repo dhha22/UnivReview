@@ -29,7 +29,6 @@ class LoginActivity : BaseActivity(), LoginContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.setCurrentActivity(this)
-        setFullScreen()
         if (App.userToken != null) {
             Navigator.goMain(this)
             finish()

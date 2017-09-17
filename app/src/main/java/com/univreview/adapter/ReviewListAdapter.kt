@@ -33,14 +33,12 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType) : CustomAd
 
     override fun addItem(item: AbstractDataProvider) {
         val position = itemCount
-        (item as Review).updateNotificationPublisher.subscribe { setItem(position, it) }
+        (item as Review).updateNotificationPublisher.subscribe {
+            list[position] = it
+            Logger.v("subscribe item: "+(list[position] as Review).updateNotificationPublisher)
+            notifyItemChanged(position)
+        }
         super.addItem(item)
-    }
-
-    private fun setItem(position: Int, review: Review) {
-        review.updateNotificationPublisher.subscribe { setItem(position, it) }
-        list[position] = review
-        notifyItemChanged(position)
     }
 
     override fun getPosition(position: Int): Int {

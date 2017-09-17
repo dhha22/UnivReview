@@ -31,7 +31,7 @@ public class UserAuthCompletedFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_user_auth_completed, container, false);
         ButterKnife.bind(this, view);
-        rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.colorPrimary));
+        toolbar.setVisibility(View.GONE);
         rootLayout.addView(view);
         completeBtn.setOnClickListener(v -> getActivity().finish());
         return rootLayout;

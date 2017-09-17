@@ -58,19 +58,16 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
             if (page == DEFAULT_PAGE) adapterModel.clearItem()
             it.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ response(type, page, it.data) }) { error -> errorResponse(page, error) }
+                    .subscribe({ response(page, it.data) }) { error -> errorResponse(page, error) }
         }
     }
 
-    private fun response(type: ReviewSearchType, page: Int, rvListModel: ReviewListModel) {
+    private fun response(page: Int, rvListModel: ReviewListModel) {
+        view.setStatus(AbsListFragment.Status.IDLE)
         if (rvListModel.reviews.isNotEmpty()) {
+            Logger.v("review is not empty $page")
             view.setResult(page)
-            view.setStatus(AbsListFragment.Status.IDLE)
 
-            if (type != ReviewSearchType.MY_REVIEW) {
-                view.setHeaderData(rvListModel.difficultyRateAvg, rvListModel.assignmentRateAvg,
-                        rvListModel.attendanceRateAvg, rvListModel.gradeRateAvg, rvListModel.achievementRateAvg)
-            }
             Observable.from<Review>(rvListModel.reviews)
                     .subscribe { adapterModel.addItem(it) }
 

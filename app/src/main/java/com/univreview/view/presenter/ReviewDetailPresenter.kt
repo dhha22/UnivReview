@@ -44,8 +44,12 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    review.notifyUpdate(it.data)
-                    view.setHeaderData(it.data)
+                    it.data?.let {
+                        review.content = it.content
+                        review.likeCount = it.likeCount
+                        review.commentCount = it.commentCount
+                        review.notifyUpdate()
+                    }
                 }, { onErrorReview(it) })
     }
 

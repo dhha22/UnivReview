@@ -4,9 +4,11 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.squareup.otto.Subscribe
 import com.univreview.Navigator
 import com.univreview.R
@@ -22,7 +24,8 @@ import kotlinx.android.synthetic.main.fragment_register_user_info.*
  * Created by DavidHa on 2017. 8. 5..
  */
 class RegisterUserInfoFragment : BaseFragment() {
-    private lateinit var register : User
+    private lateinit var register: User
+
     companion object {
         @JvmStatic
         fun newInstance(register: User): RegisterUserInfoFragment {
@@ -43,9 +46,7 @@ class RegisterUserInfoFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_register_user_info, container, false)
-        setToolbarTransparent()
-        toolbar.setBackBtnVisibility(true)
-        rootLayout.background = Util.getDrawable(context, R.drawable.cr_login_bg)
+        toolbar.setLoginToolbarStyle()
         rootLayout.addView(view)
         return rootLayout
     }
@@ -59,54 +60,53 @@ class RegisterUserInfoFragment : BaseFragment() {
     fun init(register: User) {
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
+                register.email = inputEmail.text.toString()
+                register.name = inputName.text.toString()
                 Navigator.goRegisterUnivInfo(context, register)
             }
         }
+        inputName.addTextChangedListener(textWatcher)
+        inputEmail.addTextChangedListener(textWatcher)
+        inputEmail.setOnKeyListener { _, keyCode, event -> keyboardListener.invoke(keyCode, event, inputEmail) }
+        inputName.setOnKeyListener { _, keyCode, event -> keyboardListener.invoke(keyCode, event, inputName) }
+        inputName.requestFocus()
 
-        inputName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+    }
 
-            }
+    private val keyboardListener = { keyCode: Int, event: KeyEvent, editTxt: EditText ->
+        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            Logger.v("enter")
+            Util.hideKeyboard(context, editTxt)
+        }
+        false
+    }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+    private val textWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-            }
+        }
 
-            override fun afterTextChanged(s: Editable) {
-                nextBtn.isSelected = !isInputEmpty()
-            }
-        })
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-        inputEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
 
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                nextBtn.isSelected = !isInputEmpty()
-            }
-        })
+        override fun afterTextChanged(s: Editable?) {
+            nextBtn.isSelected = !isInputEmpty()
+        }
     }
 
 
-
-    fun setData(register: User?){
+    fun setData(register: User?) {
         register?.let {
             Util.setProfileImage(it.profileImageUrl, profileImage)
-            inputName.setText(it.name)
-            inputName.setSelection(it.name.length)
             inputEmail.setText(it.email)
             inputEmail.setSelection(it.email?.length ?: 0)
             nextBtn.isSelected = !isInputEmpty()
         }
     }
 
-    private fun isInputEmpty() : Boolean{
-        if(inputName.text.isEmpty() || inputEmail.text.isEmpty()){
+    private fun isInputEmpty(): Boolean {
+        if (inputName.text.isEmpty() || inputEmail.text.isEmpty()) {
             return true
         }
         return false
@@ -115,18 +115,18 @@ class RegisterUserInfoFragment : BaseFragment() {
     private fun formVerification(): Boolean {
         if (inputName.text.isEmpty()) {
             Util.simpleMessageDialog(context, "이름을 입력해주시길 바랍니다.")
-        } else if(inputEmail.text.isEmpty()){
+        } else if (inputEmail.text.isEmpty()) {
             Util.simpleMessageDialog(context, "이메일을 입력해주시길 바랍니다.")
-        }else if(!Util.isEmail(inputEmail.text.toString())){
+        } else if (!Util.isEmail(inputEmail.text.toString())) {
             Util.simpleMessageDialog(context, "올바른 이메일을 입력해주시길 바랍니다.")
-        }else {
+        } else {
             return true
         }
         return false
     }
 
     @Subscribe
-    fun onActivityResult(activityResultEvent: ActivityResultEvent){
+    fun onActivityResult(activityResultEvent: ActivityResultEvent) {
         if (activityResultEvent.resultCode == Activity.RESULT_OK) {
             if (activityResultEvent.requestCode == Navigator.PERMISSION_CHECKER) {
                 Navigator.goAlbum(context)

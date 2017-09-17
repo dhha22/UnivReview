@@ -14,8 +14,10 @@ import com.univreview.network.Retro
 import com.univreview.util.Util
 import com.univreview.view.ReviewItemView
 import kotlinx.android.synthetic.main.fragment_upload_review_detail.*
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by DavidHa on 2017. 8. 8..
@@ -101,7 +103,8 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { progressDialog.dismiss() }
                 .subscribe({
-                    //reviewPublishSubject.onNext(review)
+                    review.content = it.data.content
+                    review.notifyUpdate()
                     activity.finish()
                 }, { this.errorResponse(it) })
     }

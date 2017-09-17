@@ -46,10 +46,9 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         presenter = ReviewDetailPresenter().apply {
             view = this@ReviewDetailFragment
             review = arguments.getParcelable<Review>("review")
+            review.updateNotificationPublisher.subscribe { setHeaderData(it) }
             context = getContext()
         }
-
-
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,14 +63,6 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        reviewPublishSubject.subscribe({
-            //setHeaderData(it)
-            presenter.loadReviewSingle()
-        }, { Logger.e(it) })
     }
 
     private fun init() {
@@ -92,7 +83,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
 
     }
 
-    override fun setHeaderData(review: Review) {
+    private fun setHeaderData(review: Review) {
         headerView.setData(review)
     }
 

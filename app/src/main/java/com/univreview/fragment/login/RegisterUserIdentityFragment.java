@@ -22,13 +22,12 @@ import butterknife.ButterKnife;
 /**
  * Created by DavidHa on 2017. 1. 24..
  */
-public class RegisterUserIdentityFragment extends BaseFragment{
+public class RegisterUserIdentityFragment extends BaseFragment {
     private static final String CAMERA = "camera";
-    private static final String ALBUM = "album";
-    @BindView(R.id.camera_btn) Button cameraBtn;
-    @BindView(R.id.album_btn) Button albumBtn;
+    @BindView(R.id.cameraBtn)
+    Button cameraBtn;
 
-    public static RegisterUserIdentityFragment newInstance(){
+    public static RegisterUserIdentityFragment newInstance() {
         RegisterUserIdentityFragment fragment = new RegisterUserIdentityFragment();
         return fragment;
     }
@@ -39,11 +38,9 @@ public class RegisterUserIdentityFragment extends BaseFragment{
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_register_user_identity, container, false);
         ButterKnife.bind(this, view);
-        rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.colorPrimary));
-        toolbar.setCancelBtnVisibility(true);
-        toolbar.setTitleTxt("학교인증하기");
+        toolbar.setCancelToolbarStyle();
+        toolbar.setTitleTxt("학생증 확인");
         cameraBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "camera"));
-        albumBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "album"));
         rootLayout.addView(view);
         return rootLayout;
     }
@@ -55,8 +52,6 @@ public class RegisterUserIdentityFragment extends BaseFragment{
                 String type = activityResultEvent.getIntent().getStringExtra("type");
                 if ("camera".equals(type)) {
                     Navigator.goCamera(getContext());
-                } else if ("album".equals(type)) {
-                    Navigator.goAlbum(getContext());
                 }
             } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
                 String albumPath = ImageUtil.IMAGE_PATH + "tmp.jpg";
@@ -64,13 +59,6 @@ public class RegisterUserIdentityFragment extends BaseFragment{
                     Util.toast(albumPath);
                 }
                 Navigator.goCheckUserPhoto(getContext(), CAMERA, albumPath);
-                getActivity().finish();
-            } else if (activityResultEvent.getRequestCode() == Navigator.ALBUM) {
-                String albumPath = ImageUtil.getPath(activityResultEvent.getIntent().getData());
-                if (BuildConfig.DEBUG) {
-                    Util.toast(albumPath);
-                }
-                Navigator.goCheckUserPhoto(getContext(), ALBUM, albumPath);
                 getActivity().finish();
             }
         }

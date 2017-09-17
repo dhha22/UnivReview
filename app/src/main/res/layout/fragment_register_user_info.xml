@@ -33,7 +33,7 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/inputName"
+        android:id="@+id/inputEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/profileImageLayout"
@@ -43,56 +43,60 @@
         android:layout_marginTop="60dp"
         android:background="@color/transparent"
         android:gravity="center"
+        android:hint="이메일"
+        android:inputType="text"
+        android:maxLines="1"
         android:padding="8dp"
-        android:hint="이름"
-        android:textColorHint="@color/white50"
-        android:textColor="@color/white"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/timeColor"
         android:textSize="18dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/inputName"
+        android:layout_below="@id/inputEmail"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@color/white" />
+        android:background="@color/black" />
 
     <EditText
-        android:id="@+id/inputEmail"
+        android:id="@+id/inputName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inputName"
+        android:layout_below="@id/inputEmail"
         android:layout_gravity="center"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginTop="44dp"
-        android:hint="이메일"
-        android:textColorHint="@color/white50"
         android:background="@color/transparent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center"
+        android:hint="닉네임"
+        android:inputType="text"
+        android:maxLines="1"
         android:padding="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/timeColor"
         android:textSize="18dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/inputEmail"
+        android:layout_below="@id/inputName"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:background="@color/white" />
+        android:background="@color/black" />
 
     <Button
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_below="@id/inputEmail"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/login_next_btn_selector"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:padding="18dp"
         android:text="다음"
         android:textColor="@color/white"
-        android:textSize="16dp" />
+        android:textSize="18dp" />
 
 </RelativeLayout>

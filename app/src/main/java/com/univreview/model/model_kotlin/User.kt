@@ -10,7 +10,7 @@ import android.os.Parcelable
 data class User(var provider: String, // facebook, kakao
                 var uid: Long, // sns id
                 var id: Long, // user id
-                var name: String,
+                var name: String?,
                 var email: String?,
                 var profileImageUrl: String?,
                 var accessToken: String,
@@ -27,10 +27,9 @@ data class User(var provider: String, // facebook, kakao
 
     constructor(provider: String,
                 uid: Long,
-                name: String,
                 email: String?,
                 profileImageUrl: String?,
-                accessToken: String) : this(provider, uid, 0, name, email, profileImageUrl, accessToken)
+                accessToken: String) : this(provider, uid, 0, null, email, profileImageUrl, accessToken)
 
     constructor(source: Parcel) : this(
             source.readString(),

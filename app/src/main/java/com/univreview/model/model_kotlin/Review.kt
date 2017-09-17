@@ -38,8 +38,9 @@ data class Review(override var id: Long = 0,
 
     val updateNotificationPublisher:PublishSubject<Review> = PublishSubject.create()
 
-    fun notifyUpdate(review: Review = this){
-        updateNotificationPublisher.onNext(review)
+    fun notifyUpdate(){
+        Logger.v("update item: $updateNotificationPublisher")
+        updateNotificationPublisher.onNext(this)
     }
 
     fun getAverageRate(): Float {

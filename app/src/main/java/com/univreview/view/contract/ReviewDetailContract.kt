@@ -10,7 +10,6 @@ import com.univreview.model.model_kotlin.RvComment
  */
 interface ReviewDetailContract {
     interface View : BaseView {
-        fun setHeaderData(data: Review)
         fun showCommentDeleteDialog(clickListener: DialogInterface.OnClickListener)
         fun hasMoreComment(hasMore: Boolean)
         fun setDialog(list: List<String>, itemClickListener: OnItemClickListener)

@@ -9,6 +9,7 @@ import com.univreview.App
 import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
+import com.univreview.model.model_kotlin.User
 import com.univreview.network.Retro
 import com.univreview.util.TimeUtil
 import com.univreview.util.Util
@@ -30,21 +31,8 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
 
     fun setData(review: Review) {
         this.review = review.apply {
-            Logger.v("set detail header item: $updateNotificationPublisher")
-            user?.let {
-                nameTxt.text = it.name
-                if (it.authenticated) {
-                    authMark.visibility = View.VISIBLE
-                } else {
-                    authMark.visibility = View.GONE
-                }
-            }
-            if (content == null) {  // review 내용
-                reviewDetailLayout.visibility = View.GONE
-            } else {
-                contentTxt.visibility = View.VISIBLE
-                contentTxt.text = content
-            }
+            setUser(user)
+            setContent(content)
 
             // subject professor 이름 설정
             val builder = SpannableStringBuilder()
@@ -64,7 +52,27 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
             timeTxt.text = TimeUtil().getPointFormat(createdAt)
             reviewRatingIndicatorView.setData(this)
         }
-        Logger.v("set detail header new item: " + this.review.updateNotificationPublisher)
+    }
+
+    private fun setUser(user : User?){
+        user?.let {
+            nameTxt.text = it.name
+            if (it.authenticated) {
+                authMark.visibility = View.VISIBLE
+            } else {
+                authMark.visibility = View.GONE
+            }
+        }
+    }
+
+
+    fun setContent(content : String?){
+        if (content == null) {  // review 내용
+            reviewDetailLayout.visibility = View.GONE
+        } else {
+            reviewDetailLayout.visibility = View.VISIBLE
+            contentTxt.text = content
+        }
     }
 
     private fun callReviewLike() {

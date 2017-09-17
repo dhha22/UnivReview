@@ -22,9 +22,6 @@ open class BaseActivity : AppCompatActivity() {
         progressDialog = Util.progressDialog(this)
     }
 
-    protected fun setFullScreen() {
-        setTheme(R.style.AppTheme_NoActionBar_FullScreen)
-    }
 
     protected fun setTranslucent() {
         setTheme(R.style.AppTheme_Translucent)
@@ -48,8 +45,8 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         progressDialog.dismiss()
+        super.onDestroy()
     }
 
     fun showTicketDialog() {

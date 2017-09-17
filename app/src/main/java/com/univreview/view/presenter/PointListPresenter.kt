@@ -32,9 +32,9 @@ class PointListPresenter : PointListContract {
     }
 
     private fun pointResponse(pointHistories: List<RvPoint>, page: Int) {
+        view.setStatus(AbsListFragment.Status.IDLE)
         if (pointHistories.isNotEmpty()) {
             if (page == AbsListFragment.DEFAULT_PAGE) adapterModel.clearItem()
-            view.setStatus(AbsListFragment.Status.IDLE)
             Observable.from(pointHistories)
                     .subscribe({ adapterModel.addItem(it) }, { Logger.e(it) })
         }

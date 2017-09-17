@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/actionBarSize">
+    android:layout_height="?android:attr/actionBarSize"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
 
-    <RelativeLayout
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/ic_back"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/ok_btn"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/cancel_btn"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_close"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingRight="16dp">
-
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_back"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/title_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/ok_btn"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="확인"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:visibility="gone" />
-
-        <ImageButton
-            android:id="@+id/cancel_btn"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_close"
-            android:visibility="gone" />
-
-    </RelativeLayout>
-</android.support.v7.widget.Toolbar>
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/toolbarRowColor" />
+</RelativeLayout>

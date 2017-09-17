@@ -35,10 +35,9 @@ class LoginPresenter : LoginContract {
             Logger.v("facebook response: " + `object`.toString())
             val userId = `object`.getString("id")   //facebook user id
             val accessToken = loginResult.accessToken.token    //facebookAccessToken
-            val nickName = `object`.getString("name") // name
             val profileUrl = `object`.getJSONObject("picture").getJSONObject("data").getString("url") //facebook profile image
             val email: String? = `object`.has("email").let { `object`.getString("email") } // facebook email
-            callLoginApi("facebook", userId, accessToken, nickName, profileUrl, email)
+            callLoginApi("facebook", userId, accessToken, profileUrl, email)
         }
         val parameters = Bundle()
         parameters.putString("fields", "id, name, picture.type(large), email")
@@ -68,11 +67,10 @@ class LoginPresenter : LoginContract {
                 Logger.v("카카오 로그인 성공")
                 val userId = userProfile.id.toString()
                 val accessToken = Session.getCurrentSession().tokenInfo.accessToken
-                val nickName = userProfile.nickname  //kakao nickname
                 val profileURL = userProfile.profileImagePath  //kakao profile image
                 val email: String? = userProfile.email // kakao email
 
-                callLoginApi("kakao", userId, accessToken, nickName, profileURL, email)
+                callLoginApi("kakao", userId, accessToken, profileURL, email)
             }
 
             override fun onNotSignedUp() {
@@ -83,14 +81,14 @@ class LoginPresenter : LoginContract {
     }
 
     //api
-    private fun callLoginApi(provider: String, userId: String, accessToken: String, nickName: String, profileURL: String, email: String? = null) {
-        Logger.v("provider: $provider, userId: $userId, accessToken: $accessToken, nickName: $nickName, profileUrl: $profileURL, email: $email")
+    private fun callLoginApi(provider: String, userId: String, accessToken: String, profileURL: String, email: String? = null) {
+        Logger.v("provider: $provider, userId: $userId, accessToken: $accessToken, profileUrl: $profileURL, email: $email")
         Retro.instance.loginService.signIn(SignIn(accessToken, provider))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ this.response(it.data, User(provider, userId.toLong(), nickName, email, profileURL,accessToken)) })
-                { error -> loginErrorResponse(error, User(provider, userId.toLong(), nickName, email, profileURL,accessToken)) }
+                .subscribe({ this.response(it.data, User(provider, userId.toLong(), email, profileURL, accessToken)) })
+                { error -> loginErrorResponse(error, User(provider, userId.toLong(),  email, profileURL, accessToken)) }
     }
 
     private fun response(userModel: User?, register: User) {
@@ -111,10 +109,10 @@ class LoginPresenter : LoginContract {
     }
 
     private fun loginErrorResponse(error: Throwable, register: User) {
-        if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_404) {   //신규회원
-           // Navigator.goRegisterUserInfo(context, register)
+        if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_401) {   //신규회원
+            Navigator.goRegisterUserInfo(context, register)
         } else {
-            if(BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 Navigator.goMain(context)
             }
             Util.toast("서버 오류입니다.")

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/check_image"
@@ -17,39 +15,44 @@
         android:id="@+id/guide_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/check_image"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:lineSpacingExtra="1dp"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:lineSpacingExtra="4dp"
         android:text="학생 인증 작업을 시작하려면\n업로드 버튼을 누르세요."
         android:textSize="18dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:layout_marginTop="40dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/reselect_btn"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@color/retakeTxtColor"
+            android:padding="18dp"
+            android:text="재촬영"
             android:textColor="@color/white"
-            android:background="@drawable/rounded_white_rect"
-            android:text="다시찍기" />
+            android:textSize="18dp" />
 
         <Button
             android:id="@+id/ok_btn"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@color/colorPrimary"
+            android:padding="18dp"
+            android:text="업로드"
             android:textColor="@color/white"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/rounded_white_rect"
-            android:text="업로드" />
+            android:textSize="18dp" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

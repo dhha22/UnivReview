@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.WindowManager;
 
 import com.squareup.otto.Produce;
 import com.univreview.R;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.fragment.search.SearchFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
@@ -40,11 +42,8 @@ public class NavigationActivity extends BaseActivity {
             if (fragment instanceof SearchFragment) {
                 Logger.v("set translucent");
                 setTranslucent();
-            } else if (fragment instanceof RegisterUserInfoFragment
-                    || fragment instanceof RegisterUnivInfoFragment
-                    || fragment instanceof RegisterUserIdentityFragment) {
-                Logger.v("set full screen");
-                setFullScreen();
+            }else if(fragment instanceof ReviewDetailFragment){
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
             setContentView(R.layout.activity_navigation);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commitNow();

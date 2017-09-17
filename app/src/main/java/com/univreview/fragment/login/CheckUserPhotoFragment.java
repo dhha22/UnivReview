@@ -1,5 +1,6 @@
 package com.univreview.fragment.login;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,14 +35,13 @@ import rx.schedulers.Schedulers;
  */
 public class CheckUserPhotoFragment extends BaseFragment {
     private static final String CAMERA = "camera";
-    private static final String ALBUM = "album";
     @BindView(R.id.check_image) ImageView checkImage;
     @BindView(R.id.reselect_btn) Button reselectBtn;
     @BindView(R.id.ok_btn) Button okBtn;
     private String type;
     private String path;
 
-    public static CheckUserPhotoFragment newInstance(String type, String path){
+    public static CheckUserPhotoFragment newInstance(String type, String path) {
         CheckUserPhotoFragment fragment = new CheckUserPhotoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -63,15 +63,9 @@ public class CheckUserPhotoFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_check_user_photo, container, false);
         ButterKnife.bind(this, view);
-        toolbar.setCancelBtnVisibility(true);
-        if (CAMERA.equals(type)) {
-            reselectBtn.setText("다시 찍기");
-            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "camera"));
-        } else if (ALBUM.equals(type)) {
-            reselectBtn.setText("앨범 가기");
-            reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "album"));
-        }
-
+        toolbar.setTitleTxt("학생증 확인");
+        toolbar.setCancelToolbarStyle();
+        reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "camera"));
         setCheckImage(path);
         okBtn.setOnClickListener(v -> upload());
         rootLayout.addView(view);
@@ -79,7 +73,8 @@ public class CheckUserPhotoFragment extends BaseFragment {
     }
 
     private void upload() {
-        Retro.instance.fileService(path, "file")
+        Navigator.goUserAuthCompleted(getContext());
+       /* Retro.instance.fileService(path, "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(() -> progressDialog.show())
@@ -87,7 +82,8 @@ public class CheckUserPhotoFragment extends BaseFragment {
                     Logger.v("result: " + result);
                     User user = new User();
                     user.studentImageUrl = result.fileLocation;
-                    /*Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
+                    Navigator.goUserAuthCompleted(getContext());
+                    *//*Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate(() -> {
@@ -95,40 +91,35 @@ public class CheckUserPhotoFragment extends BaseFragment {
                                 Navigator.goUserAuthCompleted(getContext());
                                 getActivity().finish();
                             })
-                            .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);*/
+                            .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);*//*
                 }, error -> {
                     progressDialog.dismiss();
                     ErrorUtils.parseError(error);
-                });
+                });*/
     }
 
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
-        if (activityResultEvent.getResultCode() == getActivity().RESULT_OK) {
+        if (activityResultEvent.getResultCode() == Activity.RESULT_OK) {
             if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {
                 String type = activityResultEvent.getIntent().getStringExtra("type");
                 if ("camera".equals(type)) {
                     Navigator.goCamera(getContext());
-                } else if ("album".equals(type)) {
-                    Navigator.goAlbum(getContext());
                 }
-            } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA){
+            } else if (activityResultEvent.getRequestCode() == Navigator.CAMERA) {
                 path = ImageUtil.IMAGE_PATH + "tmp.jpg";
-                setCheckImage(path);
-            }else if(activityResultEvent.getRequestCode() == Navigator.ALBUM){
-                path = ImageUtil.getPath(activityResultEvent.getIntent().getData());
                 setCheckImage(path);
             }
         }
     }
 
-    private void setCheckImage(String path){
+    private void setCheckImage(String path) {
         Logger.v("path: " + path);
         App.picasso.invalidate("file://" + path);
         App.picasso.load("file://" + path)
                 .fit()
-                .centerInside()
+                .centerCrop()
                 .into(checkImage);
     }
 

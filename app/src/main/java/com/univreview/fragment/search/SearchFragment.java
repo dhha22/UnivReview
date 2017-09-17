@@ -89,7 +89,7 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
-        toolbar.setBackBtnVisibility(true);
+        toolbar.setSearchToolbarStyle();
         init();
         rootLayout.addView(view);
         rootLayout.setBackgroundColor(Util.getColor(getContext(), R.color.searchBgColor));
