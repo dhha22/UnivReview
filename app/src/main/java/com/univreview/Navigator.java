@@ -155,16 +155,16 @@ public class Navigator {
 
     //search
 
-    public static void goSearch(Context context, ReviewSearchType type, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0, isReviewSearch));
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
 
-    public static void goSearch(Context context, ReviewSearchType type, Long id, boolean isReviewSearch){
+    public static void goSearch(Context context, ReviewSearchType type, Long id){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, id, isReviewSearch));
+        NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 

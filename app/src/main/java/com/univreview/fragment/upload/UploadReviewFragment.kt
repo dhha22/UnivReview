@@ -61,10 +61,10 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
     fun init() {
         backBtn.setOnClickListener { activity.onBackPressed() }
         okBtn.setOnClickListener { presenter.registerReview() }
-        subjectTxt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT, false) }
+        subjectTxt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT) }
         professorTxt.setOnClickListener {
             if (!subjectTxt.text.isEmpty()) {
-                Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.review.subjectId, false)
+                Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.review.subjectId)
             } else {
                 Util.simpleMessageDialog(context, "과목을 입력해주세요")
             }

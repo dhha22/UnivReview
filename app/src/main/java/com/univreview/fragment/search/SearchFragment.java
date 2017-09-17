@@ -1,6 +1,5 @@
 package com.univreview.fragment.search;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,25 +15,23 @@ import android.widget.ImageButton;
 
 import com.univreview.Navigator;
 import com.univreview.R;
-import com.univreview.adapter.CustomAdapter;
 import com.univreview.adapter.SearchAdapter;
-import com.univreview.adapter.contract.SearchAdapterContract;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.listener.EndlessRecyclerViewScrollListener;
 import com.univreview.log.Logger;
 import com.univreview.model.enumeration.ReviewSearchType;
 import com.univreview.util.Util;
-import com.univreview.view.SearchListItemView;
 import com.univreview.view.UnivReviewRecyclerView;
 import com.univreview.view.contract.SearchContract;
 import com.univreview.view.presenter.SearchPresenter;
 import com.univreview.widget.PreCachingLayoutManager;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.Subscription;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,16 +49,14 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
     private ReviewSearchType type;
     private SearchAdapter adapter;
     private Long id;
-    private boolean isReviewSearch;
-    private Timer timer;
     private SearchPresenter presenter;
+    private Subscription timer;
 
-    public static SearchFragment newInstance(ReviewSearchType type, long id, boolean isReviewSearch) {
+    public static SearchFragment newInstance(ReviewSearchType type, long id) {
         SearchFragment fragment = new SearchFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("type", type);
         bundle.putLong("id", id);
-        bundle.putBoolean("isReviewSearch", isReviewSearch);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -72,15 +67,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         type = (ReviewSearchType) getArguments().getSerializable("type");
         id = getArguments().getLong("id");
         if (id == 0) id = null;
-        isReviewSearch = getArguments().getBoolean("isReviewSearch");
         presenter = new SearchPresenter();
         presenter.view = this;
-
-        if (isReviewSearch) {
-            presenter.setSubjectType(null);
-        } else {
-            presenter.setSubjectType("M");
-        }
     }
 
     @Nullable
@@ -126,7 +114,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         presenter.setSearchAdapterModel(adapter);
         adapter.setOnItemClickListener((view, position) -> {
             Logger.v("search position: " + position);
-            if (isReviewSearch) {   // 일반적인 review search
+            // 일반적인 review search
+            if (!(type == ReviewSearchType.MAJOR || type == ReviewSearchType.UNIVERSITY)) {
                 String name = adapter.getItem(position).getName();
                 input.setText(name);
                 input.setSelection(name.length());
@@ -154,8 +143,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (timer != null) {
-                timer.cancel();
+            if (timer != null && !timer.isUnsubscribed()) {
+                timer.unsubscribe();
             }
         }
 
@@ -168,13 +157,8 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
                 deleteBtn.setVisibility(View.INVISIBLE);
             }
             setPage(getDEFAULT_PAGE());
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    getActivity().runOnUiThread(() -> callSearchApi(id, type, s.toString(), getPage()));
-                }
-            }, 300);
+            timer = Observable.timer(300, TimeUnit.MILLISECONDS)
+                    .subscribe(aLong -> callSearchApi(id, type, s.toString(), getPage()));
         }
     };
 
@@ -184,23 +168,14 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
             case UNIVERSITY:
                 presenter.searchUniversity(name, page);
                 break;
-            case DEPARTMENT:
-                presenter.searchDepartment(id, name, page);
-                break;
             case MAJOR:
                 presenter.searchMajor(id, name, page);
                 break;
             case SUBJECT:
                 presenter.searchSubject(id, name, page);
                 break;
-            case PROFESSOR:
-                presenter.searchProfessor(id, name, page);
-                break;
             case PROF_FROM_SUBJ:
                 presenter.searchProfFromSubj(id, name, page);
-                break;
-            case SUBJ_FROM_PROF:
-                presenter.searchSubjFromProf(id, page);
                 break;
         }
     }
@@ -209,14 +184,10 @@ public class SearchFragment extends AbsListFragment implements SearchContract.Vi
         switch (type) {
             case UNIVERSITY:
                 return "대학교를 입력해주세요";
-            case DEPARTMENT:
-                return "학과군을 입력해주세요";
             case MAJOR:
                 return "학과를 입력해주세요";
             case SUBJECT:
-            case SUBJ_FROM_PROF:
                 return "과목을 입력해주세요";
-            case PROFESSOR:
             case PROF_FROM_SUBJ:
                 return "교수명을 입력해주세요";
             default:

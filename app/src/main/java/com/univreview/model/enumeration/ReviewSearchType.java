@@ -7,12 +7,9 @@ package com.univreview.model.enumeration;
 public enum ReviewSearchType {
     UNIVERSITY("university"),
     SUBJECT("subject"),
-    DEPARTMENT("department"),
     MAJOR("major"),
-    PROFESSOR("professor"),
     MY_REVIEW("myReview"),
-    PROF_FROM_SUBJ("profFromSubj"),
-    SUBJ_FROM_PROF("subjFromProf");
+    PROF_FROM_SUBJ("profFromSubj");
 
     private String typeName;
 

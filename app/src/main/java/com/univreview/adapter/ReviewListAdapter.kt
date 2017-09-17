@@ -76,7 +76,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType) : CustomAd
         init {
             if (type == ReviewSearchType.MY_REVIEW) {
                 v.setMode(ReviewItemView.Status.MY_REVIEW)
-            } else if (type == ReviewSearchType.SUBJECT || type == ReviewSearchType.PROFESSOR) {
+            } else if (type == ReviewSearchType.SUBJECT) {
                 v.setMode(ReviewItemView.Status.READ_REVIEW)
             }
             v.setOnClickListener { itemClickListener.onItemClick(it, adapterPosition) }

@@ -37,7 +37,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
             value?.setOnItemClickListener(this)
         }
 
-    lateinit var searchModel: SearchModel
+
     var sbjId: Long = 0L
     var profId: Long = 0L
 
@@ -46,7 +46,6 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
 
         when (type) {
             ReviewSearchType.MY_REVIEW -> observable = Retro.instance.reviewService().callMyReview(App.setHeader(), page)
-            ReviewSearchType.PROFESSOR -> observable = Retro.instance.reviewService().callReviewListByProfessor(App.setHeader(), profId, page)
             ReviewSearchType.SUBJECT -> observable = Retro.instance.reviewService().callReviewListBySubject(App.setHeader(), sbjId, page)
         }
 
@@ -67,7 +66,6 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         if (rvListModel.reviews.isNotEmpty()) {
             Logger.v("review is not empty $page")
             view.setResult(page)
-
             Observable.from<Review>(rvListModel.reviews)
                     .subscribe { adapterModel.addItem(it) }
 
@@ -77,18 +75,13 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     private fun errorResponse(page: Int, e: Throwable) {
         view.setStatus(AbsListFragment.Status.ERROR)
         if (page == DEFAULT_PAGE) {
-            view.setHeaderViewVisibility(false)
             adapterModel.clearItem()
         }
         ErrorUtils.parseError(e)
     }
 
     override fun loadFilterList() {
-        if (sbjId == 0L) {  // subject filter list
-            Navigator.goSearch(context, ReviewSearchType.SUBJ_FROM_PROF, profId, false)
-        } else if (profId == 0L) {  // professor filter list
-            Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, sbjId, false)
-        }
+        Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, sbjId)
     }
 
 

@@ -15,25 +15,20 @@ import com.univreview.listener.EndlessRecyclerViewScrollListener
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.RandomImageModel
-import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.util.AnimationUtils
 import com.univreview.util.SimpleDividerItemDecoration
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
-import com.univreview.view.ReviewTotalScoreView
 import com.univreview.view.UnivReviewRecyclerView
 import com.univreview.view.contract.ReviewListContract
 import com.univreview.view.presenter.ReviewListPresenter
-import com.univreview.widget.PreCachingLayoutManager
 import kotlinx.android.synthetic.main.fragment_review_list.*
-import kotlinx.android.synthetic.main.review_item.*
 
 /**
  * Created by DavidHa on 2017. 8. 7..
  */
 class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
-    //lateinit var headerView: ReviewTotalScoreView
     lateinit var adapter: ReviewListAdapter
     lateinit var type: ReviewSearchType
     lateinit var name: String
@@ -63,10 +58,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         presenter.apply {
             view = this@ReviewListFragment
             context = getContext()
-            when (type) {
-                ReviewSearchType.SUBJECT -> presenter.sbjId = id
-                ReviewSearchType.PROFESSOR -> presenter.profId = id
-            }
+            if (type == ReviewSearchType.SUBJECT) sbjId = id
         }
     }
 
@@ -93,11 +85,9 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                 toolbar.setTitleTxt(name)
             }
 
-        // Subject List, Professor List
-            ReviewSearchType.SUBJECT, ReviewSearchType.PROFESSOR -> {
+        // Subject List
+            ReviewSearchType.SUBJECT -> {
                 adapter = ReviewListAdapter(context, type)
-                // headerView = ReviewTotalScoreView(context)
-                // adapter = ReviewListAdapter(context, type, headerView)
                 App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 toolbar.visibility = View.GONE
                 appBarLayout.addOnOffsetChangedListener { appBarLayout, _ ->
@@ -172,17 +162,5 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
     override fun setDialog(list: List<String>, itemClickListener: OnItemClickListener) {
         ListDialog(context, list, itemClickListener).show()
-    }
-
-    override fun setHeaderData(difficultyRateAvg: Float, assignmentRateAvg: Float, attendanceRateAvg: Float, gradeRate: Float, achievementRate: Float) {
-        // headerView.setData(difficultyRateAvg, assignmentRateAvg, attendanceRateAvg, gradeRate, achievementRate)
-    }
-
-    override fun setHeaderViewVisibility(isVisibility: Boolean) {
-        /*if (isVisibility) {
-            headerView.visibility = View.VISIBLE
-        } else {
-            headerView.visibility = View.GONE
-        }*/
     }
 }

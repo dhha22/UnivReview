@@ -75,14 +75,14 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
     private fun init() {
         universityTxt.setOnClickListener {
             if (formVerification(UNIVERSITY)) {
-                Navigator.goSearch(context, ReviewSearchType.UNIVERSITY, false)
+                Navigator.goSearch(context, ReviewSearchType.UNIVERSITY)
             }
         }
 
 
         majorTxt.setOnClickListener {
             if (formVerification(MAJOR)) {
-                Navigator.goSearch(context, ReviewSearchType.MAJOR, presenter.register.departmentId, false)
+                Navigator.goSearch(context, ReviewSearchType.MAJOR, presenter.register.universityId)
             }
         }
         nextBtn.setOnClickListener {
@@ -134,7 +134,6 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
             ReviewSearchType.UNIVERSITY -> {
                 universityTxt.text = name
                 majorTxt.text = null
-                App.universityId = id
                 presenter.register.apply {
                     universityId = id
                     majorId = null

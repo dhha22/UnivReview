@@ -14,11 +14,8 @@ interface SearchService {
     @GET(Retro.VERSION + "universities")
     fun callUniversityList(@Query("name") name: String): Observable<DataListModel<University>>
 
-    @GET(Retro.VERSION + "departments")
-    fun callDepartmentList(@Query("university_id") universityId: Long, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Department>>
-
     @GET(Retro.VERSION + "majors")
-    fun callMajorList(@Query("university_id") universityId: Long, @Query("department_id") departmentId: Long, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
+    fun callMajorList(@Query("university_id") universityId: Long, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
 
     @GET(Retro.VERSION + "subjects")
     fun callSubjects(@HeaderMap headers: Map<String, String>, @Query("major_id") majorId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Subject>>

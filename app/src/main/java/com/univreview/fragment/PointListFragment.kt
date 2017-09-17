@@ -80,7 +80,8 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
     }
 
     override fun loadMore() {
-
+        setStatus(Status.LOADING_MORE)
+        presenter.callPointHistories(page)
     }
 
     override fun refresh() {

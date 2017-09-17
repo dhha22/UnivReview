@@ -22,14 +22,14 @@ import rx.schedulers.Schedulers
 /**
  * Created by DavidHa on 2017. 9. 15..
  */
-class NewHomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment() {
     private lateinit var cultureAdapter: RecentRvAdapter
     private lateinit var majorAdapter: RecentRvAdapter
 
     companion object {
         @JvmStatic
-        fun getInstance(): NewHomeFragment {
-            val fragment = NewHomeFragment()
+        fun getInstance(): HomeFragment {
+            val fragment = HomeFragment()
             return fragment
         }
     }
@@ -45,7 +45,7 @@ class NewHomeFragment : BaseFragment() {
     }
 
     fun init() {
-        subjectSearch.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT, true) }
+        subjectSearch.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT) }
 
         //recycler view
         val cultureLayoutManager = LinearLayoutManager(context)
@@ -70,8 +70,6 @@ class NewHomeFragment : BaseFragment() {
     }
 
     private fun cultureResponse(cultures: List<Review>, majors: List<Review>) {
-        cultureAdapter.clear()
-        majorAdapter.clear()
         Observable.from(cultures)
                 .subscribe({ result -> cultureAdapter.addItem(result) }, { ErrorUtils.parseError(it) })
         Observable.from(majors)

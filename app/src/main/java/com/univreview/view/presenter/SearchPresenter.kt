@@ -38,19 +38,9 @@ class SearchPresenter : SearchContract {
         setObservable(Retro.instance.searchService.callUniversityList(name), page)
     }
 
-    // 학과군 검색 (로그인)
-    override fun searchDepartment(id: Long, name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callDepartmentList(id, name, page), page)
-    }
-
-    // 학과 검색 (로그인)
+    // 전공 검색 (로그인)
     override fun searchMajor(id: Long, name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callMajorList(App.universityId.toLong(), id, name, page), page)
-    }
-
-    // 교수 검색 (리뷰 검색)
-    override fun searchProfessor(departmentId: Long?, name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callProfessors(App.setHeader(), name, page), page)
+        setObservable(Retro.instance.searchService.callMajorList(id, name, page), page)
     }
 
     // 과목 검색 (리뷰 검색)
@@ -64,12 +54,6 @@ class SearchPresenter : SearchContract {
     override fun searchProfFromSubj(subjectId: Long, name: String, page: Int) {
         Logger.v("subjectId: " + subjectId)
         setObservable(Retro.instance.searchService.callCourse(App.setHeader(), subjectId, page), page)
-    }
-
-    // 교수에 속한 과목 검색 (리뷰 필터 리스트)
-    override fun searchSubjFromProf(profId: Long, page: Int) {
-        Logger.v("profId: $profId")
-        setObservable(Retro.instance.searchService.callSubjectsFilter(App.setHeader(), profId, page), page)
     }
 
 

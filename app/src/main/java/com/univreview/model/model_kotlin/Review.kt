@@ -26,12 +26,6 @@ data class Review(override var id: Long = 0,
                   val professor: Professor? = null,
                   var isLike: Boolean = false) : AbstractDataProvider(), Parcelable {
 
-    constructor(difficultyRate: Float,
-                assignmentRate: Float,
-                attendanceRate: Float,
-                gradeRate: Float,
-                achievementRate: Float) : this(0, difficultyRate, assignmentRate, attendanceRate, gradeRate, achievementRate)
-
     override var name: String
         get() = ""
         set(value) {}
@@ -43,9 +37,7 @@ data class Review(override var id: Long = 0,
         updateNotificationPublisher.onNext(this)
     }
 
-    fun getAverageRate(): Float {
-        return Math.round(((difficultyRate + assignmentRate + attendanceRate + gradeRate + achievementRate) / 5F) * 100f) / 100f
-    }
+
 
     fun getDifficultyRateMessage(): String {
         when (Math.round(difficultyRate)) {
