@@ -13,6 +13,7 @@ import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.activity.PermissionCheckerActivity;
 import com.univreview.fragment.PointListFragment;
+import com.univreview.fragment.SearchFragment;
 import com.univreview.fragment.login.CheckUserPhotoFragment;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
@@ -21,7 +22,6 @@ import com.univreview.fragment.login.UserAuthCompletedFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.fragment.review.ReviewListFragment;
 import com.univreview.fragment.review.ReviewReportFragment;
-import com.univreview.fragment.search.SearchFragment;
 import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
@@ -112,11 +112,6 @@ public class Navigator {
         context.startActivity(intent);
     }
 
-    public static void goUploadReviewDetail(Context context, Review review, int position) {
-        Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(UploadReviewDetailFragment.getInstance(review));
-        context.startActivity(intent);
-    }
 
     //main
 
@@ -157,14 +152,14 @@ public class Navigator {
 
     public static void goSearch(Context context, ReviewSearchType type){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, 0));
+        NavigationActivity.setFragment(SearchFragment.getInstance(type, 0));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 
 
     public static void goSearch(Context context, ReviewSearchType type, Long id){
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SearchFragment.newInstance(type, id));
+        NavigationActivity.setFragment(SearchFragment.getInstance(type, id));
         ((Activity)context).startActivityForResult(intent, SEARCH);
     }
 

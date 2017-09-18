@@ -65,29 +65,21 @@ public class Toolbar extends FrameLayout {
         }
     }
 
-    public void setBackBtnVisibility(boolean isVisible) {
-        if (isVisible) {
-            backBtn.setVisibility(VISIBLE);
-            backBtn.setOnClickListener(v -> ((Activity) context).finish());
-        } else {
-            backBtn.setVisibility(INVISIBLE);
-        }
-    }
 
     public void setLoginToolbarStyle() {
-        backBtn.setVisibility(VISIBLE);
+        setBackBtnVisibility(true);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
         ViewCompat.setBackgroundTintList(backBtn, (ContextCompat.getColorStateList(context, R.color.black)));
         backBtn.setOnClickListener(v -> ((Activity) context).finish());
     }
 
     public void setSearchToolbarStyle() {
-        backBtn.setVisibility(VISIBLE);
+        setBackBtnVisibility(true);
         line.setVisibility(GONE);
     }
 
     public void setCancelToolbarStyle() {
-        cancelBtn.setVisibility(VISIBLE);
+        setCancelBtnVisibility(true);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
         ViewCompat.setBackgroundTintList(cancelBtn, (ContextCompat.getColorStateList(context, R.color.black)));
         cancelBtn.setOnClickListener(v -> ((Activity) context).onBackPressed());
@@ -100,6 +92,15 @@ public class Toolbar extends FrameLayout {
 
     public void setTitleColor(int id) {
         titleTxt.setTextColor(Util.getColor(context, id));
+    }
+
+    public void setBackBtnVisibility(boolean isVisible) {
+        if (isVisible) {
+            backBtn.setVisibility(VISIBLE);
+            backBtn.setOnClickListener(v -> ((Activity) context).finish());
+        } else {
+            backBtn.setVisibility(INVISIBLE);
+        }
     }
 
     public void setCancelBtnVisibility(boolean isVisible) {

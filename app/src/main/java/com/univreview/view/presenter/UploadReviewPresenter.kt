@@ -1,11 +1,15 @@
 package com.univreview.view.presenter
 
+import android.content.Intent
 import com.univreview.App
 import com.univreview.log.Logger
+import com.univreview.model.ActivityResultEvent
+import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.UploadReviewContract
+import kotlinx.android.synthetic.main.upload_review_toolbar.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -50,6 +54,22 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
     private fun response(review: Review) {
         Logger.v("response review: " + review)
         view.showRecommendRvDialog(review)
+    }
+
+    override fun onActivityResult(data: Intent) {
+        val id = data.getLongExtra("id", 0)
+        val name = data.getStringExtra("name")
+        val type = data.getSerializableExtra("type") as ReviewSearchType
+        if (ReviewSearchType.SUBJECT_WITH_RESULT == type) {
+            view.setSubjectTxt(name)
+            view.setProfessorTxt(null)
+            review.subjectId = id
+            review.courseId = 0
+        } else if (ReviewSearchType.PROF_FROM_SUBJ == type) {
+            view.setProfessorTxt(name)
+            review.courseId = id
+            checkReviewExist()
+        }
     }
 
 }

@@ -9,11 +9,9 @@ interface SearchContract {
     interface View : BaseView {
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
+        fun setInputStr(searchStr : String)
     }
 
-    fun searchUniversity(name: String, page: Int)
-    fun searchMajor(id: Long, name: String, page: Int)
-    fun searchSubject(majorId: Long?, name: String, page: Int)
-    fun searchProfFromSubj(subjectId: Long, name: String, page: Int)
+    fun callSearchApi(name: String, page: Int)
     fun stopSearch()
 }

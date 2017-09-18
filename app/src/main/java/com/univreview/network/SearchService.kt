@@ -15,7 +15,7 @@ interface SearchService {
     fun callUniversityList(@Query("name") name: String): Observable<DataListModel<University>>
 
     @GET(Retro.VERSION + "majors")
-    fun callMajorList(@Query("university_id") universityId: Long, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
+    fun callMajorList(@Query("university_id") universityId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
 
     @GET(Retro.VERSION + "subjects")
     fun callSubjects(@HeaderMap headers: Map<String, String>, @Query("major_id") majorId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Subject>>
@@ -24,7 +24,7 @@ interface SearchService {
     fun callProfessors(@HeaderMap headers: Map<String, String>, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Professor>>
 
     @GET(Retro.VERSION + "subjects/{subjectId}/courses")
-    fun callCourse(@HeaderMap headers: Map<String, String>, @Path("subjectId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Course>>
+    fun callCourse(@HeaderMap headers: Map<String, String>, @Path("subjectId") subjectId: Long?, @Query("page") page: Int): Observable<DataListModel<Course>>
 
     @GET(Retro.VERSION + "professors")
     fun callProfessorsFilter(@HeaderMap headers: Map<String, String>, @Query("subjectId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Professor>>

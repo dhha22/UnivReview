@@ -8,11 +8,8 @@ import android.view.WindowManager;
 
 import com.squareup.otto.Produce;
 import com.univreview.R;
-import com.univreview.fragment.login.RegisterUnivInfoFragment;
-import com.univreview.fragment.login.RegisterUserIdentityFragment;
-import com.univreview.fragment.login.RegisterUserInfoFragment;
+import com.univreview.fragment.SearchFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
-import com.univreview.fragment.search.SearchFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
 import com.univreview.model.BusProvider;

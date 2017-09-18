@@ -61,7 +61,7 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
     fun init() {
         backBtn.setOnClickListener { activity.onBackPressed() }
         okBtn.setOnClickListener { presenter.registerReview() }
-        subjectTxt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT) }
+        subjectTxt.setOnClickListener { Navigator.goSearch(context, ReviewSearchType.SUBJECT_WITH_RESULT) }
         professorTxt.setOnClickListener {
             if (!subjectTxt.text.isEmpty()) {
                 Navigator.goSearch(context, ReviewSearchType.PROF_FROM_SUBJ, presenter.review.subjectId)
@@ -97,27 +97,17 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
     fun onActivityResult(activityResultEvent: ActivityResultEvent) {
         if (activityResultEvent.resultCode == Activity.RESULT_OK) {
             if (activityResultEvent.requestCode == Navigator.SEARCH) {
-                val data = activityResultEvent.intent
-                val id = data.getLongExtra("id", 0)
-                val name = data.getStringExtra("name")
-                val type = data.getSerializableExtra("type") as ReviewSearchType
-                Logger.v("on activity result: " + type)
-                if (ReviewSearchType.SUBJECT == type) {
-                    subjectTxt.text = name
-                    professorTxt.text = null
-                    presenter.apply {
-                        review.subjectId = id
-                        review.courseId = 0
-                    }
-                } else if (ReviewSearchType.PROF_FROM_SUBJ == type) {
-                    professorTxt.text = name
-                    presenter.apply {
-                        review.courseId = id
-                    }
-                    presenter.checkReviewExist()
-                }
+                presenter.onActivityResult(activityResultEvent.intent)
             }
         }
+    }
+
+    override fun setSubjectTxt(str: String?) {
+        subjectTxt.text = str
+    }
+
+    override fun setProfessorTxt(str: String?) {
+        professorTxt.text = str
     }
 
     override fun showAlertDialog() {
@@ -128,7 +118,7 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
                 .show()
     }
 
-    override fun showRecommendRvDialog(review : Review) {
+    override fun showRecommendRvDialog(review: Review) {
         RecommendRvDialog(context, review).show()
     }
 

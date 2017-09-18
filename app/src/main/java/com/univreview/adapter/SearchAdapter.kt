@@ -10,7 +10,8 @@ import com.univreview.view.SearchListItemView
 /**
  * Created by DavidHa on 2017. 8. 23..
  */
-class SearchAdapter(context : Context) : CustomAdapter(context), SearchAdapterContract.Model {
+class SearchAdapter(context : Context) : CustomAdapter(context)
+        , SearchAdapterContract.Model, SearchAdapterContract.View {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(SearchListItemView(context))
     }
