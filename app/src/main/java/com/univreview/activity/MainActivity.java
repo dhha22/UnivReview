@@ -48,7 +48,6 @@ public class MainActivity extends BaseActivity {
 
 
     private void init() {
-        BaseFragment.reviewPublishSubject = PublishSubject.create();
         //App.initializeFCMToken();
         adapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -154,7 +153,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        BaseFragment.reviewPublishSubject.onCompleted();
         super.onDestroy();
 
     }

@@ -55,6 +55,7 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
         }
         presenter = PointListPresenter().apply {
             view = this@PointListFragment
+            context = getContext()
             callReviewTickets()
         }
     }

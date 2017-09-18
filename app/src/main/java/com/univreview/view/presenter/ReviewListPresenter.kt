@@ -8,7 +8,6 @@ import com.univreview.adapter.contract.ReviewListAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
-import com.univreview.model.SearchModel
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.model_kotlin.DataModel
 import com.univreview.model.model_kotlin.Review
@@ -77,7 +76,9 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         if (page == DEFAULT_PAGE) {
             adapterModel.clearItem()
         }
-        ErrorUtils.parseError(e)
+        if(ErrorUtils.parseError(e) == ErrorUtils.ERROR_401){
+            view.showTicketDialog()
+        }
     }
 
     override fun loadFilterList() {

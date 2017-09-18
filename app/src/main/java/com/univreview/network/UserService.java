@@ -1,12 +1,11 @@
 package com.univreview.network;
 
 import com.univreview.model.PushId;
-import com.univreview.model.model_kotlin.User;
-import com.univreview.model.UserModel;
 import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.DataModel;
 import com.univreview.model.model_kotlin.RvPoint;
 import com.univreview.model.model_kotlin.Ticket;
+import com.univreview.model.model_kotlin.User;
 
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -23,12 +21,6 @@ import rx.Observable;
  */
 public interface UserService {
 
-
-    @GET("profile")
-    Observable<UserModel> getProfile(@HeaderMap Map<String, String> headers);
-
-    @POST("profile/{userId}")
-    Observable<UserModel> postProfile(@HeaderMap Map<String, String> headers, @Body User body, @Path("userId") long userId);
 
     //push 등록
     @POST("push/id")

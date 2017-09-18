@@ -1,7 +1,6 @@
 package com.univreview.fragment.login;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,18 +16,10 @@ import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
-import com.univreview.model.User;
-import com.univreview.network.Retro;
-import com.univreview.util.ErrorUtils;
 import com.univreview.util.ImageUtil;
-import com.univreview.util.Util;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 31..

@@ -1,7 +1,6 @@
 package com.univreview.network;
 
 import com.univreview.model.FileUploadModel;
-import com.univreview.model.ResponseModel;
 
 import java.util.Map;
 

@@ -1,5 +1,6 @@
 package com.univreview.view.presenter
 
+import android.content.Context
 import com.univreview.App
 import com.univreview.adapter.contract.PointAdapterContract
 import com.univreview.fragment.AbsListFragment
@@ -7,6 +8,7 @@ import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.RvPoint
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
+import com.univreview.util.Util
 import com.univreview.view.contract.PointListContract
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -18,6 +20,7 @@ import rx.schedulers.Schedulers
 class PointListPresenter : PointListContract {
     private val DEFAULT_PAGE = 1
     lateinit var view: PointListContract.View
+    lateinit var context : Context
     lateinit var adapterModel: PointAdapterContract.Model
 
 
@@ -53,7 +56,11 @@ class PointListPresenter : PointListContract {
         Retro.instance.userService().buyReviewTicket(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ callPointHistories(DEFAULT_PAGE) }, { ErrorUtils.parseError(it) })
+                .subscribe({
+                    callPointHistories(DEFAULT_PAGE)
+                }, {
+                    Util.simpleMessageDialog(context,ErrorUtils.getErrorMessage(it))
+                })
     }
 
 }

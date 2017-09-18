@@ -7,6 +7,7 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.activity.LoginActivity;
 import com.univreview.log.Logger;
+import com.univreview.model.model_kotlin.ResultModel;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -61,15 +62,14 @@ public class ErrorUtils {
         return 0;
     }
 
-    public static String getErrorBody(Throwable throwable){
+    public static String getErrorMessage(Throwable throwable){
         if (throwable instanceof HttpException) {
             Response response = ((HttpException) throwable).response();
             try {
                 Logger.e(response.code());
-                Logger.e(response.message());
-                String responseBody = response.errorBody().string();
-                Logger.e(responseBody);
-                return responseBody;
+                final String responseBody = response.errorBody().string();
+                final ResultModel resultModel =  App.gson.fromJson(responseBody, ResultModel.class);
+                return resultModel.getError().getMessage();
             }catch (IOException e){
                 Logger.e(e);
             }

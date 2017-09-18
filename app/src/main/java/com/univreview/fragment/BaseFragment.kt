@@ -1,7 +1,6 @@
 package com.univreview.fragment
 
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -14,10 +13,8 @@ import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.BusProvider
-import com.univreview.model.Review
 import com.univreview.util.Util
 import com.univreview.view.Toolbar
-import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 4..
@@ -25,8 +22,6 @@ import rx.subjects.PublishSubject
 open class BaseFragment : Fragment() {
     companion object {
         private val HOME_FRAGMENT = "com.univreview.fragment.HomeFragment"
-        @JvmField
-        var reviewPublishSubject: PublishSubject<Review> = PublishSubject.create()
     }
 
     protected lateinit var rootLayout: LinearLayout
@@ -54,7 +49,7 @@ open class BaseFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!javaClass.name.equals(HOME_FRAGMENT)) {
+        if (javaClass.name != HOME_FRAGMENT) {
             Logger.v("on resume: " + this.javaClass.name)
             BusProvider.newInstance().register(this)
         }

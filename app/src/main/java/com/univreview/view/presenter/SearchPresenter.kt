@@ -4,20 +4,15 @@ import com.univreview.App
 import com.univreview.adapter.contract.SearchAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.log.Logger
-import com.univreview.model.SearchModel
 import com.univreview.model.model_kotlin.AbstractDataProvider
 import com.univreview.model.model_kotlin.DataListModel
-import com.univreview.model.model_kotlin.Department
-import com.univreview.model.model_kotlin.ResultModel
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.SearchContract
 import rx.Observable
-import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
-import java.io.UncheckedIOException
 
 /**
  * Created by DavidHa on 2017. 8. 6..
@@ -28,7 +23,6 @@ class SearchPresenter : SearchContract {
     }
 
     private var subscription: CompositeSubscription = CompositeSubscription()
-    var subjectType: String? = null
     lateinit var view: SearchContract.View
     lateinit var searchAdapterModel: SearchAdapterContract.Model
     var page: Int = DEFAULT_PAGE
