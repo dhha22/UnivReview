@@ -3,17 +3,25 @@
     <string name="app_version">0.0.1</string>
     <string name="facebook_app_id">1843922909222445</string>
     <string name="kakao_app_id">cec83de256e7cffbba96009caa6d7bb5</string>
+    <string name="progress_dialog_msg">잠시만 기다려주세요.</string>
+
+    <!-- login -->
     <string name="login_introduce_txt">대학리뷰에 오신 것을 환영합니다.</string>
     <string name="login_with_facebook">페이스북 계정으로 로그인</string>
     <string name="login_with_kakao">카카오 계정으로 로그인</string>
+
+
+    <!-- review -->
     <string name="recommend_review_msg">좀 더 자세한 리뷰를 쓰면\n많은 학우들에게 도움이 되요\n리뷰를 써볼까요?</string>
-    <string name="user_auth_completed_msg">본인확인이 완료되면 바로 인증이 부여됩니다.</string>
-    <string name="main_user_auth">지금 학생증을 찍어 학생을 인증하면\n피곤한 과제!시험!에 찌든 여러분들을 위한\n스타벅스 기프티콘을 드려요:)</string>
     <string name="review_like_txt">공감해요</string>
     <string name="review_comment_txt">의견있어요</string>
     <string name="people_cnt">%d명</string>
     <string name="point">%dp</string>
+
+
+    <!-- student card -->
     <string name="student_card_guide_title">본인 확인을 위해\n학생증을 준비해주세요.</string>
     <string name="student_card_guide1">학생증의 앞면이 보이도록 놓아주세요</string>
     <string name="student_card_guide2">빛이 반사되지 않도록 주의하세요.\n훼손이 심한 신분증은 거절될 수도 있습니다.</string>
+    <string name="user_auth_completed_msg">본인확인이 완료되면 바로 인증이 부여됩니다.</string>
 </resources>

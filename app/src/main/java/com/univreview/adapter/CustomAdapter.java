@@ -85,6 +85,11 @@ public abstract class CustomAdapter extends RecyclerView.Adapter{
         return null;
     }
 
+    public void addFirstItem(AbstractDataProvider item){
+        list.add(0, item);
+        notifyItemInserted(0);
+    }
+
     public void addItem(AbstractDataProvider item){
         list.add(item);
         notifyDataSetChanged();

@@ -133,7 +133,7 @@ public class ReviewReportFragment extends BaseWriteFragment {
     private void callReviewReportApi(String message){
         ReviewReport reviewReport = new ReviewReport(reviewId, message);
         Logger.v("post review report: " + reviewReport);
-        Retro.instance.reviewService().postReviewReport(App.setAuthHeader(App.userToken), reviewReport)
+       /* Retro.instance.reviewService().postReviewReport(App.setAuthHeader(App.userToken), reviewReport)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> {
@@ -141,6 +141,6 @@ public class ReviewReportFragment extends BaseWriteFragment {
                     ((BaseActivity) getActivity()).setOnBackPressedListener(null);
                     getActivity().onBackPressed();
                 })
-                .subscribe(result -> Logger.v("result: " + result), ErrorUtils::parseError);
+                .subscribe(result -> Logger.v("result: " + result), ErrorUtils::parseError);*/
     }
 }

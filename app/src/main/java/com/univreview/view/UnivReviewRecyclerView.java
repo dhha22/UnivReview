@@ -56,6 +56,10 @@ public class UnivReviewRecyclerView extends SwipeRefreshLayout implements AbsRec
         recyclerview.scrollToPosition(0);
     }
 
+    public void scrollToPosition(int position){
+        recyclerview.smoothScrollToPosition(position);
+    }
+
 
 
 

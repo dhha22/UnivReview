@@ -1,6 +1,5 @@
 package com.univreview.adapter.contract
 
-import com.univreview.listener.OnItemLongClickListener
 import com.univreview.model.model_kotlin.AbstractDataProvider
 
 /**
@@ -10,7 +9,7 @@ interface ReviewDetailAdapterContract {
     interface View :BaseView
 
     interface Model : BaseModel {
-        fun addLastItem(item : AbstractDataProvider)
+        fun addFirstItem(item : AbstractDataProvider)
         fun removeItem(position: Int)
     }
 }

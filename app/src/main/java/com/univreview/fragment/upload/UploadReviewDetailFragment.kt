@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.App
+import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseWriteFragment
 import com.univreview.log.Logger
@@ -26,22 +27,24 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
     companion object {
 
         @JvmStatic
-        fun getInstance(review: Review): UploadReviewDetailFragment {
+        fun getInstance(review: Review, isFirst: Boolean): UploadReviewDetailFragment {
             val fragment = UploadReviewDetailFragment()
             val bundle = Bundle()
             bundle.putParcelable("review", review)
+            bundle.putBoolean("isFirst", isFirst)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    private var isUpdate = false    // 리뷰 수정
+    private var isFirst: Boolean = false
     private lateinit var review: Review
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         review = arguments.getParcelable("review")
+        isFirst = arguments.getBoolean("isFirst")
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +65,6 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
     private fun init() {
         setReviewData(review)
         if (review.content != null) {
-            isUpdate = true
             toolbar.setTitleTxt("리뷰 수정")
             inputReview.setText(review.content)
             inputReview.setSelection(inputReview.text.toString().length)
@@ -105,6 +107,7 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
                 .subscribe({
                     review.content = it.data.content
                     review.notifyUpdate()
+                    if (isFirst) Navigator.goReviewDetail(context, review)
                     activity.finish()
                 }, { this.errorResponse(it) })
     }

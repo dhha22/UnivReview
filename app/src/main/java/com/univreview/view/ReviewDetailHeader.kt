@@ -114,18 +114,6 @@ class ReviewDetailHeader(context: Context) : FrameLayout(context) {
         etcBtn.setOnClickListener(clickListener)
     }
 
-    fun setCommentMoreBtnListener(click: () -> Unit) {
-        commentMore.setOnClickListener { click.invoke() }
-    }
-
-    fun setCommentMoreBtn(hasMore: Boolean) {
-        if (hasMore) {
-            commentMore.visibility = View.VISIBLE
-        } else {
-            commentMore.visibility = View.GONE
-        }
-    }
-
     fun increaseCommentCnt(isIncrease: Boolean) {
         val index = commentCnt.text.indexOf("명")
         val count = commentCnt.text.substring(0, index).toLong()

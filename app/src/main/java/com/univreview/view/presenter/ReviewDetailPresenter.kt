@@ -6,6 +6,7 @@ import android.view.View
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewDetailAdapterContract
+import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.listener.OnItemLongClickListener
 import com.univreview.log.Logger
@@ -14,7 +15,10 @@ import com.univreview.model.model_kotlin.Review
 import com.univreview.model.model_kotlin.RvComment
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
+import com.univreview.util.Util
+import com.univreview.view.UnivReviewRecyclerView
 import com.univreview.view.contract.ReviewDetailContract
+import kotlinx.android.synthetic.main.fragment_review_detail.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -27,7 +31,6 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         val DEFAULT_PAGE = 1
     }
 
-    var page = DEFAULT_PAGE
     lateinit var context: Context
     lateinit var review: Review
     lateinit var view: ReviewDetailContract.View
@@ -62,31 +65,45 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
 
     // 가장 최신에 달린 댓글이 list 하단에 존재
-    override fun loadComments() {
+    override fun loadComments(page: Int) {
         Retro.instance.reviewService().callReviewComments(App.setHeader(), review.id, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccessComment(it) }, { ErrorUtils.parseError(it) })
+                .subscribe({ onSuccessComment(page, it) }, { onErrorComment(page, it) })
     }
 
-    // 리뷰 댓글 추가
-    fun onSuccessComment(result: DataListModel<RvComment>) {
-        view.hasMoreComment(result.pagination?.nextPage != 0)
+    private fun onSuccessComment(page: Int, result: DataListModel<RvComment>) {
+        view.setStatus(AbsListFragment.Status.IDLE)
         if (result.data.isNotEmpty()) {
-            Observable.from(result.data).subscribe { adapterModel.addLastItem(it) }
+            view.setResult(page)
+            Observable.from(result.data).subscribe { adapterModel.addItem(it) }
         }
     }
 
+    private fun onErrorComment(page: Int, e: Throwable) {
+        view.setStatus(AbsListFragment.Status.ERROR)
+        if (page == DEFAULT_PAGE) {
+            adapterModel.clearItem()
+        }
+        ErrorUtils.parseError(e)
+    }
+
     // 리뷰 댓글 쓰기
-    override fun postComment(body: RvComment) {
-        Retro.instance.reviewService().postReviewComment(App.setHeader(), review.id, body)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate { view.dismissProgress() }
-                .subscribe({
-                    adapterModel.addLastItem(it.data)
-                    view.increaseCommentCnt(true)
-                }, { ErrorUtils.parseError(it) })
+    override fun postReviewComment(message: String?) {
+        if (message != null) {
+            view.showProgress()
+            (view.getRecyclerView() as UnivReviewRecyclerView).scrollToTop()
+            Retro.instance.reviewService().postReviewComment(App.setHeader(), review.id, RvComment(message))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doAfterTerminate { view.dismissProgress() }
+                    .subscribe({
+                        adapterModel.addFirstItem(it.data)
+                        view.increaseCommentCnt(true)
+                    }, { ErrorUtils.parseError(it) })
+        } else {
+            Util.toast("메세지를 입력해주세요")
+        }
     }
 
 
@@ -110,7 +127,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     }
 
     override val etcBtnClickListener = View.OnClickListener { _ ->
-        Logger.v("more btn click")
+        Logger.v("etc btn click")
         Logger.v("review user id: " + review.user?.id)
         //  본인이 더보기 버튼을 클릭했을 경우
         if (review.user?.id == App.userId) {

@@ -60,7 +60,7 @@ dependencies {
     //util
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.roughike:bottom-bar:2.0.2'
-    compile "me.henrytao:smooth-app-bar-layout:24.1.0.0"
+
     compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.4@aar'){
         transitive=true
     }
@@ -79,8 +79,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
-    //security
-    compile files('libs/bcprov-jdk15on-156.jar')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'

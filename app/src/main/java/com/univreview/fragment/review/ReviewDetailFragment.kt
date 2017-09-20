@@ -4,18 +4,19 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.R
 import com.univreview.adapter.ReviewCommentAdapter
 import com.univreview.dialog.ListDialog
-import com.univreview.fragment.BaseFragment
+import com.univreview.fragment.AbsListFragment
+import com.univreview.listener.EndlessRecyclerViewScrollListener
 import com.univreview.listener.OnItemClickListener
-import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
-import com.univreview.model.model_kotlin.RvComment
 import com.univreview.util.Util
+import com.univreview.view.AbsRecyclerView
 import com.univreview.view.ReviewDetailHeader
 import com.univreview.view.contract.ReviewDetailContract
 import com.univreview.view.presenter.ReviewDetailPresenter
@@ -24,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_review_detail.*
 /**
  * Created by DavidHa on 2017. 8. 8..
  */
-class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
+class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
 
     lateinit var adapter: ReviewCommentAdapter
     lateinit var presenter: ReviewDetailPresenter
@@ -46,7 +47,7 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         presenter = ReviewDetailPresenter().apply {
             view = this@ReviewDetailFragment
             review = arguments.getParcelable<Review>("review")
-            review.updateNotificationPublisher.subscribe { setHeaderData(it) }
+            review.updateNotificationPublisher.subscribe { headerView.setData(it) }
             context = getContext()
         }
     }
@@ -67,36 +68,46 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
 
     private fun init() {
         headerView = ReviewDetailHeader(context).apply {
-            setCommentMoreBtnListener { presenter.loadComments() }
             setEtcBtnClickListener(presenter.etcBtnClickListener)
-
+            setData(presenter.review)
         }
-        setHeaderData(presenter.review)
-        recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = ReviewCommentAdapter(context, headerView)
-        recyclerView.adapter = adapter
-        commentInput.setSendListener { postReviewComment(commentInput.inputMsg) }
-        presenter.adapterModel = adapter
-        presenter.adapterView = adapter
-        presenter.loadReviewSingle()
-        presenter.loadComments()
 
-    }
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.setAdapter(adapter)
+        recyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+            override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(view, dx, dy)
+                if (lastVisibleItemPosition == totalItemCount - 1) {
+                    lastItemExposed()
+                }
+            }
+        })
 
-    private fun setHeaderData(review: Review) {
-        headerView.setData(review)
-    }
-
-
-    private fun postReviewComment(message: String?) {
-        if (message != null) {
-            showProgress()
-            recyclerView.smoothScrollToPosition(adapter.itemCount)
-            presenter.postComment(RvComment(message))
-        } else {
-            Util.toast("메세지를 입력해주세요")
+        presenter.apply {
+            adapterModel = adapter
+            adapterView = adapter
+            loadReviewSingle()
+            commentInput.setSendListener { this.postReviewComment(commentInput.inputMsg) }
         }
     }
+
+
+    override fun refresh() {
+        setStatus(Status.REFRESHING)
+        presenter.loadComments(DEFAULT_PAGE)
+    }
+
+    override fun loadMore() {
+        setStatus(Status.LOADING_MORE)
+        presenter.loadComments(page)
+    }
+
+    override fun getRecyclerView(): AbsRecyclerView? {
+        return recyclerView
+    }
+
 
     override fun showCommentDeleteDialog(clickListener: DialogInterface.OnClickListener) {
         AlertDialog.Builder(context)
@@ -110,9 +121,6 @@ class ReviewDetailFragment : BaseFragment(), ReviewDetailContract.View {
         ListDialog(context, list, itemClickListener).show()
     }
 
-    override fun hasMoreComment(hasMore: Boolean) {
-        headerView.setCommentMoreBtn(hasMore)
-    }
 
     override fun increaseCommentCnt(isIncrease: Boolean) {
         headerView.increaseCommentCnt(isIncrease)

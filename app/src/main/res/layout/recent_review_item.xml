@@ -37,10 +37,10 @@
                 android:id="@+id/subjectTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
                 android:ellipsize="end"
                 android:maxEms="12"
                 android:maxLines="1"
-                android:layout_marginBottom="6dp"
                 android:text="subject name"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
@@ -87,6 +87,7 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="6dp"
                     android:layout_toRightOf="@id/difficultyInfo"
+                    android:focusableInTouchMode="false"
                     android:isIndicator="true"
                     android:numStars="5"
                     android:paddingBottom="6dp"
@@ -123,6 +124,7 @@
                     android:layout_alignLeft="@id/difficultyRatingBar"
                     android:layout_below="@id/difficultyInfo"
                     android:layout_marginRight="6dp"
+                    android:focusableInTouchMode="false"
                     android:numStars="5"
                     android:stepSize="1" />
 
@@ -162,6 +164,7 @@
                     android:layout_below="@id/assignmentInfo"
                     android:layout_gravity="center"
                     android:layout_marginRight="6dp"
+                    android:focusableInTouchMode="false"
                     android:numStars="5"
                     android:stepSize="1" />
 
@@ -198,6 +201,7 @@
                     android:layout_alignLeft="@id/difficultyRatingBar"
                     android:layout_below="@id/attendanceInfo"
                     android:layout_marginRight="6dp"
+                    android:focusableInTouchMode="false"
                     android:numStars="5"
                     android:stepSize="1" />
 
@@ -231,6 +235,7 @@
                     android:layout_alignBottom="@id/achievementInfo"
                     android:layout_alignLeft="@id/difficultyRatingBar"
                     android:layout_marginRight="6dp"
+                    android:focusableInTouchMode="false"
                     android:numStars="5"
                     android:paddingBottom="6dp"
                     android:stepSize="1" />
@@ -246,18 +251,7 @@
                     android:textColor="@color/white"
                     android:textSize="12dp"
                     android:textStyle="bold" />
-
-
             </RelativeLayout>
-
-
-            <!-- <TextView
-                 android:id="@+id/content"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="review content"
-                 android:textColor="@color/white"
-                 android:textSize="12dp" />-->
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

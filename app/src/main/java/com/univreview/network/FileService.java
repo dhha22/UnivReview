@@ -18,5 +18,5 @@ import rx.Observable;
 public interface FileService {
     @Multipart
     @POST("file")
-    Observable<FileUploadModel> postFile(@HeaderMap Map<String, String> headers, @Part MultipartBody.Part file, @Part("location") RequestBody location);
+    Observable<FileUploadModel> postFile(@Part MultipartBody.Part file, @Part("location") RequestBody location);
 }

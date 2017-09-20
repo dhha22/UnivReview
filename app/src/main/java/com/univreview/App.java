@@ -1,9 +1,6 @@
 package com.univreview;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
@@ -16,22 +13,11 @@ import com.kakao.auth.KakaoSDK;
 import com.squareup.picasso.Picasso;
 import com.univreview.adapter.KakaoSDKAdapter;
 import com.univreview.log.Logger;
-import com.univreview.model.PushId;
-import com.univreview.network.Retro;
-import com.univreview.util.SecurityUtil;
 import com.univreview.util.SharedPreferencesActivity;
-import com.univreview.util.TimeUtil;
 import com.univreview.util.Util;
 
-import org.bouncycastle.util.encoders.Base64;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2016. 12. 25..
@@ -87,9 +73,6 @@ public class App extends MultiDexApplication {
         dp12 = (int) Util.dpToPx(context, 12);
         dp15 = (int) Util.dpToPx(context, 15);
         dp56 = (int) Util.dpToPx(context, 56);
-
-        Logger.v("app_key_hash: " + SecurityUtil.getKeyHash(context));
-
         init();
     }
 
@@ -175,19 +158,9 @@ public class App extends MultiDexApplication {
     private static void setFCMToken(String registrationId) {
         pref.savePreferences("registration_id", registrationId);
         App.registrationId = pref.getPreferences("registration_id", "");
-        Retro.instance.userService().postPushId(App.setAuthHeader(App.userToken), new PushId(App.registrationId))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                }, Logger::e);
+
     }
 
-    public static Map<String, String> setAuthHeader(String token) {
-        Map<String, String> map = new HashMap<>();
-        String timeStamp = new TimeUtil().getTimeStamp();
-        map.put("Authorization", App.makeApiToken(token, timeStamp, App.makeApiSignature(token, timeStamp)));
-        return map;
-    }
 
     public static Map<String, String> setHeader(){
         Map<String, String> map = new HashMap<>();
@@ -197,30 +170,6 @@ public class App extends MultiDexApplication {
         return map;
     }
 
-    public static String makeApiSignature(String token, String timeStamp) {
-        String saltKey = "e7b35739643f6f595e1a3231666138ca";
-        String appVersion = context.getResources().getString(R.string.app_version);
-        String apiSignature = SecurityUtil.cryptoSHA3(appVersion + ';' + timeStamp + ';' + saltKey + token);
-        Logger.v("signature time stamp: " + timeStamp);
-        Logger.v("api signature: " + apiSignature);
-        return apiSignature;
-    }
-
-    public static String makeApiToken(String token, String timeStamp, String apiSignature) {
-        String appVersion = context.getResources().getString(R.string.app_version);
-        String apiToken;
-        try {
-            Logger.v("time stamp: " + timeStamp);
-            Logger.v("token: " + token);
-            String base64Str = (Base64.toBase64String((token + ";" + appVersion + ";" + timeStamp + ";" + apiSignature).getBytes()));
-            Logger.v("base64: " + base64Str);
-            apiToken = URLEncoder.encode(base64Str, "UTF-8");
-            Logger.v("api userToken: " + apiToken);
-            return apiToken;
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
-    }
 
     @Override
     public void onTerminate() {

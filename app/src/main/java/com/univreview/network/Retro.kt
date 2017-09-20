@@ -107,7 +107,8 @@ enum class Retro {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
         val location = RequestBody.create(okhttp3.MultipartBody.FORM, "/" + type)
-        return fileService.postFile(App.setAuthHeader(App.userToken), body, location)
+
+        return fileService.postFile(body, location)
     }
 
 }
