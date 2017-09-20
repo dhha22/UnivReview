@@ -15,7 +15,7 @@ import com.univreview.view.CommentItemView
 class ReviewCommentAdapter(context: Context, headerView: View)
     : CustomAdapter(context, headerView), ReviewDetailAdapterContract.Model, ReviewDetailAdapterContract.View {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
-        if(viewType == CONTENT){
+        if (viewType == CONTENT) {
             return ViewHolder(CommentItemView(context))
         }
         return super.onCreateViewHolder(parent, viewType)
@@ -25,11 +25,6 @@ class ReviewCommentAdapter(context: Context, headerView: View)
         if (getItemViewType(position) == CONTENT) {
             (holder as ViewHolder).v.setData(list[position - 1] as RvComment)
         }
-    }
-
-    override fun addItem(item: AbstractDataProvider) {
-        list.add(0, item)
-        notifyDataSetChanged()
     }
 
     override fun removeItem(position: Int) {

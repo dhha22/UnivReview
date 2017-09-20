@@ -56,7 +56,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 }, { onErrorReview(it) })
     }
 
-    fun onErrorReview(throwable: Throwable) {
+    private fun onErrorReview(throwable: Throwable) {
         Logger.e("error")
         if (ErrorUtils.ERROR_401 == ErrorUtils.parseError(throwable)) {
             view.showTicketDialog()
@@ -114,7 +114,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         // 본인 댓글일 경우
         if (App.userId == (comment.userId)) {
             this.view.showCommentDeleteDialog(DialogInterface.OnClickListener { _, _ ->
-                Retro.instance.reviewService().deleteReviewComment(App.setHeader(), comment.id)
+                Retro.instance.reviewService().deleteReviewComment(App.setHeader(), review.id, comment.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({

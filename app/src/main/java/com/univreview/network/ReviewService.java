@@ -77,8 +77,8 @@ public interface ReviewService {
     Observable<DataModel<RvComment>> postReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body RvComment body);
 
     // 리뷰 댓글 삭제
-    @DELETE(Retro.VERSION + "reviews/{reviewId}/comments")
-    Observable<DataModel> deleteReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId);
+    @DELETE(Retro.VERSION + "reviews/{reviewId}/comments/{commentId}")
+    Observable<DataModel> deleteReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Path("commentId") long commentId);
 
     @POST("report")
     Observable<ReviewReport> postReviewReport(@HeaderMap Map<String, String> headers, @Body ReviewReport body);
