@@ -9,6 +9,7 @@ import com.univreview.adapter.contract.ReviewDetailAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.listener.OnItemLongClickListener
+import com.univreview.listener.RvReportItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.DataListModel
 import com.univreview.model.model_kotlin.Review
@@ -135,7 +136,9 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                     OnItemClickListener { _, _ -> Navigator.goUploadReviewDetail(context, review) })
         } else {
             view.setDialog(arrayListOf("신고하기"),
-                    OnItemClickListener { _, _ -> Navigator.goReviewReport(context, review.id) })
+                    OnItemClickListener { _, _ -> view.setDialog(arrayListOf("스팸입니다", "부적절합니다"), RvReportItemClickListener(review.id)) })
         }
     }
+
+
 }

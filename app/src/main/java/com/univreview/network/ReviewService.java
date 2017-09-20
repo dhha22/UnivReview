@@ -1,6 +1,5 @@
 package com.univreview.network;
 
-import com.univreview.model.ReviewReport;
 import com.univreview.model.model_kotlin.DataListModel;
 import com.univreview.model.model_kotlin.DataModel;
 import com.univreview.model.model_kotlin.RecentRvListModel;
@@ -10,6 +9,7 @@ import com.univreview.model.model_kotlin.ReviewListModel;
 import com.univreview.model.model_kotlin.ReviewResponse;
 import com.univreview.model.model_kotlin.ReviewState;
 import com.univreview.model.model_kotlin.RvComment;
+import com.univreview.model.model_kotlin.RvReport;
 
 import java.util.Map;
 
@@ -80,9 +80,8 @@ public interface ReviewService {
     @DELETE(Retro.VERSION + "reviews/{reviewId}/comments/{commentId}")
     Observable<DataModel> deleteReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Path("commentId") long commentId);
 
-    @POST("report")
-    Observable<ReviewReport> postReviewReport(@HeaderMap Map<String, String> headers, @Body ReviewReport body);
-
+    @POST(Retro.VERSION + "reviews/{reviewId}/reports")
+    Observable<DataModel> reviewReport(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body RvReport body);
 
 
 }

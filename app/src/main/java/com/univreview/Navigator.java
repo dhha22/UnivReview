@@ -21,7 +21,6 @@ import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.login.UserAuthCompletedFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.fragment.review.ReviewListFragment;
-import com.univreview.fragment.review.ReviewReportFragment;
 import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
@@ -42,34 +41,34 @@ public class Navigator {
     public static final int ALBUM = 549;
     public static final int PERMISSION_CHECKER = 405;
 
-    public static void goLogin(Context context){
+    public static void goLogin(Context context) {
         App.userLogout();
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
-        ((Activity)context).onBackPressed();
+        ((Activity) context).onBackPressed();
     }
 
     //register
-    public static void goRegisterUserInfo(Context context, User register){
+    public static void goRegisterUserInfo(Context context, User register) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register));
         context.startActivity(intent);
     }
 
-    public static void goRegisterUnivInfo(Context context, User register){
+    public static void goRegisterUnivInfo(Context context, User register) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUnivInfoFragment.getInstance(register));
         context.startActivity(intent);
     }
 
-    public static void goRegisterUserIdentity(Context context){
+    public static void goRegisterUserIdentity(Context context) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUserIdentityFragment.newInstance());
         context.startActivity(intent);
     }
 
-    public static void goUserAuthCompleted(Context context){
+    public static void goUserAuthCompleted(Context context) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(UserAuthCompletedFragment.newInstance());
         context.startActivity(intent);
@@ -82,17 +81,17 @@ public class Navigator {
             filePath.mkdirs();
         }
         File file = new File(ImageUtil.IMAGE_PATH + "tmp.jpg");
-        intent.putExtra( MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context,"com.univreview.provider",file) );
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, "com.univreview.provider", file));
         ((Activity) context).startActivityForResult(intent, CAMERA);
     }
 
     public static void goAlbum(Context context) {
-        Intent intent = new Intent(Intent.ACTION_PICK , MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         ((Activity) context).startActivityForResult(intent, ALBUM);
     }
 
-    public static void goPermissionChecker(Context context, String type){
+    public static void goPermissionChecker(Context context, String type) {
         Intent intent = new Intent(context, PermissionCheckerActivity.class);
         intent.putExtra("type", type);
         ((Activity) context).startActivityForResult(intent, PERMISSION_CHECKER);
@@ -100,7 +99,7 @@ public class Navigator {
 
     //upload
 
-    public static void goUploadReview(Context context){
+    public static void goUploadReview(Context context) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(UploadReviewFragment.getInstance());
         context.startActivity(intent);
@@ -121,7 +120,7 @@ public class Navigator {
 
     //main
 
-    public static void goMain(Context context){
+    public static void goMain(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
@@ -146,27 +145,20 @@ public class Navigator {
         Util.sharedElement(context, intent, sharedView, "title");
     }
 
-    //review report
-    public static void goReviewReport(Context context, long reviewId) {
-        Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewReportFragment.newInstance(reviewId));
-        (context).startActivity(intent);
-    }
-
 
     //search
 
-    public static void goSearch(Context context, ReviewSearchType type){
+    public static void goSearch(Context context, ReviewSearchType type) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.getInstance(type, 0));
-        ((Activity)context).startActivityForResult(intent, SEARCH);
+        ((Activity) context).startActivityForResult(intent, SEARCH);
     }
 
 
-    public static void goSearch(Context context, ReviewSearchType type, Long id){
+    public static void goSearch(Context context, ReviewSearchType type, Long id) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(SearchFragment.getInstance(type, id));
-        ((Activity)context).startActivityForResult(intent, SEARCH);
+        ((Activity) context).startActivityForResult(intent, SEARCH);
     }
 
 
@@ -195,10 +187,10 @@ public class Navigator {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(intent);
-       // activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+        // activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
     }
 
-    public static void goGooglePlayStore(){
+    public static void goGooglePlayStore() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.univreview"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         App.getCurrentActivity().startActivity(intent);

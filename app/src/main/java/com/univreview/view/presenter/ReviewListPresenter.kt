@@ -7,6 +7,7 @@ import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewListAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
+import com.univreview.listener.RvReportItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.model_kotlin.DataModel
@@ -76,7 +77,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         if (page == DEFAULT_PAGE) {
             adapterModel.clearItem()
         }
-        if(ErrorUtils.parseError(e) == ErrorUtils.ERROR_401){
+        if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_401) {
             view.showTicketDialog()
         }
     }
@@ -96,7 +97,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
                     OnItemClickListener { _, _ -> Navigator.goUploadReviewDetail(context, review) })
         } else {
             view.setDialog(arrayListOf("신고하기"),
-                    OnItemClickListener { _, _ -> Navigator.goReviewReport(context, review.id) })
+                    OnItemClickListener { _, _ -> view.setDialog(arrayListOf("스팸입니다", "부적절합니다"), RvReportItemClickListener(review.id)) })
         }
     }
 
