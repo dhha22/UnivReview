@@ -20,24 +20,28 @@ class PointListHeaderView(context: Context) : CardView(context) {
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun setPoint(totalPoint : Int){
+    fun setPoint(totalPoint: Int) {
         totalPointTxt.text = String.format(resources.getString(R.string.point, totalPoint))
     }
 
-    fun setBuyTicketListener(clickListener: OnClickListener){
+    fun setBuyTicketListener(clickListener: OnClickListener) {
         buyTicketBtn.setOnClickListener(clickListener)
     }
 
     fun setUserTicket(ticket: Ticket) {
+        if (ticket.term != null) {
             ticket.let {
                 val timeUtil = TimeUtil()
                 buyTicketBtn.visibility = View.GONE
                 ticketLayout.visibility = View.VISIBLE
                 ticketNameTxt.text = it.name
-                ticketTimeTxt.text = StringBuilder(timeUtil.getPointFormat(it.term.startedAt)
-                        + "~" + timeUtil.getPointFormat(it.term.endedAt))
+                ticketTimeTxt.text = StringBuilder(timeUtil.getPointFormat(it.term!!.startedAt)
+                        + "~" + timeUtil.getPointFormat(it.term!!.endedAt))
             }
-
+        } else {
+            buyTicketBtn.visibility = View.VISIBLE
+            ticketLayout.visibility = View.GONE
+        }
     }
 
 }

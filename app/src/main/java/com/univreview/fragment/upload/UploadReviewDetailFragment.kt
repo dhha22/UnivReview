@@ -9,6 +9,7 @@ import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseWriteFragment
 import com.univreview.log.Logger
+import com.univreview.model.enumeration.ReviewType
 import com.univreview.model.model_kotlin.Review
 import com.univreview.model.model_kotlin.ReviewDetail
 import com.univreview.network.Retro
@@ -74,8 +75,7 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
     }
 
     private fun setReviewData(review: Review) {
-        reviewItem.setMode(ReviewItemView.Status.WRITE_REVIEW)
-        reviewItem.setData(review)
+        reviewItem.setData(review, ReviewType.WRITE_REVIEW)
     }
 
     private fun registerReview(reviewId: Long) {

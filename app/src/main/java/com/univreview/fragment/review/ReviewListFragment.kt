@@ -16,6 +16,7 @@ import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.RandomImageModel
 import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.enumeration.ReviewType
 import com.univreview.util.AnimationUtils
 import com.univreview.util.SimpleDividerItemDecoration
 import com.univreview.util.Util
@@ -79,7 +80,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         when (type) {
         // My Review
             ReviewSearchType.MY_REVIEW -> {
-                adapter = ReviewListAdapter(context, type)
+                adapter = ReviewListAdapter(context, ReviewType.MY_REVIEW)
                 appBarLayout.visibility = View.GONE
                 toolbar.setBackBtnVisibility(true)
                 toolbar.setTitleTxt(name)
@@ -87,7 +88,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
         // Subject List
             ReviewSearchType.SUBJECT -> {
-                adapter = ReviewListAdapter(context, type)
+                adapter = ReviewListAdapter(context, ReviewType.READ_REVIEW)
                 App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 toolbar.visibility = View.GONE
                 appBarLayout.addOnOffsetChangedListener { appBarLayout, _ ->

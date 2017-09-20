@@ -9,6 +9,7 @@ import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.model_kotlin.Review
 import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.enumeration.ReviewType
 import com.univreview.model.model_kotlin.AbstractDataProvider
 import com.univreview.view.ReviewItemView
 import rx.subjects.PublishSubject
@@ -16,7 +17,7 @@ import rx.subjects.PublishSubject
 /**
  * Created by DavidHa on 2017. 8. 7..
  */
-class ReviewListAdapter(context: Context, val type: ReviewSearchType) : CustomAdapter(context),
+class ReviewListAdapter(context: Context, val type: ReviewType) : CustomAdapter(context),
         ReviewListAdapterContract.Model, ReviewListAdapterContract.View {
     lateinit var moreBtnClickListener: OnItemClickListener
 
@@ -28,7 +29,7 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType) : CustomAd
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         Logger.v("on Bind View Holder")
-        (holder as ViewHolder).v.setData(list[position] as Review)
+        (holder as ViewHolder).v.setData(list[position] as Review, type)
     }
 
     override fun addItem(item: AbstractDataProvider) {
@@ -74,11 +75,6 @@ class ReviewListAdapter(context: Context, val type: ReviewSearchType) : CustomAd
         val v: ReviewItemView by lazy { itemView as ReviewItemView }
 
         init {
-            if (type == ReviewSearchType.MY_REVIEW) {
-                v.setMode(ReviewItemView.Status.MY_REVIEW)
-            } else if (type == ReviewSearchType.SUBJECT) {
-                v.setMode(ReviewItemView.Status.READ_REVIEW)
-            }
             v.setOnClickListener { itemClickListener.onItemClick(it, adapterPosition) }
             v.moreBtnSetOnClickListener { moreBtnClickListener.onItemClick(it, adapterPosition) }
         }

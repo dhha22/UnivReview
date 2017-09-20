@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import com.univreview.App
 import com.univreview.R
 import com.univreview.log.Logger
+import com.univreview.model.enumeration.ReviewType
 import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
 import com.univreview.util.Util
@@ -34,7 +35,8 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
 
     }
 
-    fun setData(review: Review) {
+    fun setData(review: Review, type: ReviewType) {
+        setMode(type)
         this.id = review.id
         this.review = review.apply {
             user?.let {
@@ -47,7 +49,7 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
             }
 
             // subject professor 이름 설정
-            if (subjectProfessorTxt.visibility == View.VISIBLE) {
+            if (type == ReviewType.WRITE_REVIEW) {
                 Logger.v("subjectProfessor")
                 val builder = SpannableStringBuilder()
                 var index = 0
@@ -95,13 +97,11 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
         moreBtn.setOnClickListener { click.invoke(this) }
     }
 
-    enum class Status {
-        WRITE_REVIEW, MY_REVIEW, READ_REVIEW
-    }
 
-    fun setMode(status: Status) {
-        when (status) {
-            ReviewItemView.Status.WRITE_REVIEW -> { // 사용자가 리뷰를 쓸 때
+
+    fun setMode(type: ReviewType) {
+        when (type) {
+            ReviewType.WRITE_REVIEW -> { // 사용자가 리뷰를 쓸 때
                 subjectTxt.visibility = View.GONE
                 professorTxt.visibility = View.GONE
                 subjectProfessorTxt.visibility = View.VISIBLE
@@ -111,10 +111,10 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
                 bottom_line.visibility = View.GONE
                 bottom_layout.visibility = View.GONE
             }
-            ReviewItemView.Status.MY_REVIEW -> {    // 마이리뷰를 봤을 때
+            ReviewType.MY_REVIEW -> {    // 마이리뷰를 봤을 때
                 userLayout.visibility = View.GONE
             }
-            ReviewItemView.Status.READ_REVIEW -> {  // 다른사람 리뷰를 읽을 때
+            ReviewType.READ_REVIEW -> {  // 다른사람 리뷰를 읽을 때
 
             }
         }

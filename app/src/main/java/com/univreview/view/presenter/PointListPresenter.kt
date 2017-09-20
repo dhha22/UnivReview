@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers
 class PointListPresenter : PointListContract {
     private val DEFAULT_PAGE = 1
     lateinit var view: PointListContract.View
-    lateinit var context : Context
+    lateinit var context: Context
     lateinit var adapterModel: PointAdapterContract.Model
 
 
@@ -60,7 +60,7 @@ class PointListPresenter : PointListContract {
                     view.setUserTicket(it.data)
                     callPointHistories(DEFAULT_PAGE)
                 }, {
-                    Util.simpleMessageDialog(context,ErrorUtils.getErrorMessage(it))
+                    Util.simpleMessageDialog(context, ErrorUtils.getErrorMessage(it))
                 })
     }
 
