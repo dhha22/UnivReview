@@ -45,7 +45,6 @@ class SearchPresenter : SearchContract, OnItemClickListener {
                 field = value
             }
         }
-    var page: Int = DEFAULT_PAGE
 
     override fun callSearchApi(name: String, page: Int) {
         when (type) {
@@ -58,12 +57,12 @@ class SearchPresenter : SearchContract, OnItemClickListener {
 
     // 대학교 검색 (로그인)
     private fun searchUniversity(name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callUniversityList(name), page)
+        setObservable(Retro.instance.searchService.callUniversityList(name, page), page)
     }
 
     // 전공 검색 (로그인)
     private fun searchMajor(name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callMajorList(id, name, page), page)
+        setObservable(Retro.instance.searchService.callMajorList("M", id, name, page), page)
     }
 
     // 과목 검색 (리뷰 검색)
@@ -83,15 +82,16 @@ class SearchPresenter : SearchContract, OnItemClickListener {
                 .doAfterTerminate { if (page == DEFAULT_PAGE) searchAdapterModel.clearItem() }
                 .subscribe({
                     @Suppress("UNCHECKED_CAST")
-                    response(it.data as List<AbstractDataProvider>)
+                    response(page, it.data as List<AbstractDataProvider>)
                 }, { this.errorResponse(it) }))
     }
 
 
-    private fun response(result: List<AbstractDataProvider>) {
+    private fun response(page : Int, result: List<AbstractDataProvider>) {
+        view.setStatus(AbsListFragment.Status.IDLE)
         if (result.isNotEmpty()) {
+            Logger.v("load more $page")
             view.setResult(page)
-            view.setStatus(AbsListFragment.Status.IDLE)
             Observable.from(result)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

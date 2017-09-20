@@ -7,16 +7,16 @@
 
     <RelativeLayout
         android:id="@+id/profileImageLayout"
-        android:layout_width="124dp"
-        android:layout_height="124dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
-            android:layout_width="124dp"
-            android:layout_height="124dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@color/white"
@@ -25,8 +25,8 @@
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_profile_camera" />
@@ -40,7 +40,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:background="@color/transparent"
         android:gravity="center"
         android:hint="이메일"
@@ -93,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/login_next_btn_selector"
         android:padding="18dp"
         android:text="다음"
         android:textColor="@color/white"

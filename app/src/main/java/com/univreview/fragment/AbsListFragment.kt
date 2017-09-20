@@ -42,7 +42,7 @@ import java.util.HashMap
 
     fun setResult(page: Int) {
         this.page = page + 1
-        Logger.v("set result page: " + page)
+        Logger.v("set result page: " + this.page)
     }
 
     protected fun lastItemExposed() {

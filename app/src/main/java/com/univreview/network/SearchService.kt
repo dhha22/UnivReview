@@ -12,10 +12,11 @@ import rx.Observable
  */
 interface SearchService {
     @GET(Retro.VERSION + "universities")
-    fun callUniversityList(@Query("name") name: String): Observable<DataListModel<University>>
+    fun callUniversityList(@Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<University>>
 
+    // subjectType : M 교양제외
     @GET(Retro.VERSION + "majors")
-    fun callMajorList(@Query("university_id") universityId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
+    fun callMajorList(@Query("subjectType") subjectType: String, @Query("university_id") universityId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
 
     @GET(Retro.VERSION + "subjects")
     fun callSubjects(@HeaderMap headers: Map<String, String>, @Query("major_id") majorId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Subject>>
@@ -28,7 +29,4 @@ interface SearchService {
 
     @GET(Retro.VERSION + "professors")
     fun callProfessorsFilter(@HeaderMap headers: Map<String, String>, @Query("subjectId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Professor>>
-
-    @GET(Retro.VERSION + "subjects")
-    fun callSubjectsFilter(@HeaderMap headers: Map<String, String>, @Query("professorId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Subject>>
 }

@@ -43,7 +43,7 @@ class PointListPresenter : PointListContract {
         }
     }
 
-    override fun callReviewTickets() {
+    override fun callReviewTicket() {
         Retro.instance.userService().callTicket(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,6 +57,7 @@ class PointListPresenter : PointListContract {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    view.setUserTicket(it.data)
                     callPointHistories(DEFAULT_PAGE)
                 }, {
                     Util.simpleMessageDialog(context,ErrorUtils.getErrorMessage(it))

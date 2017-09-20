@@ -46,6 +46,7 @@ class RegisterUserInfoFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_register_user_info, container, false)
+        toolbar.setTitleTxt("계정 등록")
         toolbar.setLoginToolbarStyle()
         rootLayout.addView(view)
         return rootLayout
@@ -57,7 +58,7 @@ class RegisterUserInfoFragment : BaseFragment() {
         setData(register)
     }
 
-    fun init(register: User) {
+    private fun init(register: User) {
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
                 register.email = inputEmail.text.toString()
@@ -69,7 +70,6 @@ class RegisterUserInfoFragment : BaseFragment() {
         inputEmail.addTextChangedListener(textWatcher)
         inputEmail.setOnKeyListener { _, keyCode, event -> keyboardListener.invoke(keyCode, event, inputEmail) }
         inputName.setOnKeyListener { _, keyCode, event -> keyboardListener.invoke(keyCode, event, inputName) }
-        inputName.requestFocus()
 
     }
 
@@ -96,12 +96,16 @@ class RegisterUserInfoFragment : BaseFragment() {
     }
 
 
-    fun setData(register: User?) {
+    private fun setData(register: User?) {
         register?.let {
             Util.setProfileImage(it.profileImageUrl, profileImage)
             inputEmail.setText(it.email)
             inputEmail.setSelection(it.email?.length ?: 0)
             nextBtn.isSelected = !isInputEmpty()
+        }
+
+        if (inputEmail.text.isNotEmpty()) {
+            inputName.requestFocus()
         }
     }
 

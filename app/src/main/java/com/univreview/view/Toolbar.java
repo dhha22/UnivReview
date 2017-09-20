@@ -69,6 +69,7 @@ public class Toolbar extends FrameLayout {
     public void setLoginToolbarStyle() {
         setBackBtnVisibility(true);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
+        setTitleColor(R.color.black);
         ViewCompat.setBackgroundTintList(backBtn, (ContextCompat.getColorStateList(context, R.color.black)));
         backBtn.setOnClickListener(v -> ((Activity) context).finish());
     }
@@ -81,6 +82,7 @@ public class Toolbar extends FrameLayout {
     public void setCancelToolbarStyle() {
         setCancelBtnVisibility(true);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
+        setTitleColor(R.color.black);
         ViewCompat.setBackgroundTintList(cancelBtn, (ContextCompat.getColorStateList(context, R.color.black)));
         cancelBtn.setOnClickListener(v -> ((Activity) context).onBackPressed());
         setTitleColor(R.color.black);

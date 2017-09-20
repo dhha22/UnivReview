@@ -10,10 +10,10 @@ interface PointListContract {
     interface View : BaseView {
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
-        fun setUserTicket(ticket: List<Ticket>)
+        fun setUserTicket(ticket: Ticket)
     }
 
     fun callPointHistories(page: Int)
-    fun callReviewTickets()
+    fun callReviewTicket()
     fun buyReviewTicket()
 }

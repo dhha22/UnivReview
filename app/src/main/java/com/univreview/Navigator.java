@@ -139,11 +139,6 @@ public class Navigator {
         (context).startActivity(intent);
     }
 
-    public static void goReviewDetail(Context context, Review data, View sharedView) {
-        Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data));
-        Util.sharedElement(context, intent, sharedView, "title");
-    }
 
 
     //search
@@ -179,7 +174,7 @@ public class Navigator {
 
     public static void goSetting(Context context) {
         Intent intent = new Intent(context, NavigationActivity.class);
-        NavigationActivity.setFragment(SettingFragment.newInstance());
+        NavigationActivity.setFragment(SettingFragment.getInstance());
         context.startActivity(intent);
     }
 

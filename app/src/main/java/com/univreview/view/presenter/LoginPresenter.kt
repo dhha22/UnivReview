@@ -97,11 +97,11 @@ class LoginPresenter : LoginContract {
             Observable.just(userModel)
                     .observeOn(Schedulers.newThread())
                     .subscribe {
-                        App.setUniversityId(it.universityId!!)
-                        App.setUserId(it.id)
                         App.setUid(it.uid)
                         App.setUserToken(it.accessToken)
                         App.setClient(it.client)
+                        App.setUniversityId(it.universityId!!)
+                        App.setUserId(it.id)
                     }
             Navigator.goMain(context)
         }

@@ -36,11 +36,11 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
         Observable.just(user)
                 .observeOn(Schedulers.newThread())
                 .subscribe {
-                    App.setUniversityId(it.universityId!!)
-                    App.setUserId(it.id)
                     App.setUid(it.uid)
                     App.setUserToken(it.accessToken)
                     App.setClient(it.client)
+                    App.setUniversityId(it.universityId!!)
+                    App.setUserId(it.id)
                 }
        /* // 회원 프로필 사진을 앨범에서 선택했을 경우
         register.profileUri?:goMain()   // profile uri 가 없는 경우 main 으로 이동

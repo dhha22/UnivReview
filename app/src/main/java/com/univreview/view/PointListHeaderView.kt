@@ -28,9 +28,8 @@ class PointListHeaderView(context: Context) : CardView(context) {
         buyTicketBtn.setOnClickListener(clickListener)
     }
 
-    fun setUserTicket(tickets: List<Ticket>) {
-        if (tickets.isNotEmpty()) {
-            tickets[0].let {
+    fun setUserTicket(ticket: Ticket) {
+            ticket.let {
                 val timeUtil = TimeUtil()
                 buyTicketBtn.visibility = View.GONE
                 ticketLayout.visibility = View.VISIBLE
@@ -38,10 +37,7 @@ class PointListHeaderView(context: Context) : CardView(context) {
                 ticketTimeTxt.text = StringBuilder(timeUtil.getPointFormat(it.term.startedAt)
                         + "~" + timeUtil.getPointFormat(it.term.endedAt))
             }
-        } else {
-            buyTicketBtn.visibility = VISIBLE
-            ticketLayout.visibility = GONE
-        }
+
     }
 
 }

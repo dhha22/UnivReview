@@ -21,7 +21,6 @@ import rx.Observable;
  */
 public interface UserService {
 
-
     //push 등록
     @POST("push/id")
     Observable<ResponseBody> postPushId(@HeaderMap Map<String, String> headers, @Body PushId pushId);
@@ -36,7 +35,7 @@ public interface UserService {
 
     // user review ticket
     @GET(Retro.VERSION + "tickets")
-    Observable<DataListModel<Ticket>> callTicket(@HeaderMap Map<String, String> headers);
+    Observable<DataModel<Ticket>> callTicket(@HeaderMap Map<String, String> headers);
 
     @POST(Retro.VERSION + "tickets")
     Observable<DataModel<Ticket>> buyReviewTicket(@HeaderMap Map<String, String> headers);

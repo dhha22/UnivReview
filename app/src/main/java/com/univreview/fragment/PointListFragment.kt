@@ -56,7 +56,7 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
         presenter = PointListPresenter().apply {
             view = this@PointListFragment
             context = getContext()
-            callReviewTickets()
+            callReviewTicket()
         }
     }
 
@@ -94,8 +94,8 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
         return recyclerView
     }
 
-    override fun setUserTicket(tickets: List<Ticket>) {
-        headerView.setUserTicket(tickets)
+    override fun setUserTicket(ticket: Ticket) {
+        headerView.setUserTicket(ticket)
     }
 
 
