@@ -9,16 +9,14 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.univreview.App
 import com.univreview.R
-import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewType
 import com.univreview.model.model_kotlin.Review
 import com.univreview.network.Retro
+import com.univreview.util.TimeUtil
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.review_item.view.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.lang.StringBuilder
-import java.util.jar.Attributes
 
 /**
  * Created by DavidHa on 2017. 8. 28..
@@ -62,7 +60,7 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
             Util.addSizeSpan(builder, index, Util.dpToPx(context, 14))
             Util.addColorSpan(context, builder, index, R.color.professorTxtColor)
             subjectProfessorTxt.text = builder
-
+            timeTxt.text = TimeUtil().getPointFormat(createdAt)
 
             if (content == null) {  // review 내용
                 contentTxt.visibility = View.GONE

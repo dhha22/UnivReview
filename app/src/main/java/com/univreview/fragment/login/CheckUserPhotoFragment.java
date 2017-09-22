@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  */
 public class CheckUserPhotoFragment extends BaseFragment {
     private static final String CAMERA = "camera";
-    @BindView(R.id.check_image) ImageView checkImage;
+    @BindView(R.id.checkImage) ImageView checkImage;
     @BindView(R.id.reselect_btn) Button reselectBtn;
     @BindView(R.id.ok_btn) Button okBtn;
     private String type;
@@ -65,6 +65,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
 
     private void upload() {
         Navigator.goUserAuthCompleted(getContext());
+        getActivity().finish();
        /* Retro.instance.fileService(path, "file")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

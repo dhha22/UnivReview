@@ -22,6 +22,8 @@
     <!-- student card -->
     <string name="student_card_guide_title">본인 확인을 위해\n학생증을 준비해주세요.</string>
     <string name="student_card_guide1">학생증의 앞면이 보이도록 놓아주세요</string>
-    <string name="student_card_guide2">빛이 반사되지 않도록 주의하세요.\n훼손이 심한 신분증은 거절될 수도 있습니다.</string>
+    <string name="student_card_guide2">빛이 반사되지 않도록 주의하세요. 훼손이 심한 학생증은 거절될 수도 있습니다.</string>
+    <string name="check_student_card_guide1">사진에 찍힌 학생증을 확인해주세요.</string>
+    <string name="check_student_card_guide2">학생정보가 보이지 않는 경우\n서비스가 제한될 수 있습니다.</string>
     <string name="user_auth_completed_msg">본인확인이 완료되면 바로 인증이 부여됩니다.</string>
 </resources>

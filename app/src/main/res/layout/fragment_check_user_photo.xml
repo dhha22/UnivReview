@@ -1,28 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/check_image"
+    <RelativeLayout
+        android:id="@+id/checkImageLayout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="90dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/focus_left_box" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/focus_right_box" />
+
+
+        <ImageView
+            android:id="@+id/checkImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp" />
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/guide_text"
+        android:id="@+id/guide_text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/check_image"
+        android:layout_below="@id/checkImageLayout"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="학생 인증 작업을 시작하려면\n업로드 버튼을 누르세요."
+        android:text="@string/check_student_card_guide1"
         android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/guide_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/guide_text1"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/check_student_card_guide2"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
