@@ -34,7 +34,6 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     lateinit var type: ReviewSearchType
     lateinit var name: String
     lateinit var presenter: ReviewListPresenter
-    val randomImageModel = RandomImageModel()
 
     companion object {
         @JvmStatic
@@ -89,31 +88,9 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         // Subject List
             ReviewSearchType.SUBJECT -> {
                 adapter = ReviewListAdapter(context, ReviewType.READ_REVIEW)
-                App.picasso.load(randomImageModel.imageURL).fit().centerCrop().into(toolbar_image)
                 toolbar.visibility = View.GONE
-                appBarLayout.addOnOffsetChangedListener { appBarLayout, _ ->
-                    val height = appBarLayout.height - appBarLayout.bottom
-                    val value = appBarLayout.bottom.toFloat() / appBarLayout.height
-                    AnimationUtils.setScale(reviewTitleTxt, value)
-                    if (height == 0) {
-                        AnimationUtils.fadeOut(context, toolbar_title_layout)
-                        AnimationUtils.fadeIn(context, reviewTitleTxt)
-                        AnimationUtils.fadeIn(context, filterLayout)
-                    } else if (height >= innerToolbar.height * 1.02) {
-                        AnimationUtils.fadeIn(context, toolbar_title_layout)
-                        AnimationUtils.fadeOut(context, reviewTitleTxt)
-                    } else {
-                        AnimationUtils.fadeOut(context, toolbar_title_layout)
-                        AnimationUtils.fadeIn(context, reviewTitleTxt)
-                        AnimationUtils.fadeOut(context, filterLayout)
-                    }
-                }
-
-                toolbar_back_btn.setOnClickListener { activity.onBackPressed() }
-                reviewTitleTxt.text = name
-                toolbar_title_txt.text = name
-                toolbar_subtitle_txt.text = "전체"
-                filterLayout.setOnClickListener { presenter.loadFilterList() }
+                innerToolbar.setBackBtnVisibility(true)
+                innerToolbar.setTitleTxt(name)
             }
         }
         setRecyclerView()
@@ -157,8 +134,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
     }
 
     override fun setFilterName(filterName: String) {
-        filter_name_txt.text = filterName
-        toolbar_subtitle_txt.text = filterName
+
     }
 
     override fun setDialog(list: List<String>, itemClickListener: OnItemClickListener) {

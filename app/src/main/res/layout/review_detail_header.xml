@@ -74,8 +74,8 @@
 
         <ImageButton
             android:id="@+id/etcBtn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_review_more"
             android:visibility="visible" />
@@ -90,7 +90,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:background="@color/rowColor" />
     </LinearLayout>
 
@@ -204,8 +204,9 @@
                 android:textColor="@color/reviewSecondTxtColor" />
         </LinearLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/rowColor"/>
+        android:background="@color/rowColor" />
 </LinearLayout>

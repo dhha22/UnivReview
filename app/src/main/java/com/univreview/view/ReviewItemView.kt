@@ -49,22 +49,19 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
             }
 
             // subject professor 이름 설정
-            if (type == ReviewType.WRITE_REVIEW) {
-                Logger.v("subjectProfessor")
-                val builder = SpannableStringBuilder()
-                var index = 0
-                builder.append(subject?.name + " ")
-                Util.addSizeSpan(builder, index, Util.dpToPx(context, 16))
-                Util.addColorSpan(context, builder, index, R.color.colorPrimary)
-                index = builder.length
-                builder.append(professor?.name + " 교수님")
-                Util.addSizeSpan(builder, index, Util.dpToPx(context, 14))
-                Util.addColorSpan(context, builder, index, R.color.professorTxtColor)
-                subjectProfessorTxt.text = builder
-            } else {
-                subjectTxt.text = subject?.name
-                professorTxt.text = professor?.name
+            val builder = SpannableStringBuilder()
+            var index = 0
+            builder.append(subject?.name + " ")
+            Util.addSizeSpan(builder, index, Util.dpToPx(context, 16))
+            Util.addColorSpan(context, builder, index, R.color.colorPrimary)
+            index = builder.length
+            if (professor?.name!!.length > 10) {
+                builder.append("\n")
             }
+            builder.append(professor.name + " 교수님")
+            Util.addSizeSpan(builder, index, Util.dpToPx(context, 14))
+            Util.addColorSpan(context, builder, index, R.color.professorTxtColor)
+            subjectProfessorTxt.text = builder
 
 
             if (content == null) {  // review 내용
@@ -94,20 +91,16 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : Fra
     }
 
     fun moreBtnSetOnClickListener(click: (view: View) -> Unit) {
-        moreBtn.setOnClickListener { click.invoke(this) }
+        etcBtn.setOnClickListener { click.invoke(this) }
     }
-
 
 
     fun setMode(type: ReviewType) {
         when (type) {
             ReviewType.WRITE_REVIEW -> { // 사용자가 리뷰를 쓸 때
-                subjectTxt.visibility = View.GONE
-                professorTxt.visibility = View.GONE
-                subjectProfessorTxt.visibility = View.VISIBLE
                 userLayout.visibility = View.GONE
                 contentTxt.visibility = View.GONE
-                moreBtn.visibility = View.GONE
+                etcBtn.visibility = View.GONE
                 bottom_line.visibility = View.GONE
                 bottom_layout.visibility = View.GONE
             }

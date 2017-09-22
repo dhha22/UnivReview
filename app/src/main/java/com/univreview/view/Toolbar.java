@@ -89,6 +89,7 @@ public class Toolbar extends FrameLayout {
     }
 
     public void setTitleTxt(String title) {
+        if (title.length() > 10) titleTxt.setTextSize(14);
         titleTxt.setText(title);
     }
 
