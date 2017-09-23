@@ -17,10 +17,8 @@ data class User(var provider: String, // facebook, kakao
                 var profileImageUri: Uri? = null,
                 var client: String? = null,
                 var universityId: Long? = null,
-                var departmentId: Long? = null,
                 var majorId: Long? = null,
                 val authenticated: Boolean = false,
-                val departmentName: String? = null,
                 val majorName: String? = null,
                 val point: Int = 0,
                 val reviewCount: Int = 0) : Parcelable {
@@ -43,9 +41,7 @@ data class User(var provider: String, // facebook, kakao
             source.readString(),
             source.readLong(),
             source.readLong(),
-            source.readLong(),
             source.readInt() != 0,
-            source.readString(),
             source.readString(),
             source.readInt(),
             source.readInt()
@@ -64,10 +60,8 @@ data class User(var provider: String, // facebook, kakao
         dest.writeParcelable(profileImageUri, flags)
         writeString(client)
         writeLong(universityId ?: 0)
-        writeLong(departmentId ?: 0)
         writeLong(majorId ?: 0)
         dest.writeInt(if (authenticated) 1 else 0)  // true = 1, false 0
-        writeString(departmentName)
         writeString(majorName)
         writeInt(point)
         writeInt(reviewCount)

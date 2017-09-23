@@ -21,6 +21,7 @@ import com.univreview.view.ReviewDetailHeader
 import com.univreview.view.contract.ReviewDetailContract
 import com.univreview.view.presenter.ReviewDetailPresenter
 import kotlinx.android.synthetic.main.fragment_review_detail.*
+import kotlinx.android.synthetic.main.review_detail_header.view.*
 
 /**
  * Created by DavidHa on 2017. 8. 8..
@@ -29,7 +30,7 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
 
     lateinit var adapter: ReviewCommentAdapter
     lateinit var presenter: ReviewDetailPresenter
-    lateinit var headerView: ReviewDetailHeader
+    lateinit var reviewItem: ReviewDetailHeader
 
     companion object {
         @JvmStatic
@@ -47,7 +48,7 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
         presenter = ReviewDetailPresenter().apply {
             view = this@ReviewDetailFragment
             review = arguments.getParcelable<Review>("review")
-            review.updateNotificationPublisher.subscribe { headerView.setData(it) }
+            review.updateNotificationPublisher.subscribe { reviewItem.setData(it) }
             context = getContext()
         }
     }
@@ -67,11 +68,11 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
     }
 
     private fun init() {
-        headerView = ReviewDetailHeader(context).apply {
-            setEtcBtnClickListener(presenter.etcBtnClickListener)
+        reviewItem = ReviewDetailHeader(context).apply {
+            headerView.setEtcBtnClickListener(presenter.etcBtnClickListener)
             setData(presenter.review)
         }
-        adapter = ReviewCommentAdapter(context, headerView)
+        adapter = ReviewCommentAdapter(context, reviewItem)
 
         val layoutManager = LinearLayoutManager(context)
         recyclerView.setLayoutManager(layoutManager)
@@ -123,7 +124,7 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
 
 
     override fun increaseCommentCnt(isIncrease: Boolean) {
-        headerView.increaseCommentCnt(isIncrease)
+        reviewItem.bottomView.increaseCommentCnt(isIncrease)
     }
 
 

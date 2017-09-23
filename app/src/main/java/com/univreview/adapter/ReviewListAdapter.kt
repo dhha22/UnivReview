@@ -12,6 +12,7 @@ import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.enumeration.ReviewType
 import com.univreview.model.model_kotlin.AbstractDataProvider
 import com.univreview.view.ReviewItemView
+import kotlinx.android.synthetic.main.review_detail_header.view.*
 import rx.subjects.PublishSubject
 
 /**
@@ -36,7 +37,7 @@ class ReviewListAdapter(context: Context, val type: ReviewType) : CustomAdapter(
         val position = itemCount
         (item as Review).updateNotificationPublisher.subscribe {
             list[position] = it
-            Logger.v("subscribe item: "+(list[position] as Review).updateNotificationPublisher)
+            Logger.v("subscribe item: " + (list[position] as Review).updateNotificationPublisher)
             notifyItemChanged(position)
         }
         super.addItem(item)
@@ -52,21 +53,6 @@ class ReviewListAdapter(context: Context, val type: ReviewType) : CustomAdapter(
         return pos
     }
 
-    /*override fun getItemCount(): Int {
-        if (type != ReviewSearchType.MY_REVIEW) {
-            return list.size + HEADER
-        }
-        return super.getItemCount()
-    }*/
-
-    /*override fun getItemViewType(position: Int): Int {
-        // My Review에는 Header가 존재하지 않음
-        if (type != ReviewSearchType.MY_REVIEW && position == 0) {
-            return HEADER
-        }
-        return super.getItemViewType(position)
-    }
-*/
     override fun setMoreItemClickListener(itemClickListener: OnItemClickListener) {
         moreBtnClickListener = itemClickListener
     }
@@ -76,7 +62,7 @@ class ReviewListAdapter(context: Context, val type: ReviewType) : CustomAdapter(
 
         init {
             v.setOnClickListener { itemClickListener.onItemClick(it, adapterPosition) }
-            v.moreBtnSetOnClickListener { moreBtnClickListener.onItemClick(it, adapterPosition) }
+            v.headerView.setEtcBtnClickListener { moreBtnClickListener.onItemClick(v.headerView, adapterPosition) }
         }
     }
 }

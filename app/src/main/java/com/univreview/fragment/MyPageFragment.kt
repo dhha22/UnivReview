@@ -35,6 +35,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
     private val settings = Arrays.asList(Setting(0, "My 리뷰", "0개"), Setting(1, "포인트", "0 point"), Setting(2, "학생 인증"))
     private lateinit var presenter: MyPagePresenter
 
+
     companion object {
         @JvmStatic
         fun getInstance(): MyPageFragment {
@@ -66,7 +67,6 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        presenter.callUserProfile()
     }
 
     private fun init() {
@@ -79,12 +79,15 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
 
         profileImageLayout.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
         settingBtn.setOnClickListener { Navigator.goSetting(context) }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.callUserProfile()
     }
 
     override fun setUserData(data: User) {
         nameTxt.text = data.name
-        departmentTxt.text = data.departmentName
         majorTxt.text = data.majorName
         App.setPoint(data.point)
         Util.setProfileImage(data.profileImageUrl, profileImage)

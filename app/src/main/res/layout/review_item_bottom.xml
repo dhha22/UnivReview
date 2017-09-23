@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/likeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="24dp"
+        android:gravity="center"
+        android:padding="18dp"
+        android:paddingLeft="14dp">
+
+        <ImageView
+            android:id="@+id/likeImg"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/like_selector" />
+
+        <TextView
+            android:id="@+id/likeCntTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:text="0개"
+            android:textColor="@color/reviewSecondTxtColor"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/likeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/review_like_txt"
+            android:textColor="@color/reviewSecondTxtColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/commentLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="18dp">
+
+        <ImageView
+            android:id="@+id/commentImg"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_review_comment" />
+
+        <TextView
+            android:id="@+id/commentCntTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:text="0명"
+            android:textColor="@color/reviewSecondTxtColor"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/commentTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/review_comment_txt"
+            android:textColor="@color/reviewSecondTxtColor" />
+    </LinearLayout>
+</LinearLayout>
