@@ -1,7 +1,7 @@
 package com.univreview.view.contract
 
 import com.univreview.fragment.AbsListFragment
-import com.univreview.model.model_kotlin.Ticket
+import com.univreview.model.Ticket
 
 /**
  * Created by DavidHa on 2017. 9. 1..

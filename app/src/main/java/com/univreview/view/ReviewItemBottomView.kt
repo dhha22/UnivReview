@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.univreview.App
 import com.univreview.R
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import com.univreview.network.Retro
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.review_item_bottom.view.*

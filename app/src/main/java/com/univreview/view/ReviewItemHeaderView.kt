@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.univreview.R
-import com.univreview.model.model_kotlin.User
+import com.univreview.model.User
 import com.univreview.util.TimeUtil
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.review_item_header.view.*

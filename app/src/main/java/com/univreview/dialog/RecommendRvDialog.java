@@ -11,8 +11,7 @@ import android.widget.TextView;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.activity.BaseActivity;
-import com.univreview.fragment.review.ReviewDetailFragment;
-import com.univreview.model.model_kotlin.Review;
+import com.univreview.model.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

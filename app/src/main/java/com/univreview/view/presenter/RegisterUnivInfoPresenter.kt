@@ -1,14 +1,12 @@
 package com.univreview.view.presenter
 
 import android.content.Context
-import android.net.Uri
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.User
+import com.univreview.model.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
-import com.univreview.util.ImageUtil
 import com.univreview.view.contract.RegisterUnivInfoContract
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -55,10 +53,10 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
 
     // File upload -> User 회원가입
 
-    private fun callImageFileUploadApi(uploadUri: Uri?) {
-        Retro.instance.fileService(ImageUtil.getPath(uploadUri), "profile")
+    private fun callImageFileUploadApi(imagePath: String) {
+        Retro.instance.fileService(imagePath, "profile")
                 .subscribeOn(Schedulers.io())
-                .subscribe({ result -> callUserProfileUpdateApi(result.fileLocation) }) { goMain() }
+                .subscribe({ callUserProfileUpdateApi(it.data.objKey) }) { goMain() }
     }
 
     private fun callUserProfileUpdateApi(profileUrl: String) {

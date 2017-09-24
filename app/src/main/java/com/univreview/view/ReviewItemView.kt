@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.univreview.R
 import com.univreview.model.enumeration.ReviewType
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import kotlinx.android.synthetic.main.review_item.view.*
 
 /**

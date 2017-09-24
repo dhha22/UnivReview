@@ -14,7 +14,7 @@ import com.univreview.BuildConfig
 import com.univreview.Navigator
 import com.univreview.log.Logger
 import com.univreview.model.SignIn
-import com.univreview.model.model_kotlin.User
+import com.univreview.model.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
@@ -88,7 +88,7 @@ class LoginPresenter : LoginContract {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
                 .subscribe({ this.response(it.data, User(provider, userId.toLong(), email, profileURL, accessToken)) })
-                { error -> loginErrorResponse(error, User(provider, userId.toLong(),  email, profileURL, accessToken)) }
+                { error -> loginErrorResponse(error, User(provider, userId.toLong(), email, profileURL, accessToken)) }
     }
 
     private fun response(userModel: User?, register: User) {

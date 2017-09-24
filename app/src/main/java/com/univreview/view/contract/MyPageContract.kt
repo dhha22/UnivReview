@@ -1,6 +1,6 @@
 package com.univreview.view.contract
 
-import com.univreview.model.model_kotlin.User
+import com.univreview.model.User
 
 /**
  * Created by DavidHa on 2017. 9. 2..
@@ -10,5 +10,6 @@ interface MyPageContract {
         fun setUserData(data : User)
     }
 
-    fun callUserProfile();
+    fun callUserProfile()
+    fun userProfileUpdate(imagePath : String)
 }

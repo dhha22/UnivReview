@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import com.univreview.adapter.contract.ReviewListAdapterContract
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.Review
-import com.univreview.model.enumeration.ReviewSearchType
+import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewType
-import com.univreview.model.model_kotlin.AbstractDataProvider
+import com.univreview.model.AbstractDataProvider
 import com.univreview.view.ReviewItemView
 import kotlinx.android.synthetic.main.review_detail_header.view.*
-import rx.subjects.PublishSubject
 
 /**
  * Created by DavidHa on 2017. 8. 7..

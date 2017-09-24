@@ -11,7 +11,7 @@ import com.univreview.R
 import com.univreview.adapter.RecentRvAdapter
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import kotlinx.android.synthetic.main.new_home_fragment.*

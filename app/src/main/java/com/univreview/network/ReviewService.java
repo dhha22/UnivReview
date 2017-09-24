@@ -1,15 +1,16 @@
 package com.univreview.network;
 
-import com.univreview.model.model_kotlin.DataListModel;
-import com.univreview.model.model_kotlin.DataModel;
-import com.univreview.model.model_kotlin.RecentRvListModel;
-import com.univreview.model.model_kotlin.ResultModel;
-import com.univreview.model.model_kotlin.Review;
-import com.univreview.model.model_kotlin.ReviewListModel;
-import com.univreview.model.model_kotlin.ReviewResponse;
-import com.univreview.model.model_kotlin.ReviewState;
-import com.univreview.model.model_kotlin.RvComment;
-import com.univreview.model.model_kotlin.RvReport;
+import com.univreview.model.DataListModel;
+import com.univreview.model.DataModel;
+import com.univreview.model.RecentRvListModel;
+import com.univreview.model.ResultModel;
+import com.univreview.model.Review;
+import com.univreview.model.ReviewDetail;
+import com.univreview.model.ReviewListModel;
+import com.univreview.model.ReviewResponse;
+import com.univreview.model.ReviewState;
+import com.univreview.model.RvComment;
+import com.univreview.model.RvReport;
 
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public interface ReviewService {
 
     // 리뷰 수정 및 상세리뷰 작성
     @PUT(Retro.VERSION + "reviews/{reviewId}")
-    Observable<ReviewResponse> callPutReview(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body com.univreview.model.model_kotlin.ReviewDetail body);
+    Observable<ReviewResponse> callPutReview(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body ReviewDetail body);
 
     // 사용자가 기존에 리뷰를 썼는지 확인하는 API
     @GET(Retro.VERSION + "courses/{courseId}/review/exists")
@@ -80,6 +81,7 @@ public interface ReviewService {
     @DELETE(Retro.VERSION + "reviews/{reviewId}/comments/{commentId}")
     Observable<DataModel> deleteReviewComment(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Path("commentId") long commentId);
 
+    // 리뷰 신고
     @POST(Retro.VERSION + "reviews/{reviewId}/reports")
     Observable<DataModel> reviewReport(@HeaderMap Map<String, String> headers, @Path("reviewId") long reviewId, @Body RvReport body);
 

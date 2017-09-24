@@ -13,8 +13,8 @@ import com.univreview.R
 import com.univreview.adapter.MyPageAdapter
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
-import com.univreview.model.model_kotlin.Setting
-import com.univreview.model.model_kotlin.User
+import com.univreview.model.Setting
+import com.univreview.model.User
 import com.univreview.util.ImageUtil
 import com.univreview.util.Util
 import com.univreview.view.contract.MyPageContract
@@ -113,7 +113,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
                 Logger.v("album path: " + albumPath)
                 Util.setProfileImage("file://" + albumPath, profileImage)
-                //callFileUploadApi(activityResultEvent.intent.data)
+                presenter.userProfileUpdate(albumPath)
             }
         }
     }

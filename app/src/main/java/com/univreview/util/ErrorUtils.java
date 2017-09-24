@@ -7,7 +7,7 @@ import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.activity.LoginActivity;
 import com.univreview.log.Logger;
-import com.univreview.model.model_kotlin.ResultModel;
+import com.univreview.model.ResultModel;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;

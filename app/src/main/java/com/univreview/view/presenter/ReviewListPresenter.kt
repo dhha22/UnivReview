@@ -10,9 +10,9 @@ import com.univreview.listener.OnItemClickListener
 import com.univreview.listener.RvReportItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.model_kotlin.DataModel
-import com.univreview.model.model_kotlin.Review
-import com.univreview.model.model_kotlin.ReviewListModel
+import com.univreview.model.DataModel
+import com.univreview.model.Review
+import com.univreview.model.ReviewListModel
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.ReviewListContract

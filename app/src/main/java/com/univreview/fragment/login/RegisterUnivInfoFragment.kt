@@ -1,29 +1,22 @@
 package com.univreview.fragment.login
 
 import android.app.Activity
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.squareup.otto.Subscribe
-import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
 import com.univreview.model.*
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.model_kotlin.User
-import com.univreview.network.Retro
-import com.univreview.util.ErrorUtils
-import com.univreview.util.ImageUtil
+import com.univreview.model.User
 import com.univreview.util.Util
 import com.univreview.view.contract.RegisterUnivInfoContract
 import com.univreview.view.presenter.RegisterUnivInfoPresenter
 import kotlinx.android.synthetic.main.fragment_register_univ_info.*
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 
 /**
  * Created by DavidHa on 2017. 8. 6..

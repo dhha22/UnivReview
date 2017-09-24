@@ -1,10 +1,10 @@
 package com.univreview.network
 
 import com.univreview.model.SignIn
-import com.univreview.model.model_kotlin.DataModel
-import com.univreview.model.model_kotlin.User
-import com.univreview.model.model_kotlin.UserModel
-import com.univreview.model.model_kotlin.ValidateEmail
+import com.univreview.model.DataModel
+import com.univreview.model.User
+import com.univreview.model.UserModel
+import com.univreview.model.ValidateEmail
 import retrofit2.http.*
 import rx.Observable
 

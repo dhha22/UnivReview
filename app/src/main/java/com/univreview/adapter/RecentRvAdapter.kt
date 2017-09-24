@@ -4,8 +4,8 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import com.univreview.model.model_kotlin.AbstractDataProvider
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.AbstractDataProvider
+import com.univreview.model.Review
 import com.univreview.view.RecentReviewItemView
 
 /**

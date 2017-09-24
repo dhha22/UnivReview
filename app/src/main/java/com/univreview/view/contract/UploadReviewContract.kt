@@ -1,7 +1,7 @@
 package com.univreview.view.contract
 
 import android.content.Intent
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 
 /**
  * Created by DavidHa on 2017. 8. 6..

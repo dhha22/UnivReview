@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.adapter.contract.PointAdapterContract
-import com.univreview.model.model_kotlin.RvPoint
+import com.univreview.model.RvPoint
 import com.univreview.view.PointItemView
 
 /**

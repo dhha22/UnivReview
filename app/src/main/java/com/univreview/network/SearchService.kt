@@ -1,6 +1,6 @@
 package com.univreview.network
 
-import com.univreview.model.model_kotlin.*
+import com.univreview.model.*
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.Path

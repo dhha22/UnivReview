@@ -5,7 +5,7 @@ import com.univreview.App
 import com.univreview.adapter.contract.PointAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.RvPoint
+import com.univreview.model.RvPoint
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
@@ -25,7 +25,7 @@ class PointListPresenter : PointListContract {
 
 
     override fun callPointHistories(page: Int) {
-        Retro.instance.userService().callPointHistories(App.setHeader())
+        Retro.instance.userService.callPointHistories(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ pointResponse(it.data, page) }, {
@@ -44,7 +44,7 @@ class PointListPresenter : PointListContract {
     }
 
     override fun callReviewTicket() {
-        Retro.instance.userService().callTicket(App.setHeader())
+        Retro.instance.userService.callTicket(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -53,7 +53,7 @@ class PointListPresenter : PointListContract {
     }
 
     override fun buyReviewTicket() {
-        Retro.instance.userService().buyReviewTicket(App.setHeader())
+        Retro.instance.userService.buyReviewTicket(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

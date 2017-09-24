@@ -1,4 +1,4 @@
-package com.univreview.model.model_kotlin
+package com.univreview.model
 
 import android.os.Parcel
 import android.os.Parcelable

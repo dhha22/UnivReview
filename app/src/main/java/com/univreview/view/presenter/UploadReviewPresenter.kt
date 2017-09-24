@@ -3,13 +3,11 @@ package com.univreview.view.presenter
 import android.content.Intent
 import com.univreview.App
 import com.univreview.log.Logger
-import com.univreview.model.ActivityResultEvent
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.UploadReviewContract
-import kotlinx.android.synthetic.main.upload_review_toolbar.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 

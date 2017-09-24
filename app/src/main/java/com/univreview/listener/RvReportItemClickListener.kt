@@ -3,7 +3,7 @@ package com.univreview.listener
 import android.view.View
 import com.univreview.App
 import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.RvReport
+import com.univreview.model.RvReport
 import com.univreview.network.Retro
 import rx.schedulers.Schedulers
 

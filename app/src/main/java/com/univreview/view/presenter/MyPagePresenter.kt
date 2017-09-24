@@ -6,8 +6,10 @@ import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.MyPageAdapterContract
 import com.univreview.listener.OnItemClickListener
+import com.univreview.log.Logger
+import com.univreview.model.UpdateUser
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.model_kotlin.Setting
+import com.univreview.model.Setting
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.MyPageContract
@@ -43,9 +45,20 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     }
 
     override fun callUserProfile() {
-        Retro.instance.userService().callUserProfile(App.setHeader())
+        Retro.instance.userService.callUserProfile(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({view.setUserData(it.data)}, { ErrorUtils.parseError(it) })
+                .subscribe({ view.setUserData(it.data) }, { ErrorUtils.parseError(it) })
+    }
+
+    override fun userProfileUpdate(imagePath: String) {
+        Retro.instance.fileService(imagePath, "profile")
+                .subscribeOn(Schedulers.io())
+                .subscribe({ updateUserInfo(it.data.objKey) }) { Logger.e(it) }
+    }
+
+    private fun updateUserInfo(imageUrl: String) {
+        Retro.instance.userService.userInfoUpdate(App.setHeader(), UpdateUser(imageUrl))
+                .subscribe({ result -> Logger.v(result) }) { Logger.e(it) }
     }
 }

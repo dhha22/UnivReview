@@ -4,6 +4,7 @@ import com.univreview.App
 import com.univreview.BuildConfig
 import com.univreview.log.Logger
 import com.univreview.model.FileUploadModel
+import com.univreview.model.DataModel
 import com.univreview.util.ImageUtil
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -14,6 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import rx.Observable
+import rx.schedulers.Schedulers
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -22,13 +24,14 @@ import java.util.concurrent.TimeUnit
  */
 enum class Retro {
     instance;
+
     companion object {
         const val VERSION = "api/v2/"
     }
 
     private val TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/"
     private val REAL_URL = "https://api.8hakgoon.com/api/"
-    private var userService: UserService
+    var userService: UserService
     var loginService: LoginService
     var searchService: SearchService
     private var reviewService: ReviewService
@@ -36,7 +39,7 @@ enum class Retro {
 
     init {
         Logger.v("init retro")
-       
+
         val BASE_URL: String
         if (BuildConfig.DEBUG) {
             BASE_URL = TEST_URL
@@ -78,37 +81,20 @@ enum class Retro {
         return builder.build()
     }
 
-    fun userService(): UserService {
-        return userService
-    }
-
     fun reviewService(): ReviewService {
         return reviewService
     }
 
-    fun fileService(path: String, type: String): Observable<FileUploadModel> {
-        Logger.v("path: " + path)
-
-        val thread = Thread {
-            try {
-                ImageUtil.compressImage(path)
-            } catch (e: Exception) {
-                Logger.e(e)
-            }
-        }
-        thread.start()
-        try {
-            thread.join()
-        } catch (e: Exception) {
-            Logger.e(e.toString())
-        }
-
-        val file = File(ImageUtil.IMAGE_PATH + "tmp.jpg")
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-        val location = RequestBody.create(okhttp3.MultipartBody.FORM, "/" + type)
-
-        return fileService.postFile(body, location)
+    fun fileService(imagePath: String, type: String): Observable<DataModel<FileUploadModel>> {
+        return Observable.just(ImageUtil.compressImage(imagePath))
+                .flatMap {
+                    val file = File(ImageUtil.IMAGE_PATH + "tmp.jpg")
+                    val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                    val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                    val location = RequestBody.create(okhttp3.MultipartBody.FORM, "/$type/")
+                    fileService.postFile(body, location)
+                }
+                .subscribeOn(Schedulers.io())
     }
 
 }

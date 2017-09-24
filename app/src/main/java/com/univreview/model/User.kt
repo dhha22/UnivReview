@@ -1,4 +1,4 @@
-package com.univreview.model.model_kotlin
+package com.univreview.model
 
 import android.net.Uri
 import android.os.Parcel

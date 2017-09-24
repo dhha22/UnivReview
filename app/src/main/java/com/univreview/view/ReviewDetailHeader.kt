@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.univreview.R
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import kotlinx.android.synthetic.main.review_detail_header.view.*
 
 

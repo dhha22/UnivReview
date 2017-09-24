@@ -1,6 +1,5 @@
 package com.univreview.fragment
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -8,23 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.univreview.App
 import com.univreview.R
 import com.univreview.adapter.PointAdapter
-import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.RvPoint
-import com.univreview.model.model_kotlin.Ticket
-import com.univreview.network.Retro
-import com.univreview.util.ErrorUtils
+import com.univreview.model.Ticket
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
 import com.univreview.view.PointListHeaderView
 import com.univreview.view.UnivReviewRecyclerView
 import com.univreview.view.contract.PointListContract
 import com.univreview.view.presenter.PointListPresenter
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 
 /**
  * Created by DavidHa on 2017. 8. 19..

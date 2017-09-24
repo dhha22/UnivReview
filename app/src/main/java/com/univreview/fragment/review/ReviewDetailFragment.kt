@@ -14,7 +14,7 @@ import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.EndlessRecyclerViewScrollListener
 import com.univreview.listener.OnItemClickListener
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
 import com.univreview.view.ReviewDetailHeader

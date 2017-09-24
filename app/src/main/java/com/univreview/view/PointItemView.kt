@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.univreview.R
-import com.univreview.model.model_kotlin.RvPoint
+import com.univreview.model.RvPoint
 import com.univreview.util.TimeUtil
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.point_item.view.*

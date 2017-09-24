@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.adapter.contract.MyPageAdapterContract
-import com.univreview.model.model_kotlin.Setting
+import com.univreview.model.Setting
 import com.univreview.view.SettingItemView
 
 /**

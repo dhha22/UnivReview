@@ -1,4 +1,4 @@
-package com.univreview.model.model_kotlin
+package com.univreview.model
 
 /**
  * Created by DavidHa on 2017. 9. 3..

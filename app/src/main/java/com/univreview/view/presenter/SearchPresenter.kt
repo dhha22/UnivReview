@@ -11,8 +11,8 @@ import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.model_kotlin.AbstractDataProvider
-import com.univreview.model.model_kotlin.DataListModel
+import com.univreview.model.AbstractDataProvider
+import com.univreview.model.DataListModel
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.SearchContract

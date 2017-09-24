@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.view.View;
 
 import com.univreview.activity.LoginActivity;
 import com.univreview.activity.MainActivity;
@@ -25,10 +24,9 @@ import com.univreview.fragment.setting.SettingFragment;
 import com.univreview.fragment.upload.UploadReviewDetailFragment;
 import com.univreview.fragment.upload.UploadReviewFragment;
 import com.univreview.model.enumeration.ReviewSearchType;
-import com.univreview.model.model_kotlin.Review;
-import com.univreview.model.model_kotlin.User;
+import com.univreview.model.Review;
+import com.univreview.model.User;
 import com.univreview.util.ImageUtil;
-import com.univreview.util.Util;
 
 import java.io.File;
 

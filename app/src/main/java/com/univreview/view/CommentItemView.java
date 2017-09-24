@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.univreview.R;
-import com.univreview.model.model_kotlin.RvComment;
+import com.univreview.model.RvComment;
 import com.univreview.util.TimeUtil;
 
 import butterknife.BindView;

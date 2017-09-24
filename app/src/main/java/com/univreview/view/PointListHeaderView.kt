@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.univreview.R
-import com.univreview.model.model_kotlin.Ticket
+import com.univreview.model.Ticket
 import com.univreview.util.TimeUtil
 import kotlinx.android.synthetic.main.point_list_header.view.*
 import java.lang.StringBuilder

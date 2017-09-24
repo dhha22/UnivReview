@@ -12,7 +12,7 @@ import com.univreview.R
 import com.univreview.adapter.SettingAdapter
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
-import com.univreview.model.model_kotlin.Setting
+import com.univreview.model.Setting
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import kotlinx.android.synthetic.main.fragment_setting.*

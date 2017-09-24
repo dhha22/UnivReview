@@ -9,7 +9,7 @@ import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.log.Logger
 import com.univreview.model.RandomImageModel
-import com.univreview.model.model_kotlin.Review
+import com.univreview.model.Review
 import kotlinx.android.synthetic.main.recent_review_item.view.*
 
 

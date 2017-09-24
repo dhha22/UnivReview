@@ -15,7 +15,7 @@ import com.univreview.R
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
-import com.univreview.model.model_kotlin.User
+import com.univreview.model.User
 import com.univreview.util.ImageUtil
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.fragment_register_user_info.*

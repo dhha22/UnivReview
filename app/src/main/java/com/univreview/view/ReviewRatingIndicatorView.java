@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.univreview.R;
 import com.univreview.log.Logger;
-import com.univreview.model.model_kotlin.Review;
+import com.univreview.model.Review;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
