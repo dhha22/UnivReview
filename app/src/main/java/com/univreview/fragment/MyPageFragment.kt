@@ -32,7 +32,7 @@ import java.util.*
 class MyPageFragment : BaseFragment(), MyPageContract.View {
 
     private lateinit var adapter: MyPageAdapter
-    private val settings = Arrays.asList(Setting(0, "My 리뷰", "0개"), Setting(1, "포인트", "0 point"), Setting(2, "학생 인증"))
+    private val settings = Arrays.asList(Setting(0, "My 리뷰", "0개"), Setting(1, "포인트", "0 point"), Setting(2, "학생 인증"), Setting(3, "설정"))
     private lateinit var presenter: MyPagePresenter
 
 
@@ -77,8 +77,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> adapter.addItem(result) }, { Logger.e(it) })
 
-        profileImageLayout.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
-        settingBtn.setOnClickListener { Navigator.goSetting(context) }
+        profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
     }
 
     override fun onResume() {
@@ -88,6 +87,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
 
     override fun setUserData(data: User) {
         nameTxt.text = data.name
+        universityTxt.text = data.universityName
         majorTxt.text = data.majorName
         App.setPoint(data.point)
         Util.setProfileImage(data.profileImageUrl, profileImage)
@@ -111,7 +111,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
                 Navigator.goAlbum(context)
             } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
-                Logger.v("album path: " + albumPath)
+                Logger.v("album path: file://" + albumPath)
                 Util.setProfileImage("file://" + albumPath, profileImage)
                 presenter.userProfileUpdate(albumPath)
             }

@@ -14,6 +14,7 @@ import com.univreview.activity.PermissionCheckerActivity;
 import com.univreview.fragment.PointListFragment;
 import com.univreview.fragment.SearchFragment;
 import com.univreview.fragment.login.CheckUserPhotoFragment;
+import com.univreview.fragment.login.RegisterEmailFragment;
 import com.univreview.fragment.login.RegisterUnivInfoFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
@@ -48,6 +49,13 @@ public class Navigator {
     }
 
     //register
+    public static void goRegisterEmail(Context context, User register) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(RegisterEmailFragment.getInstance(register));
+        context.startActivity(intent);
+    }
+
+
     public static void goRegisterUserInfo(Context context, User register) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register));

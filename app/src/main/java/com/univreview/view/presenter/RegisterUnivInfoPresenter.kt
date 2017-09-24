@@ -1,12 +1,15 @@
 package com.univreview.view.presenter
 
 import android.content.Context
+import android.net.Uri
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.log.Logger
+import com.univreview.model.UpdateUser
 import com.univreview.model.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
+import com.univreview.util.ImageUtil
 import com.univreview.view.contract.RegisterUnivInfoContract
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -40,9 +43,12 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
                     App.setUniversityId(it.universityId!!)
                     App.setUserId(it.id)
                 }
-       /* // 회원 프로필 사진을 앨범에서 선택했을 경우
-        register.profileUri?:goMain()   // profile uri 가 없는 경우 main 으로 이동
-        callImageFileUploadApi(register.profileUri)*/
+
+        if (register.profileImageUri != null) {  // 회원 프로필 사진을 앨범에서 선택했을 경우
+            callImageFileUploadApi(register.profileImageUri!!)
+        } else {  // profile uri 가 없는 경우 main 으로 이동
+            goMain()
+        }
     }
 
     private fun errorResponse(e: Throwable) {
@@ -50,25 +56,17 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
         ErrorUtils.parseError(e)
     }
 
-
-    // File upload -> User 회원가입
-
-    private fun callImageFileUploadApi(imagePath: String) {
+    private fun callImageFileUploadApi(uploadUri: Uri) {
+        val imagePath = ImageUtil.getPath(uploadUri)
         Retro.instance.fileService(imagePath, "profile")
                 .subscribeOn(Schedulers.io())
                 .subscribe({ callUserProfileUpdateApi(it.data.objKey) }) { goMain() }
     }
 
     private fun callUserProfileUpdateApi(profileUrl: String) {
-       /* Logger.v("file location: " + profileUrl)
-        val user = User().apply {
-            profileImageUrl = profileUrl
-        }
-        Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        Retro.instance.userService.userInfoUpdate(App.setHeader(), UpdateUser(profileUrl))
                 .doAfterTerminate({ goMain() })
-                .subscribe({ result -> Logger.v("profile update: " + result) }, { ErrorUtils.parseError(it) })*/
+                .subscribe({ Logger.v("profile update: $it") }, { ErrorUtils.parseError(it) })
     }
 
     private fun goMain() {

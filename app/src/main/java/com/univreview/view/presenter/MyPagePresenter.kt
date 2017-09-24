@@ -23,6 +23,7 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     private val MY_REVIEW = 0
     private val POINT = 1
     private val USER_IDENTIFY = 2
+    private val SETTING = 3
 
     lateinit var view: MyPageContract.View
     lateinit var adapterModel: MyPageAdapterContract.Model
@@ -41,6 +42,7 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
                 Navigator.goPointList(context, name.substring(0, index).toInt())
             }
             USER_IDENTIFY -> Navigator.goRegisterUserIdentity(context)
+            SETTING -> Navigator.goSetting(context)
         }
     }
 

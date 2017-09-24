@@ -2,7 +2,7 @@
 <tabs>
     <tab
         id="@+id/tab_home"
-        icon="@drawable/ic_navi_home"
+        icon="@drawable/ic_navi_search"
         inActiveColor="@color/iconDisable"
         activeColor="@color/iconEnable"
         title="리뷰검색" />

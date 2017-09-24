@@ -19,6 +19,7 @@ data class User(var provider: String, // facebook, kakao
                 var universityId: Long? = null,
                 var majorId: Long? = null,
                 val authenticated: Boolean = false,
+                val universityName: String? = null,
                 val majorName: String? = null,
                 val point: Int = 0,
                 val reviewCount: Int = 0) : Parcelable {
@@ -43,6 +44,7 @@ data class User(var provider: String, // facebook, kakao
             source.readLong(),
             source.readInt() != 0,
             source.readString(),
+            source.readString(),
             source.readInt(),
             source.readInt()
     )
@@ -62,6 +64,7 @@ data class User(var provider: String, // facebook, kakao
         writeLong(universityId ?: 0)
         writeLong(majorId ?: 0)
         dest.writeInt(if (authenticated) 1 else 0)  // true = 1, false 0
+        writeString(universityName)
         writeString(majorName)
         writeInt(point)
         writeInt(reviewCount)

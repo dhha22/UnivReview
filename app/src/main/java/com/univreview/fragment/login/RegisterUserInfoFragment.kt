@@ -13,6 +13,7 @@ import com.squareup.otto.Subscribe
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseFragment
+import com.univreview.listener.KeyboardListener
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
 import com.univreview.model.User
@@ -55,31 +56,21 @@ class RegisterUserInfoFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init(register)
-        setData(register)
     }
 
     private fun init(register: User) {
+        Util.setProfileImage(register.profileImageUrl, profileImage)
+        inputName.addTextChangedListener(textWatcher)
+        inputName.setOnKeyListener(KeyboardListener(context, inputName))
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
-                register.email = inputEmail.text.toString()
                 register.name = inputName.text.toString()
                 Navigator.goRegisterUnivInfo(context, register)
             }
         }
-        inputName.addTextChangedListener(textWatcher)
-        inputEmail.addTextChangedListener(textWatcher)
-        inputEmail.setOnKeyListener { _, keyCode, event -> keyboardListener.invoke(keyCode, event, inputEmail) }
-        inputName.setOnKeyListener { _, keyCode, event -> keyboardListener.invoke(keyCode, event, inputName) }
 
     }
 
-    private val keyboardListener = { keyCode: Int, event: KeyEvent, editTxt: EditText ->
-        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-            Logger.v("enter")
-            Util.hideKeyboard(context, editTxt)
-        }
-        false
-    }
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -91,38 +82,14 @@ class RegisterUserInfoFragment : BaseFragment() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            nextBtn.isSelected = !isInputEmpty()
+            nextBtn.isSelected = inputName.text.isNotEmpty()
         }
     }
 
-
-    private fun setData(register: User?) {
-        register?.let {
-            Util.setProfileImage(it.profileImageUrl, profileImage)
-            inputEmail.setText(it.email)
-            inputEmail.setSelection(it.email?.length ?: 0)
-            nextBtn.isSelected = !isInputEmpty()
-        }
-
-        if (inputEmail.text.isNotEmpty()) {
-            inputName.requestFocus()
-        }
-    }
-
-    private fun isInputEmpty(): Boolean {
-        if (inputName.text.isEmpty() || inputEmail.text.isEmpty()) {
-            return true
-        }
-        return false
-    }
 
     private fun formVerification(): Boolean {
         if (inputName.text.isEmpty()) {
             Util.simpleMessageDialog(context, "이름을 입력해주시길 바랍니다.")
-        } else if (inputEmail.text.isEmpty()) {
-            Util.simpleMessageDialog(context, "이메일을 입력해주시길 바랍니다.")
-        } else if (!Util.isEmail(inputEmail.text.toString())) {
-            Util.simpleMessageDialog(context, "올바른 이메일을 입력해주시길 바랍니다.")
         } else {
             return true
         }
@@ -137,9 +104,8 @@ class RegisterUserInfoFragment : BaseFragment() {
             } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
                 Logger.v("album path: " + albumPath)
-                register.profileImageUrl = "file://" + albumPath
+                Util.setProfileImage(albumPath, profileImage)
                 register.profileImageUri = activityResultEvent.intent.data
-                setData(register)
             }
         }
     }

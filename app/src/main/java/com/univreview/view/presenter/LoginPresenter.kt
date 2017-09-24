@@ -87,13 +87,13 @@ class LoginPresenter : LoginContract {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ this.response(it.data, User(provider, userId.toLong(), email, profileURL, accessToken)) })
-                { error -> loginErrorResponse(error, User(provider, userId.toLong(), email, profileURL, accessToken)) }
+                .subscribe({ response(it.data) },
+                        { error -> loginErrorResponse(error, User(provider, userId.toLong(), email, profileURL, accessToken)) })
     }
 
-    private fun response(userModel: User?, register: User) {
+    private fun response(userModel: User) {
         Logger.v("response: " + userModel)
-        userModel?.let {
+        userModel.let {
             Observable.just(userModel)
                     .observeOn(Schedulers.newThread())
                     .subscribe {
@@ -105,12 +105,11 @@ class LoginPresenter : LoginContract {
                     }
             Navigator.goMain(context)
         }
-        userModel ?: Navigator.goRegisterUserInfo(context, register)
     }
 
     private fun loginErrorResponse(error: Throwable, register: User) {
         if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_401) {   //신규회원
-            Navigator.goRegisterUserInfo(context, register)
+            Navigator.goRegisterEmail(context, register)
         } else {
             if (BuildConfig.DEBUG) {
                 Navigator.goMain(context)
