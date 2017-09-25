@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.model.Ticket
 import com.univreview.util.TimeUtil
@@ -18,28 +19,29 @@ class PointListHeaderView(context: Context) : CardView(context) {
     init {
         LayoutInflater.from(context).inflate(R.layout.point_list_header, this, true)
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        goReviewWrite.setOnClickListener { Navigator.goUploadReview(context) }
     }
 
     fun setPoint(totalPoint: Int) {
-        totalPointTxt.text = String.format(resources.getString(R.string.point, totalPoint))
+        totalPointTxt.text = totalPoint.toString()
     }
 
     fun setBuyTicketListener(clickListener: OnClickListener) {
-        buyTicketBtn.setOnClickListener(clickListener)
+        buyTicketLayout.setOnClickListener(clickListener)
     }
 
     fun setUserTicket(ticket: Ticket) {
         if (ticket.term != null) {
             ticket.let {
                 val timeUtil = TimeUtil()
-                buyTicketBtn.visibility = View.GONE
+                buyTicketLayout.visibility = View.GONE
                 ticketLayout.visibility = View.VISIBLE
                 ticketNameTxt.text = it.name
                 ticketTimeTxt.text = StringBuilder(timeUtil.getPointFormat(it.term!!.startedAt)
-                        + "~" + timeUtil.getPointFormat(it.term!!.endedAt))
+                        + "~" + timeUtil.getPointFormat(it.term.endedAt))
             }
         } else {
-            buyTicketBtn.visibility = View.VISIBLE
+            buyTicketLayout.visibility = View.VISIBLE
             ticketLayout.visibility = View.GONE
         }
     }

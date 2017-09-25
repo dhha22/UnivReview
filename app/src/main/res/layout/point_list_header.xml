@@ -4,97 +4,158 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="16dp"
-    android:paddingBottom="28dp">
+    android:paddingTop="22dp">
 
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_point_coin" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:text="내 포인트"
-        android:textColor="@color/black"
-        android:textSize="14dp" />
+        <TextView
+            android:id="@+id/pointTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
+            android:text="사용가능 포인트"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
 
-    <TextView
-        android:id="@+id/totalPointTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="4dp"
-        android:textStyle="bold"
-        android:text="0P"
-        android:textColor="@color/colorAccent"
-        android:textSize="22dp" />
+        <LinearLayout
+            android:id="@+id/pointLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/pointTitle"
+            android:layout_below="@id/pointTitle"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/totalPointTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="4dp"
+                android:text="0"
+                android:textColor="@color/colorAccent"
+                android:textSize="32dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_point_coin" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/goReviewWrite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/pointLayout"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/fill_rounded_primary_rect"
+            android:paddingBottom="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:paddingTop="4dp"
+            android:text="리뷰쓰기"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/rowColor"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:background="@color/rowColor" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginTop="28dp">
+        android:gravity="center">
 
-        <Button
-            android:id="@+id/buyTicketBtn"
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="48dp"
-            android:background="@drawable/fill_rounded_primary_rect"
-            android:paddingBottom="12dp"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:paddingTop="12dp"
-            android:text="강의를 보려면 티켓을 구매해주세요"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-
-        <RelativeLayout
-            android:id="@+id/ticketLayout"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
+        <LinearLayout
+            android:id="@+id/buyTicketLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="14dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:paddingTop="14dp"
             android:visibility="gone">
 
             <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/ticket" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="티켓 구매하고 리뷰보기"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ticketLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="14dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="14dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내 보유 쿠폰"
+                android:textSize="16dp" />
+
+            <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="80dp"
-                android:src="@drawable/ic_point_ticket" />
+                android:layout_gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/ticketNameTxt"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_point_ticket" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="4dp"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14dp" />
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/ticketTimeTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/timeColor"
-                    android:textSize="12dp" />
-            </LinearLayout>
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/ticketNameTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="ticket name"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ticketTimeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="time"
+                        android:textColor="@color/timeColor"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </RelativeLayout>
 
 

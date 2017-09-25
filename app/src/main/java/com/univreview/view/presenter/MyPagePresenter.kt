@@ -13,6 +13,7 @@ import com.univreview.model.Setting
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.MyPageContract
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -24,6 +25,7 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     private val POINT = 1
     private val USER_IDENTIFY = 2
     private val SETTING = 3
+    private var isProfileUpdate: Boolean = false
 
     lateinit var view: MyPageContract.View
     lateinit var adapterModel: MyPageAdapterContract.Model
@@ -47,13 +49,16 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     }
 
     override fun callUserProfile() {
-        Retro.instance.userService.callUserProfile(App.setHeader())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ view.setUserData(it.data) }, { ErrorUtils.parseError(it) })
+        if (!isProfileUpdate) {
+            Retro.instance.userService.callUserProfile(App.setHeader())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ view.setUserData(it.data) }, { ErrorUtils.parseError(it) })
+        }
     }
 
     override fun userProfileUpdate(imagePath: String) {
+        isProfileUpdate = true
         Retro.instance.fileService(imagePath, "profile")
                 .subscribeOn(Schedulers.io())
                 .subscribe({ updateUserInfo(it.data.objKey) }) { Logger.e(it) }
@@ -61,6 +66,7 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
 
     private fun updateUserInfo(imageUrl: String) {
         Retro.instance.userService.userInfoUpdate(App.setHeader(), UpdateUser(imageUrl))
-                .subscribe({ result -> Logger.v(result) }) { Logger.e(it) }
+                .doAfterTerminate { isProfileUpdate = false }
+                .subscribe({ result -> Logger.v(result) }, { Logger.e(it) })
     }
 }
