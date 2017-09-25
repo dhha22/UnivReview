@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        id="@+id/tab_home"
+        id="@+id/tab_search"
         icon="@drawable/ic_navi_search"
         inActiveColor="@color/iconDisable"
         activeColor="@color/iconEnable"
