@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -29,8 +28,8 @@ public class Toolbar extends FrameLayout {
     ImageButton backBtn;
     @BindView(R.id.title_txt)
     TextView titleTxt;
-    @BindView(R.id.ok_btn)
-    TextView okBtn;
+    @BindView(R.id.rightMenu)
+    TextView rightMenu;
     @BindView(R.id.cancel_btn)
     ImageButton cancelBtn;
     @BindView(R.id.line)
@@ -56,17 +55,22 @@ public class Toolbar extends FrameLayout {
         toolbar.setBackgroundColor(getResources().getColor(colorId));
     }
 
-    public void setOnConfirmListener(OnClickListener clickListener) {
-        okBtn.setOnClickListener(clickListener);
+    public void setOnRightMenuListener(OnClickListener clickListener) {
+        rightMenu.setOnClickListener(clickListener);
         if (clickListener != null) {
-            okBtn.setVisibility(VISIBLE);
+            rightMenu.setVisibility(VISIBLE);
         } else {
-            okBtn.setVisibility(GONE);
+            rightMenu.setVisibility(GONE);
         }
     }
 
+    public void setRightMenuText(String menuStr){
+        rightMenu.setText(menuStr);
+    }
 
-    public void setLoginToolbarStyle() {
+
+
+    public void setWhiteToolbarStyle() {
         setBackBtnVisibility(true);
         toolbar.setBackgroundColor(Util.getColor(context, R.color.white));
         setTitleColor(R.color.black);

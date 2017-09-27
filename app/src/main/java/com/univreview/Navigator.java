@@ -12,6 +12,7 @@ import com.univreview.activity.MainActivity;
 import com.univreview.activity.NavigationActivity;
 import com.univreview.activity.PermissionCheckerActivity;
 import com.univreview.fragment.PointListFragment;
+import com.univreview.fragment.ProfileEditFragment;
 import com.univreview.fragment.SearchFragment;
 import com.univreview.fragment.login.CheckUserPhotoFragment;
 import com.univreview.fragment.login.RegisterEmailFragment;
@@ -172,6 +173,12 @@ public class Navigator {
     }
 
     //mypage
+    public static void goProfileEdit(Context context, User user) {
+        Intent intent = new Intent(context, NavigationActivity.class);
+        NavigationActivity.setFragment(ProfileEditFragment.getInstance(user));
+        context.startActivity(intent);
+    }
+
     public static void goPointList(Context context, int point) {
         Intent intent = new Intent(context, NavigationActivity.class);
         NavigationActivity.setFragment(PointListFragment.getInstance(point));

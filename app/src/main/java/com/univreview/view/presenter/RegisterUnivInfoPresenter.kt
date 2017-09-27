@@ -64,7 +64,7 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
     }
 
     private fun callUserProfileUpdateApi(profileUrl: String) {
-        Retro.instance.userService.userInfoUpdate(App.setHeader(), UpdateUser(profileUrl))
+        Retro.instance.userService.updateUserInfo(App.setHeader(), UpdateUser(profileUrl))
                 .doAfterTerminate({ goMain() })
                 .subscribe({ Logger.v("profile update: $it") }, { ErrorUtils.parseError(it) })
     }

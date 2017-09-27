@@ -77,7 +77,6 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> adapter.addItem(result) }, { Logger.e(it) })
 
-        profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
     }
 
     override fun onResume() {
@@ -100,22 +99,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
                     }
                     it
                 }.subscribe({ adapter.addItem(it) }, { Logger.e(it) })
-    }
-
-
-    @Subscribe
-    fun onActivityResult(activityResultEvent: ActivityResultEvent) {
-        Logger.v("on activity result")
-        if (activityResultEvent.resultCode == Activity.RESULT_OK) {
-            if (activityResultEvent.requestCode == Navigator.PERMISSION_CHECKER) {
-                Navigator.goAlbum(context)
-            } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
-                val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
-                Logger.v("album path: file://" + albumPath)
-                Util.setProfileImage("file://" + albumPath, profileImage)
-                presenter.userProfileUpdate(albumPath)
-            }
-        }
+        profileImage.setOnClickListener { Navigator.goProfileEdit(context, data) }
     }
 
 }

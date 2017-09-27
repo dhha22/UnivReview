@@ -27,7 +27,7 @@
         android:textSize="16dp" />
 
     <TextView
-        android:id="@+id/ok_btn"
+        android:id="@+id/rightMenu"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_alignParentRight="true"

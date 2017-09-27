@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.squareup.otto.Produce;
 import com.univreview.R;
+import com.univreview.fragment.ProfileEditFragment;
 import com.univreview.fragment.SearchFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.log.Logger;
@@ -41,6 +42,10 @@ public class NavigationActivity extends BaseActivity {
                 setTranslucent();
             }else if(fragment instanceof ReviewDetailFragment){
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }else if(fragment instanceof ProfileEditFragment){
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }else{
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
             }
             setContentView(R.layout.activity_navigation);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commitNow();

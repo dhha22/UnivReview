@@ -1,4 +1,4 @@
-package com.univreview.fragment.login
+package com.univreview.fragment
 
 import android.app.Activity
 import android.os.Bundle
@@ -10,65 +10,73 @@ import android.view.ViewGroup
 import com.squareup.otto.Subscribe
 import com.univreview.Navigator
 import com.univreview.R
-import com.univreview.fragment.BaseFragment
-import com.univreview.listener.KeyboardListener
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
 import com.univreview.model.User
 import com.univreview.util.ImageUtil
 import com.univreview.util.Util
-import kotlinx.android.synthetic.main.fragment_register_user_info.*
+import com.univreview.view.contract.ProfileEditContract
+import com.univreview.view.presenter.ProfileEditPresenter
+import kotlinx.android.synthetic.main.fragment_profile_edit.*
+
 
 /**
- * Created by DavidHa on 2017. 8. 5..
+ * Created by DavidHa on 2017. 9. 25..
  */
-class RegisterUserInfoFragment : BaseFragment() {
-    private lateinit var register: User
+class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
+
+    private lateinit var user: User
+    private lateinit var presenter: ProfileEditPresenter
 
     companion object {
         @JvmStatic
-        fun newInstance(register: User): RegisterUserInfoFragment {
-            val fragment = RegisterUserInfoFragment()
+        fun getInstance(user: User): ProfileEditFragment {
+            val fragment = ProfileEditFragment()
             val bundle = Bundle()
-            bundle.putParcelable("register", register)
+            bundle.putParcelable("user", user)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        register = arguments.getParcelable("register")
+        user = arguments.getParcelable("user")
+        presenter = ProfileEditPresenter().apply {
+            view = this@ProfileEditFragment
+            context = getContext()
+            userName = user.name!!
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater?.inflate(R.layout.fragment_register_user_info, container, false)
-        toolbar.setTitleTxt("계정 등록")
+        val view = inflater?.inflate(R.layout.fragment_profile_edit, container, false)
         toolbar.setWhiteToolbarStyle()
+        toolbar.setTitleTxt("내 정보 수정")
         rootLayout.addView(view)
         return rootLayout
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init(register)
+        init()
     }
 
-    private fun init(register: User) {
-        Util.setProfileImage(register.profileImageUrl, profileImage)
-        inputName.addTextChangedListener(textWatcher)
-        inputName.setOnKeyListener(KeyboardListener(context, inputName))
-        nextBtn.setOnClickListener { _ ->
-            if (formVerification() && nextBtn.isSelected) {
-                register.name = inputName.text.toString()
-                Navigator.goRegisterUnivInfo(context, register)
+
+    private fun init() {
+        profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
+        saveBtn.setOnClickListener {
+            if (formVerification() && saveBtn.isSelected) {
+                presenter.userName = inputName.text.toString().trim()
+                presenter.saveUserInfo()
             }
         }
-
+        inputName.addTextChangedListener(textWatcher)
+        Util.setProfileImage(user.profileImageUrl, profileImage)
+        inputName.setText(user.name)
+        inputName.setSelection(inputName.text.length)
     }
-
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -80,10 +88,9 @@ class RegisterUserInfoFragment : BaseFragment() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            nextBtn.isSelected = inputName.text.isNotEmpty()
+            saveBtn.isSelected = inputName.text.isNotEmpty()
         }
     }
-
 
     private fun formVerification(): Boolean {
         if (inputName.text.isEmpty()) {
@@ -96,15 +103,17 @@ class RegisterUserInfoFragment : BaseFragment() {
 
     @Subscribe
     fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+        Logger.v("on activity result")
         if (activityResultEvent.resultCode == Activity.RESULT_OK) {
             if (activityResultEvent.requestCode == Navigator.PERMISSION_CHECKER) {
                 Navigator.goAlbum(context)
             } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
-                Logger.v("album path: " + albumPath)
-                Util.setProfileImage(albumPath, profileImage)
-                register.profileImageUri = activityResultEvent.intent.data
+                Logger.v("album path: file://" + albumPath)
+                Util.setProfileImage("file://" + albumPath, profileImage)
+                presenter.imagePath = albumPath
             }
         }
     }
+
 }

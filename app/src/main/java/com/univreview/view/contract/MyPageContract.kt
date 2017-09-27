@@ -11,5 +11,4 @@ interface MyPageContract {
     }
 
     fun callUserProfile()
-    fun userProfileUpdate(imagePath : String)
 }

@@ -14,7 +14,7 @@ interface UserService {
     fun callUserProfile(@HeaderMap headers: Map<String, String>): Observable<DataModel<User>>
 
     @PUT("auth")
-    fun userInfoUpdate(@HeaderMap headers: Map<String, String>, @Body user: UpdateUser): Observable<DataModel<User>>
+    fun updateUserInfo(@HeaderMap headers: Map<String, String>, @Body user: UpdateUser): Observable<DataModel<User>>
 
     // user review point
     @GET(Retro.VERSION + "point_histories")

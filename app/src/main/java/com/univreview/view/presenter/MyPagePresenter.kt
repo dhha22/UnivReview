@@ -25,7 +25,6 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     private val POINT = 1
     private val USER_IDENTIFY = 2
     private val SETTING = 3
-    private var isProfileUpdate: Boolean = false
 
     lateinit var view: MyPageContract.View
     lateinit var adapterModel: MyPageAdapterContract.Model
@@ -49,24 +48,12 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     }
 
     override fun callUserProfile() {
-        if (!isProfileUpdate) {
-            Retro.instance.userService.callUserProfile(App.setHeader())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ view.setUserData(it.data) }, { ErrorUtils.parseError(it) })
-        }
-    }
-
-    override fun userProfileUpdate(imagePath: String) {
-        isProfileUpdate = true
-        Retro.instance.fileService(imagePath, "profile")
+        Retro.instance.userService.callUserProfile(App.setHeader())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ updateUserInfo(it.data.objKey) }) { Logger.e(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ view.setUserData(it.data) }, { ErrorUtils.parseError(it) })
+
     }
 
-    private fun updateUserInfo(imageUrl: String) {
-        Retro.instance.userService.userInfoUpdate(App.setHeader(), UpdateUser(imageUrl))
-                .doAfterTerminate { isProfileUpdate = false }
-                .subscribe({ result -> Logger.v(result) }, { Logger.e(it) })
-    }
+
 }

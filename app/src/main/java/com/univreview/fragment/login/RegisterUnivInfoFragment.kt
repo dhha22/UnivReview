@@ -55,7 +55,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_register_univ_info, container, false)
         toolbar.setTitleTxt("대학교 등록")
-        toolbar.setLoginToolbarStyle()
+        toolbar.setWhiteToolbarStyle()
         rootLayout.addView(view)
         return rootLayout
     }
