@@ -68,6 +68,7 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
         profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
         saveBtn.setOnClickListener {
             if (formVerification() && saveBtn.isSelected) {
+                Util.hideKeyboard(context, inputName)
                 presenter.userName = inputName.text.toString().trim()
                 presenter.saveUserInfo()
             }

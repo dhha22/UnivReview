@@ -76,6 +76,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         view.setStatus(AbsListFragment.Status.IDLE)
         if (result.data.isNotEmpty()) {
             view.setResult(page)
+            if(page == DEFAULT_PAGE) adapterModel.clearItem()
             Observable.from(result.data).subscribe { adapterModel.addItem(it) }
         }
     }

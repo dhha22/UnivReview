@@ -56,7 +56,7 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater?.inflate(R.layout.fragment_review_detail, container, false)
-        toolbar.setBackBtnVisibility(true)
+        toolbar.setWhiteToolbarStyle()
         rootLayout.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
         rootLayout.addView(view)
         return rootLayout

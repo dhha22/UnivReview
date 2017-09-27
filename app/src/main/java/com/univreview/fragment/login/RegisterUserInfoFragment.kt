@@ -60,6 +60,7 @@ class RegisterUserInfoFragment : BaseFragment() {
         Util.setProfileImage(register.profileImageUrl, profileImage)
         inputName.addTextChangedListener(textWatcher)
         inputName.setOnKeyListener(KeyboardListener(context, inputName))
+        profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
                 register.name = inputName.text.toString()
@@ -102,7 +103,7 @@ class RegisterUserInfoFragment : BaseFragment() {
             } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
                 Logger.v("album path: " + albumPath)
-                Util.setProfileImage(albumPath, profileImage)
+                Util.setProfileImage("file://" + albumPath, profileImage)
                 register.profileImageUri = activityResultEvent.intent.data
             }
         }

@@ -55,6 +55,7 @@ class ReviewItemBottomView(context: Context, attributeSet: AttributeSet? = null)
                         } else {
                             review.likeCount--
                         }
+                        review.notifyUpdate()
                     }, { setLikeState(likeImg.isSelected) })
         } else {
             setLikeState(likeImg.isSelected)

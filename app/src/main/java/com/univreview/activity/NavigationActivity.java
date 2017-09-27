@@ -10,6 +10,9 @@ import com.squareup.otto.Produce;
 import com.univreview.R;
 import com.univreview.fragment.ProfileEditFragment;
 import com.univreview.fragment.SearchFragment;
+import com.univreview.fragment.login.RegisterEmailFragment;
+import com.univreview.fragment.login.RegisterUserIdentityFragment;
+import com.univreview.fragment.login.RegisterUserInfoFragment;
 import com.univreview.fragment.review.ReviewDetailFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
@@ -40,11 +43,12 @@ public class NavigationActivity extends BaseActivity {
             if (fragment instanceof SearchFragment) {
                 Logger.v("set translucent");
                 setTranslucent();
-            }else if(fragment instanceof ReviewDetailFragment){
+            } else if (fragment instanceof RegisterEmailFragment ||
+                    fragment instanceof RegisterUserInfoFragment ||
+                    fragment instanceof ReviewDetailFragment ||
+                    fragment instanceof ProfileEditFragment) {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            }else if(fragment instanceof ProfileEditFragment){
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            }else{
+            } else {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
             }
             setContentView(R.layout.activity_navigation);
@@ -66,14 +70,14 @@ public class NavigationActivity extends BaseActivity {
         super.onPause();
         this.requestCode = this.resultCode = 0;
         this.data = null;
-            BusProvider.newInstance().unregister(this);
+        BusProvider.newInstance().unregister(this);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             this.requestCode = requestCode;
             this.resultCode = resultCode;
             this.data = data;

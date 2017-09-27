@@ -3,60 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/univInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:lineSpacingExtra="4dp"
         android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/universityTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:gravity="center"
-            android:hint="대학교"
-            android:padding="8dp"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/timeColor"
-            android:textSize="18dp" />
-
-        <View
-            android:id="@+id/universityLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="38dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:background="@color/gray" />
+        android:text="@string/register_univ_info"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16dp" />
 
 
+    <TextView
+        android:id="@+id/universityTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/univInfo"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:hint="대학교"
+        android:padding="8dp"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/gray"
+        android:textSize="18dp" />
 
-        <TextView
-            android:id="@+id/majorTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:gravity="center"
-            android:hint="전공"
-            android:padding="8dp"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/timeColor"
-            android:textSize="18dp" />
+    <View
+        android:id="@+id/universityLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/universityTxt"
+        android:layout_marginBottom="58dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@color/gray" />
 
-        <View
-            android:id="@+id/majorLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="50dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:background="@color/gray" />
-    </LinearLayout>
+
+    <TextView
+        android:id="@+id/majorTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/universityLine"
+        android:layout_gravity="center"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:gravity="center"
+        android:hint="전공"
+        android:padding="8dp"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/gray"
+        android:textSize="18dp" />
+
+    <View
+        android:id="@+id/majorLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/majorTxt"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:background="@color/gray" />
+
 
     <Button
         android:id="@+id/nextBtn"
