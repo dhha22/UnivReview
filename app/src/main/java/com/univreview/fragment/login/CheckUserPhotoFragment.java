@@ -74,13 +74,13 @@ public class CheckUserPhotoFragment extends BaseFragment {
                     Logger.v("result: " + result);
                     User user = new User();
                     user.studentImageUrl = result.fileLocation;
-                    Navigator.goUserAuthCompleted(getContext());
+                    com.univreview.Navigator.goUserAuthCompleted(getContext());
                     *//*Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate(() -> {
                                 progressDialog.dismiss();
-                                Navigator.goUserAuthCompleted(getContext());
+                                com.univreview.Navigator.goUserAuthCompleted(getContext());
                                 getActivity().finish();
                             })
                             .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);*//*

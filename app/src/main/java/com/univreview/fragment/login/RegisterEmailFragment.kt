@@ -11,8 +11,11 @@ import com.univreview.R
 import com.univreview.fragment.BaseFragment
 import com.univreview.listener.KeyboardListener
 import com.univreview.model.User
+import com.univreview.network.Retro
+import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.fragment_register_email.*
+import rx.schedulers.Schedulers
 
 
 /**
@@ -59,8 +62,7 @@ class RegisterEmailFragment : BaseFragment() {
         nextBtn.isSelected = inputEmail.text.isNotEmpty()
         nextBtn.setOnClickListener {
             if (formVerification() && nextBtn.isSelected) {
-                register.email = inputEmail.text.trim().toString()
-                Navigator.goRegisterUserInfo(context, register)
+                validateEmail(inputEmail.text.trim().toString())
             }
         }
     }
@@ -89,5 +91,14 @@ class RegisterEmailFragment : BaseFragment() {
         override fun afterTextChanged(s: Editable?) {
             nextBtn.isSelected = inputEmail.text.trim().isNotEmpty()
         }
+    }
+
+    private fun validateEmail(email: String) {
+        Retro.instance.loginService.validateEmail(email)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    register.email = email
+                    Navigator.goRegisterUserInfo(context, register)
+                }, { ErrorUtils.parseError(it) })
     }
 }

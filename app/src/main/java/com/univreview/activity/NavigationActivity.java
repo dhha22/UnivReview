@@ -10,6 +10,7 @@ import com.squareup.otto.Produce;
 import com.univreview.R;
 import com.univreview.fragment.ProfileEditFragment;
 import com.univreview.fragment.SearchFragment;
+import com.univreview.fragment.TestFragment;
 import com.univreview.fragment.login.RegisterEmailFragment;
 import com.univreview.fragment.login.RegisterUserIdentityFragment;
 import com.univreview.fragment.login.RegisterUserInfoFragment;
@@ -46,6 +47,7 @@ public class NavigationActivity extends BaseActivity {
             } else if (fragment instanceof RegisterEmailFragment ||
                     fragment instanceof RegisterUserInfoFragment ||
                     fragment instanceof ReviewDetailFragment ||
+                    fragment instanceof TestFragment ||
                     fragment instanceof ProfileEditFragment) {
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             } else {

@@ -57,16 +57,10 @@ class MainActivity : BaseActivity() {
                     Observable.timer(200, TimeUnit.MILLISECONDS)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe { bottomBar.selectTabAtPosition(getCurPagerPosition()) }
+                    //com.univreview.Navigator.goTest(this)
                     Navigator.goUploadReview(this)
                 }
                 R.id.tab_mypage -> viewPager.setCurrentItem(INDEX_MYPAGE, false)
-            }
-        }
-
-        // bottom bar 다시 한번 눌렀을 경우
-        bottomBar.setOnTabReselectListener {
-            if (it == R.id.tab_upload) {
-                Navigator.goUploadReview(this)
             }
         }
     }
