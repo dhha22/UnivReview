@@ -16,10 +16,13 @@ import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
+import com.univreview.network.Retro;
 import com.univreview.util.ImageUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 31..
@@ -64,30 +67,14 @@ public class CheckUserPhotoFragment extends BaseFragment {
     }
 
     private void upload() {
-        Navigator.goUserAuthCompleted(getContext());
-        getActivity().finish();
-       /* Retro.instance.fileService(path, "file")
-                .subscribeOn(Schedulers.io())
+        Logger.v("upload path: " + path);
+        Retro.instance.fileService(path, "studentCard")
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(() -> progressDialog.show())
-                .subscribe(result -> {
-                    Logger.v("result: " + result);
-                    User user = new User();
-                    user.studentImageUrl = result.fileLocation;
-                    com.univreview.Navigator.goUserAuthCompleted(getContext());
-                    *//*Retro.instance.userService().postProfile(App.setAuthHeader(App.userToken), user, App.userId)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doAfterTerminate(() -> {
-                                progressDialog.dismiss();
-                                com.univreview.Navigator.goUserAuthCompleted(getContext());
-                                getActivity().finish();
-                            })
-                            .subscribe(data -> Logger.v("result: " + data), ErrorUtils::parseError);*//*
-                }, error -> {
-                    progressDialog.dismiss();
-                    ErrorUtils.parseError(error);
-                });*/
+                .doAfterTerminate(() -> {
+                    Navigator.goUserAuthCompleted(getContext());
+                    getActivity().finish();
+                })
+                .subscribe(result -> Logger.v("result: " + result), error -> Logger.e(error));
     }
 
 

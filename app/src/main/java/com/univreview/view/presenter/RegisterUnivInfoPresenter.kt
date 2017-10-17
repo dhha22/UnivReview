@@ -59,7 +59,6 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
     private fun callImageFileUploadApi(uploadUri: Uri) {
         val imagePath = ImageUtil.getPath(uploadUri)
         Retro.instance.fileService(imagePath, "profile")
-                .subscribeOn(Schedulers.io())
                 .subscribe({ callUserProfileUpdateApi(it.data.objKey) }) { goMain() }
     }
 

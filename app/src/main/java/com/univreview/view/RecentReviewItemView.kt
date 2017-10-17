@@ -2,6 +2,8 @@ package com.univreview.view
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.widget.FrameLayout
 
 import com.univreview.App
@@ -37,12 +39,16 @@ class RecentReviewItemView(context: Context?) : FrameLayout(context) {
             gradeTxt.text = it.getGradeRateMessage()
             achievementTxt.text = it.getAchievementRateMessage()
 
+
             difficultyRatingBar.rating = it.difficultyRate
             assignmentRatingBar.rating = it.assignmentRate
             attendanceRatingBar.rating = it.attendanceRate
             gradeRatingBar.rating = it.gradeRate
             achievementRatingBar.rating = it.achievementRate
         }
+
         setOnClickListener { Navigator.goReviewDetail(context, review) }
     }
+
+
 }
