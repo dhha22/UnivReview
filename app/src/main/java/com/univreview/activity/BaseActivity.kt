@@ -54,7 +54,7 @@ open class BaseActivity : AppCompatActivity() {
                 .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
                 .setPositiveButton("구매하기", { _, _ ->
                     this.finish()
-                    Navigator.goPointList(this, App.point)
+                    Navigator.goPointList(this)
                 })
                 .setNegativeButton("취소", { _, _ -> this.finish() })
                 .setCancelable(false)

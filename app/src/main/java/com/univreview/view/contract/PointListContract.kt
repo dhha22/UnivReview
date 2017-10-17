@@ -8,11 +8,11 @@ import com.univreview.model.Ticket
  */
 interface PointListContract {
     interface View : BaseView {
+        fun setPoint(point:Int)
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
         fun setUserTicket(ticket: Ticket)
     }
-
     fun callPointHistories(page: Int)
     fun callReviewTicket()
     fun buyReviewTicket()

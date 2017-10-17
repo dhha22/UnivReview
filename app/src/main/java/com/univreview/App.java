@@ -45,7 +45,6 @@ public class App extends MultiDexApplication {
     public static String userToken;
     public static String client;
     public static String registrationId;
-    public static int point;
 
     @Override
     public void onCreate() {
@@ -109,11 +108,6 @@ public class App extends MultiDexApplication {
         pref.savePreferences("userId", userId);
     }
 
-    public static void setPoint(int point) {
-        Logger.v("set point: " + point);
-        App.point = point;
-        pref.savePreferences("point", point);
-    }
 
     public static void setClient(String client){
         Logger.v("set client: " + client);

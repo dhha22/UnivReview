@@ -178,7 +178,7 @@ class Navigator {
             context.startActivity(intent)
         }
 
-        fun goPointList(context: Context, point: Int) {
+        fun goPointList(context: Context, point: Int=0) {
             val intent = Intent(context, NavigationActivity::class.java)
             NavigationActivity.setFragment(PointListFragment.getInstance(point))
             context.startActivity(intent)

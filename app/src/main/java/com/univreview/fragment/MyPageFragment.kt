@@ -88,7 +88,6 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
         nameTxt.text = data.name
         universityTxt.text = data.universityName
         majorTxt.text = data.majorName
-        App.setPoint(data.point)
         Util.setProfileImage(data.profileImageUrl, profileImage)
         adapter.clear()
         Observable.from(settings)

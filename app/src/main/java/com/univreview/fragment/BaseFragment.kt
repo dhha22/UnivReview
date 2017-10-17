@@ -87,7 +87,7 @@ open class BaseFragment : Fragment() {
                 .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
                 .setPositiveButton("구매하기", { _, _ ->
                     activity.finish()
-                    Navigator.goPointList(context, App.point)
+                    Navigator.goPointList(context)
                 })
                 .setNegativeButton("취소", { _, _ -> activity.finish() })
                 .setCancelable(false)

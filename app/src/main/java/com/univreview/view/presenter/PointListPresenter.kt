@@ -28,14 +28,15 @@ class PointListPresenter : PointListContract {
         Retro.instance.userService.callPointHistories(App.setHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ pointResponse(it.data, page) }, {
+                .subscribe({ pointResponse(it.data.point, it.data.pointHistories, page) }, {
                     view.setStatus(AbsListFragment.Status.ERROR)
                     ErrorUtils.parseError(it)
                 })
     }
 
-    private fun pointResponse(pointHistories: List<RvPoint>, page: Int) {
+    private fun pointResponse(point: Int, pointHistories: List<RvPoint>, page: Int) {
         view.setStatus(AbsListFragment.Status.IDLE)
+        view.setPoint(point)
         if (pointHistories.isNotEmpty()) {
             if (page == AbsListFragment.DEFAULT_PAGE) adapterModel.clearItem()
             Observable.from(pointHistories)

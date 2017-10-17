@@ -85,6 +85,10 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
         return recyclerView
     }
 
+
+    override fun setPoint(point: Int) {
+        headerView.setPoint(point)
+    }
     override fun setUserTicket(ticket: Ticket) {
         headerView.setUserTicket(ticket)
     }

@@ -18,7 +18,7 @@ interface UserService {
 
     // user review point
     @GET(Retro.VERSION + "point_histories")
-    fun callPointHistories(@HeaderMap headers: Map<String, String>): Observable<DataListModel<RvPoint>>
+    fun callPointHistories(@HeaderMap headers: Map<String, String>): Observable<DataModel<PointHistory>>
 
     // user review ticket
     @GET(Retro.VERSION + "tickets")
