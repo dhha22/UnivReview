@@ -15,9 +15,13 @@ import com.univreview.listener.KeyboardListener
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
 import com.univreview.model.User
+import com.univreview.network.Retro
+import com.univreview.util.ErrorUtils
 import com.univreview.util.ImageUtil
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.fragment_register_user_info.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 /**
  * Created by DavidHa on 2017. 8. 5..
@@ -63,8 +67,7 @@ class RegisterUserInfoFragment : BaseFragment() {
         profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
-                register.name = inputName.text.toString()
-                Navigator.goRegisterUnivInfo(context, register)
+                validateName(inputName.text.toString())
             }
         }
 
@@ -93,6 +96,19 @@ class RegisterUserInfoFragment : BaseFragment() {
             return true
         }
         return false
+    }
+
+
+    private fun validateName(name : String){
+        Retro.instance.loginService.validateName(name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({if(it.data.isBoundName) {
+                    Util.simpleMessageDialog(context, "이름을 중복됩니다.")
+                }else{
+                    register.name = name
+                    Navigator.goRegisterUnivInfo(context, register)
+                }}, { ErrorUtils.parseError(it) })
     }
 
     @Subscribe

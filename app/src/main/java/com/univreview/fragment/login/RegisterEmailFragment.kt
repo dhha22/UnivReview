@@ -15,6 +15,7 @@ import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.Util
 import kotlinx.android.synthetic.main.fragment_register_email.*
+import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 
@@ -96,9 +97,14 @@ class RegisterEmailFragment : BaseFragment() {
     private fun validateEmail(email: String) {
         Retro.instance.loginService.validateEmail(email)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    register.email = email
-                    Navigator.goRegisterUserInfo(context, register)
+                    if(it.data.isBoundEmail){
+                        Util.simpleMessageDialog(context, "이미 존재한 이메일입니다.")
+                    }else {
+                        register.email = email
+                        Navigator.goRegisterUserInfo(context, register)
+                    }
                 }, { ErrorUtils.parseError(it) })
     }
 }

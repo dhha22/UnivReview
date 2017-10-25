@@ -1,10 +1,6 @@
 package com.univreview.network
 
-import com.univreview.model.SignIn
-import com.univreview.model.DataModel
-import com.univreview.model.User
-import com.univreview.model.UserModel
-import com.univreview.model.ValidateEmail
+import com.univreview.model.*
 import retrofit2.http.*
 import rx.Observable
 
@@ -32,5 +28,9 @@ interface LoginService {
     // 이메일 유효성
     @GET("auth/isBoundEmail")
     fun validateEmail(@Query("email") email: String): Observable<DataModel<ValidateEmail>>
+
+    // 사용자 이름 유효성
+    @GET("auth/isBoundName")
+    fun validateName(@Query("name") name : String) : Observable<DataModel<ValidateName>>
 
 }
