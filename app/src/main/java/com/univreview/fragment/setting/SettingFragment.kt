@@ -74,7 +74,7 @@ class SettingFragment : BaseFragment() {
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> adapter.addItem(result) }, { Logger.e(it) })
+                //.subscribe({ result -> adapter.addItem(result) }, { Logger.e(it) })
 
         adapter.setOnItemClickListener { _, position ->
             when (position) {

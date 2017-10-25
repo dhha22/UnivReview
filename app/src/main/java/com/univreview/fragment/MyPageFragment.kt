@@ -1,22 +1,18 @@
 package com.univreview.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.squareup.otto.Subscribe
-import com.univreview.App
+import com.dhha22.bindadapter.BindAdapter
 import com.univreview.Navigator
 import com.univreview.R
-import com.univreview.adapter.MyPageAdapter
 import com.univreview.log.Logger
-import com.univreview.model.ActivityResultEvent
 import com.univreview.model.Setting
 import com.univreview.model.User
-import com.univreview.util.ImageUtil
 import com.univreview.util.Util
+import com.univreview.view.SettingItemView
 import com.univreview.view.contract.MyPageContract
 import com.univreview.view.presenter.MyPagePresenter
 import kotlinx.android.synthetic.main.fragment_mypage.*
@@ -31,7 +27,7 @@ import java.util.*
  */
 class MyPageFragment : BaseFragment(), MyPageContract.View {
 
-    private lateinit var adapter: MyPageAdapter
+    private lateinit var adapter:BindAdapter
     private val settings = Arrays.asList(Setting(0, "My 리뷰", "0개"), Setting(1, "포인트", "0 point"), Setting(2, "학생 인증"), Setting(3, "설정"))
     private lateinit var presenter: MyPagePresenter
 
@@ -46,7 +42,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = MyPageAdapter(context)
+        adapter = BindAdapter(context).addLayout(SettingItemView::class.java)
         presenter = MyPagePresenter().apply {
             view = this@MyPageFragment
             context = getContext()
@@ -89,7 +85,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
         universityTxt.text = data.universityName
         majorTxt.text = data.majorName
         Util.setProfileImage(data.profileImageUrl, profileImage)
-        adapter.clear()
+        adapter.clearItem()
         Observable.from(settings)
                 .map {
                     when (it.id) {

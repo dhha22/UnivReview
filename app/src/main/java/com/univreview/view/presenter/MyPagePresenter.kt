@@ -2,18 +2,15 @@ package com.univreview.view.presenter
 
 import android.content.Context
 import android.view.View
+import com.dhha22.bindadapter.BindAdapterContract
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.App
 import com.univreview.Navigator
-import com.univreview.adapter.contract.MyPageAdapterContract
-import com.univreview.listener.OnItemClickListener
-import com.univreview.log.Logger
-import com.univreview.model.UpdateUser
-import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.Setting
+import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.MyPageContract
-import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -27,8 +24,8 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     private val SETTING = 3
 
     lateinit var view: MyPageContract.View
-    lateinit var adapterModel: MyPageAdapterContract.Model
-    var adapterView: MyPageAdapterContract.View? = null
+    lateinit var adapterModel: BindAdapterContract.Model
+    var adapterView: BindAdapterContract.View? = null
         set(value) {
             value?.setOnItemClickListener(this)
         }

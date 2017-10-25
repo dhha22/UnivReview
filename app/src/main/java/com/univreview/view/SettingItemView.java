@@ -8,7 +8,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dhha22.bindadapter.Item;
+import com.dhha22.bindadapter.ItemView;
 import com.univreview.R;
+import com.univreview.model.Setting;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,10 +19,13 @@ import butterknife.ButterKnife;
 /**
  * Created by DavidHa on 2017. 2. 19..
  */
-public class SettingItemView extends FrameLayout {
-    @BindView(R.id.title_txt) TextView titleTxt;
-    @BindView(R.id.preview_txt) TextView previewTxt;
-    @BindView(R.id.next_img) ImageView nextImg;
+public class SettingItemView extends ItemView {
+    @BindView(R.id.title_txt)
+    TextView titleTxt;
+    @BindView(R.id.preview_txt)
+    TextView previewTxt;
+    @BindView(R.id.next_img)
+    ImageView nextImg;
 
     public SettingItemView(Context context) {
         this(context, null);
@@ -32,9 +38,16 @@ public class SettingItemView extends FrameLayout {
     public SettingItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.setting_item, this, true);
-        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT ));
+        setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         ButterKnife.bind(this);
 
+    }
+
+    @Override
+    public void setData(Item data) {
+        super.setData(data);
+        titleTxt.setText(((Setting) data).getName());
+        previewTxt.setText(((Setting)data).getPreviewStr());
     }
 
     public void setNextImgVisibility(boolean isVisibility) {
@@ -45,11 +58,11 @@ public class SettingItemView extends FrameLayout {
         }
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         titleTxt.setText(title);
     }
 
-    public void setPreviewTxt(String preview){
+    public void setPreviewTxt(String preview) {
         previewTxt.setText(preview);
     }
 }
