@@ -2,6 +2,7 @@ package com.univreview.view.presenter
 
 import android.content.Context
 import android.view.View
+import com.dhha22.bindadapter.BindAdapterContract
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewListAdapterContract
@@ -9,10 +10,10 @@ import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.OnItemClickListener
 import com.univreview.listener.RvReportItemClickListener
 import com.univreview.log.Logger
-import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.DataModel
 import com.univreview.model.Review
 import com.univreview.model.ReviewListModel
+import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.ReviewListContract
@@ -30,8 +31,9 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
 
     lateinit var context: Context
     lateinit var view: ReviewListContract.View
-    lateinit var adapterModel: ReviewListAdapterContract.Model
-    var adapterView: ReviewListAdapterContract.View? = null
+    lateinit var adapterModel : BindAdapterContract.Model
+    lateinit var innerAdapterModel: ReviewListAdapterContract.Model
+    var innerAdapterView: ReviewListAdapterContract.View? = null
         set(value) {
             value?.setMoreItemClickListener(moreBtnItemClickListener)
             value?.setOnItemClickListener(this)
@@ -54,7 +56,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         }
 
         observable?.let {
-            if (page == DEFAULT_PAGE) adapterModel.clearItem()
+            if (page == DEFAULT_PAGE) innerAdapterModel.clearItem()
             it.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ response(page, it.data) }) { error -> errorResponse(page, error) }
@@ -67,7 +69,8 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
             Logger.v("review is not empty $page")
             view.setResult(page)
             Observable.from<Review>(rvListModel.reviews)
-                    .subscribe { adapterModel.addItem(it) }
+                    .doAfterTerminate { adapterModel.notifyData() }
+                    .subscribe { innerAdapterModel.addItem(it) }
 
         }
     }
@@ -75,7 +78,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     private fun errorResponse(page: Int, e: Throwable) {
         view.setStatus(AbsListFragment.Status.ERROR)
         if (page == DEFAULT_PAGE) {
-            adapterModel.clearItem()
+            innerAdapterModel.clearItem()
         }
         if (ErrorUtils.parseError(e) == ErrorUtils.ERROR_401) {
             view.showTicketDialog()
@@ -91,7 +94,7 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
     private val moreBtnItemClickListener = OnItemClickListener { _, position ->
         Logger.v("more btn click")
         //  본인의 review item을 클릭했을 경우
-        val review = adapterModel.getItem(position) as Review
+        val review = innerAdapterModel.getItem(position) as Review
         if (review.user?.id == App.userId) {
             view.setDialog(arrayListOf("수정하기"),
                     OnItemClickListener { _, _ -> Navigator.goUploadReviewDetail(context, review) })
@@ -103,8 +106,8 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
 
     // Review List Item
     override fun onItemClick(view: View, position: Int) {
-        Logger.v("click item: " + (adapterModel.getItem(position) as Review).updateNotificationPublisher)
-        Navigator.goReviewDetail(context, adapterModel.getItem(position) as Review)
+        Logger.v("click item: " + (innerAdapterModel.getItem(position) as Review).updateNotificationPublisher)
+        Navigator.goReviewDetail(context, innerAdapterModel.getItem(position) as Review)
     }
 
 }

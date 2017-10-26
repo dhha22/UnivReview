@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.univreview.App
+import com.dhha22.bindadapter.BindAdapter
 import com.univreview.R
 import com.univreview.adapter.ReviewListAdapter
 import com.univreview.dialog.ListDialog
@@ -14,10 +14,8 @@ import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.EndlessRecyclerViewScrollListener
 import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
-import com.univreview.model.RandomImageModel
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.enumeration.ReviewType
-import com.univreview.util.AnimationUtils
 import com.univreview.util.SimpleDividerItemDecoration
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
@@ -30,7 +28,8 @@ import kotlinx.android.synthetic.main.fragment_review_list.*
  * Created by DavidHa on 2017. 8. 7..
  */
 class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
-    lateinit var adapter: ReviewListAdapter
+    lateinit var adapter: BindAdapter
+    lateinit var innerAdapter : ReviewListAdapter
     lateinit var type: ReviewSearchType
     lateinit var name: String
     lateinit var presenter: ReviewListPresenter
@@ -54,6 +53,9 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         name = arguments.getString("name")
         val id = arguments.getLong("id")
         Logger.v("type: $type , id: $id, name: $name")
+
+        adapter = BindAdapter(context)
+
         presenter = ReviewListPresenter()
         presenter.apply {
             view = this@ReviewListFragment
@@ -79,7 +81,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         when (type) {
         // My Review
             ReviewSearchType.MY_REVIEW -> {
-                adapter = ReviewListAdapter(context, ReviewType.MY_REVIEW)
+                innerAdapter = ReviewListAdapter(context, ReviewType.MY_REVIEW)
                 appBarLayout.visibility = View.GONE
                 toolbar.setBackBtnVisibility(true)
                 toolbar.setTitleTxt(name)
@@ -87,11 +89,12 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
 
         // Subject List
             ReviewSearchType.SUBJECT -> {
-                adapter = ReviewListAdapter(context, ReviewType.READ_REVIEW)
+                innerAdapter = ReviewListAdapter(context, ReviewType.READ_REVIEW)
                 toolbar.visibility = View.GONE
                 innerToolbar.setBackBtnVisibility(true)
                 innerToolbar.setTitleTxt(name)
             }
+
         }
         setRecyclerView()
     }
@@ -102,11 +105,15 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
         recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
         recyclerView.setLayoutManager(layoutManager)
         recyclerView.setAdapter(adapter)
+
+        adapter.setInnerAdapter(innerAdapter)
         recyclerView.addItemDecoration(SimpleDividerItemDecoration(context))
         presenter.let {
             it.adapterModel = adapter
-            it.adapterView = adapter
+            it.innerAdapterModel = innerAdapter
+            it.innerAdapterView = innerAdapter
         }
+
         recyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(view, dx, dy)
@@ -115,6 +122,7 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
                 }
             }
         })
+
     }
 
     override fun getRecyclerView(): AbsRecyclerView? {

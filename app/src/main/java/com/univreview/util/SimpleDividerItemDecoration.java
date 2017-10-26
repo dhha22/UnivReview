@@ -48,7 +48,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
-            if (parent.getChildViewHolder(child) instanceof ReviewListAdapter.ViewHolder) {
+            if (parent.getChildViewHolder(child) instanceof ReviewListAdapter.ReviewHolder) {
                 outRect.bottom = App.dp12;
             }
         }

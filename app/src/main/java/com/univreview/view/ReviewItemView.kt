@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.dhha22.bindadapter.Item
+import com.dhha22.bindadapter.ItemView
 import com.univreview.R
+import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewType
 import com.univreview.model.Review
 import kotlinx.android.synthetic.main.review_item.view.*
@@ -14,19 +17,20 @@ import kotlinx.android.synthetic.main.review_item.view.*
 /**
  * Created by DavidHa on 2017. 8. 28..
  */
-class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) : FrameLayout(context, attributeSet) {
+class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) :ItemView(context, attributeSet) {
 
     private lateinit var review: Review
     private var id: Long = 0L
 
     init {
         LayoutInflater.from(context).inflate(R.layout.review_item, this, true)
-        layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
+        setFullSpan()
     }
 
-    fun setData(review: Review, type: ReviewType) {
+
+    fun setData(item: Item, type: ReviewType) {
         setMode(type)
+        val review = item as Review
         this.id = review.id
         this.review = review.apply {
             headerView.setUserData(user!!)

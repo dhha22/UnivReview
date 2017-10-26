@@ -5,16 +5,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dhha22.bindadapter.BindAdapter
 import com.univreview.App
 import com.univreview.BuildConfig
 import com.univreview.Navigator
 import com.univreview.R
-import com.univreview.adapter.SettingAdapter
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
 import com.univreview.model.Setting
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
+import com.univreview.view.SettingItemView
 import kotlinx.android.synthetic.main.fragment_setting.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -29,7 +30,7 @@ class SettingFragment : BaseFragment() {
     //private static final int NOTIFICATION = 1;
     private val LOGOUT = 1
     private val USER_DELETE = 2
-    private lateinit var adapter: SettingAdapter
+    private lateinit var adapter: BindAdapter
 
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ class SettingFragment : BaseFragment() {
             //settings = Arrays.asList(new Setting(0, "버전 정보"), new Setting(1, "알림 설정"), new Setting(2, "로그아웃"));
         }
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = SettingAdapter(context)
+        adapter = BindAdapter(context).addLayout(SettingItemView::class.java)
         recyclerView.adapter = adapter
         Observable.from(settings)
                 .map { setting ->
@@ -74,7 +75,7 @@ class SettingFragment : BaseFragment() {
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                //.subscribe({ result -> adapter.addItem(result) }, { Logger.e(it) })
+                .subscribe({ result -> adapter.addItem(result) }, { Logger.e(it) })
 
         adapter.setOnItemClickListener { _, position ->
             when (position) {

@@ -2,6 +2,7 @@ package com.univreview.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.dhha22.bindadapter.Item
 import com.univreview.log.Logger
 import rx.subjects.PublishSubject
 
@@ -24,7 +25,7 @@ data class Review(override var id: Long = 0,
                   val user: User? = null,
                   val subject: Subject? = null,
                   val professor: Professor? = null,
-                  var isLike: Boolean = false) : AbstractDataProvider(), Parcelable {
+                  var isLike: Boolean = false) : AbstractDataProvider(), Parcelable, Item {
 
     override var name: String
         get() = ""

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
+import com.dhha22.bindadapter.BindAdapter;
 import com.univreview.R;
 import com.univreview.fragment.AbsListFragment;
 import com.univreview.util.Util;

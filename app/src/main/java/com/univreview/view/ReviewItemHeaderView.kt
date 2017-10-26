@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import com.dhha22.bindadapter.ItemView
 import com.univreview.R
 import com.univreview.model.User
 import com.univreview.util.TimeUtil
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.review_item_header.view.*
 /**
  * Created by DavidHa on 2017. 9. 23..
  */
-class ReviewItemHeaderView(context: Context, attributeSet: AttributeSet? = null) : FrameLayout(context, attributeSet) {
+class ReviewItemHeaderView(context: Context, attributeSet: AttributeSet? = null) : ItemView(context, attributeSet) {
     init {
         LayoutInflater.from(context).inflate(R.layout.review_item_header, this, true)
     }
