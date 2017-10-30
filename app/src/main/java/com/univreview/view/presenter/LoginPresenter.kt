@@ -13,6 +13,7 @@ import com.univreview.App
 import com.univreview.BuildConfig
 import com.univreview.Navigator
 import com.univreview.log.Logger
+import com.univreview.model.Register
 import com.univreview.model.SignIn
 import com.univreview.model.User
 import com.univreview.network.Retro
@@ -86,28 +87,25 @@ class LoginPresenter : LoginContract {
         Retro.instance.loginService.signIn(SignIn(accessToken, provider))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate { view.dismissProgress() }
-                .subscribe({ response(it.data) },
-                        { error -> loginErrorResponse(error, User(provider, userId.toLong(), email, profileURL, accessToken)) })
+                .subscribe({ response(it.data) }, { loginErrorResponse(it, Register(provider, userId.toLong(), accessToken, profileURL, email)) })
     }
 
     private fun response(userModel: User) {
         Logger.v("response: " + userModel)
         userModel.let {
-            Observable.just(userModel)
-                    .observeOn(Schedulers.newThread())
+            Observable.just(App.setUserInfo(it))
+                    .observeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread())
                     .subscribe {
-                        App.setUid(it.uid)
-                        App.setUserToken(it.accessToken)
-                        App.setClient(it.client)
-                        App.setUniversityId(it.universityId!!)
-                        App.setUserId(it.id)
+                        view.dismissProgress()
+                        Navigator.goMain(context)
                     }
-            Navigator.goMain(context)
+
         }
     }
 
-    private fun loginErrorResponse(error: Throwable, register: User) {
+    private fun loginErrorResponse(error: Throwable, register: Register) {
+        view.dismissProgress()
         if (ErrorUtils.parseError(error) == ErrorUtils.ERROR_401) {   //신규회원
             Navigator.goRegisterEmail(context, register)
         } else {

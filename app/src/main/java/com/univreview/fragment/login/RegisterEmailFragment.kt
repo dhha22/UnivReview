@@ -10,6 +10,7 @@ import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseFragment
 import com.univreview.listener.KeyboardListener
+import com.univreview.model.Register
 import com.univreview.model.User
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
@@ -23,11 +24,11 @@ import rx.schedulers.Schedulers
  * Created by DavidHa on 2017. 9. 24..
  */
 class RegisterEmailFragment : BaseFragment() {
-    private lateinit var register: User
+    private lateinit var register: Register
 
     companion object {
         @JvmStatic
-        fun getInstance(register: User): RegisterEmailFragment {
+        fun getInstance(register: Register): RegisterEmailFragment {
             val fragment = RegisterEmailFragment()
             val bundle = Bundle()
             bundle.putParcelable("register", register)

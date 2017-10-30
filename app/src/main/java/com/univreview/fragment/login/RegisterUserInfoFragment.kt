@@ -14,7 +14,7 @@ import com.univreview.fragment.BaseFragment
 import com.univreview.listener.KeyboardListener
 import com.univreview.log.Logger
 import com.univreview.model.ActivityResultEvent
-import com.univreview.model.User
+import com.univreview.model.Register
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.ImageUtil
@@ -27,11 +27,11 @@ import rx.schedulers.Schedulers
  * Created by DavidHa on 2017. 8. 5..
  */
 class RegisterUserInfoFragment : BaseFragment() {
-    private lateinit var register: User
+    private lateinit var register: Register
 
     companion object {
         @JvmStatic
-        fun newInstance(register: User): RegisterUserInfoFragment {
+        fun newInstance(register: Register): RegisterUserInfoFragment {
             val fragment = RegisterUserInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable("register", register)
@@ -60,7 +60,7 @@ class RegisterUserInfoFragment : BaseFragment() {
         init(register)
     }
 
-    private fun init(register: User) {
+    private fun init(register: Register) {
         Util.setProfileImage(register.profileImageUrl, profileImage)
         inputName.addTextChangedListener(textWatcher)
         inputName.setOnKeyListener(KeyboardListener(context, inputName))

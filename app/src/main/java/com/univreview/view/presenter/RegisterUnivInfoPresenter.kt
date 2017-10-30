@@ -5,8 +5,10 @@ import android.net.Uri
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.log.Logger
+import com.univreview.model.Register
 import com.univreview.model.UpdateUser
 import com.univreview.model.User
+import com.univreview.model.UserModel
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.ImageUtil
@@ -21,7 +23,7 @@ import rx.schedulers.Schedulers
 class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
     lateinit var view: RegisterUnivInfoContract.View
     lateinit var context: Context
-    lateinit var register: User
+    lateinit var register: Register
 
 
     // 회원 등록 과정
@@ -34,21 +36,15 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
 
     private fun response(user: User) {
         Logger.v("response: " + user)
-        Observable.just(user)
-                .observeOn(Schedulers.newThread())
+        Observable.just(App.setUserInfo(user))
+                .observeOn(Schedulers.io())
                 .subscribe {
-                    App.setUid(it.uid)
-                    App.setUserToken(it.accessToken)
-                    App.setClient(it.client)
-                    App.setUniversityId(it.universityId!!)
-                    App.setUserId(it.id)
+                    if (register.profileImageUri != null) {  // 회원 프로필 사진을 앨범에서 선택했을 경우
+                        callImageFileUploadApi(register.profileImageUri!!)
+                    } else {  // profile uri 가 없는 경우 main 으로 이동
+                        goMain()
+                    }
                 }
-
-        if (register.profileImageUri != null) {  // 회원 프로필 사진을 앨범에서 선택했을 경우
-            callImageFileUploadApi(register.profileImageUri!!)
-        } else {  // profile uri 가 없는 경우 main 으로 이동
-            goMain()
-        }
     }
 
     private fun errorResponse(e: Throwable) {

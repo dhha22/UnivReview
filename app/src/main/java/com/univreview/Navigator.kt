@@ -20,6 +20,7 @@ import com.univreview.fragment.review.ReviewListFragment
 import com.univreview.fragment.setting.SettingFragment
 import com.univreview.fragment.upload.UploadReviewDetailFragment
 import com.univreview.fragment.upload.UploadReviewFragment
+import com.univreview.model.Register
 import com.univreview.model.Review
 import com.univreview.model.User
 import com.univreview.model.enumeration.ReviewSearchType
@@ -50,20 +51,21 @@ class Navigator {
         }
 
         //register
-        fun goRegisterEmail(context: Context, register: User) {
+
+        fun goRegisterEmail(context: Context, register: Register) {
             val intent = Intent(context, NavigationActivity::class.java)
             NavigationActivity.setFragment(RegisterEmailFragment.getInstance(register))
             context.startActivity(intent)
         }
 
 
-        fun goRegisterUserInfo(context: Context, register: User) {
+        fun goRegisterUserInfo(context: Context, register: Register) {
             val intent = Intent(context, NavigationActivity::class.java)
             NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register))
             context.startActivity(intent)
         }
 
-        fun goRegisterUnivInfo(context: Context, register: User) {
+        fun goRegisterUnivInfo(context: Context, register: Register) {
             val intent = Intent(context, NavigationActivity::class.java)
             NavigationActivity.setFragment(RegisterUnivInfoFragment.getInstance(register))
             context.startActivity(intent)

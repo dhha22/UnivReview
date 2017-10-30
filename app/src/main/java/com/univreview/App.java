@@ -13,6 +13,7 @@ import com.kakao.auth.KakaoSDK;
 import com.squareup.picasso.Picasso;
 import com.univreview.adapter.KakaoSDKAdapter;
 import com.univreview.log.Logger;
+import com.univreview.model.User;
 import com.univreview.util.SharedPreferencesActivity;
 import com.univreview.util.Util;
 
@@ -90,32 +91,49 @@ public class App extends MultiDexApplication {
         return instance;
     }
 
-    public static void setUserToken(String token){
+    public static void setUserInfo(User user) {
+        setUserToken(user.getAccessToken());
+        setUid(user.getUid());
+        setUserId(user.getId());
+        setClient(user.getClient());
+        setUniversityId(user.getUniversityId());
+    }
+
+    public static void userLogout() {
+        setUserId(0);
+        setUid(0);
+        setFCMToken(null);
+        setUserToken(null);
+        setUniversityId(0);
+        setClient(null);
+    }
+
+    private static void setUserToken(String token){
         Logger.v("set user token: " + token);
         App.userToken = token;
         pref.savePreferences("userToken", token);
     }
 
-    public static void setUid(long uid) {
+    private static void setUid(long uid) {
         Logger.v("set uid: " + uid);
         App.uid = uid;
         pref.savePreferences("uid", uid);
     }
 
-    public static void setUserId(long userId){
+    private static void setUserId(long userId){
         Logger.v("set user id: " + userId);
         App.userId = userId;
         pref.savePreferences("userId", userId);
     }
 
 
-    public static void setClient(String client){
+    private static void setClient(String client){
         Logger.v("set client: " + client);
         App.client = client;
         pref.savePreferences("client", client);
     }
 
-    public static void setUniversityId(long universityId) {
+    private static void setUniversityId(long universityId) {
         Logger.v("set universityId id: " + universityId);
         App.universityId =  universityId;
         pref.savePreferences("universityId", App.universityId);
@@ -132,15 +150,6 @@ public class App extends MultiDexApplication {
         Logger.v("uid: " + uid);
         Logger.v("university id: " + universityId);
         Logger.v("client: " + client);
-    }
-
-    public static void userLogout() {
-        setUserId(0);
-        setUid(0);
-        setFCMToken(null);
-        setUserToken(null);
-        setUniversityId(0);
-        setClient(null);
     }
 
 

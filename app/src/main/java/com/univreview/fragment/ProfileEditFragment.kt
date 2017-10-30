@@ -74,7 +74,7 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
             }
         }
         inputName.addTextChangedListener(textWatcher)
-        Util.setProfileImage(user.profileImageUrl, profileImage)
+        Util.setProfileImage(user.profileImageUrl?.url, profileImage)
         inputName.setText(user.name)
         inputName.setSelection(inputName.text.length)
     }

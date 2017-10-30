@@ -19,7 +19,7 @@ interface LoginService {
 
     // 회원가입
     @POST("auth")
-    fun signUp(@Body body: User): Observable<UserModel>
+    fun signUp(@Body body: Register): Observable<UserModel>
 
     // 회원탈퇴
     @DELETE("auth")

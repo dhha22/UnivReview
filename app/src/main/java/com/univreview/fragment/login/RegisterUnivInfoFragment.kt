@@ -32,7 +32,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         private val NEXT = 2
 
         @JvmStatic
-        fun getInstance(register: User): RegisterUnivInfoFragment {
+        fun getInstance(register: Register): RegisterUnivInfoFragment {
             val fragment = RegisterUnivInfoFragment()
             val bundle = Bundle()
             bundle.putParcelable("register", register)

@@ -37,7 +37,7 @@ class MainActivity : BaseActivity() {
         val adapter = MainAdapter(supportFragmentManager)
         viewPager.adapter = adapter
         viewPager.offscreenPageLimit = adapter.count
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
             }
 
@@ -65,11 +65,11 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun getCurPagerPosition(position : Int = viewPager.currentItem): Int {
-        if (position == 0) {
-            return position
+    fun getCurPagerPosition(position: Int = viewPager.currentItem): Int {
+        return if (position == 0) {
+            position
         } else {
-            return position + 1
+            position + 1
         }
     }
 
