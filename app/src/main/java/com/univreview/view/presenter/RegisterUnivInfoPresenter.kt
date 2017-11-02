@@ -1,18 +1,16 @@
 package com.univreview.view.presenter
 
 import android.content.Context
-import android.net.Uri
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.log.Logger
 import com.univreview.model.Register
-import com.univreview.model.UpdateUser
 import com.univreview.model.User
-import com.univreview.model.UserModel
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.util.ImageUtil
 import com.univreview.view.contract.RegisterUnivInfoContract
+import okhttp3.MultipartBody
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -40,7 +38,8 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
                 .observeOn(Schedulers.io())
                 .subscribe {
                     if (register.profileImageUri != null) {  // 회원 프로필 사진을 앨범에서 선택했을 경우
-                        callImageFileUploadApi(register.profileImageUri!!)
+                        Retro.instance.makeMultipartBody(ImageUtil.getPath(register.profileImageUri))
+                                .subscribe({ uploadProfileImage(it) }, { Logger.e(it) })
                     } else {  // profile uri 가 없는 경우 main 으로 이동
                         goMain()
                     }
@@ -52,15 +51,9 @@ class RegisterUnivInfoPresenter : RegisterUnivInfoContract {
         ErrorUtils.parseError(e)
     }
 
-    private fun callImageFileUploadApi(uploadUri: Uri) {
-        val imagePath = ImageUtil.getPath(uploadUri)
-        Retro.instance.fileService(imagePath, "profile")
-                .subscribe({ callUserProfileUpdateApi(it.data.objKey) }) { goMain() }
-    }
-
-    private fun callUserProfileUpdateApi(profileUrl: String) {
-        Retro.instance.userService.updateUserInfo(App.setHeader(), UpdateUser(profileUrl))
-                .doAfterTerminate({ goMain() })
+    private fun uploadProfileImage(body: MultipartBody.Part) {
+        Retro.instance.uploadService.postProfileImage(body)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ Logger.v("profile update: $it") }, { ErrorUtils.parseError(it) })
     }
 

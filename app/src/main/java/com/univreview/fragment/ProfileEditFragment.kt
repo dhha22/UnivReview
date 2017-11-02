@@ -45,7 +45,6 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
         presenter = ProfileEditPresenter().apply {
             view = this@ProfileEditFragment
             context = getContext()
-            userName = user.name!!
         }
     }
 
@@ -69,12 +68,11 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
         saveBtn.setOnClickListener {
             if (formVerification() && saveBtn.isSelected) {
                 Util.hideKeyboard(context, inputName)
-                presenter.userName = inputName.text.toString().trim()
-                presenter.saveUserInfo()
+                presenter.saveUserInfo(inputName.text.toString().trim())
             }
         }
         inputName.addTextChangedListener(textWatcher)
-        Util.setProfileImage(user.profileImageUrl?.url, profileImage)
+        Util.setProfileImage(user.profileImageUrl, profileImage)
         inputName.setText(user.name)
         inputName.setSelection(inputName.text.length)
     }

@@ -84,7 +84,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
         nameTxt.text = data.name
         universityTxt.text = data.universityName
         majorTxt.text = data.majorName
-        Util.setProfileImage(data.profileImageUrl?.url, profileImage)
+        Util.setProfileImage(data.profileImageUrl, profileImage)
         adapter.clearItem()
         Observable.from(settings)
                 .map {

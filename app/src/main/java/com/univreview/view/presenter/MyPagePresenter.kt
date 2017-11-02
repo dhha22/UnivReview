@@ -39,7 +39,7 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
                 val index = name.indexOf("point") - 1
                 Navigator.goPointList(context, name.substring(0, index).toInt())
             }
-            USER_IDENTIFY -> Navigator.goRegisterUserIdentity(context)
+            USER_IDENTIFY -> Navigator.goRegisterStudentId(context)
             SETTING -> Navigator.goSetting(context)
         }
     }

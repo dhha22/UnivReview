@@ -43,7 +43,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
     // review single api 호출
     override fun loadReviewSingle() {
-        Retro.instance.reviewService().callReviewSingle(App.setHeader(), review.id)
+        Retro.instance.reviewService.callReviewSingle(App.setHeader(), review.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -66,7 +66,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
 
     // 가장 최신에 달린 댓글이 list 하단에 존재
     override fun loadComments(page: Int) {
-        Retro.instance.reviewService().callReviewComments(App.setHeader(), review.id, page)
+        Retro.instance.reviewService.callReviewComments(App.setHeader(), review.id, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onSuccessComment(page, it) }, { onErrorComment(page, it) })
@@ -94,7 +94,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         if (message != null) {
             view.showProgress()
             (view.getRecyclerView() as UnivReviewRecyclerView).scrollToTop()
-            Retro.instance.reviewService().postReviewComment(App.setHeader(), review.id, RvComment(message))
+            Retro.instance.reviewService.postReviewComment(App.setHeader(), review.id, RvComment(message))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doAfterTerminate { view.dismissProgress() }
@@ -115,7 +115,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         // 본인 댓글일 경우
         if (App.userId == (comment.userId)) {
             this.view.showCommentDeleteDialog(DialogInterface.OnClickListener { _, _ ->
-                Retro.instance.reviewService().deleteReviewComment(App.setHeader(), review.id, comment.id)
+                Retro.instance.reviewService.deleteReviewComment(App.setHeader(), review.id, comment.id)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({

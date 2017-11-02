@@ -68,13 +68,13 @@ public class CheckUserPhotoFragment extends BaseFragment {
 
     private void upload() {
         Logger.v("upload path: " + path);
-        Retro.instance.fileService(path, "studentCard")
+       /* Retro.instance.fileService(path, "studentCard")
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate(() -> {
                     Navigator.goUserAuthCompleted(getContext());
                     getActivity().finish();
                 })
-                .subscribe(result -> Logger.v("result: " + result), error -> Logger.e(error));
+                .subscribe(result -> Logger.v("result: " + result), error -> Logger.e(error));*/
     }
 
 

@@ -5,5 +5,5 @@ package com.univreview.view.contract
  */
 interface ProfileEditContract {
     interface View : BaseView
-    fun saveUserInfo()
+    fun saveUserInfo(userName:String?)
 }

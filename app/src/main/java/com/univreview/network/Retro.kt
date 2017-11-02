@@ -3,8 +3,6 @@ package com.univreview.network
 import com.univreview.App
 import com.univreview.BuildConfig
 import com.univreview.log.Logger
-import com.univreview.model.FileUploadModel
-import com.univreview.model.DataModel
 import com.univreview.util.ImageUtil
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -36,8 +34,8 @@ enum class Retro {
     var userService: UserService
     var loginService: LoginService
     var searchService: SearchService
-    private var reviewService: ReviewService
-    private var fileService: FileService
+    var reviewService: ReviewService
+    var uploadService: UploadService
 
     init {
         Logger.v("init retro")
@@ -62,10 +60,10 @@ enum class Retro {
         loginService = retrofit.create(LoginService::class.java)
         searchService = retrofit.create(SearchService::class.java)
         reviewService = retrofit.create(ReviewService::class.java)
-        fileService = retrofit.create(FileService::class.java)
+        uploadService = retrofit.create(UploadService::class.java)
     }
 
-    fun createOkHttpClient(): OkHttpClient {
+    private fun createOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         builder.readTimeout(20, TimeUnit.SECONDS)
         builder.writeTimeout(20, TimeUnit.SECONDS)
@@ -83,20 +81,13 @@ enum class Retro {
         return builder.build()
     }
 
-    fun reviewService(): ReviewService {
-        return reviewService
-    }
-
-    fun fileService(imagePath: String, type: String): Observable<DataModel<FileUploadModel>> {
+    fun makeMultipartBody(imagePath: String): Observable<MultipartBody.Part> {
         return Observable.just(ImageUtil.compressImage(imagePath))
-                .flatMap {
+                .map {
                     val file = File(ImageUtil.IMAGE_PATH + "tmp.jpg")
                     val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                    val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                    val location = RequestBody.create(okhttp3.MultipartBody.FORM, "/$type/")
-                    fileService.postFile(body, location)
-                }
-                .subscribeOn(Schedulers.io())
+                    MultipartBody.Part.createFormData("file", file.name, requestFile)
+                }.subscribeOn(Schedulers.io())
     }
 
 }

@@ -7,7 +7,10 @@ import com.univreview.log.Logger
 import com.univreview.model.UpdateUser
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
+import com.univreview.util.ImageUtil
 import com.univreview.view.contract.ProfileEditContract
+import okhttp3.MultipartBody
+import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 /**
@@ -16,23 +19,30 @@ import rx.schedulers.Schedulers
 class ProfileEditPresenter : ProfileEditContract {
     lateinit var view: ProfileEditContract.View
     var imagePath: String? = null
-    lateinit var userName: String
     lateinit var context: Context
 
 
-    override fun saveUserInfo() {
-        if (imagePath != null) {    // 프로필 사진이 바뀌었을 경우
-            Retro.instance.fileService(imagePath!!, "profile")  // 이미지 파일 업로드
-                    .subscribeOn(Schedulers.io())
-                    .subscribe({ updateUserInfo(it.data.objKey) }, { ErrorUtils.parseError(it) })
-        } else {
-            updateUserInfo()
+    override fun saveUserInfo(userName: String?) {
+        if (imagePath != null) {
+            Retro.instance.makeMultipartBody(imagePath!!)
+                    .subscribe({ uploadProfileImage(it) }, { Logger.e(it) })
+        }
+
+        if(userName != null){
+            updateUserInfo(userName)
         }
     }
 
-    // 사용자 정보 업데이트
-    private fun updateUserInfo(imageUrl: String? = null) {
-        Retro.instance.userService.updateUserInfo(App.setHeader(), UpdateUser(userName, imageUrl))
+    // 프로필 사진 업데이트
+    private fun uploadProfileImage(body: MultipartBody.Part) {
+        Retro.instance.uploadService.postProfileImage(body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ Logger.v("profile update: $it") }, { ErrorUtils.parseError(it) })
+    }
+
+    // 사용자 정보 업데이트 (사용자 이름)
+    private fun updateUserInfo(userName : String) {
+        Retro.instance.userService.updateUserInfo(App.setHeader(), UpdateUser(userName))
                 .subscribeOn(Schedulers.io())
                 .doAfterTerminate { (context as Activity).finish() }
                 .subscribe({ Logger.v("update user: $it") }, { ErrorUtils.parseError(it) })

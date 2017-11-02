@@ -11,14 +11,15 @@ data class User(var uid: Long, // sns id
                 var id: Long, // user id
                 var name: String?,
                 var email: String?,
-                var profileImageUrl: Image?,
+                var profileImageUrl: String?,
+                var profileImageUrlThumb: String?,
                 var accessToken: String,
-                var client: String? = null,
-                var universityId: Long? = null,
-                var majorId: Long? = null,
+                var client: String?,
+                var universityId: Long?,
+                var majorId: Long?,
                 val authenticated: Boolean = false,
-                val universityName: String? = null,
-                val majorName: String? = null,
+                val universityName: String,
+                val majorName: String,
                 val point: Int = 0,
                 val reviewCount: Int = 0) : Parcelable {
     constructor(source: Parcel) : this(
@@ -26,7 +27,8 @@ data class User(var uid: Long, // sns id
             source.readLong(),
             source.readString(),
             source.readString(),
-            source.readParcelable<Image>(Image::class.java.classLoader),
+            source.readString(),
+            source.readString(),
             source.readString(),
             source.readString(),
             source.readValue(Long::class.java.classLoader) as Long?,
@@ -45,7 +47,8 @@ data class User(var uid: Long, // sns id
         writeLong(id)
         writeString(name)
         writeString(email)
-        writeParcelable(profileImageUrl, 0)
+        writeString(profileImageUrl)
+        writeString(profileImageUrlThumb)
         writeString(accessToken)
         writeString(client)
         writeValue(universityId)

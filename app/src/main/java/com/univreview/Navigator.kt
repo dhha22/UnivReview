@@ -54,33 +54,33 @@ class Navigator {
 
         fun goRegisterEmail(context: Context, register: Register) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(RegisterEmailFragment.getInstance(register))
+            NavigationActivity.fragment = RegisterEmailFragment.getInstance(register)
             context.startActivity(intent)
         }
 
 
         fun goRegisterUserInfo(context: Context, register: Register) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(RegisterUserInfoFragment.newInstance(register))
+            NavigationActivity.fragment = RegisterUserInfoFragment.newInstance(register)
             context.startActivity(intent)
         }
 
         fun goRegisterUnivInfo(context: Context, register: Register) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(RegisterUnivInfoFragment.getInstance(register))
+            NavigationActivity.fragment = RegisterUnivInfoFragment.getInstance(register)
             context.startActivity(intent)
         }
 
-        fun goRegisterUserIdentity(context: Context) {
+        fun goRegisterStudentId(context: Context) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(RegisterUserIdentityFragment.newInstance())
+            NavigationActivity.fragment = RegisterStudentIdFragment.getInstance()
             context.startActivity(intent)
         }
 
         @JvmStatic
         fun goUserAuthCompleted(context: Context) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(UserAuthCompletedFragment.newInstance())
+            NavigationActivity.fragment = UserAuthCompletedFragment.getInstance()
             context.startActivity(intent)
         }
 
@@ -113,14 +113,14 @@ class Navigator {
 
         fun goUploadReview(context: Context) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(UploadReviewFragment.getInstance())
+            NavigationActivity.fragment = UploadReviewFragment.getInstance()
             context.startActivity(intent)
         }
 
         @JvmStatic
         fun goUploadReviewDetail(context: Context, review: Review, isFirst: Boolean = false) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(UploadReviewDetailFragment.getInstance(review, isFirst))
+            NavigationActivity.fragment = UploadReviewDetailFragment.getInstance(review, isFirst)
             context.startActivity(intent)
         }
 
@@ -137,13 +137,13 @@ class Navigator {
         //review
         fun goReviewList(context: Context, type: ReviewSearchType, id: Long, name: String) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(ReviewListFragment.getInstance(type, id, name))
+            NavigationActivity.fragment = ReviewListFragment.getInstance(type, id, name)
             context.startActivity(intent)
         }
 
         fun goReviewDetail(context: Context, data: Review) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(ReviewDetailFragment.getInstance(data))
+            NavigationActivity.fragment = ReviewDetailFragment.getInstance(data)
             context.startActivity(intent)
         }
 
@@ -152,14 +152,14 @@ class Navigator {
 
         fun goSearch(context: Context, type: ReviewSearchType) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(SearchFragment.getInstance(type, 0))
+            NavigationActivity.fragment = SearchFragment.getInstance(type, 0)
             (context as Activity).startActivityForResult(intent, SEARCH)
         }
 
 
         fun goSearch(context: Context, type: ReviewSearchType, id: Long?) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(SearchFragment.getInstance(type, id!!))
+            NavigationActivity.fragment = SearchFragment.getInstance(type, id!!)
             (context as Activity).startActivityForResult(intent, SEARCH)
         }
 
@@ -169,26 +169,26 @@ class Navigator {
         @JvmStatic
         fun goCheckUserPhoto(context: Context, type: String, path: String) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(CheckUserPhotoFragment.newInstance(type, path))
+            NavigationActivity.fragment = CheckUserPhotoFragment.newInstance(type, path)
             context.startActivity(intent)
         }
 
         //mypage
         fun goProfileEdit(context: Context, user: User) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(ProfileEditFragment.getInstance(user))
+            NavigationActivity.fragment = ProfileEditFragment.getInstance(user)
             context.startActivity(intent)
         }
 
         fun goPointList(context: Context, point: Int=0) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(PointListFragment.getInstance(point))
+            NavigationActivity.fragment = PointListFragment.getInstance(point)
             context.startActivity(intent)
         }
 
         fun goSetting(context: Context) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(SettingFragment.getInstance())
+            NavigationActivity.fragment = SettingFragment.getInstance()
             context.startActivity(intent)
         }
 
@@ -210,7 +210,7 @@ class Navigator {
 
         fun goTest(context: Context) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.setFragment(TestFragment.getInstance())
+            NavigationActivity.fragment = TestFragment.getInstance()
             context.startActivity(intent)
         }
 
