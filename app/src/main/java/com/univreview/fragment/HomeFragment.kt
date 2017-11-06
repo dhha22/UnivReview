@@ -5,15 +5,16 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dhha22.bindadapter.BindAdapter
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
-import com.univreview.adapter.RecentRvAdapter
 import com.univreview.log.Logger
-import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.Review
+import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
+import com.univreview.view.RecentReviewItemView
 import kotlinx.android.synthetic.main.new_home_fragment.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -23,8 +24,8 @@ import rx.schedulers.Schedulers
  * Created by DavidHa on 2017. 9. 15..
  */
 class HomeFragment : BaseFragment() {
-    private lateinit var cultureAdapter: RecentRvAdapter
-    private lateinit var majorAdapter: RecentRvAdapter
+    private lateinit var cultureAdapter: BindAdapter
+    private lateinit var majorAdapter: BindAdapter
 
     companion object {
         @JvmStatic
@@ -52,8 +53,8 @@ class HomeFragment : BaseFragment() {
         cultureLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         val majorLayoutManager = LinearLayoutManager(context)
         majorLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        cultureAdapter = RecentRvAdapter(context)
-        majorAdapter = RecentRvAdapter(context)
+        cultureAdapter = BindAdapter(context).addLayout(RecentReviewItemView::class.java)
+        majorAdapter = BindAdapter(context).addLayout(RecentReviewItemView::class.java)
         recentCultureRecyclerView.layoutManager = cultureLayoutManager
         recentMajorRecyclerView.layoutManager = majorLayoutManager
         recentCultureRecyclerView.adapter = cultureAdapter
@@ -71,8 +72,10 @@ class HomeFragment : BaseFragment() {
 
     private fun cultureResponse(cultures: List<Review>, majors: List<Review>) {
         Observable.from(cultures)
+                .doAfterTerminate { cultureAdapter.notifyData() }
                 .subscribe({ result -> cultureAdapter.addItem(result) }, { ErrorUtils.parseError(it) })
         Observable.from(majors)
+                .doAfterTerminate { majorAdapter.notifyData() }
                 .subscribe({ result -> majorAdapter.addItem(result) }, { ErrorUtils.parseError(it) })
     }
 }
