@@ -3,6 +3,7 @@ package com.univreview.model
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import com.dhha22.bindadapter.Item
 
 /**
  * Created by DavidHa on 2017. 8. 19..
@@ -21,7 +22,7 @@ data class User(var uid: Long, // sns id
                 val universityName: String,
                 val majorName: String,
                 val point: Int = 0,
-                val reviewCount: Int = 0) : Parcelable {
+                val reviewCount: Int = 0) : Parcelable, Item {
     constructor(source: Parcel) : this(
             source.readLong(),
             source.readLong(),

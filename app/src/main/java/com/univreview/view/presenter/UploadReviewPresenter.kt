@@ -30,7 +30,7 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
         Logger.v("post review: " + review)
         Logger.v("course id: " + review.courseId)
         Logger.v("subj id: " + review.subjectId)
-        Retro.instance.reviewService.callPostReview(App.setHeader(), review)
+        Retro.instance.reviewService.callPostReview(App.getHeader(), review)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { view.dismissProgress() }
@@ -38,7 +38,7 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
     }
 
     override fun checkReviewExist() {
-        Retro.instance.reviewService.callCheckReviewForCourseId(App.setHeader(), review.courseId)
+        Retro.instance.reviewService.callCheckReviewForCourseId(App.getHeader(), review.courseId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

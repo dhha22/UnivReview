@@ -98,7 +98,7 @@ class UploadReviewDetailFragment : BaseWriteFragment() {
 
     private fun callPutReviewDetail(reviewId: Long, reviewDetail: ReviewDetail) {
         Logger.v("review id: " + reviewId)
-        Retro.instance.reviewService.callPutReview(App.setHeader(), reviewId, reviewDetail)
+        Retro.instance.reviewService.callPutReview(App.getHeader(), reviewId, reviewDetail)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { progressDialog.dismiss() }

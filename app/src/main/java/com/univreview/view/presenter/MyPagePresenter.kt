@@ -45,7 +45,7 @@ class MyPagePresenter : MyPageContract, OnItemClickListener {
     }
 
     override fun callUserProfile() {
-        Retro.instance.userService.callUserProfile(App.setHeader())
+        Retro.instance.userService.callUserProfile(App.getHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ view.setUserData(it.data) }, { ErrorUtils.parseError(it) })

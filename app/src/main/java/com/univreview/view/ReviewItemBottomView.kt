@@ -44,7 +44,7 @@ class ReviewItemBottomView(context: Context, attributeSet: AttributeSet? = null)
     private fun callReviewLike() {
         setLikeState(likeImg.isSelected)
         if (review.id != 0L) {
-            Retro.instance.reviewService.callReviewLike(App.setHeader(), review.id)
+            Retro.instance.reviewService.callReviewLike(App.getHeader(), review.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

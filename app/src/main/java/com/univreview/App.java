@@ -165,7 +165,7 @@ public class App extends MultiDexApplication {
     }
 
 
-    public static Map<String, String> setHeader(){
+    public static Map<String, String> getHeader(){
         Map<String, String> map = new HashMap<>();
         map.put("uid", String.valueOf(App.uid));
         map.put("client", App.client);

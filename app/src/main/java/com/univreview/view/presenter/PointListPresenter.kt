@@ -3,7 +3,6 @@ package com.univreview.view.presenter
 import android.content.Context
 import com.dhha22.bindadapter.BindAdapterContract
 import com.univreview.App
-import com.univreview.adapter.contract.PointAdapterContract
 import com.univreview.fragment.AbsListFragment
 import com.univreview.log.Logger
 import com.univreview.model.RvPoint
@@ -26,7 +25,7 @@ class PointListPresenter : PointListContract {
 
 
     override fun callPointHistories(page: Int) {
-        Retro.instance.userService.callPointHistories(App.setHeader())
+        Retro.instance.userService.callPointHistories(App.getHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ pointResponse(it.data.point, it.data.pointHistories, page) }, {
@@ -46,7 +45,7 @@ class PointListPresenter : PointListContract {
     }
 
     override fun callReviewTicket() {
-        Retro.instance.userService.callTicket(App.setHeader())
+        Retro.instance.userService.callTicket(App.getHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -55,7 +54,7 @@ class PointListPresenter : PointListContract {
     }
 
     override fun buyReviewTicket() {
-        Retro.instance.userService.buyReviewTicket(App.setHeader())
+        Retro.instance.userService.buyReviewTicket(App.getHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

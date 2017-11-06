@@ -47,12 +47,12 @@ class ReviewListPresenter : ReviewListContract, OnItemClickListener {
         var observable: Observable<DataModel<ReviewListModel>>? = null
 
         when (type) {
-            ReviewSearchType.MY_REVIEW -> observable = Retro.instance.reviewService.callMyReview(App.setHeader(), page)
-            ReviewSearchType.SUBJECT -> observable = Retro.instance.reviewService.callReviewListBySubject(App.setHeader(), sbjId, page)
+            ReviewSearchType.MY_REVIEW -> observable = Retro.instance.reviewService.callMyReview(App.getHeader(), page)
+            ReviewSearchType.SUBJECT -> observable = Retro.instance.reviewService.callReviewListBySubject(App.getHeader(), sbjId, page)
         }
 
         if (sbjId != 0L && profId != 0L) {
-            observable = Retro.instance.reviewService.callReviewListBySubjAndProf(App.setHeader(), sbjId, profId, page)
+            observable = Retro.instance.reviewService.callReviewListBySubjAndProf(App.getHeader(), sbjId, profId, page)
         }
 
         observable?.let {

@@ -3,6 +3,7 @@ package com.univreview.network
 import com.univreview.model.*
 import retrofit2.http.*
 import rx.Observable
+import rx.Single
 
 /**
  * Created by DavidHa on 2017. 9. 24..
@@ -11,10 +12,10 @@ interface UserService {
 
     // user get profile image
     @GET(Retro.VERSION + "users/profile")
-    fun callUserProfile(@HeaderMap headers: Map<String, String>): Observable<DataModel<User>>
+    fun callUserProfile(@HeaderMap headers: Map<String, String>): Single<DataModel<User>>
 
     @PUT("auth")
-    fun updateUserInfo(@HeaderMap headers: Map<String, String>, @Body user: UpdateUser): Observable<DataModel<User>>
+    fun updateUserInfo(@HeaderMap headers: Map<String, String>, @Body user: UpdateUser): Single<DataModel<User>>
 
     // user review point
     @GET(Retro.VERSION + "point_histories")

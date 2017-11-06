@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun callRecentReviewApi() {
-        Retro.instance.reviewService.callRecentReview(App.setHeader())
+        Retro.instance.reviewService.callRecentReview(App.getHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

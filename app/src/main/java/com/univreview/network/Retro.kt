@@ -3,6 +3,7 @@ package com.univreview.network
 import com.univreview.App
 import com.univreview.BuildConfig
 import com.univreview.log.Logger
+import com.univreview.model.enumeration.ImageUploadType
 import com.univreview.util.ImageUtil
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -13,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import rx.Observable
+import rx.Single
 import rx.schedulers.Schedulers
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -81,12 +83,12 @@ enum class Retro {
         return builder.build()
     }
 
-    fun makeMultipartBody(imagePath: String): Observable<MultipartBody.Part> {
-        return Observable.just(ImageUtil.compressImage(imagePath))
+    fun makeMultipartBody(imagePath: String, type: ImageUploadType): Single<MultipartBody.Part> {
+        return Single.just(ImageUtil.compressImage(imagePath))
                 .map {
                     val file = File(ImageUtil.IMAGE_PATH + "tmp.jpg")
                     val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                    MultipartBody.Part.createFormData("file", file.name, requestFile)
+                    MultipartBody.Part.createFormData(type.bodyName, file.name, requestFile)
                 }.subscribeOn(Schedulers.io())
     }
 

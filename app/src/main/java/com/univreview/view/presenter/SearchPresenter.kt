@@ -67,12 +67,12 @@ class SearchPresenter : SearchContract, OnItemClickListener {
 
     // 과목 검색 (리뷰 검색)
     private fun searchSubject(name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callSubjects(App.setHeader(), id, name, page), page)
+        setObservable(Retro.instance.searchService.callSubjects(App.getHeader(), id, name, page), page)
     }
 
     // 과목에 속한 교수 검색 (리뷰 쓰기)
     private fun searchProfFromSubj(name: String, page: Int) {
-        setObservable(Retro.instance.searchService.callCourse(App.setHeader(), id, page), page)
+        setObservable(Retro.instance.searchService.callCourse(App.getHeader(), id, page), page)
     }
 
 

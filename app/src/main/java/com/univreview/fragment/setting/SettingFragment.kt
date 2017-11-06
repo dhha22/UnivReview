@@ -88,7 +88,7 @@ class SettingFragment : BaseFragment() {
     }
 
     private fun deleteUser() {
-        Retro.instance.loginService.deleteAuth(App.setHeader())
+        Retro.instance.loginService.deleteAuth(App.getHeader())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ Navigator.goLogin(context) }, { ErrorUtils.parseError(it) })
