@@ -1,6 +1,7 @@
 package com.univreview.view.presenter
 
 import android.content.Context
+import com.dhha22.bindadapter.BindAdapterContract
 import com.univreview.App
 import com.univreview.adapter.contract.PointAdapterContract
 import com.univreview.fragment.AbsListFragment
@@ -21,7 +22,7 @@ class PointListPresenter : PointListContract {
     private val DEFAULT_PAGE = 1
     lateinit var view: PointListContract.View
     lateinit var context: Context
-    lateinit var adapterModel: PointAdapterContract.Model
+    lateinit var adapterModel: BindAdapterContract.Model
 
 
     override fun callPointHistories(page: Int) {

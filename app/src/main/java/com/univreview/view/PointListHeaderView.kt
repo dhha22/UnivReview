@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dhha22.bindadapter.ItemView
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.model.Ticket
@@ -15,10 +16,10 @@ import java.lang.StringBuilder
 /**
  * Created by DavidHa on 2017. 9. 1..
  */
-class PointListHeaderView(context: Context) : CardView(context) {
+class PointListHeaderView(context: Context) : ItemView(context) {
     init {
-        LayoutInflater.from(context).inflate(R.layout.point_list_header, this, true)
-        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        setContentView(R.layout.point_list_header)
+        setFullSpan()
         goReviewWrite.setOnClickListener { Navigator.goUploadReview(context) }
     }
 

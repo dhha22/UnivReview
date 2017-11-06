@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.dhha22.bindadapter.BindAdapter
 import com.univreview.R
-import com.univreview.adapter.PointAdapter
 import com.univreview.model.Ticket
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
+import com.univreview.view.PointItemView
 import com.univreview.view.PointListHeaderView
 import com.univreview.view.UnivReviewRecyclerView
 import com.univreview.view.contract.PointListContract
@@ -23,7 +24,7 @@ import com.univreview.view.presenter.PointListPresenter
 class PointListFragment : AbsListFragment(), PointListContract.View {
     private lateinit var recyclerView: UnivReviewRecyclerView
     private lateinit var headerView: PointListHeaderView
-    private lateinit var adapter: PointAdapter
+    private lateinit var adapter: BindAdapter
     private lateinit var presenter: PointListPresenter
 
     companion object {
@@ -40,14 +41,19 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val point = arguments.getInt("point")
-        headerView = PointListHeaderView(context).apply {
+        adapter = BindAdapter(context)
+                .addHeaderView(PointListHeaderView::class.java)
+                .addLayout(PointItemView::class.java)
+        headerView = (adapter.getHeaderView(0) as PointListHeaderView).apply {
             setPoint(point)
             setBuyTicketListener(buyTicketListener)
         }
+
         presenter = PointListPresenter().apply {
             view = this@PointListFragment
             context = getContext()
             callReviewTicket()
+            this.adapterModel = adapter
         }
     }
 
@@ -64,11 +70,9 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
     }
 
     fun init() {
-        adapter = PointAdapter(context, headerView)
         recyclerView.setBackgroundColor(Util.getColor(context, R.color.backgroundColor))
         recyclerView.setLayoutManager(LinearLayoutManager(context))
         recyclerView.setAdapter(adapter)
-        presenter.adapterModel = adapter
     }
 
     override fun loadMore() {
@@ -89,13 +93,14 @@ class PointListFragment : AbsListFragment(), PointListContract.View {
     override fun setPoint(point: Int) {
         headerView.setPoint(point)
     }
+
     override fun setUserTicket(ticket: Ticket) {
         headerView.setUserTicket(ticket)
     }
 
 
-    private val buyTicketListener = View.OnClickListener {
-        _ -> AlertDialog.Builder(context)
+    private val buyTicketListener = View.OnClickListener { _ ->
+        AlertDialog.Builder(context)
                 .setMessage("티켓을 구매하시겠습니까?")
                 .setPositiveButton("예", { _, _ -> presenter.buyReviewTicket() })
                 .setNegativeButton("아니오", null)
