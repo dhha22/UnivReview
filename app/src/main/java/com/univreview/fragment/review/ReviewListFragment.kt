@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dhha22.bindadapter.BindAdapter
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.R
 import com.univreview.adapter.ReviewListAdapter
 import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.EndlessRecyclerViewScrollListener
-import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.enumeration.ReviewType

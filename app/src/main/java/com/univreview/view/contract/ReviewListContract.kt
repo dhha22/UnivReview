@@ -1,7 +1,7 @@
 package com.univreview.view.contract
 
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.fragment.AbsListFragment
-import com.univreview.listener.OnItemClickListener
 import com.univreview.model.enumeration.ReviewSearchType
 
 /**

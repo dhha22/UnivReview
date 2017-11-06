@@ -7,7 +7,7 @@
     android:paddingRight="14dp">
 
     <TextView
-        android:id="@+id/name_txt"
+        android:id="@+id/nameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
@@ -18,20 +18,20 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/message_txt"
+        android:id="@+id/messageTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/name_txt"
-        android:layout_toRightOf="@id/name_txt"
+        android:layout_alignBottom="@id/nameTxt"
+        android:layout_toRightOf="@id/nameTxt"
         android:text="message"
         android:textColor="@color/reviewSecondTxtColor"
         android:textSize="14dp" />
 
     <TextView
-        android:id="@+id/time_txt"
+        android:id="@+id/timeTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name_txt"
+        android:layout_below="@id/nameTxt"
         android:layout_marginTop="6dp"
         android:text="time"
         android:textColor="@color/timeColor"
@@ -40,7 +40,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/time_txt"
+        android:layout_below="@id/timeTxt"
         android:layout_marginTop="12dp"
         android:background="@color/rowColor" />
 </RelativeLayout>

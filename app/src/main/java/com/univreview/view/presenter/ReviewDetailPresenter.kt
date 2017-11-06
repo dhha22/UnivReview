@@ -3,12 +3,15 @@ package com.univreview.view.presenter
 import android.content.Context
 import android.content.DialogInterface
 import android.view.View
+import com.dhha22.bindadapter.BindAdapterContract
+import com.dhha22.bindadapter.listener.OnItemClickListener
+import com.dhha22.bindadapter.listener.OnItemLongClickListener
+
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewDetailAdapterContract
 import com.univreview.fragment.AbsListFragment
-import com.univreview.listener.OnItemClickListener
-import com.univreview.listener.OnItemLongClickListener
+
 import com.univreview.listener.RvReportItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.DataListModel
@@ -34,8 +37,8 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     lateinit var context: Context
     lateinit var review: Review
     lateinit var view: ReviewDetailContract.View
-    lateinit var adapterModel: ReviewDetailAdapterContract.Model
-    var adapterView: ReviewDetailAdapterContract.View? = null
+    lateinit var adapterModel: BindAdapterContract.Model
+    var adapterView: BindAdapterContract.View? = null
         set(value) {
             field = value
             value?.setOnItemLongClickListener(this)
@@ -47,7 +50,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    it.data?.let {
+                    it.data.let {
                         review.content = it.content
                         review.likeCount = it.likeCount
                         review.commentCount = it.commentCount
@@ -107,9 +110,8 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         }
     }
 
-
     // 리뷰 댓글 삭제
-    override fun onLongClick(view: View, position: Int): Boolean {
+    override fun onItemLongClick(view: View, position: Int) {
         val comment = adapterModel.getItem(position - 1) as RvComment
         Logger.v("delete comment item: $comment")
         // 본인 댓글일 경우
@@ -124,7 +126,6 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                         }, { ErrorUtils.parseError(it) })
             })
         }
-        return true
     }
 
     override val etcBtnClickListener = View.OnClickListener { _ ->

@@ -8,8 +8,9 @@ import com.dhha22.bindadapter.AbsAdapter
 import com.dhha22.bindadapter.BindAdapter
 import com.dhha22.bindadapter.Item
 import com.dhha22.bindadapter.ItemView
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.adapter.contract.ReviewListAdapterContract
-import com.univreview.listener.OnItemClickListener
+
 import com.univreview.log.Logger
 import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewType

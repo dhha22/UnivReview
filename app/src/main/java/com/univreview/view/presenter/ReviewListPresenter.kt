@@ -3,11 +3,12 @@ package com.univreview.view.presenter
 import android.content.Context
 import android.view.View
 import com.dhha22.bindadapter.BindAdapterContract
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.adapter.contract.ReviewListAdapterContract
 import com.univreview.fragment.AbsListFragment
-import com.univreview.listener.OnItemClickListener
+
 import com.univreview.listener.RvReportItemClickListener
 import com.univreview.log.Logger
 import com.univreview.model.DataModel

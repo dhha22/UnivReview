@@ -8,15 +8,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dhha22.bindadapter.BindAdapter
+import com.dhha22.bindadapter.listener.EndlessScrollListener
+import com.dhha22.bindadapter.listener.OnItemClickListener
+import com.dhha22.bindadapter.listener.ScrollEndSubscriber
 import com.univreview.R
 import com.univreview.adapter.ReviewCommentAdapter
 import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
 import com.univreview.listener.EndlessRecyclerViewScrollListener
-import com.univreview.listener.OnItemClickListener
 import com.univreview.model.Review
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
+import com.univreview.view.CommentItemView
 import com.univreview.view.ReviewDetailHeader
 import com.univreview.view.contract.ReviewDetailContract
 import com.univreview.view.presenter.ReviewDetailPresenter
@@ -26,9 +30,9 @@ import kotlinx.android.synthetic.main.review_detail_header.view.*
 /**
  * Created by DavidHa on 2017. 8. 8..
  */
-class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
+class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View, ScrollEndSubscriber {
 
-    lateinit var adapter: ReviewCommentAdapter
+    lateinit var adapter: BindAdapter
     lateinit var presenter: ReviewDetailPresenter
     lateinit var reviewItem: ReviewDetailHeader
 
@@ -45,11 +49,22 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        adapter = BindAdapter(context)
+                .addHeaderView(ReviewDetailHeader::class.java)
+                .addLayout(CommentItemView::class.java)
+
         presenter = ReviewDetailPresenter().apply {
             view = this@ReviewDetailFragment
-            review = arguments.getParcelable<Review>("review")
-            review.updateNotificationPublisher.subscribe { reviewItem.setData(it) }
+            review = arguments.getParcelable("review")
+            review.updateNotificationPublisher.subscribe { reviewItem.data = it }
+            adapterModel = adapter
+            adapterView = adapter
             context = getContext()
+        }
+
+        reviewItem = (adapter.getHeaderView(0) as ReviewDetailHeader).apply {
+            headerView.setEtcBtnClickListener(presenter.etcBtnClickListener)
+            data = presenter.review
         }
     }
 
@@ -68,32 +83,19 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View {
     }
 
     private fun init() {
-        reviewItem = ReviewDetailHeader(context).apply {
-            headerView.setEtcBtnClickListener(presenter.etcBtnClickListener)
-            setData(presenter.review)
-        }
-        adapter = ReviewCommentAdapter(context, reviewItem)
-
-        val layoutManager = LinearLayoutManager(context)
-        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.setLayoutManager(LinearLayoutManager(context))
         recyclerView.setAdapter(adapter)
-        recyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
-            override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(view, dx, dy)
-                if (lastVisibleItemPosition == totalItemCount - 1) {
-                    lastItemExposed()
-                }
-            }
-        })
+        recyclerView.addOnScrollListener(EndlessScrollListener(this))
 
         presenter.apply {
-            adapterModel = adapter
-            adapterView = adapter
             loadReviewSingle()
             commentInput.setSendListener { this.postReviewComment(commentInput.inputMsg) }
         }
     }
 
+    override fun onScrollEnd() {
+        lastItemExposed()
+    }
 
     override fun refresh() {
         setStatus(Status.REFRESHING)

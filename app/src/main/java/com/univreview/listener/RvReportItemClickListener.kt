@@ -1,6 +1,7 @@
 package com.univreview.listener
 
 import android.view.View
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.App
 import com.univreview.log.Logger
 import com.univreview.model.RvReport
