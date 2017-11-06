@@ -12,21 +12,16 @@ import rx.Observable
  */
 interface SearchService {
     @GET(Retro.VERSION + "universities")
-    fun callUniversityList(@Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<University>>
+    fun callUniversityList(@Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<SearchResult>>
 
     // subjectType : M 교양제외
     @GET(Retro.VERSION + "majors")
-    fun callMajorList(@Query("subjectType") subjectType: String, @Query("university_id") universityId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Major>>
+    fun callMajorList(@Query("subjectType") subjectType: String, @Query("university_id") universityId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<SearchResult>>
 
     @GET(Retro.VERSION + "subjects")
-    fun callSubjects(@HeaderMap headers: Map<String, String>, @Query("major_id") majorId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Subject>>
-
-    @GET(Retro.VERSION + "professors")
-    fun callProfessors(@HeaderMap headers: Map<String, String>, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<Professor>>
+    fun callSubjects(@HeaderMap headers: Map<String, String>, @Query("major_id") majorId: Long?, @Query("name") name: String, @Query("page") page: Int): Observable<DataListModel<SearchResult>>
 
     @GET(Retro.VERSION + "subjects/{subjectId}/courses")
-    fun callCourse(@HeaderMap headers: Map<String, String>, @Path("subjectId") subjectId: Long?, @Query("page") page: Int): Observable<DataListModel<Course>>
+    fun callCourse(@HeaderMap headers: Map<String, String>, @Path("subjectId") subjectId: Long?, @Query("page") page: Int): Observable<DataListModel<SearchResult>>
 
-    @GET(Retro.VERSION + "professors")
-    fun callProfessorsFilter(@HeaderMap headers: Map<String, String>, @Query("subjectId") subjectId: Long, @Query("page") page: Int): Observable<DataListModel<Professor>>
 }

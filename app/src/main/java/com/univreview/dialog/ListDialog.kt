@@ -34,7 +34,7 @@ class ListDialog(context: Context, data: List<String>, itemClickListener: OnItem
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //외부 dim 처리
         val lpWindow = WindowManager.LayoutParams()
@@ -50,7 +50,7 @@ class ListDialog(context: Context, data: List<String>, itemClickListener: OnItem
         cancelBtn.setOnClickListener { dismiss() }
     }
 
-    private class DialogItemView(context: Context) : ItemView(context) {
+    class DialogItemView(context: Context) : ItemView(context) {
         init {
             setContentView(R.layout.simple_list_item)
             setFullSpan()

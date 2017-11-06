@@ -2,22 +2,17 @@ package com.univreview.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.view.ViewGroup
 import com.dhha22.bindadapter.AbsAdapter
-import com.dhha22.bindadapter.BindAdapter
 import com.dhha22.bindadapter.Item
 import com.dhha22.bindadapter.ItemView
 import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.adapter.contract.ReviewListAdapterContract
-
 import com.univreview.log.Logger
 import com.univreview.model.Review
 import com.univreview.model.enumeration.ReviewType
-import com.univreview.model.AbstractDataProvider
 import com.univreview.view.ReviewItemView
 import kotlinx.android.synthetic.main.review_detail_header.view.*
-import java.util.ArrayList
 
 /**
  * Created by DavidHa on 2017. 8. 7..

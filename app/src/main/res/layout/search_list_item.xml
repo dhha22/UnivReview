@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/name_txt"
+        android:id="@+id/nameTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="12dp"
@@ -14,13 +14,5 @@
         android:textColor="@color/white"
         android:textSize="18dp"
         android:paddingTop="12dp" />
-    <ImageView
-        android:id="@+id/indicator"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentRight="true"
-        android:visibility="invisible"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_search_list_open"/>
+
 </RelativeLayout>

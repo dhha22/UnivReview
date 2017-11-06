@@ -9,7 +9,7 @@ import rx.subjects.PublishSubject
 /**
  * Created by DavidHa on 2017. 8. 27..
  */
-data class Review(override var id: Long = 0,
+data class Review(var id: Long = 0,
                   var difficultyRate: Float = 0f,
                   var assignmentRate: Float = 0f,
                   var attendanceRate: Float = 0f,
@@ -25,11 +25,8 @@ data class Review(override var id: Long = 0,
                   val user: User? = null,
                   val subject: Subject? = null,
                   val professor: Professor? = null,
-                  var isLike: Boolean = false) : AbstractDataProvider(), Parcelable, Item {
+                  var isLike: Boolean = false) :  Parcelable, Item {
 
-    override var name: String
-        get() = ""
-        set(value) {}
 
     val updateNotificationPublisher:PublishSubject<Review> = PublishSubject.create()
 

@@ -4,15 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import com.dhha22.bindadapter.BindAdapterContract
+import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.App
 import com.univreview.Navigator
-import com.univreview.adapter.contract.SearchAdapterContract
 import com.univreview.fragment.AbsListFragment
-import com.univreview.listener.OnItemClickListener
 import com.univreview.log.Logger
-import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.AbstractDataProvider
 import com.univreview.model.DataListModel
+import com.univreview.model.SearchResult
+import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.network.Retro
 import com.univreview.util.ErrorUtils
 import com.univreview.view.contract.SearchContract
@@ -33,8 +33,8 @@ class SearchPresenter : SearchContract, OnItemClickListener {
     lateinit var view: SearchContract.View
     lateinit var context: Context
     lateinit var type: ReviewSearchType
-    lateinit var searchAdapterModel: SearchAdapterContract.Model
-    var searchAdapterView: SearchAdapterContract.View? = null
+    lateinit var searchAdapterModel: BindAdapterContract.Model
+    var searchAdapterView: BindAdapterContract.View? = null
         set(value) {
             field = value
             value?.setOnItemClickListener(this)
@@ -76,18 +76,15 @@ class SearchPresenter : SearchContract, OnItemClickListener {
     }
 
 
-    private fun <T> setObservable(observable: Observable<DataListModel<T>>, page: Int) {
+    private fun setObservable(observable: Observable<DataListModel<SearchResult>>, page: Int) {
         subscription.add(observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate { if (page == DEFAULT_PAGE) searchAdapterModel.clearItem() }
-                .subscribe({
-                    @Suppress("UNCHECKED_CAST")
-                    response(page, it.data as List<AbstractDataProvider>)
-                }, { this.errorResponse(it) }))
+                .subscribe({ response(page, it.data) }, { this.errorResponse(it) }))
     }
 
 
-    private fun response(page : Int, result: List<AbstractDataProvider>) {
+    private fun response(page: Int, result: List<SearchResult>) {
         view.setStatus(AbsListFragment.Status.IDLE)
         if (result.isNotEmpty()) {
             Logger.v("load more $page")
@@ -105,22 +102,23 @@ class SearchPresenter : SearchContract, OnItemClickListener {
         ErrorUtils.parseError(e)
     }
 
+
     // search list item click
     override fun onItemClick(view: View?, position: Int) {
         // review list 로 이동 (과목 검색 결과)
+        val item = searchAdapterModel.getItem(position) as SearchResult
+
         if (type == ReviewSearchType.SUBJECT) {
-            val searchStr = searchAdapterModel.getItem(position).name
+            val searchStr = item.name
             this.view.setInputStr(searchStr)
-            Navigator.goReviewList(context, type, searchAdapterModel.getItem(position).id, searchStr)
+            Navigator.goReviewList(context, type, item.id, searchStr)
         } else {    // 보여주는 search
             val intent = Intent()
-            searchAdapterModel.getItem(position).let {
-                intent.putExtra("id", it.id)
-                intent.putExtra("name", it.name)
-                intent.putExtra("type", type)
-                (context as Activity).setResult(Activity.RESULT_OK, intent)
-                (context as Activity).onBackPressed()
-            }
+            intent.putExtra("id", item.id)
+            intent.putExtra("name", item.name)
+            intent.putExtra("type", type)
+            (context as Activity).setResult(Activity.RESULT_OK, intent)
+            (context as Activity).onBackPressed()
         }
     }
 

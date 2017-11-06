@@ -2,18 +2,19 @@ package com.univreview.fragment
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dhha22.bindadapter.BindAdapter
+import com.dhha22.bindadapter.listener.EndlessScrollListener
+import com.dhha22.bindadapter.listener.ScrollEndSubscriber
 import com.univreview.R
-import com.univreview.adapter.SearchAdapter
-import com.univreview.listener.EndlessRecyclerViewScrollListener
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.util.Util
+import com.univreview.view.SearchListItemView
 import com.univreview.view.UnivReviewRecyclerView
 import com.univreview.view.contract.SearchContract
 import com.univreview.view.presenter.SearchPresenter
@@ -26,8 +27,8 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by DavidHa on 2017. 9. 18..
  */
-class SearchFragment : AbsListFragment(), SearchContract.View {
-    private lateinit var adapter: SearchAdapter
+class SearchFragment : AbsListFragment(), SearchContract.View, ScrollEndSubscriber {
+    private lateinit var adapter: BindAdapter
     private lateinit var presenter: SearchPresenter
     private var timer: Subscription? = null
 
@@ -79,22 +80,19 @@ class SearchFragment : AbsListFragment(), SearchContract.View {
 
     private fun setRecyclerView() {
         //recycler view
-        adapter = SearchAdapter(context)
+        adapter = BindAdapter(context).addLayout(SearchListItemView::class.java)
         val layoutManager = PreCachingLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.setAdapter(adapter)
         recyclerView.setLayoutManager(LinearLayoutManager(context))
-        recyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
-            override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(view, dx, dy)
-                if (lastVisibleItemPosition == totalItemCount - 1) {
-                    lastItemExposed()
-                }
-            }
-        })
+        recyclerView.addOnScrollListener(EndlessScrollListener(this))
 
         presenter.searchAdapterModel = adapter
         presenter.searchAdapterView = adapter
+    }
+
+    override fun onScrollEnd() {
+        lastItemExposed()
     }
 
     // search input textWatcher

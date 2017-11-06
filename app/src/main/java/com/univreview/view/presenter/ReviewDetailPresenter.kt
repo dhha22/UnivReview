@@ -9,7 +9,6 @@ import com.dhha22.bindadapter.listener.OnItemLongClickListener
 
 import com.univreview.App
 import com.univreview.Navigator
-import com.univreview.adapter.contract.ReviewDetailAdapterContract
 import com.univreview.fragment.AbsListFragment
 
 import com.univreview.listener.RvReportItemClickListener

@@ -4,7 +4,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,9 @@ import com.dhha22.bindadapter.listener.EndlessScrollListener
 import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.dhha22.bindadapter.listener.ScrollEndSubscriber
 import com.univreview.R
-import com.univreview.adapter.ReviewCommentAdapter
 import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
-import com.univreview.listener.EndlessRecyclerViewScrollListener
+import com.univreview.log.Logger
 import com.univreview.model.Review
 import com.univreview.util.Util
 import com.univreview.view.AbsRecyclerView
@@ -121,6 +119,8 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View, Scrol
     }
 
     override fun setDialog(list: List<String>, itemClickListener: OnItemClickListener) {
+        Logger.v("itemClickListener: " + itemClickListener)
+        
         ListDialog(context, list, itemClickListener).show()
     }
 

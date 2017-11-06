@@ -2,11 +2,12 @@ package com.univreview.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.dhha22.bindadapter.Item
 
 /**
  * Created by DavidHa on 2017. 8. 20..
  */
-data class Subject(override var id: Long, override var name: String) : AbstractDataProvider(), Parcelable {
+data class Subject(var id: Long, var name: String) : Parcelable, Item {
     constructor(source: Parcel) : this(
             source.readLong(),
             source.readString()

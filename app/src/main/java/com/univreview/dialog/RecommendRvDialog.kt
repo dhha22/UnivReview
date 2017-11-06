@@ -9,7 +9,6 @@ import android.view.WindowManager
 import butterknife.ButterKnife
 import com.univreview.Navigator
 import com.univreview.R
-import com.univreview.activity.BaseActivity
 import com.univreview.model.Review
 import kotlinx.android.synthetic.main.dialog_recommend_rv.*
 
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.dialog_recommend_rv.*
  */
 class RecommendRvDialog(context: Context, val review: Review) : Dialog(context) {
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //외부 dim 처리
         val lpWindow = WindowManager.LayoutParams()
@@ -42,7 +41,6 @@ class RecommendRvDialog(context: Context, val review: Review) : Dialog(context) 
         next.setOnClickListener {
             dismiss()
             //com.univreview.Navigator.goReviewDetail(context, review);
-            (context as BaseActivity).setOnBackPressedListener(null)
             (context as Activity).onBackPressed()
         }
     }
