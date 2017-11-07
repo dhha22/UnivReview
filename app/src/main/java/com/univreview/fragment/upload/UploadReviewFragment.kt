@@ -6,14 +6,13 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.squareup.otto.Subscribe
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.dialog.RecommendRvDialog
 import com.univreview.fragment.BaseWriteFragment
 import com.univreview.model.ActivityResultEvent
-import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.Review
+import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.util.Util
 import com.univreview.view.contract.UploadReviewContract
 import com.univreview.view.presenter.UploadReviewPresenter
@@ -91,13 +90,14 @@ class UploadReviewFragment : BaseWriteFragment(), UploadReviewContract.View {
         }
     }
 
-    @Subscribe
-    fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+    override fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+        super.onActivityResult(activityResultEvent)
         if (activityResultEvent.resultCode == Activity.RESULT_OK) {
             if (activityResultEvent.requestCode == Navigator.SEARCH) {
                 presenter.onActivityResult(activityResultEvent.intent)
             }
         }
+
     }
 
     override fun setSubjectTxt(str: String?) {

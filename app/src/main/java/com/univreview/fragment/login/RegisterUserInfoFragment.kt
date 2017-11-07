@@ -1,13 +1,14 @@
 package com.univreview.fragment.login
 
-import android.app.Activity
+import android.Manifest
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.squareup.otto.Subscribe
+import com.dhha22.permissionchecker.PermissionsChecker
+import com.dhha22.permissionchecker.listener.PermissionListener
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseFragment
@@ -26,7 +27,7 @@ import rx.schedulers.Schedulers
 /**
  * Created by DavidHa on 2017. 8. 5..
  */
-class RegisterUserInfoFragment : BaseFragment() {
+class RegisterUserInfoFragment : BaseFragment(), PermissionListener {
     private lateinit var register: Register
 
     companion object {
@@ -64,7 +65,13 @@ class RegisterUserInfoFragment : BaseFragment() {
         Util.setProfileImage(register.profileImageUrl, profileImage)
         inputName.addTextChangedListener(textWatcher)
         inputName.setOnKeyListener(KeyboardListener(context, inputName))
-        profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
+        profileImage.setOnClickListener {
+            PermissionsChecker(context)
+                    .setListener(this)
+                    .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .checkPermission()
+        }
+
         nextBtn.setOnClickListener { _ ->
             if (formVerification() && nextBtn.isSelected) {
                 validateName(inputName.text.toString())
@@ -111,17 +118,23 @@ class RegisterUserInfoFragment : BaseFragment() {
                 }}, { ErrorUtils.parseError(it) })
     }
 
-    @Subscribe
-    fun onActivityResult(activityResultEvent: ActivityResultEvent) {
-        if (activityResultEvent.resultCode == Activity.RESULT_OK) {
-            if (activityResultEvent.requestCode == Navigator.PERMISSION_CHECKER) {
-                Navigator.goAlbum(context)
-            } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
-                val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
-                Logger.v("album path: " + albumPath)
-                Util.setProfileImage("file://" + albumPath, profileImage)
-                register.profileImageUri = activityResultEvent.intent.data
-            }
+
+    override fun denyPermission(p0: MutableList<String>?) {
+        showWriteStorageAuthDialog()
+    }
+
+    override fun grantPermission() {
+        Navigator.goAlbum(context)
+    }
+
+    override fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+        super.onActivityResult(activityResultEvent)
+        if (activityResultEvent.requestCode == Navigator.ALBUM) {
+            val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
+            Logger.v("album path: " + albumPath)
+            Util.setProfileImage("file://" + albumPath, profileImage)
+            register.profileImageUri = activityResultEvent.intent.data
         }
     }
+
 }

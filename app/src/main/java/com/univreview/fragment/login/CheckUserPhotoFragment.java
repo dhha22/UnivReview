@@ -8,21 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import com.squareup.otto.Subscribe;
 import com.univreview.App;
 import com.univreview.Navigator;
 import com.univreview.R;
 import com.univreview.fragment.BaseFragment;
 import com.univreview.log.Logger;
 import com.univreview.model.ActivityResultEvent;
-import com.univreview.network.Retro;
 import com.univreview.util.ImageUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2017. 1. 31..
@@ -78,7 +73,6 @@ public class CheckUserPhotoFragment extends BaseFragment {
     }
 
 
-    @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent) {
         if (activityResultEvent.getResultCode() == Activity.RESULT_OK) {
             if (activityResultEvent.getRequestCode() == Navigator.PERMISSION_CHECKER) {

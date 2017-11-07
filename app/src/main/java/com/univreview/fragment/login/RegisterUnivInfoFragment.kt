@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.squareup.otto.Subscribe
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.fragment.BaseFragment
 import com.univreview.log.Logger
-import com.univreview.model.*
+import com.univreview.model.ActivityResultEvent
+import com.univreview.model.Register
 import com.univreview.model.enumeration.ReviewSearchType
-import com.univreview.model.User
 import com.univreview.util.Util
 import com.univreview.view.contract.RegisterUnivInfoContract
 import com.univreview.view.presenter.RegisterUnivInfoPresenter
@@ -81,7 +80,7 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         }
         nextBtn.setOnClickListener {
             if (formVerification(NEXT)) {
-               presenter.registerUser()
+                presenter.registerUser()
             }
         }
     }
@@ -102,15 +101,14 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
         } else {
             if (position == UNIVERSITY) {
                 Util.simpleMessageDialog(context, "대학을 선택해주세요.")
-            }  else if (position == MAJOR) {
+            } else if (position == MAJOR) {
                 Util.simpleMessageDialog(context, "전공을 선택해주세요.")
             }
             return false
         }
     }
 
-    @Subscribe
-    fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+    override fun onActivityResult(activityResultEvent: ActivityResultEvent) {
         if (activityResultEvent.resultCode == Activity.RESULT_OK) {
             if (activityResultEvent.requestCode == Navigator.SEARCH) {
                 val data = activityResultEvent.intent
@@ -121,7 +119,9 @@ class RegisterUnivInfoFragment : BaseFragment(), RegisterUnivInfoContract.View {
                 setSearchResultType(type, id, name)
             }
         }
+
     }
+
 
     private fun setSearchResultType(type: ReviewSearchType, id: Long, name: String) {
         when (type) {

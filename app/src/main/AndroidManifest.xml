@@ -28,10 +28,6 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".activity.PermissionCheckerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Translucent" />
         <activity android:name=".activity.NavigationActivity" />
 
         <!-- facebook -->

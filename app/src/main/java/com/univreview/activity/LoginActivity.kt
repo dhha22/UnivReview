@@ -110,14 +110,14 @@ class LoginActivity : BaseActivity(), LoginContract.View {
         }
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         facebookCallbackManager?.onActivityResult(requestCode, resultCode, data)
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

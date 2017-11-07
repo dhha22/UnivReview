@@ -3,14 +3,11 @@ package com.univreview.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import com.squareup.otto.Produce
 import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.adapter.MainAdapter
 import com.univreview.log.Logger
-import com.univreview.model.ActivityResultEvent
-import com.univreview.model.BusProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -79,23 +76,14 @@ class MainActivity : BaseActivity() {
         this.resultCode = resultCode
         this.data = data
         Logger.v("navigation activity on activity result")
-        BusProvider.newInstance().post(produceActivityResultEvent())
 
     }
 
     override fun onResume() {
         super.onResume()
         App.setCurrentActivity(this)
-        BusProvider.newInstance().register(this)
+
     }
 
-    override fun onPause() {
-        super.onPause()
-        BusProvider.newInstance().unregister(this)
-    }
 
-    @Produce
-    fun produceActivityResultEvent(): ActivityResultEvent {
-        return ActivityResultEvent(requestCode, resultCode, data)
-    }
 }

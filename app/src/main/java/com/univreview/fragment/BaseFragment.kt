@@ -1,5 +1,6 @@
 package com.univreview.fragment
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.univreview.App
 import com.univreview.Navigator
 import com.univreview.R
+import com.univreview.activity.BaseActivity
 import com.univreview.log.Logger
-import com.univreview.model.BusProvider
+import com.univreview.model.ActivityResultEvent
 import com.univreview.util.Util
 import com.univreview.view.Toolbar
 
@@ -30,6 +31,7 @@ open class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (context as BaseActivity).activityResultSubject.subscribe { onActivityResult(it) }
         progressDialog = ProgressDialog(context)
         progressDialog.setMessage(getString(R.string.progress_dialog_msg))
     }
@@ -52,7 +54,6 @@ open class BaseFragment : Fragment() {
         super.onResume()
         if (javaClass.name != HOME_FRAGMENT) {
             Logger.v("on resume: " + this.javaClass.name)
-            BusProvider.newInstance().register(this)
         }
     }
 
@@ -60,7 +61,6 @@ open class BaseFragment : Fragment() {
         super.onPause()
         if (this.javaClass.name != HOME_FRAGMENT) {
             Logger.v("on pause: " + this.javaClass.name)
-            BusProvider.newInstance().unregister(this)
         }
     }
 
@@ -82,6 +82,26 @@ open class BaseFragment : Fragment() {
         Util.simpleMessageDialog(context, msg)
     }
 
+    fun showWriteStorageAuthDialog() {
+        AlertDialog.Builder(context)
+                .setTitle("도움말")
+                .setMessage("사진을 올리려면 저장공간 권한이 필요합니다." + "\n[설정]->[권한]에서 해당권한(저장공간)을 활성화해주세요.")
+                .setNegativeButton("거부") { _, _ -> (context as Activity).finish() }
+                .setPositiveButton("설정") { _, _ -> Navigator.goAppSetting(context) }
+                .setCancelable(false)
+                .show()
+    }
+
+    fun showCameraAuthDialog() {
+        AlertDialog.Builder(context)
+                .setTitle("도움말")
+                .setMessage("사진을 올리려면 카메라 권한이 필요합니다." + "\n[설정]->[권한]에서 해당권한(카메라)을 활성화해주세요.")
+                .setNegativeButton("거부") { _, _ -> (context as Activity).finish() }
+                .setPositiveButton("설정") { _, _ -> Navigator.goAppSetting(context) }
+                .setCancelable(false)
+                .show()
+    }
+
     fun showTicketDialog() {
         AlertDialog.Builder(context)
                 .setMessage("리뷰티켓을 구매해주시길 바랍니다.")
@@ -92,5 +112,9 @@ open class BaseFragment : Fragment() {
                 .setNegativeButton("취소", { _, _ -> activity.finish() })
                 .setCancelable(false)
                 .show()
+    }
+
+    open protected fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+
     }
 }

@@ -9,7 +9,6 @@ import android.support.v4.content.FileProvider
 import com.univreview.activity.LoginActivity
 import com.univreview.activity.MainActivity
 import com.univreview.activity.NavigationActivity
-import com.univreview.activity.PermissionCheckerActivity
 import com.univreview.fragment.PointListFragment
 import com.univreview.fragment.ProfileEditFragment
 import com.univreview.fragment.SearchFragment
@@ -102,12 +101,6 @@ class Navigator {
             (context as Activity).startActivityForResult(intent, ALBUM)
         }
 
-        @JvmStatic
-        fun goPermissionChecker(context: Context, type: String) {
-            val intent = Intent(context, PermissionCheckerActivity::class.java)
-            intent.putExtra("type", type)
-            (context as Activity).startActivityForResult(intent, PERMISSION_CHECKER)
-        }
 
         //upload
 

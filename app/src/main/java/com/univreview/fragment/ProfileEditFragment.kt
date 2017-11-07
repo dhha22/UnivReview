@@ -1,5 +1,6 @@
 package com.univreview.fragment
 
+import android.Manifest
 import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
@@ -7,7 +8,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.squareup.otto.Subscribe
+import com.dhha22.permissionchecker.PermissionsChecker
+import com.dhha22.permissionchecker.listener.PermissionListener
 import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.log.Logger
@@ -23,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_profile_edit.*
 /**
  * Created by DavidHa on 2017. 9. 25..
  */
-class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
+class ProfileEditFragment : BaseFragment(), ProfileEditContract.View, PermissionListener {
 
     private lateinit var user: User
     private lateinit var presenter: ProfileEditPresenter
@@ -46,6 +48,7 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
             view = this@ProfileEditFragment
             context = getContext()
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,7 +67,12 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
 
 
     private fun init() {
-        profileImage.setOnClickListener { Navigator.goPermissionChecker(context, "album") }
+        profileImage.setOnClickListener {
+            PermissionsChecker(context)
+                    .setListener(this)
+                    .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .checkPermission()
+        }
         saveBtn.setOnClickListener {
             if (formVerification() && saveBtn.isSelected) {
                 Util.hideKeyboard(context, inputName)
@@ -100,13 +108,19 @@ class ProfileEditFragment : BaseFragment(), ProfileEditContract.View {
         return false
     }
 
-    @Subscribe
-    fun onActivityResult(activityResultEvent: ActivityResultEvent) {
+    override fun denyPermission(p0: MutableList<String>?) {
+        showCameraAuthDialog()
+    }
+
+    override fun grantPermission() {
+        Logger.v("grant permission")
+        Navigator.goAlbum(context)
+    }
+
+    override fun onActivityResult(activityResultEvent: ActivityResultEvent) {
         Logger.v("on activity result")
         if (activityResultEvent.resultCode == Activity.RESULT_OK) {
-            if (activityResultEvent.requestCode == Navigator.PERMISSION_CHECKER) {
-                Navigator.goAlbum(context)
-            } else if (activityResultEvent.requestCode == Navigator.ALBUM) {
+            if (activityResultEvent.requestCode == Navigator.ALBUM) {
                 val albumPath = ImageUtil.getPath(activityResultEvent.intent.data)
                 Logger.v("album path: file://" + albumPath)
                 Util.setProfileImage("file://" + albumPath, profileImage)
