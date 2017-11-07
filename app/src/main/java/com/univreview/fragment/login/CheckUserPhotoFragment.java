@@ -54,7 +54,7 @@ public class CheckUserPhotoFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         toolbar.setTitleTxt("학생증 확인");
         toolbar.setCancelToolbarStyle();
-        reselectBtn.setOnClickListener(v -> Navigator.goPermissionChecker(getContext(), "camera"));
+        //reselectBtn.setOnClickListener();
         setCheckImage(path);
         okBtn.setOnClickListener(v -> upload());
         rootLayout.addView(view);

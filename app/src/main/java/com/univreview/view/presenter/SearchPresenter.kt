@@ -79,7 +79,12 @@ class SearchPresenter : SearchContract, OnItemClickListener {
     private fun setObservable(observable: Observable<DataListModel<SearchResult>>, page: Int) {
         subscription.add(observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate { if (page == DEFAULT_PAGE) searchAdapterModel.clearItem() }
+                .doAfterTerminate {
+                    if (page == DEFAULT_PAGE) {
+                        searchAdapterModel.clearItem()
+                        searchAdapterModel.notifyData()
+                    }
+                }
                 .subscribe({ response(page, it.data) }, { this.errorResponse(it) }))
     }
 
@@ -92,6 +97,7 @@ class SearchPresenter : SearchContract, OnItemClickListener {
             Observable.from(result)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doAfterTerminate { searchAdapterModel.notifyData() }
                     .subscribe({ data -> searchAdapterModel.addItem(data) }, { Logger.e(it) })
         }
     }

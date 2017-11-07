@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dhha22.bindadapter.BindAdapter
+import com.dhha22.bindadapter.listener.EndlessScrollListener
 import com.dhha22.bindadapter.listener.OnItemClickListener
+import com.dhha22.bindadapter.listener.ScrollEndSubscriber
 import com.univreview.R
 import com.univreview.adapter.ReviewListAdapter
 import com.univreview.dialog.ListDialog
@@ -27,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_review_list.*
 /**
  * Created by DavidHa on 2017. 8. 7..
  */
-class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
+class ReviewListFragment : AbsListFragment(), ReviewListContract.View, ScrollEndSubscriber {
     lateinit var adapter: BindAdapter
     lateinit var innerAdapter : ReviewListAdapter
     lateinit var type: ReviewSearchType
@@ -114,15 +116,11 @@ class ReviewListFragment : AbsListFragment(), ReviewListContract.View {
             it.innerAdapterView = innerAdapter
         }
 
-        recyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
-            override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(view, dx, dy)
-                if (lastVisibleItemPosition == totalItemCount - 1) {
-                    lastItemExposed()
-                }
-            }
-        })
+        recyclerView.addOnScrollListener(EndlessScrollListener(this))
+    }
 
+    override fun onScrollEnd() {
+        lastItemExposed()
     }
 
     override fun getRecyclerView(): AbsRecyclerView? {
