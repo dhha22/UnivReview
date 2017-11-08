@@ -73,12 +73,6 @@ enum class Retro {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(interceptor)
-            builder.addInterceptor {
-                it.proceed(it.request().newBuilder()
-                        .header("User-Agent", "Android")
-                        .header("Content-Type", "application/json")
-                        .build())
-            }
         }
         return builder.build()
     }
