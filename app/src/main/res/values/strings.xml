@@ -11,8 +11,8 @@
     <string name="login_with_kakao">카카오 계정으로 로그인</string>
 
     <!-- register -->
-    <string name="register_email_info">실제 사용중인 이메일 주소가 아니면\n비밀번호를 분실 시 찾을 수 없습니다.</string>
-    <string name="register_univ_info">재직 중이신 대학교 및 전공을\n등록해 주시기 바랍니다.</string>
+    <string name="register_email_info">실제 사용중인 이메일 주소가 아니면\n추후 정보가 변경되었을 경우 반영되지 않습니다.</string>
+    <string name="register_univ_info">재학 중이신 대학교 및 전공을\n등록해 주시길 바랍니다.</string>
 
 
     <!-- review -->
@@ -30,4 +30,13 @@
     <string name="check_student_card_guide1">사진에 찍힌 학생증을 확인해주세요.</string>
     <string name="check_student_card_guide2">학생정보가 보이지 않는 경우\n서비스가 제한될 수 있습니다.</string>
     <string name="user_auth_completed_msg">본인확인이 완료되면 바로 인증이 부여됩니다.</string>
+
+    <!-- error message -->
+    <string name="empty_email_error">이메일을 입력해주시길 바랍니다.</string>
+    <string name="duplicate_email_error">이미 사용중인 이메일 주소 입니다.</string>
+    <string name="validate_email_error">올바른 이메일 주소를 입력해주시길 바랍니다.</string>
+
+    <string name="empty_name_error">닉네임을 입력해주시길 바랍니다.</string>
+    <string name="duplicate_name_error">이미 사용중인 닉네임 입니다.</string>
+    <string name="validate_name_error">닉네임 글자수는 최대 8자 입니다.</string>
 </resources>
