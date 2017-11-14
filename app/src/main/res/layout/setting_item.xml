@@ -9,7 +9,7 @@
     android:paddingTop="18dp">
 
     <TextView
-        android:id="@+id/title_txt"
+        android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -18,15 +18,15 @@
         android:textSize="16dp" />
 
     <TextView
-        android:id="@+id/preview_txt"
+        android:id="@+id/previewTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/next_img"
+        android:layout_toLeftOf="@+id/nextImg"
         android:textColor="@color/colorAccent"
         android:textSize="16dp" />
 
     <ImageView
-        android:id="@+id/next_img"
+        android:id="@+id/nextImg"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="8dp"

@@ -9,7 +9,7 @@
     android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/back_btn"
+        android:id="@+id/backBtn"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_centerVertical="true"
@@ -18,7 +18,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/title_txt"
+        android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -40,7 +40,7 @@
         android:visibility="gone" />
 
     <ImageButton
-        android:id="@+id/cancel_btn"
+        android:id="@+id/cancelBtn"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_alignParentRight="true"
