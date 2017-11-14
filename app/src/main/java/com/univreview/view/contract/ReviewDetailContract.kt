@@ -3,6 +3,7 @@ package com.univreview.view.contract
 import android.content.DialogInterface
 import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.univreview.fragment.AbsListFragment
+import com.univreview.model.Review
 import com.univreview.view.AbsRecyclerView
 
 /**
@@ -16,6 +17,7 @@ interface ReviewDetailContract {
         fun getRecyclerView(): AbsRecyclerView?
         fun setResult(page: Int)
         fun setStatus(status: AbsListFragment.Status)
+        fun goUploadReviewDetail(review : Review)
     }
 
     fun loadReviewSingle()

@@ -58,6 +58,7 @@ class UploadReviewPresenter(val review: Review = Review()) : UploadReviewContrac
         val id = data.getLongExtra("id", 0)
         val name = data.getStringExtra("name")
         val type = data.getSerializableExtra("type") as ReviewSearchType
+        Logger.v("presenter on activity result : $id, $name, $type")
         if (ReviewSearchType.SUBJECT_WITH_RESULT == type) {
             view.setSubjectTxt(name)
             view.setProfessorTxt(null)

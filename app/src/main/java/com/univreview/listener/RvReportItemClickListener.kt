@@ -26,6 +26,6 @@ class RvReportItemClickListener(val reviewId: Long) : OnItemClickListener {
     fun postReviewReport(message: String) {
         Retro.instance.reviewService.reviewReport(App.getHeader(), reviewId, RvReport(message))
                 .subscribeOn(Schedulers.io())
-                .subscribe({ Logger.v(it.data) }, { Logger.e(it) })
+                .subscribe({ Logger.v(it) }, { Logger.e(it) })
     }
 }

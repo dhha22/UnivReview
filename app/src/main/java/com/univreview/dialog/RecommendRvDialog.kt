@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.dialog_recommend_rv.*
 /**
  * Created by DavidHa on 2017. 11. 6..
  */
-class RecommendRvDialog(context: Context, val review: Review) : Dialog(context) {
+class RecommendRvDialog(val mContext: Context, val review: Review) : Dialog(mContext) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,21 +27,20 @@ class RecommendRvDialog(context: Context, val review: Review) : Dialog(context) 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
 
         setContentView(R.layout.dialog_recommend_rv)
-        ButterKnife.bind(this)
         setCancelable(false)
 
         // 계속해서 상세 리뷰를 남긴다 (리뷰 업로드 상세 페이지로 이동)
         goReviewDetail.setOnClickListener {
             dismiss()
             Navigator.goUploadReviewDetail(context, review, true)
-            (context as Activity).finish()
+            (mContext as Activity).finish()
         }
 
         // 다음에 리뷰를 남긴다 (리뷰 디테일 페이지로 이동)
         next.setOnClickListener {
             dismiss()
             //com.univreview.Navigator.goReviewDetail(context, review);
-            (context as Activity).onBackPressed()
+            (mContext as Activity).onBackPressed()
         }
     }
 }

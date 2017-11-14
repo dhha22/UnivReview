@@ -33,15 +33,11 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         val DEFAULT_PAGE = 1
     }
 
-    lateinit var context: Context
     lateinit var review: Review
     lateinit var view: ReviewDetailContract.View
     lateinit var adapterModel: BindAdapterContract.Model
-    var adapterView: BindAdapterContract.View? = null
-        set(value) {
-            field = value
-            value?.setOnItemLongClickListener(this)
-        }
+    lateinit var adapterView: BindAdapterContract.View
+
 
     // review single api 호출
     override fun loadReviewSingle() {
@@ -78,8 +74,10 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         view.setStatus(AbsListFragment.Status.IDLE)
         if (result.data.isNotEmpty()) {
             view.setResult(page)
-            if(page == DEFAULT_PAGE) adapterModel.clearItem()
-            Observable.from(result.data).subscribe { adapterModel.addItem(it) }
+            if (page == DEFAULT_PAGE) adapterModel.clearItem()
+            Observable.from(result.data)
+                    .doAfterTerminate { adapterModel.notifyData() }
+                    .subscribe { adapterModel.addItem(it) }
         }
     }
 
@@ -99,7 +97,10 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
             Retro.instance.reviewService.postReviewComment(App.getHeader(), review.id, RvComment(message))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doAfterTerminate { view.dismissProgress() }
+                    .doAfterTerminate {
+                        adapterModel.notifyData()
+                        view.dismissProgress()
+                    }
                     .subscribe({
                         adapterModel.addFirstItem(it.data)
                         view.increaseCommentCnt(true)
@@ -112,7 +113,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
     // 리뷰 댓글 삭제
     override fun onItemLongClick(view: View, position: Int) {
         val comment = adapterModel.getItem(position - 1) as RvComment
-        Logger.v("delete comment item: $comment")
+        Logger.v("delete comment item $position: $comment")
         // 본인 댓글일 경우
         if (App.userId == (comment.userId)) {
             this.view.showCommentDeleteDialog(DialogInterface.OnClickListener { _, _ ->
@@ -120,7 +121,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            adapterModel.removeItem(position)
+                            adapterView.removeItemView(position)
                             this.view.increaseCommentCnt(false)
                         }, { ErrorUtils.parseError(it) })
             })
@@ -132,8 +133,7 @@ class ReviewDetailPresenter : ReviewDetailContract, OnItemLongClickListener {
         Logger.v("review user id: " + review.user?.id)
         //  본인이 더보기 버튼을 클릭했을 경우
         if (review.user?.id == App.userId) {
-            view.setDialog(arrayListOf("수정하기"),
-                    OnItemClickListener { _, _ -> Navigator.goUploadReviewDetail(context, review) })
+            view.setDialog(arrayListOf("수정하기"), OnItemClickListener { _, _ -> view.goUploadReviewDetail(review) })
         } else {
             view.setDialog(arrayListOf("신고하기"),
                     OnItemClickListener { _, _ -> view.setDialog(arrayListOf("스팸입니다", "부적절합니다"), RvReportItemClickListener(review.id)) })

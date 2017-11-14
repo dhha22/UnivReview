@@ -11,6 +11,7 @@ import com.dhha22.bindadapter.BindAdapter
 import com.dhha22.bindadapter.listener.EndlessScrollListener
 import com.dhha22.bindadapter.listener.OnItemClickListener
 import com.dhha22.bindadapter.listener.ScrollEndSubscriber
+import com.univreview.Navigator
 import com.univreview.R
 import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
@@ -57,7 +58,7 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View, Scrol
             review.updateNotificationPublisher.subscribe { reviewItem.data = it }
             adapterModel = adapter
             adapterView = adapter
-            context = getContext()
+            adapterView.setOnItemLongClickListener(this)
         }
 
         reviewItem = (adapter.getHeaderView(0) as ReviewDetailHeader).apply {
@@ -120,13 +121,17 @@ class ReviewDetailFragment : AbsListFragment(), ReviewDetailContract.View, Scrol
 
     override fun setDialog(list: List<String>, itemClickListener: OnItemClickListener) {
         Logger.v("itemClickListener: " + itemClickListener)
-        
+
         ListDialog(context, list, itemClickListener).show()
     }
 
 
     override fun increaseCommentCnt(isIncrease: Boolean) {
         reviewItem.bottomView.increaseCommentCnt(isIncrease)
+    }
+
+    override fun goUploadReviewDetail(review: Review) {
+        Navigator.goUploadReviewDetail(context, review)
     }
 
 

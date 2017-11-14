@@ -65,7 +65,7 @@ class SearchPresenter : SearchContract, OnItemClickListener {
         setObservable(Retro.instance.searchService.callMajorList("M", id, name, page), page)
     }
 
-    // 과목 검색 (리뷰 검색)
+    // 과목 검색 (리뷰 검색, 리뷰 쓰기)
     private fun searchSubject(name: String, page: Int) {
         setObservable(Retro.instance.searchService.callSubjects(App.getHeader(), id, name, page), page)
     }
@@ -79,18 +79,15 @@ class SearchPresenter : SearchContract, OnItemClickListener {
     private fun setObservable(observable: Observable<DataListModel<SearchResult>>, page: Int) {
         subscription.add(observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate {
-                    if (page == DEFAULT_PAGE) {
-                        searchAdapterModel.clearItem()
-                        searchAdapterModel.notifyData()
-                    }
-                }
                 .subscribe({ response(page, it.data) }, { this.errorResponse(it) }))
     }
 
 
     private fun response(page: Int, result: List<SearchResult>) {
         view.setStatus(AbsListFragment.Status.IDLE)
+        if (page == DEFAULT_PAGE) {
+            searchAdapterModel.clearItem()
+        }
         if (result.isNotEmpty()) {
             Logger.v("load more $page")
             view.setResult(page)
@@ -98,12 +95,16 @@ class SearchPresenter : SearchContract, OnItemClickListener {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doAfterTerminate { searchAdapterModel.notifyData() }
-                    .subscribe({ data -> searchAdapterModel.addItem(data) }, { Logger.e(it) })
+                    .subscribe({ data ->
+                        Logger.v("add data $data")
+                        searchAdapterModel.addItem(data)
+                    }, { Logger.e(it) })
         }
     }
 
 
     private fun errorResponse(e: Throwable) {
+        searchAdapterModel.clearItem()
         view.setStatus(AbsListFragment.Status.ERROR)
         ErrorUtils.parseError(e)
     }

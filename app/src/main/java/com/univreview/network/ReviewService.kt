@@ -59,11 +59,11 @@ interface ReviewService {
 
     // 리뷰 댓글 삭제
     @DELETE(Retro.VERSION + "reviews/{reviewId}/comments/{commentId}")
-    fun deleteReviewComment(@HeaderMap headers: Map<String, String>, @Path("reviewId") reviewId: Long, @Path("commentId") commentId: Long): Observable<DataModel<*>>
+    fun deleteReviewComment(@HeaderMap headers: Map<String, String>, @Path("reviewId") reviewId: Long, @Path("commentId") commentId: Long): Observable<ResultModel>
 
     // 리뷰 신고
     @POST(Retro.VERSION + "reviews/{reviewId}/reports")
-    fun reviewReport(@HeaderMap headers: Map<String, String>, @Path("reviewId") reviewId: Long, @Body body: RvReport): Observable<DataModel<*>>
+    fun reviewReport(@HeaderMap headers: Map<String, String>, @Path("reviewId") reviewId: Long, @Body body: RvReport): Observable<ResultModel>
 
 
 }
