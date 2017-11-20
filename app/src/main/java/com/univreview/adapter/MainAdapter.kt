@@ -12,7 +12,7 @@ import java.util.*
  * Created by DavidHa on 2017. 9. 25..
  */
 class MainAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-    private val fragments = Arrays.asList(HomeFragment.getInstance(), MyPageFragment.getInstance());
+    private val fragments = Arrays.asList(HomeFragment.getInstance(), MyPageFragment.getInstance())
 
     override fun getItem(position: Int): Fragment {
         return fragments[position]

@@ -24,17 +24,12 @@ class NavigationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         Logger.v("navigation activity onCreate")
         if (fragment != null) {
-            if (fragment is SearchFragment) {
-                Logger.v("set translucent")
-                setTranslucent()
-            } else if (fragment is RegisterEmailFragment ||
-                    fragment is RegisterUserInfoFragment ||
-                    fragment is ReviewDetailFragment ||
-                    fragment is TestFragment ||
-                    fragment is ProfileEditFragment) {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-            } else {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+            when (fragment) {
+                is RegisterEmailFragment,
+                is RegisterUserInfoFragment,
+                is ReviewDetailFragment,
+                is ProfileEditFragment -> window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                else -> window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
             }
             setContentView(R.layout.activity_navigation)
             supportFragmentManager.beginTransaction().replace(R.id.frame, fragment).commit()

@@ -27,11 +27,9 @@ enum class Retro {
 
     companion object {
         const val VERSION = "api/v2/"
-        const val IMAGE_URL_DEV = "https://s3.ap-northeast-2.amazonaws.com/univ-review-dev/"
-        const val IMAGE_URL_PROD = "https://s3.ap-northeast-2.amazonaws.com/univ-review-prod/"
     }
 
-    private val TEST_URL = "http://ec2-52-78-140-75.ap-northeast-2.compute.amazonaws.com/"
+    private val TEST_URL = "https://dev.univreview.com/"
     private val REAL_URL = "https://api.8hakgoon.com/api/"
     var userService: UserService
     var loginService: LoginService
