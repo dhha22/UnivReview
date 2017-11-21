@@ -65,7 +65,7 @@ class RegisterStudentIdFragment : BaseFragment(), PermissionListener {
             if (activityResultEvent.requestCode == Navigator.CAMERA) {
                 val albumPath = ImageUtil.IMAGE_PATH + "tmp.jpg"
                 Logger.v("album path: $albumPath")
-                Navigator.goCheckUserPhoto(context, CAMERA, albumPath)
+                Navigator.goCheckStudentId(context, CAMERA, albumPath)
                 activity.finish()
             }
         }

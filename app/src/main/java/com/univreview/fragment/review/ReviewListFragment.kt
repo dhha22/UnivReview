@@ -2,7 +2,6 @@ package com.univreview.fragment.review
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.univreview.R
 import com.univreview.adapter.ReviewListAdapter
 import com.univreview.dialog.ListDialog
 import com.univreview.fragment.AbsListFragment
-import com.univreview.listener.EndlessRecyclerViewScrollListener
 import com.univreview.log.Logger
 import com.univreview.model.enumeration.ReviewSearchType
 import com.univreview.model.enumeration.ReviewType

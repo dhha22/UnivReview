@@ -31,13 +31,10 @@ import java.io.File
  */
 class Navigator {
     companion object {
-        @JvmField
         val SEARCH = 636
-        @JvmField
         val CAMERA = 387
-        @JvmField
         val ALBUM = 549
-        @JvmField
+
         val PERMISSION_CHECKER = 405
 
         @JvmStatic
@@ -76,14 +73,14 @@ class Navigator {
             context.startActivity(intent)
         }
 
-        @JvmStatic
+
         fun goUserAuthCompleted(context: Context) {
             val intent = Intent(context, NavigationActivity::class.java)
             NavigationActivity.fragment = UserAuthCompletedFragment.getInstance()
             context.startActivity(intent)
         }
 
-        @JvmStatic
+
         fun goCamera(context: Context) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val filePath = File(ImageUtil.IMAGE_PATH)
@@ -110,7 +107,6 @@ class Navigator {
             context.startActivity(intent)
         }
 
-        @JvmStatic
         fun goUploadReviewDetail(context: Context, review: Review, isFirst: Boolean = false) {
             val intent = Intent(context, NavigationActivity::class.java)
             NavigationActivity.fragment = UploadReviewDetailFragment.getInstance(review, isFirst)
@@ -157,14 +153,12 @@ class Navigator {
         }
 
 
-        //
-
-        @JvmStatic
-        fun goCheckUserPhoto(context: Context, type: String, path: String) {
+        fun goCheckStudentId(context: Context, type: String, path: String) {
             val intent = Intent(context, NavigationActivity::class.java)
-            NavigationActivity.fragment = CheckUserPhotoFragment.newInstance(type, path)
+            NavigationActivity.fragment = CheckStudentIdFragment.getInstance(type, path)
             context.startActivity(intent)
         }
+
 
         //mypage
         fun goProfileEdit(context: Context, user: User) {
@@ -185,7 +179,7 @@ class Navigator {
             context.startActivity(intent)
         }
 
-        @JvmStatic
+
         fun goAppSetting(context: Context) {
             val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             intent.data = Uri.parse("package:" + context.packageName)

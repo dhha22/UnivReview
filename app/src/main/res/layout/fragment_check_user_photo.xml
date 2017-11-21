@@ -70,7 +70,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/reselect_btn"
+            android:id="@+id/reselectBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -82,7 +82,7 @@
             android:textSize="18dp" />
 
         <Button
-            android:id="@+id/ok_btn"
+            android:id="@+id/okBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
