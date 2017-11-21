@@ -39,8 +39,8 @@ class RecommendRvDialog(val mContext: Context, val review: Review) : Dialog(mCon
         // 다음에 리뷰를 남긴다 (리뷰 디테일 페이지로 이동)
         next.setOnClickListener {
             dismiss()
-            //com.univreview.Navigator.goReviewDetail(context, review);
-            (mContext as Activity).onBackPressed()
+            Navigator.goReviewDetail(context, review)
+            (mContext as Activity).finish()
         }
     }
 }

@@ -23,7 +23,7 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) :Item
     private var id: Long = 0L
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.review_item, this, true)
+        setContentView(R.layout.review_item)
         setFullSpan()
     }
 
@@ -56,7 +56,7 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) :Item
         }
     }
 
-    fun setContent(content : String?) {
+    private fun setContent(content : String?) {
         if (content == null) {  // review 내용
             contentTxt.visibility = View.GONE
         } else {
@@ -66,7 +66,7 @@ class ReviewItemView(context: Context, attributeSet: AttributeSet? = null) :Item
     }
 
 
-    fun setMode(type: ReviewType) {
+    private fun setMode(type: ReviewType) {
         when (type) {
             ReviewType.WRITE_REVIEW -> { // 사용자가 리뷰를 쓸 때
                 headerView.isUserLayoutVisible(false)
