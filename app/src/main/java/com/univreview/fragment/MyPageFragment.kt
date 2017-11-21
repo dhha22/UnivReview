@@ -93,7 +93,7 @@ class MyPageFragment : BaseFragment(), MyPageContract.View {
                         1L -> it.previewStr = StringBuilder(data.point.toString() + " point").toString()
                     }
                     it
-                }.subscribe({ adapter.addItem(it) }, { Logger.e(it) })
+                }.subscribe({ adapter.addItem(it) }, { Logger.e(it) }, {adapter.notifyData()})
         profileImage.setOnClickListener { Navigator.goProfileEdit(context, data) }
     }
 
