@@ -13,12 +13,18 @@ import com.kakao.auth.KakaoSDK;
 import com.squareup.picasso.Picasso;
 import com.univreview.adapter.KakaoSDKAdapter;
 import com.univreview.log.Logger;
+import com.univreview.model.UpdateUser;
 import com.univreview.model.User;
+import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 import com.univreview.util.SharedPreferencesActivity;
 import com.univreview.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DavidHa on 2016. 12. 25..
@@ -45,7 +51,6 @@ public class App extends MultiDexApplication {
     public static Long userId;
     public static String userToken;
     public static String client;
-    public static String registrationId;
 
     @Override
     public void onCreate() {
@@ -102,7 +107,6 @@ public class App extends MultiDexApplication {
     public static void userLogout() {
         setUserId(0);
         setUid(0);
-        setFCMToken(null);
         setUserToken(null);
         setUniversityId(0);
         setClient(null);
@@ -150,19 +154,21 @@ public class App extends MultiDexApplication {
         Logger.v("uid: " + uid);
         Logger.v("university id: " + universityId);
         Logger.v("client: " + client);
+        initializeFCMToken();
     }
 
 
     public static void initializeFCMToken() {
-        setFCMToken(FirebaseInstanceId.getInstance().getToken());
-        Logger.v("registration_id: " + registrationId);
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Logger.v("registration_id: " + token);
+        UpdateUser user = new UpdateUser();
+        user.setFcmId(token);
+        Retro.instance.getUserService().updateUserInfo(App.getHeader(), user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(Logger::v, ErrorUtils::parseError);
     }
 
-    private static void setFCMToken(String registrationId) {
-        pref.savePreferences("registration_id", registrationId);
-        App.registrationId = pref.getPreferences("registration_id", "");
-
-    }
 
 
     public static Map<String, String> getHeader(){

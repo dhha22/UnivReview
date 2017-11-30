@@ -2,7 +2,11 @@ package com.univreview.fcm;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.univreview.App;
 import com.univreview.log.Logger;
+import com.univreview.model.UpdateUser;
+import com.univreview.network.Retro;
+import com.univreview.util.ErrorUtils;
 
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,10 +44,13 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param refreshedToken The new token.
      */
     private void sendRegistrationToServer(String refreshedToken) {
-       /* Retro.instance.fcmService().registerFCM("android", refreshedToken)
+        Logger.v("registration to server");
+        UpdateUser user = new UpdateUser();
+        user.setFcmId(refreshedToken);
+        Retro.instance.getUserService().updateUserInfo(App.getHeader(), user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> Logger.v(result), error -> ErrorUtils.parseError(error));*/
+                .subscribe(Logger::v, ErrorUtils::parseError);
     }
 
 

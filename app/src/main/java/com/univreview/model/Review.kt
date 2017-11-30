@@ -73,11 +73,11 @@ data class Review(var id: Long = 0,
 
     fun getGradeRateMessage(): String {
         when (Math.round(gradeRate)) {
-            1 -> return "아주 쉬움"
-            2 -> return "쉬움"
+            1 -> return "매우 안줌"
+            2 -> return "잘 안줌"
             3 -> return "보통"
-            4 -> return "어려움"
-            5 -> return "매우 어려움"
+            4 -> return "잘줌"
+            5 -> return "매우 잘줌"
             else -> return ""
         }
     }
